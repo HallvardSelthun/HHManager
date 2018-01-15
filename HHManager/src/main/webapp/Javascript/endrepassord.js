@@ -217,7 +217,7 @@ $(document).ready(function () {
         return temp.toLowerCase();
     }
     $("#loggInnBtn").click(function () {
-        $("#LagreEndringer").click(function () {
+        $("#lagreendringer").click(function () {
             var gammeltpassord = $("#gammelt").val();
             var nyttpassord = $("#nytt").val();
             var bekreft = $("#bekreft").val();
@@ -231,7 +231,7 @@ $(document).ready(function () {
                     passord:nyttpassord
                 }
             }
-        }
+        });
         $.ajax({
             url: "server/BrukerService/endrepassord",
             type: 'POST',
@@ -244,11 +244,13 @@ $(document).ready(function () {
                     window.location = "profil.html";
                 }else{
                     alert("Feil passord");
+                    console.log("kommer hit")
                 }
             },
             error: function () {
                 alert("serverfeil :/")
             }
+
         })
     })
     $("#regBruker").click(function () {
