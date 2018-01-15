@@ -1,11 +1,11 @@
 package server.services;
 
+import server.controllers.GenereltController;
 import server.controllers.HandlelisteController;
 import server.restklasser.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Path("/handleliste")
@@ -20,7 +20,7 @@ public class HandlelisteService {
     @Consumes(MediaType.APPLICATION_JSON)
     public int lagHandleliste(Handleliste handleliste) {
         System.out.println("Vi er inne i lag Handleliste");
-        return HandlelisteController.lagHandleliste(handleliste);
+        return HandlelisteController.lagHandleliste(handleliste); //k
     }
 
     /**
@@ -44,8 +44,7 @@ public class HandlelisteService {
     @DELETE
     @Path("/{handlelisteId}")
     public boolean slett(@PathParam("handlelisteId") int handlelisteId) {
-        //Her skal det komme kode
-        return false;
+        return HandlelisteController.slettHandleliste(handlelisteId);
     }
 
     /**

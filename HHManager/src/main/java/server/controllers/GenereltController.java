@@ -96,13 +96,11 @@ public class GenereltController {
     /**
      * Sletter en rad i databasen. Raden finnes vha. tabellnavn, kolonnenavn og en unikt identifiserbar
      * entitetsId.
-     *
-     * @param kolonne Navnet på kolonnene i tabellen vi henter data fra
      * @param tabell Navnet på tabellen i databasen vi henter data fra
      * @param id Attributt i tabellen som må hete id og unikt identifisere raden
      * @return True hvis vi ikke fikk exceptions.
      */
-    static boolean slettRad(String kolonne, String tabell, int id) {
+    static boolean slettRad(String tabell, int id) {
         String sqlsetning = "DELETE FROM "+tabell+" WHERE id = "+id+"";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){

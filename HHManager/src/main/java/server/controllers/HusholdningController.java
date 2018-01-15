@@ -126,7 +126,7 @@ public class HusholdningController {
             }
             String hentHus = "SELECT * FROM husholdning WHERE husholdningId = "+fav;
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = "+fav;
-            String hentAlleMedlemmer = "SELECT navn FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = "+fav;
+            String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = "+fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = "+fav +" AND (offentlig = 1 OR skaperId = "+brukerId+")";
             String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = "+handlelisteId;
 
@@ -155,6 +155,7 @@ public class HusholdningController {
             while(rs.next()){
                 Bruker bruker = new Bruker();
                 bruker.setNavn(rs.getString("navn"));
+                bruker.setBrukerId(rs.getInt("brukerId"));
                 huset.addMedlem(bruker);
             }
             Handleliste handleliste = new Handleliste();

@@ -18,6 +18,10 @@ public class HandlelisteController {
         return GenereltController.getDate("frist","handleliste", handlelisteId);
     }
 
+    public static boolean slettHandleliste(int handlelisteId) {
+        return GenereltController.slettRad("handleliste",handlelisteId);
+    }
+
     public static ArrayList<Handleliste> getHandlelister(int husholdningId, int brukerId) {
 
         //Hent offentlige handlelister som hører til husholdningen, samt private handlelister som hører til brukeren og husholdningen
@@ -112,33 +116,6 @@ public class HandlelisteController {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-
-    /**
-     * Sletter en handleliste fra databasen
-     * @param handlelisteId ID som unikt identifiserer en handleliste
-     * @return boolean True hvis det lykkes, false hvis det feilet
-     */
-    public static boolean slettHandleliste(int handlelisteId) {
-        String sletteQuery = "DELETE FROM handleliste WHERE handlelisteId="+handlelisteId+"";
-
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement slettStatement = connection.prepareStatement(sletteQuery)) {
-
-            try {
-                slettStatement.executeUpdate();
-                //Returnerer True selv om tingen allerede har blitt slettet... Men det er kanskje ok.
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 
