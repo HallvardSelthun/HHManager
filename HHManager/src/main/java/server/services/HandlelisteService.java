@@ -6,6 +6,7 @@ import server.restklasser.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Path("/handleliste")
@@ -19,8 +20,7 @@ public class HandlelisteService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public int lagHandleliste(Handleliste handleliste) {
-        System.out.println("Vi er inne i lag Handleliste");
-        return HandlelisteController.lagHandleliste(handleliste); //k
+        return HandlelisteController.lagHandleliste(handleliste);
     }
 
     /**
