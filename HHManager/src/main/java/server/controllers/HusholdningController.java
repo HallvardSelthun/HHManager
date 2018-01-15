@@ -51,13 +51,13 @@ public class HusholdningController {
             preparedStatement.setString(1, navn);
 
             if (preparedStatement.executeUpdate() > 0) {
+                ResultSet rs = preparedStatement.getGeneratedKeys();
 
+                while (rs.next()) {
+                    pk = rs.getInt(1);
+                }
             }
-            ResultSet rs = preparedStatement.getGeneratedKeys();
 
-            while (rs.next()) {
-                 pk = rs.getInt(1);
-            }
             return pk;
         } catch (Exception e) {
             e.printStackTrace();

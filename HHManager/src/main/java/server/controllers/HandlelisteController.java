@@ -138,13 +138,10 @@ public class HandlelisteController {
                     "INSERT INTO handleliste (husholdningId, offentlig, navn, skaperId) VALUES (?, ?, ?, ?)";
         }
 
-        final String getHandlelisteId = "SELECT LAST_INSERT_ID()";
-        int success = -1;
         int nyHandlelisteId = -1;
 
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(INSERT_Handleliste);
-             PreparedStatement getStatement = connection.prepareStatement(getHandlelisteId))
+             PreparedStatement insertStatement = connection.prepareStatement(INSERT_Handleliste, PreparedStatement.RETURN_GENERATED_KEYS);)
         {
             insertStatement.setInt(1, handlelisteData.getHusholdningId());
             insertStatement.setBoolean(2, handlelisteData.isOffentlig());
@@ -157,22 +154,17 @@ public class HandlelisteController {
 
             //Kjør insert-kall
             try {
-                success = insertStatement.executeUpdate();
+                int primaryKey = -1;
+                if (insertStatement.executeUpdate() > 0) {
+                    ResultSet rs = insertStatement.getGeneratedKeys();
+                    while (rs.next()) {
+                        primaryKey = rs.getInt(1);
+                    }
+                }
+                return primaryKey;
 
-                //Hvis insert lykkes, hent den nye HandlelisteIDen.
-                try (ResultSet results = getStatement.executeQuery()){
-                    results.next();
-                    nyHandlelisteId = results.getInt(1 );
-                    return nyHandlelisteId;
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    nyHandlelisteId = -1;
-                    return nyHandlelisteId;
-                }
             } catch (Exception e) {
                 e.printStackTrace();
-                success = -1;
                 return -1;
             }
         } catch (SQLException e) {
