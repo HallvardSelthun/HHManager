@@ -39,7 +39,7 @@ public class Bruker {
 
     public void setBrukerId(int brukerId) {
         this.brukerId = brukerId;
-    } // HEY HO
+    }
 
     public String getPassord() {
         return passord;
