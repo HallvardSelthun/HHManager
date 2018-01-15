@@ -20,7 +20,7 @@ public class HandlelisteService {
     @Consumes(MediaType.APPLICATION_JSON)
     public int lagHandleliste(Handleliste handleliste) {
         System.out.println("Vi er inne i lag Handleliste");
-        return HandlelisteController.lagHandleliste(handleliste);
+        return HandlelisteController.lagHandleliste(handleliste); //k
     }
 
     /**
