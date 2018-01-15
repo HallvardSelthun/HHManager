@@ -244,11 +244,13 @@ $(document).ready(function () {
                     window.location = "profil.html";
                 }else{
                     alert("Feil passord");
+                    console.log("kommer hit")
                 }
             },
             error: function () {
                 alert("serverfeil :/")
             }
+
         })
     })
     $("#regBruker").click(function () {
