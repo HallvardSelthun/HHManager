@@ -90,7 +90,7 @@ public class HandlelisteService {
     }
 
     @GET
-    @Path("/{handlelisteId}/{brukerId}")
+    @Path("/{husholdningId}/{brukerId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Handleliste> getHandlelister(@PathParam("husholdningId") int husholdningId, @PathParam("brukerId") int brukerId) {
         return HandlelisteController.getHandlelister(husholdningId, brukerId);

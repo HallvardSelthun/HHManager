@@ -1,22 +1,31 @@
 /**
  * Created by Karol on 14.01.2018.
  */
+var epost = localStorage.getItem("epost");
+var brukerId = localStorage.getItem("brukerId");
+var husholdningId = localStorage.getItem("husholdningId");
+var husholdning;
+var handlelisteNavn = $("#handlelisteNavn").val();
+
+
 $(document).ready(function () {
-    setTimeout(setupPage,1000);
     gethhData();
     getBrukerData();
+    getHandlelister();
+    setTimeout(setupPage,1000);
+
     $("#leggTilKnapp").on("click", function () {
         leggTilNyHandleliste();
     });
     $("#leggTilNyGjenstandKnapp").on("click", function () {
         leggTilNyGjenstand();
     });
+    $("#slettHandleliste").on("click", function () {
+        slettHandleliste();
+    });
 });
 
 function leggTilNyHandleliste() {
-    var handlelisteNavn = $("#handlelisteNavn").val();
-    var brukerId = localStorage.getItem("brukerId");
-    var husholdningId = localStorage.getItem("husholdningId");
     var varer = [];
     var offentlig = 0;
     var isChecked = $('#offentligKnapp').is(':checked');
@@ -60,7 +69,6 @@ function leggTilNyHandleliste() {
 
 function leggTilNyGjenstand() {
     var nyGjenstandNavn = $("#leggTilNyGjenstand").val();
-    var handlelisteNavn = $("#handlelisteNavn").val();
     var handlelisteId;
     
     function getHadlelisteId() {
@@ -99,6 +107,10 @@ function leggTilNyGjenstand() {
     })
 }
 
+function slettHandleliste() {
+    
+}
+
 function gethhData() {
     $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
         husholdning = data;
@@ -111,10 +123,24 @@ function getBrukerData() {
     });
 }
 
+function getHandlelister() {
+    $.getJSON("server/HandlelisteService/" + husholdningId + "/" + brukerId, function (data) {
+        handlelister = data;
+    });
+}
+
 function setupPage() {
-    var husholdningId = husholdning.localStorage.getItem("husholdningId");
-    var brukerId = bruker.localStorage.getItem("brukerId");
+    var handlelister = husholdning.handlelister;
 
-
+    for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){
+        var vare = handlelister[0].varer[k];
+        var varenavn = vare.varenavn;
+        var checked = vare.kjøpt;
+        var string = "";
+        if (checked){
+            string = "checked";
+        }
+        $("#handlelisterSide").append('<li class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right" '+string+'> </li>');
+    }
 
 }

@@ -106,6 +106,7 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <h1>Handlelister</h1>
+
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
@@ -114,22 +115,16 @@
                             Søndagslista</a>
                     </h4>
                     <div>
-                        <button type="button" class="btn btn-danger pull-right">Slett handleliste</button>
+                        <button id="slettHandleliste" type="button" class="btn btn-danger pull-right">Slett handleliste</button>
                     </div>
                 </div>
                 <div id="collapse1" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <div class="panel-body">
+                            <ul class="list-group" id="handlelisterSide"></ul>
+
+
                             <div class="list-group" id="list1">
-                                <a href="#" class="list-group-item ">List 1 <input title="toggle all" type="checkbox"
-                                                                                   class="all pull-right"></a>
-                                <a href="#" class="list-group-item">Second item <input type="checkbox"
-                                                                                       class="pull-right"></a>
-                                <a href="#" class="list-group-item">Third item <input type="checkbox"
-                                                                                      class="pull-right"></a>
-                                <a href="#" class="list-group-item">More item <input type="checkbox" class="pull-right"></a>
-                                <a href="#" class="list-group-item">Another <input type="checkbox"
-                                                                                   class="pull-right"></a>
                                 <form>
                                     <div class="input-group">
                                         <input id="leggTilNyGjenstand" type="text" class="form-control"
