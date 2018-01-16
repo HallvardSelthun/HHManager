@@ -1,5 +1,6 @@
 package server.controllers;
 
+import jdk.internal.org.objectweb.asm.Handle;
 import server.database.ConnectionPool;
 import server.restklasser.Handleliste;
 import server.restklasser.Vare;
@@ -228,4 +229,31 @@ public class HandlelisteController {
             return -1;
         }
     }
+
+    /*
+    public static Handleliste[] getHandlelister(int brukerId, int husholdningId) {
+
+        final String getHandlelister = "SELECT * FROM handleliste WHERE skaperId = "+brukerId+" OR husholdningId = "+husholdningId+"";
+        ArrayList<Handleliste> varer = new ArrayList<Handleliste>();
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement getHandlelisteStatement = connection.prepareStatement(getHandlelister)){
+            ResultSet handleResultset = getHandlelisteStatement.executeQuery();
+
+            while (handleResultset.next()) {
+                Handleliste nyListe = new Handleliste();
+                nyListe.setFrist(handleResultset.getDate("frist"));
+                nyListe.setOffentlig(handleResultset.getInt("offentlig")==1);
+                nyListe.setTittel(handleResultset.getString("navn"));
+                nyListe.setKjøpt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
+                nyListe.setDatoKjøpt(varerResultset.getDate("datoKjøpt"));
+                varer.add(nyVare);
+            }
+            return varer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    */
 }

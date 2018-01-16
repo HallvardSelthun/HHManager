@@ -6,6 +6,7 @@ import server.restklasser.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -91,8 +92,8 @@ public class HandlelisteService {
     @GET
     @Path("/{handlelisteId}/{brukerId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Handleliste> getHandlelister(@PathParam("handlelisteId") int handlelisteId, @PathParam("brukerId") int brukerId) {
-        return HandlelisteController.getHandlelister(handlelisteId, brukerId);
+    public ArrayList<Handleliste> getHandlelister(@PathParam("husholdningId") int husholdningId, @PathParam("brukerId") int brukerId) {
+        return HandlelisteController.getHandlelister(husholdningId, brukerId);
     }
 
     //Returnerer ID til varen som ble lagt inn
@@ -102,7 +103,6 @@ public class HandlelisteService {
     public int leggTilVare(Vare vare) {
         return HandlelisteController.leggInnVare(vare);
     }
-
 
 
 }
