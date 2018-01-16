@@ -34,14 +34,24 @@ function setupPage() {
     brukernavn = bruker.navn;
     var gjøremål = bruker.gjøremål;
     console.log(bruker);
-    console.log(brukernavn);
     localStorage.setItem("brukerId", brukerId);
     $("a#brukernavn").text(brukernavn);
     $("#nyhet").html(husNavn);
 
     for(var j = 0, leng = medlemmer.length; j< leng; j++){
         var medlemnavn = medlemmer[j].navn;
-        $("#list1").append('<li class="list-group-item">'+medlemnavn+'</li>');
+        $("#medlemsliste").append('<li class="list-group-item">'+medlemnavn+'</li>');
+    }
+
+    for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){
+        var vare = handlelister[0].varer[k];
+        var varenavn = vare.varenavn;
+        var checked = vare.kjøpt;
+        var string = "";
+        if (checked){
+            string = "checked";
+        }
+        $("#handlelisteForside").append('<li class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right" '+string+'> </li>');
     }
 }
 
@@ -57,13 +67,11 @@ function getBrukerData() {
 }
 function postInnlegg() {
     var tekst = $("#comment").val();
-    console.log(" tekst: "+ tekst);
     if(tekst==""){
         return;
     }
     var dato = new Date(Date.now());
     var nyhetsinnlegg = {forfatterId: brukerId, tekst: tekst, husholdningId: husholdningId, dato: dato};
-    console.log(tekst);
     $.ajax({
         url: "server/hhservice/nyhetspost",
         type: 'POST',
@@ -88,13 +96,10 @@ function innleggToHtml(nyhetsinnlegg) {
     var tekst = nyhetsinnlegg.tekst;
     var options = {weekday: 'long', year: '2-digit', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit'};
     var date = new Date(nyhetsinnlegg.dato).toLocaleDateString("en-US", options);
-    console.log(date);
-    console.log('Medlemmer: '+medlemmer.length);
     for (var j = 0, length = medlemmer.length; j<length; j++){
         if (medlemmer[j].brukerId==fofatterId){
             forfatter = medlemmer[j].navn;
         }
     }
-    console.log(fofatterId);
     $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"> <img src="web-res/avatar.png" class="media-object" style="width:45px"> </div><div class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
 };
