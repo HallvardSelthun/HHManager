@@ -17,11 +17,11 @@ public class BrukerController {
     private static Statement s;
     private final static String TABELLNAVN = "bruker";
 
-    public static String getBrukernavn (int brukerid) {
+    public static String getBrukernavn(int brukerid) {
         return GenereltController.getString("navn", TABELLNAVN, brukerid);
     }
 
-    public static String getEpost (int brukerid) {
+    public static String getEpost(int brukerid) {
         return GenereltController.getString("epost", TABELLNAVN, brukerid);
     }
 
@@ -38,14 +38,14 @@ public class BrukerController {
         String query = "INSERT INTO bruker (passord, navn, epost) VALUES (?, ?, ?)";
 
 
-        try (Connection con = ConnectionPool.getConnection()){
+        try (Connection con = ConnectionPool.getConnection()) {
 
             ps = con.prepareStatement(epostLedig);
             ps.setString(1, epost);
-            try(ResultSet rs = ps.executeQuery()){
-                while (rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
                     String res = rs.getString("epost");
-                    if (res!=(epost)){
+                    if (res != (epost)) {
                         return false;
                     }
                 }
@@ -69,23 +69,29 @@ public class BrukerController {
      * @param passord
      * @return true hvis dataene stemmer
      */
-    public static boolean loginOk(String epost, String passord) {
-        String query = "SELECT passord FROM bruker WHERE epost = ?";
+    public static Bruker loginOk(String epost, String passord) {
+        String query = "SELECT passord, favorittHusholdning FROM bruker WHERE epost = ?";
+        Bruker bruker = new Bruker();
+        int favHus = 0;
+        bruker.setFavHusholdning(favHus);
         try (Connection con = ConnectionPool.getConnection()) {
             ps = con.prepareStatement(query);
             ps.setString(1, epost);
-            try (ResultSet rs = ps.executeQuery()){
-                while(rs.next()){
-                    String res = rs.getString("passord");
-                    if (res.equals(passord)) {
-                        return true;
-                    }
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                String res = rs.getString("passord");
+                int favHusDB = rs.getInt("favorittHusholdning");
+                if (favHus != favHusDB){
+                    bruker.setFavHusholdning(favHusDB);
+                }
+                if (res.equals(passord)) {
+                    return bruker;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     /**
@@ -144,15 +150,16 @@ public class BrukerController {
         }
         return bruker;
     }
+
     public static void setNyEpost(String epost, String brukerId) {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);
     }
 
-   public static void setNyttPassord(String brukerId, String passord){
+    public static void setNyttPassord(String brukerId, String passord) {
         GenereltController.update(TABELLNAVN, "passord", passord, brukerId);
-   }
+    }
 
-    private double getBalanse(int brukerId){
+    private double getBalanse(int brukerId) {
         return 0;
     }
 }

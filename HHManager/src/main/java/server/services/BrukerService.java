@@ -35,7 +35,7 @@ public class BrukerService {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean loginGodkjent(Bruker bruker){
+    public Bruker loginGodkjent(Bruker bruker){
         //må ha en plass der en finne ut om d e rett
         return BrukerController.loginOk(bruker.getEpost(), bruker.getPassord());
     }
