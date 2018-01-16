@@ -95,6 +95,13 @@ public class HandlelisteService {
         return HandlelisteController.getHandlelister(handlelisteId, brukerId);
     }
 
+    @POST
+    @Path("/{handlelisteId}/{brukerId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean leggTilVare() {
+        return false; //Må lages
+    }
+
 
 
 }

@@ -24,6 +24,7 @@ public final class ConnectionPool {
 
     private ConnectionPool() {
         dataSource.setTimeBetweenEvictionRunsMillis(10000); //10 minutter mellom hver gang den sjekker for idle connections
+        dataSource.setMaxTotal(20);
     }
 
     //Lager en connection mot databasen hvis en connection ikke finnes. Finnes en connection tar den

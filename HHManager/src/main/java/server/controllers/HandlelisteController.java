@@ -22,6 +22,13 @@ public class HandlelisteController {
         return GenereltController.slettRad("handleliste",handlelisteId);
     }
 
+    /**
+     * Tar husholdningsId og brukerId og returnerer alle handlelistene brukeren har tilgang til
+     * innad i husholdningen.
+     * @param husholdningId Unik ID for å identifisere hver handleliste
+     * @param brukerId Unik ID for å identifisere hver handleliste
+     * @return Handleliste Et fullt handlelisteobjekt.
+     */
     public static ArrayList<Handleliste> getHandlelister(int husholdningId, int brukerId) {
 
         //Hent offentlige handlelister som hører til husholdningen, samt private handlelister som hører til brukeren og husholdningen
