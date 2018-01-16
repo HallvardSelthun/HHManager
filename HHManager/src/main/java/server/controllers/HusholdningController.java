@@ -6,10 +6,7 @@ import server.util.RandomGenerator;
 import server.restklasser.*;
 
 import javax.swing.plaf.nimbus.State;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class HusholdningController {
     private static final String TABELLNAVN = "husholdning";
@@ -189,5 +186,26 @@ public class HusholdningController {
             e.printStackTrace();
         }
         return huset;
+    }
+
+    public static boolean postNyhetsinnlegg(Nyhetsinnlegg nyhetsinnlegg){
+        int husholdningId = nyhetsinnlegg.getHusholdningsId();
+        int forfatterId = nyhetsinnlegg.getForfatterId();
+        Date dato = nyhetsinnlegg.getDato();
+        String tekst = nyhetsinnlegg.getTekst();
+        String query = "INSERT INTO nyhetsinnlegg (forfatterId, husholdningId, dato, tekst) VALUES (?, ?, ?, ?)";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,forfatterId);
+            ps.setInt(2,husholdningId);
+            ps.setDate(3,dato);
+            ps.setString(4,tekst);
+            ps.executeUpdate();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }
