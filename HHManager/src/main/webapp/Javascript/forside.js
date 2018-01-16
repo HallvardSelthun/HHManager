@@ -20,10 +20,12 @@ $(document).ready(function () {
 function setupPage() {
     console.log(husholdning);
     husholdningId = husholdning.husholdningId;
+    bruker.favHusholdning = husholdningId;
     var husNavn = husholdning.navn;
     var nyhetsinnlegg = husholdning.nyhetsinnlegg;
     medlemmer = husholdning.medlemmer;
     var handlelister = husholdning.handlelister;
+    localStorage.setItem("bruker", JSON.stringify(bruker));
     localStorage.setItem("husholdningId", husholdningId);
 
     for (var i = 0, len = nyhetsinnlegg.length; i < len; i++) {
@@ -34,7 +36,7 @@ function setupPage() {
     brukernavn = bruker.navn;
     var gjøremål = bruker.gjøremål;
     console.log(bruker);
-    localStorage.setItem("brukerId", brukerId);
+
     $("a#brukernavn").text(brukernavn);
     $("#nyhet").html(husNavn);
 
