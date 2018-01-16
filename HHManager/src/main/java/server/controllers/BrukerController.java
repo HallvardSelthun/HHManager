@@ -163,7 +163,6 @@ public class BrukerController {
         GenereltController.update(TABELLNAVN, "navn", navn, brukerId);
     }
 
-    private double getBalanse(int brukerId){
     private double getBalanse(int brukerId) {
         return 0;
     }

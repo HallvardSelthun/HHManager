@@ -2,6 +2,7 @@
  * Created by BrageHalse on 10.01.2018.
  */
 var brukerId;
+var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
 var epost = localStorage.getItem("epost");
 var husholdningId;
@@ -229,7 +230,7 @@ $(document).ready(function () {
     navnpåpers = bruker.navn;
     console.log(bruker);
     localStorage.setItem("brukerId", brukerId);
-    $("#navnpåpers").text(navnpåpers);
+    $("#navnpåpers").text(minBruker.navn);
 
 
     $("#lagreendringer").on('click', function () {
