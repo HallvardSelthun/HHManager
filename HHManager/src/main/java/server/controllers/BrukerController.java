@@ -148,9 +148,9 @@ public class BrukerController {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);
     }
 
-    public static void setNyttPassord(String passord, String brukerId) {
-        GenereltController.update(TABELLNAVN, "passord",passord, brukerId);
-    }
+   public static void setNyttPassord(String brukerId, String passord){
+        GenereltController.update(TABELLNAVN, "passord", passord, brukerId);
+   }
 
     private double getBalanse(int brukerId){
         return 0;
