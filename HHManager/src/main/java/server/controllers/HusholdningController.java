@@ -1,6 +1,6 @@
 package server.controllers;
 
-import com.mysql.cj.jdbc.util.ResultSetUtil;
+//import com.mysql.cj.jdbc.util.ResultSetUtil;
 import server.database.ConnectionPool;
 import server.util.RandomGenerator;
 import server.restklasser.*;
