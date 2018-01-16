@@ -38,7 +38,7 @@ public class BrukerController {
         String query = "INSERT INTO bruker (passord, navn, epost) VALUES (?, ?, ?)";
 
 
-        try (Connection con = ConnectionPool.getConnection()) {
+        try (Connection con = ConnectionPool.getConnection()){
 
             ps = con.prepareStatement(epostLedig);
             ps.setString(1, epost);
@@ -159,6 +159,11 @@ public class BrukerController {
         GenereltController.update(TABELLNAVN, "passord", passord, brukerId);
     }
 
+    public static void setNyttNavn(String brukerId, String navn){
+        GenereltController.update(TABELLNAVN, "navn", navn, brukerId);
+    }
+
+    private double getBalanse(int brukerId){
     private double getBalanse(int brukerId) {
         return 0;
     }

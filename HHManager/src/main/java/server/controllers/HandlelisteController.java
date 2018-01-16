@@ -1,6 +1,6 @@
 package server.controllers;
 
-import jdk.internal.org.objectweb.asm.Handle;
+//import jdk.internal.org.objectweb.asm.Handle;
 import server.database.ConnectionPool;
 import server.restklasser.Handleliste;
 import server.restklasser.Vare;

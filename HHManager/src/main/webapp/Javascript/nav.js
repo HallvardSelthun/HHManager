@@ -6,16 +6,16 @@ $(document).ready(function (){
         $("#modaldiv").load("lagnyhusstand.html");
     });
     $('body').on('click', 'a#bildenav', function() {
-        window.location="forside.html"
+        window.location = "forside.html"
     });
     $('body').on('click', 'a#gjoremaalsknapp', function() {
-        window.location="gjoremaal.html"
+        window.location = "gjoremaal.html"
     });
     $('body').on('click', 'a#kalenderknapp', function() {
-        window.location="kalender.html"
+        window.location = "kalender.html"
     });
     $('body').on('click', 'a#handlelisteknapp', function() {
-        window.location="handlelister.html"
+        window.location = "handlelister.html"
     });
     $('body').on('click', 'a#bildeknapp', function() {
         window.location = "forside.html"
