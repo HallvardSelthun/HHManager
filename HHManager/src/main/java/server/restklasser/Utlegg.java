@@ -2,27 +2,27 @@ package server.restklasser;
 
 import java.util.ArrayList;
 
-public class Oppgjør {
+public class Utlegg {
     private int utleggerId;
-    private int oppgjørId;
+    private int utleggId;
     private double sum;
     private String beskrivelse;
-    private int[] skylderPengerMedlemmer; //idene til medlemmer som skylder penger, gjør om til liste av oppgjørsbetalere
+    private int[] skylderPengerMedlemmer; //idene til medlemmer som skylder penger, gjør om til liste av utleggsbetalere
     private ArrayList<Vare> varer;
 
-    public Oppgjør() {}
+    public Utlegg() {}
 
-    public Oppgjør(int utleggerId, int oppgjørId, double sum, String beskrivelse, int[] skylderPengerMedlemmer, ArrayList<Vare> varer) {
+    public Utlegg(int utleggerId, int utleggId, double sum, String beskrivelse, int[] skylderPengerMedlemmer, ArrayList<Vare> varer) {
         this.utleggerId = utleggerId;
-        this.oppgjørId = oppgjørId;
+        this.utleggId = utleggId;
         this.sum = sum;
         this.beskrivelse = beskrivelse;
         this.skylderPengerMedlemmer = skylderPengerMedlemmer;
         this.varer = varer;
     }
 
-    public Oppgjør(int oppgjørId) {
-        this.oppgjørId = oppgjørId;
+    public Utlegg(int utleggId) {
+        this.utleggId = utleggId;
     }
 
 
@@ -34,12 +34,12 @@ public class Oppgjør {
         this.utleggerId = utleggerId;
     }
 
-    public int getOppgjørId() {
-        return oppgjørId;
+    public int getutleggId() {
+        return utleggId;
     }
 
-    public void setOppgjørId(int oppgjørId) {
-        this.oppgjørId = oppgjørId;
+    public void setutleggId(int utleggId) {
+        this.utleggId = utleggId;
     }
 
     public double getSum() {
