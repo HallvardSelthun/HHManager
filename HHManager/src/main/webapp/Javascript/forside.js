@@ -37,7 +37,7 @@ function setupPage() {
     var gjøremål = bruker.gjøremål;
     console.log(bruker);
 
-    $("a#brukernavn").text(brukernavn);
+
     $("#nyhet").html(husNavn);
 
     for(var j = 0, leng = medlemmer.length; j< leng; j++){

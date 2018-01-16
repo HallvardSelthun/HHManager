@@ -1,8 +1,11 @@
 var navnIHuset = [];
+var bruker = JSON.parse(localStorage.getItem("bruker"));
+var navn = bruker.navn;
 
 $(document).ready(function (){
     $(function(){
         $("#navbar").load("nav.html");
+
         $("#modaldiv").load("lagnyhusstand.html");
     });
     $('body').on('click', 'a#bildenav', function() {
@@ -37,5 +40,10 @@ $(document).ready(function (){
     $("#leggTilHusstandKnapp").click(function () {
         var navnHus = $("#navnHusstand").valueOf();
 
-    })
+    });
+
+    setTimeout(function () {
+        $("a#profilNavn").text(navn);
+    }, 300);
+
 });
