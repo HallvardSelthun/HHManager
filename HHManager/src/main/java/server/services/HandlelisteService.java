@@ -95,12 +95,12 @@ public class HandlelisteService {
         return HandlelisteController.getHandlelister(handlelisteId, brukerId);
     }
 
+    //Returnerer ID til varen som ble lagt inn
     @POST
     @Path("/{handlelisteId}/{brukerId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean leggTilVare() {
-
-        return false; //Må lages
+    public int leggTilVare(Vare vare) {
+        return HandlelisteController.leggInnVare(vare);
     }
 
 
