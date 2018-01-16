@@ -257,3 +257,9 @@ $(document).ready(function () {
     });
 });
 
+function keyCode(event) {
+    var x = event.keyCode;
+    if (x == 13) {
+        window.location = "forside.html";
+    }
+}
