@@ -191,21 +191,14 @@ public class HandlelisteController {
     public static int leggInnVare(Vare vare) {
 
         String INSERT_Vare =
-                "INSERT INTO vare (handlelisteId, vareNavn, kjøpt, datoKjøpt) VALUES (?, ?, ?, ?)";
+                "INSERT INTO vare (handlelisteId, vareNavn) VALUES (?, ?)";
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(INSERT_Vare, PreparedStatement.RETURN_GENERATED_KEYS);) {
-            int erKjøpt = 0;
-            if (vare.isKjøpt() == true) {
-                erKjøpt = 1;
-            }
-            else {
-                erKjøpt = 0;
-            }
+            
             insertStatement.setInt(1, vare.getHandlelisteId());
             insertStatement.setString(2, vare.getVarenavn());
-            insertStatement.setInt(3, erKjøpt);
-            insertStatement.setDate(4, vare.getDatoKjøpt());
+            
 
             //Kjør insert-kall
             try {
