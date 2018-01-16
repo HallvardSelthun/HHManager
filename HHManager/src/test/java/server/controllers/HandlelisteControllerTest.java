@@ -68,7 +68,6 @@ public class HandlelisteControllerTest {
     @Test
     public void leggInnVare() {
         Vare testVare = new Vare();
-        testVare.setKjøpt(false);
         testVare.setVarenavn("Testvare fra testklassen");
         testVare.setHandlelisteId(1);
 
