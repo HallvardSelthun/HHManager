@@ -38,6 +38,11 @@ function setupPage() {
     localStorage.setItem("brukerId", brukerId);
     $("a#brukernavn").text(brukernavn);
     $("#nyhet").html(husNavn);
+
+    for(var j = 0, leng = medlemmer.length; j< leng; j++){
+        var medlemnavn = medlemmer[j].navn;
+        $("#list1").append('<li class="list-group-item">'+medlemnavn+'</li>');
+    }
 }
 
 function gethhData() {
@@ -91,5 +96,5 @@ function innleggToHtml(nyhetsinnlegg) {
         }
     }
     console.log(fofatterId);
-    $("#innleggsliste").append('<li class ="innlegg"><div class="media-left"> <img src="web-res/avatar.png" class="media-object" style="width:45px"> </div><div class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
+    $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"> <img src="web-res/avatar.png" class="media-object" style="width:45px"> </div><div class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
 };

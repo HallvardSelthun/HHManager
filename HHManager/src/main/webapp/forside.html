@@ -20,11 +20,17 @@
     <div class="row">
         <div class="col-md-8 vl">
             <!-- Your first column here -->
-
+            <!--KOMMENTARFELT-->
+            <h2 id="nyhet">Nyhetsoppdatering</h2>
+            <div class="form-group container-kommentarfelt">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+                <p align="right">
+                    <button type="button" class="btn" id="commentBtn">Send</button>
+                </p>
+            </div>
             <!--KOMMENTAR MED AVATAR-->
             <div class="container-fluid container-nyhetsoppdatering">
-                <h2 id="nyhet">Nyhetsoppdatering</h2>
-                <br>
                 <div class="media">
                     <div id="nyhetsdiv">
                         <ul id="innleggsliste">
@@ -32,15 +38,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-
-            <!--KOMMENTARFELT-->
-            <div class="form-group container-kommentarfelt">
-                <label for="comment">Comment:</label>
-                <textarea class="form-control" rows="5" id="comment"></textarea>
-                <p align="right">
-                    <button type="button" class="btn" id="commentBtn">Send</button>
-                </p>
             </div>
         </div>
         <div class="col-md-4">
@@ -58,10 +55,8 @@
                         <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne"
                              data-parent="#accordion">
                             <div class="panel-body">
-                                <div class="list-group" id="list1">
-                                    <a href="#" class="list-group-item ">List 1</a>
-                                    <a href="#" class="list-group-item">Second item</a>
-                                </div>
+                                <ul class="list-group" id="list1">
+                                </ul>
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ $(document).ready(function () {
         alert("hey!");
         if (nyEpost != "") {
             $.ajax({
-                url: "/BrukerService/endreEpost", //BrukerId i path mangler
+                url: "server/BrukerService/endreEpost", //BrukerId i path mangler
                 type: 'PUT',
                 data: JSON.stringify(nyEpost),
                 contentType: 'text/plain',
