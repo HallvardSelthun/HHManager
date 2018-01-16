@@ -1,11 +1,9 @@
 package server.controllers;
 
+import server.database.ConnectionPool;
 import server.restklasser.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UtleggController {
@@ -46,7 +44,27 @@ public class UtleggController {
     }
 
     public static ArrayList<Utlegg> getUtleggene(int brukerId) {
-        String getQuery = "SELECT * FROM utlegg WHERE utleggerId = "+brukerId+"";
+        String getUtleggQuery = "SELECT * FROM utlegg WHERE utleggerId = "+brukerId+"";
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement getUtleggStatement = connection.prepareStatement(getUtleggQuery)){
+            ResultSet resultset = getUtleggStatement.executeQuery();
+
+            while (resultset.next()) {
+                Utlegg utlegg = new Utlegg();
+                utlegg.setBeskrivelse(resultset.getString("beskrivelse"));
+                utlegg.set(varerResultset.getInt("kjøperId"));
+                nyVare.setVarenavn(varerResultset.getString("vareNavn"));
+                nyVare.setKjøpt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
+                nyVare.setDatoKjøpt(varerResultset.getDate("datoKjøpt"));
+                varer.add(nyVare);
+            }
+            return varer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return null;
     }
 

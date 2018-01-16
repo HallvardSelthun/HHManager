@@ -7,17 +7,17 @@ public class Utlegg {
     private int utleggId;
     private double sum;
     private String beskrivelse;
-    private int[] skylderPengerMedlemmer; //idene til medlemmer som skylder penger, gjør om til liste av utleggsbetalere
+    private ArrayList<Utleggsbetaler> folkSomSkylderPenger; //idene til medlemmer som skylder penger, gjør om til liste av utleggsbetalere
     private ArrayList<Vare> varer;
 
     public Utlegg() {}
 
-    public Utlegg(int utleggerId, int utleggId, double sum, String beskrivelse, int[] skylderPengerMedlemmer, ArrayList<Vare> varer) {
+    public Utlegg(int utleggerId, int utleggId, double sum, String beskrivelse, ArrayList<Utleggsbetaler> folkSomSkylderPenger, ArrayList<Vare> varer) {
         this.utleggerId = utleggerId;
         this.utleggId = utleggId;
         this.sum = sum;
         this.beskrivelse = beskrivelse;
-        this.skylderPengerMedlemmer = skylderPengerMedlemmer;
+        this.folkSomSkylderPenger = folkSomSkylderPenger;
         this.varer = varer;
     }
 
@@ -58,19 +58,20 @@ public class Utlegg {
         this.beskrivelse = beskrivelse;
     }
 
-    public int[] getSkylderPengerMedlemmer() {
-        return skylderPengerMedlemmer;
-    }
-
-    public void setSkylderPengerMedlemmer(int[] skylderPengerMedlemmer) {
-        this.skylderPengerMedlemmer = skylderPengerMedlemmer;
-    }
-
     public ArrayList<Vare> getVarer() {
         return varer;
     }
 
     public void setVarer(ArrayList<Vare> varer) {
         this.varer = varer;
+    }
+
+
+    public ArrayList<Utleggsbetaler> getFolkSomSkylderPenger() {
+        return folkSomSkylderPenger;
+    }
+
+    public void setFolkSomSkylderPenger(ArrayList<Utleggsbetaler> folkSomSkylderPenger) {
+        this.folkSomSkylderPenger = folkSomSkylderPenger;
     }
 }
