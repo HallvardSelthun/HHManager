@@ -179,4 +179,38 @@ public class HandlelisteController {
             return -1;
         }
     }
+
+
+
+    /**
+     * Tar imot en handlelisteId og en vare laget i nettleseren. Legger varen inn i databasen
+     * med kobling til handleliste. Pass på at erKjøpt er satt til false hvis varen er helt ny.
+     * @param handlelisteId Unik ID til handlelisten varen hører til
+     * @return int Varens ID, eller -1 hvis noe gikk galt.
+     */
+    public static int leggInnVare(int handlelisteId, Vare vare) {
+
+        String INSERT_Vare =
+                "INSERT INTO vare (handlelisteId, vareNavn, kjøpt, datoKjøpt) VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(INSERT_Vare, PreparedStatement.RETURN_GENERATED_KEYS);) {
+            int erKjøpt = 0;
+            if (vare.isKjøpt() == true) {
+                erKjøpt = 1;
+            }
+            else {
+                erKjøpt = 0;
+            }
+            insertStatement.setInt(1, vare.getHandlelisteId());
+            insertStatement.setString(2, vare.getVarenavn());
+            insertStatement.setInt(3, erKjøpt);
+            insertStatement.setDate(4, vare.getDatoKjøpt());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return -1;
+    }
 }

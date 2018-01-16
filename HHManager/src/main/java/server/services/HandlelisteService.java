@@ -99,6 +99,7 @@ public class HandlelisteService {
     @Path("/{handlelisteId}/{brukerId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean leggTilVare() {
+
         return false; //Må lages
     }
 
