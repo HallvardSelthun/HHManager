@@ -1,28 +1,6 @@
 /**
  * Created by BrageHalse on 10.01.2018.
  */
-$(document).ready(function () {
-    $("#endreEpost").click(function () {
-        var nyEpost = $("#email").val();
-        // TRENGER BRUKERID
-        alert("hey!");
-        if (nyEpost != "") {
-            $.ajax({
-                url: "server/BrukerService/endreEpost", //BrukerId i path mangler
-                type: 'PUT',
-                data: JSON.stringify(nyEpost),
-                contentType: 'text/plain',
-                dataType: 'json',
-                success: function () {
-                    alert("Epost endret til " + nyEpost + ".");
-                },
-                error: function () {
-                    alert("Noe gikk galt :(")
-                }
-            })
-        }
-    });
-});
 
 $(document).ready(function () {
     var MD5 = function (string) {
@@ -242,44 +220,67 @@ $(document).ready(function () {
 
         return temp.toLowerCase();
     }
-    $("#loggInnBtn").click(function () {
-        $("#LagreEndringer").click(function () {
-            var gammeltpassord = $("#gammelt").val();
-            var nyttpassord = $("#nytt").val();
-            var bekreft = $("#bekreft").val();
-            if (gammeltpassord == "" || nyttpassord == "" || bekreft == "") {
-                alert("Skriv inn noe! ");
-                return;
-            }
-            if(nyttpassord == bekreft){
-                nyttpassord = MD5(nyttpassord)
-                var bruker= {
-                    passord:nyttpassord
-                }
-            }
-        });
-        $.ajax({
-            url: "server/BrukerService/endrepassord",
-            type: 'POST',
-            data: JSON.stringify(bruker),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (result) {
-                var data = JSON.parse(result);
-                if (data){
+
+    $("#lagreendringer").on('click', function () {
+        var brukerId = localStorage.getItem("brukerId");
+        var endrepassord1 = $("#nyttpassord").val();
+        var endrepassord2 = $("#bekreftnytt").val();
+
+        if (endrepassord1 == endrepassord2) {
+            endrepassord1 = MD5(endrepassord1);
+            var bruker = {
+                brukerId: brukerId,
+                passord: endrepassord1
+            };
+            $.ajax({
+                url: "server/BrukerService/endrePassord",
+                type: 'PUT',
+                data: JSON.stringify(bruker),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    var data = JSON.parse(result);
                     window.location = "profil.html";
-                }else{
-                    alert("Feil passord");
+                    alert("Passordet er endret");
+                },
+                error: function () {
+                    alert("Noe gikk galt :(")
                 }
-            },
-            error: function () {
-                alert("serverfeil :/")
-            }
-        })
-    })
-    $("#regBruker").click(function () {
-        window.location = "lagbruker.html";
+            })
+        } else {
+            alert("Passordet må være likt i begge feltene.")
+        }
+        $("#lukk").on('click', function () {
+            alert("Du har valgt å avbryte")
+        });
     });
+    function lagreEndringer() {
+    }
+
 });
 
+
+/*
+function endreEpost() {
+
+    var nyEpost = $("#email").val();
+    // TRENGER BRUKERID
+    alert("hey!");
+    if (nyEpost != "") {
+        $.ajax({
+            url: "/BrukerService/endreEpost", //BrukerId i path mangler
+            type: 'PUT',
+            data: JSON.stringify(nyEpost),
+            contentType: 'text/plain',
+            dataType: 'json',
+            success: function () {
+                alert("Epost endret til " + nyEpost + ".");
+            },
+            error: function () {
+                alert("Noe gikk galt :(")
+            }
+        })
+    }
+}
+*/
 

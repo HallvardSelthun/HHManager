@@ -55,42 +55,57 @@
                         <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne"
                              data-parent="#accordion">
                             <div class="panel-body">
-                                <ul class="list-group" id="list1">
+                                <ul class="list-group" id="medlemsliste">
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container-checkbox">
-                <h2>Mine gjøremål</h2>
+            <div class="container-list">
                 <br>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 1</label>
+                <div id="accordion2" role="tablist">
+                    <div class="panel panel-default collapse in">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <span class="glyphicon glyphicon-pushpin"></span> Gjøremål
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="panel-body">
+                                <ul class="list-group" id="gjøremålFrontside">
+                                    <li class="list-group-item ">gjøremål 1 <input title="toggle all" type="checkbox"
+                                                                                       class="all pull-right"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
-                </div>
-                <div class="checkbox disabled">
-                    <label><input type="checkbox" value="" disabled>Option 3</label>
-                </div>
-                <p align="right">
-                    <a href="#"><span class="glyphicon glyphicon-plus-sign"></span></a>
-                </p>
-                <h2>Handleliste</h2>
+            </div>
+            <div class="container-list">
                 <br>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 1</label>
+                <div id="accordion3" role="tablist">
+                    <div class="panel panel-default collapse in">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Handleliste
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="panel-body">
+                                <ul class="list-group" id="handlelisteForside">
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
-                </div>
-                <div class="checkbox disabled">
-                    <label><input type="checkbox" value="" disabled>Option 3</label>
-                </div>
-                <p align="right">
-                    <a href="#"><span class="glyphicon glyphicon-plus-sign"></span></a>
-                </p>
             </div>
         </div>
     </div>

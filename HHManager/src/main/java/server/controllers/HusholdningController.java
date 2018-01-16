@@ -125,7 +125,6 @@ public class HusholdningController {
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = "+fav;
             String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = "+fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = "+fav +" AND (offentlig = 1 OR skaperId = "+brukerId+")";
-            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = "+handlelisteId;
 
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
@@ -158,14 +157,16 @@ public class HusholdningController {
             Handleliste handleliste = new Handleliste();
             s = con.createStatement();
             rs = s.executeQuery(hentHandleliste);
-            while (rs.next()){
+            rs.next();
 
-                handleliste.setTittel(rs.getString("navn"));
-                handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
-                handleliste.setHusholdningId(fav);
-                huset.addHandleliste(handleliste);
-                handlelisteId = rs.getInt("handlelisteId");
-            }
+            handleliste.setTittel(rs.getString("navn"));
+            handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
+            handleliste.setHusholdningId(fav);
+            handleliste.setOffentlig(true);
+            huset.addHandleliste(handleliste);
+            handlelisteId = rs.getInt("handlelisteId");
+
+            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = "+handlelisteId;
 
             s = con.createStatement();
             rs = s.executeQuery(hentVarer);
