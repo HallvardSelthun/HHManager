@@ -185,10 +185,10 @@ public class HandlelisteController {
     /**
      * Tar imot en handlelisteId og en vare laget i nettleseren. Legger varen inn i databasen
      * med kobling til handleliste. Pass på at erKjøpt er satt til false hvis varen er helt ny.
-     * @param handlelisteId Unik ID til handlelisten varen hører til
+     * @param vare Vare laget fra før, f.eks. i JavaScript
      * @return int Varens ID, eller -1 hvis noe gikk galt.
      */
-    public static int leggInnVare(int handlelisteId, Vare vare) {
+    public static int leggInnVare(Vare vare) {
 
         String INSERT_Vare =
                 "INSERT INTO vare (handlelisteId, vareNavn, kjøpt, datoKjøpt) VALUES (?, ?, ?, ?)";
@@ -207,10 +207,25 @@ public class HandlelisteController {
             insertStatement.setInt(3, erKjøpt);
             insertStatement.setDate(4, vare.getDatoKjøpt());
 
+            //Kjør insert-kall
+            try {
+                int primaryKey = -1;
+                if (insertStatement.executeUpdate() > 0) {
+                    ResultSet rs = insertStatement.getGeneratedKeys();
+                    while (rs.next()) {
+                        primaryKey = rs.getInt(1);
+                    }
+                }
+                return primaryKey;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
         }
-        return -1;
     }
 }

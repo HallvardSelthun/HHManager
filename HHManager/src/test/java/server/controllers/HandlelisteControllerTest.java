@@ -66,6 +66,18 @@ public class HandlelisteControllerTest {
     }
 
     @Test
+    public void leggInnVare() {
+        Vare testVare = new Vare();
+        testVare.setKjøpt(false);
+        testVare.setVarenavn("Testvare fra testklassen");
+        testVare.setHandlelisteId(1);
+
+        int resultat = HandlelisteController.leggInnVare(testVare);
+        System.out.println(resultat);
+        assertNotEquals(-1, resultat);
+    }
+
+    @Test
     public void getHandleliste() {
         Handleliste liste = HandlelisteController.getHandleliste(1);
         assertEquals(1, liste.getHandlelisteId());

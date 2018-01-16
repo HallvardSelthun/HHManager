@@ -1,10 +1,6 @@
 package server.database;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import server.controllers.BrukerController;
-import server.controllers.HusholdningController;
-import server.restklasser.Bruker;
-import server.restklasser.Husholdning;
 
 import java.sql.Connection;
 import java.sql.SQLException;
