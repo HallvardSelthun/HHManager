@@ -17,7 +17,7 @@ public class BrukerController {
     private static Statement s;
     private final static String TABELLNAVN = "bruker";
 
-    public static String getBrukernavn (int brukerid) {
+    public static String getNavn(int brukerid) {
         return GenereltController.getString("navn", TABELLNAVN, brukerid);
     }
 

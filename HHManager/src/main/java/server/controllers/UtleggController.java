@@ -45,6 +45,7 @@ public class UtleggController {
 
     public static ArrayList<Utlegg> getUtleggene(int brukerId) {
         String getUtleggQuery = "SELECT * FROM utlegg WHERE utleggerId = "+brukerId+"";
+        String navn = BrukerController.getNavn(brukerId);
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement getUtleggStatement = connection.prepareStatement(getUtleggQuery)){
@@ -53,11 +54,9 @@ public class UtleggController {
             while (resultset.next()) {
                 Utlegg utlegg = new Utlegg();
                 utlegg.setBeskrivelse(resultset.getString("beskrivelse"));
-                utlegg.set(varerResultset.getInt("kjøperId"));
-                nyVare.setVarenavn(varerResultset.getString("vareNavn"));
-                nyVare.setKjøpt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
-                nyVare.setDatoKjøpt(varerResultset.getDate("datoKjøpt"));
-                varer.add(nyVare);
+                utlegg.setSum(resultset.getInt("sum"));
+                utlegg.setUtleggerId(resultset.getInt("utleggerId"));
+                utlegg.setUtleggId(resultset.getInt("utleggId"));
             }
             return varer;
         } catch (SQLException e) {
@@ -66,6 +65,26 @@ public class UtleggController {
         }
 
         return null;
+    }
+
+    public static ArrayList<Utleggsbetaler> getUtleggsbetalere(int utleggId) {
+
+        String query = "SELECT * FROM utleggsbetaler WHERE utleggId = "+utleggId+"";
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement getUtleggStatement = connection.prepareStatement(query)){
+            ResultSet resultset = getUtleggStatement.executeQuery();
+
+            while (resultset.next()) {
+                Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
+                utleggsbetaler.setBrukerId(resultset.getInt("skyldigBrukerId"));
+                utleggsbetaler.get
+            }
+            return varer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //På nettsiden vises brukerne, med utlegg

@@ -9,6 +9,7 @@ public class Utlegg {
     private String beskrivelse;
     private ArrayList<Utleggsbetaler> folkSomSkylderPenger; //idene til medlemmer som skylder penger, gjør om til liste av utleggsbetalere
     private ArrayList<Vare> varer;
+    private String utleggerNavn;
 
     public Utlegg() {}
 
@@ -34,11 +35,11 @@ public class Utlegg {
         this.utleggerId = utleggerId;
     }
 
-    public int getutleggId() {
+    public int getUtleggId() {
         return utleggId;
     }
 
-    public void setutleggId(int utleggId) {
+    public void setUtleggId(int utleggId) {
         this.utleggId = utleggId;
     }
 
@@ -74,4 +75,13 @@ public class Utlegg {
     public void setFolkSomSkylderPenger(ArrayList<Utleggsbetaler> folkSomSkylderPenger) {
         this.folkSomSkylderPenger = folkSomSkylderPenger;
     }
+
+    public String getUtleggerNavn() {
+        return utleggerNavn;
+    }
+
+    public void setUtleggerNavn(String utleggerNavn) {
+        this.utleggerNavn = utleggerNavn;
+    }
+
 }

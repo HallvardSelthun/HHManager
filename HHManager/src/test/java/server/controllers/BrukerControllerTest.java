@@ -15,7 +15,7 @@ public class BrukerControllerTest {
 
     @Test
     public void getBrukernavn() throws Exception {
-        assertEquals("bruker1", BrukerController.getBrukernavn(1));
+        assertEquals("bruker1", BrukerController.getNavn(1));
     }
 
     @Test
