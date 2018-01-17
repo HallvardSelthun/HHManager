@@ -7,6 +7,8 @@ import server.restklasser.Nyhetsinnlegg;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.*;
+import java.util.ArrayList;
+
 /**
  * <h1>Service for de fleste funksjoner innad i programmet</h1>
  * Gateway til å hente og legge inn all data i databasen.
@@ -30,6 +32,13 @@ public class HusholdningsService {
     public int lagreNyHusholdning(Husholdning husholdning) {
         return HusholdningController.ny(husholdning);
 
+    }
+
+    @GET
+    @Path("/husholdning")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Husholdning> getInfoHusholdning() {
+        return HusholdningController.getAlleHusholdninger();
     }
 
     /**

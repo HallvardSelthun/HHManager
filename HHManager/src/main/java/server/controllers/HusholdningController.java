@@ -27,23 +27,50 @@ public class HusholdningController {
         return GenereltController.getString("navn", TABELLNAVN, id);
     }
 
-    /**
-     * IKKE FERDIG.
-     *
-     * @param rName Den tilfeldige stringen som skal søkes etter
-     * @return id til string
-     */
-    private static int getId (String rName) {
-        String sqlsetning = "select husholdningId from husholdning where navn=" + rName;
+    public static ArrayList<Husholdning> getAlleHusholdninger () {
+        String selectAll = "select * from husholdning";
+        String handlelister = "SELECT FROM husholdning " +
+                "LEFT JOIN handleliste on handleliste.husholdningId = husholdning.husholdningId ORDER BY husholdning.husholdningId";
+        String gjoremal = "SELECT * " +
+                "FROM husholdning " +
+                "LEFT JOIN gjøremål on husholdning.husholdningId = gjøremål.husholdningId ORDER BY husholdning.husholdningId;";
+        String nyhetsinnlegg = "SELECT * " +
+                "FROM husholdning " +
+                "LEFT JOIN nyhetsinnlegg ON husholdning.husholdningId = nyhetsinnlegg.husholdningId ORDER BY husholdning.husholdningId";
+
         try(Connection connection = ConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getInt("husholdningId");
+            PreparedStatement prepSelectAll = connection.prepareStatement(selectAll);
+            PreparedStatement prepHandlelister = connection.prepareStatement(handlelister);
+            PreparedStatement prepGjoremal = connection.prepareStatement(gjoremal);
+            PreparedStatement prepNyhetsinnlegg = connection.prepareStatement(nyhetsinnlegg)) {
+            ResultSet resultSet = prepSelectAll.executeQuery();
+
+            ArrayList<Husholdning> husArray = new ArrayList<>();
+            while (resultSet.next()) {
+                Husholdning husholdning = new Husholdning();
+                husholdning.setHusholdningId(resultSet.getInt(1));
+                husholdning.setNavn(resultSet.getString(2));
+                husArray.add(husholdning);
+            }
+
+            resultSet = prepHandlelister.executeQuery();
+            while (resultSet.next()) {
+
+// begynn å jobb her
+            }
+
+            return husArray;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return -1;
+    }
+
+    private Husholdning finnHusholdning(ArrayList<Husholdning> husholdningArrayList, int id) {
+        for (Husholdning h :
+                husholdningArrayList) {
+            if (h.getHusholdningId() == id) return h;
+        }
     }
 
     /**
@@ -170,8 +197,9 @@ public class HusholdningController {
             return husId;
         } catch (Exception e) {
             e.printStackTrace();
+            return -1;
         }
-        return -1;
+
     }
 
     /**

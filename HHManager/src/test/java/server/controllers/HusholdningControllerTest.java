@@ -14,6 +14,10 @@ public class HusholdningControllerTest {
         assertEquals("team6", HusholdningController.getNavn(1));
     }
 
+    @Test
+    public void getAlleHusholdninger() {
+        assertEquals(null, HusholdningController.getAlleHusholdninger());
+    }
 
     /**
      * Denne tester en autoincremnt-verdi. Greit å bruke underveis, men skal ikke brukes ellers

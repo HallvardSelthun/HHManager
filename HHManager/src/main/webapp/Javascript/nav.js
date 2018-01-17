@@ -75,7 +75,8 @@ $(document).ready(function (){
 
             },
             error: function () {
-                alert("serverfeil :/")
+                alert("serverfeil :/");
+                console.log(husObj)
             }
         })
     });
