@@ -14,7 +14,7 @@ public class UtleggControllerTest {
         System.out.println(oppgjor.get(0).getNavn());
         System.out.println(oppgjor.get(0).getUtleggJegSkylder().get(0).getBeskrivelse());
 
-        ArrayList<Oppgjor> oppgjor2 = UtleggController.getMineOppgjor(3);
+        ArrayList<Oppgjor> oppgjor2 = UtleggController.getMineOppgjor(1);
         System.out.println(oppgjor2.get(0).getNavn());
         //System.out.println("Bruker 1 skylder"+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getDelSum()+" kroner for "+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getBeskrivelse());
     }

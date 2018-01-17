@@ -129,10 +129,18 @@ public class UtleggController {
             ArrayList<Oppgjor> altJegSkylder = new ArrayList<>();
             int forrigeUtleggerId = -1;
             boolean forsteIterasjon = true;
+            boolean hindreFakeOppgjor = false; //Selv om det ikke
+
+            //**
+            //NOTE TO SELF:
+            //Hva skjer om jeg skylder samme kis uten at utleggene kommer i en hyggelig rekkefølge
+            //i databasen? Dette må fikses.
 
             while (resultset.next()) {
+                //Hvis vi legger til et noe jeg skylder til et eksisterende utlegg
                 if ((resultset.getInt("utleggerId") == forrigeUtleggerId) || forsteIterasjon) {
                     forsteIterasjon = false;
+                    hindreFakeOppgjor = true;
                 }
                 else {
                     //Hvis vi er ferdige med å legge til hva jeg skylder den første personen, gå videre til neste person
@@ -143,6 +151,7 @@ public class UtleggController {
                 nyttOppgjor.getUtleggJegSkylder().add(lagUtleggsbetalerObjekt(resultset)); //Legg inn hva jeg skylder i oppgjøret
             }
             altJegSkylder.add(nyttOppgjor);
+            System.out.println("Størrelsen på altJegSkylder: "+altJegSkylder.size());
             return altJegSkylder;
 
         } catch (SQLException e) {
@@ -153,20 +162,27 @@ public class UtleggController {
 
     //Utlegg folk skylder meg for
     private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection) throws SQLException{
-
+        System.out.println("Nå er vi her");
         String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE utleggerId = "+minBrukerId+"";
 
         Utleggsbetaler skylderMeg = new Utleggsbetaler();
 
         try (PreparedStatement statement = connection.prepareStatement(query)){
+            System.out.println("inne i try-block");
             ResultSet resultset = statement.executeQuery();
-
+            int teller = 0;
+            System.out.println("Rett før nå");
             while (resultset.next()) {
+                System.out.println("OK!");
+                System.out.println(teller);
                 //Hvis jeg finner en skyldigBruker (person som skylder et oppgjør som jeg laget) i eksitsterende Oppgjør skal jeg legge inn hva han/hun skylder meg i oppgjøret hennes
                 int fantMatchIndeks = -1;
                 //Gå gjennom alle Oppgjør og se etter personen som skylder meg penger
+                System.out.println("Eksisterendeoppgjør.size "+eksisterendeOppgjor.size());
                 for (int i = 0; i < eksisterendeOppgjor.size(); i++) {
+                    System.out.println("For løkke "+i);
                     if (resultset.getInt("skyldigBrukerId") == eksisterendeOppgjor.get(i).getBrukerId()) {
+                        System.out.println("Fant match!");
                         fantMatchIndeks = i;
                         //Vi fant noen som skylder meg penger som allerede har et Oppgjør knyttet til seg
                     }
@@ -180,11 +196,13 @@ public class UtleggController {
                 else {
                     Oppgjor nyttOppgjor = lagOppgjorObjekt(resultset);
                     nyttOppgjor.leggTilNyUtleggsbetalerSkylderMeg(lagUtleggsbetalerObjekt(resultset));
+                    System.out.println("Eksisterende oppgjør sizzzee: "+eksisterendeOppgjor.size());
                     eksisterendeOppgjor.add(nyttOppgjor); //Oppgjør som bare inneholder at noen skylder meg penger, not the other way around
                 }
+                teller++;
             }
-
         }
+        System.out.println("Eksisterende oppgjør sizzzdddee: "+eksisterendeOppgjor.size());
         return eksisterendeOppgjor;
     }
 
@@ -194,9 +212,12 @@ public class UtleggController {
             try (Connection connection = ConnectionPool.getConnection()) {
 
                 mineOppgjor = getAlleOppgjorJegSkylder(minBrukerId, connection);
-                mineOppgjor = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection);
+                System.out.println("mineOppgjor.size"+mineOppgjor.size());
+                System.out.println("Vi er her");
+                ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection);
+                System.out.println("mineOppgjor.size "+mineOppgjor.size());
 
-                return mineOppgjor;
+                return mineOppgjorNy;
 
                 //Utlegg jeg skylder folk for
                 //Gå inn i utleggsbetaler-tabellen og returer alle utlegg som har min skyldigBrukerId
