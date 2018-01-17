@@ -23,7 +23,7 @@ $(document).ready(function (){
     $('body').on('click', 'a#bildeknapp', function() {
         window.location = "forside.html"
     });
-    $('body').on('click', 'a#brukernavn', function() {
+    $('body').on('click', 'a#profilNavn', function() {
         window.location = "profil.html"
     });
     $('body').on('click', 'a#oppgjorknapp', function() {
