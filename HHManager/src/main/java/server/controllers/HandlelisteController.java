@@ -186,7 +186,7 @@ public class HandlelisteController {
 
 
     /**
-     * Tar imot en handlelisteId og en vare laget i nettleseren. Legger varen inn i databasen
+     * Legger varen inn i databasen
      * med kobling til handleliste. Pass på at erKjøpt er satt til false hvis varen er helt ny.
      * @param vare Vare laget fra før, f.eks. i JavaScript
      * @return int Varens ID, eller -1 hvis noe gikk galt.

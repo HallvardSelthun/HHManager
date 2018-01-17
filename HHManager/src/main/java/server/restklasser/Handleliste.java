@@ -18,7 +18,6 @@ public class Handleliste {
     private boolean offentlig;
     private Date frist;
 
-
     public Handleliste() {
         //tom konstruktør
     }
