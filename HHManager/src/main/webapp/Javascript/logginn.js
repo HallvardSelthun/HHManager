@@ -247,7 +247,6 @@ $(document).ready(function () {
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
                     console.log(innBruker);
-                    alert("WAIT!");
                     return;
                 }
                 localStorage.setItem("bruker", JSON.stringify(innBruker));
