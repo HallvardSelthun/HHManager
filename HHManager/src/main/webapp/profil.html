@@ -11,55 +11,65 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <script src="Javascript/nav.js"></script>
-    <script src="Javascript/profil.js"></script>
+    <script src="Javascript/endrepassord.js"></script>
 </head>
 <body>
-<div id="epostmodal" class= "modal fade">
+<div id="epostmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"> <span class="glyphicon glyphicon-envelope"></span> Endre epostadresse</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span> Endre epostadresse</h4>
             </div>
             <div class="modal-body">
                 <div class="endrepost">
                     <p>Ny epostadresse</p>
-                    <input id="nyepost" type="text" class="form-control" name="textfield" placeholder="Skriv ny epostadresse her">
+                    <input id="nyepost" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv ny epostadresse her">
                 </div>
                 <br>
                 <div class="bekreftepost">
                     <p>Bekreft ny epostadresse</p>
-                    <input id="nyepost2" type="text" class="form-control" name="textfield" placeholder="Bekreft ny epostadresse her">
+                    <input id="nyepost2" type="text" class="form-control" name="textfield"
+                           placeholder="Bekreft ny epostadresse her">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="lukkvindu" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                <button type="button" id="lagre" class="btn btn-primary">Lagre endringer</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                <button type="button" class="btn btn-primary">Lagre endringer</button>
             </div>
         </div>
     </div>
 </div>
-<div id="passordmodal" class= "modal fade">
+<div id="passordmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"> <span class="glyphicon glyphicon-lock"></span> Endre passord</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Endre passord</h4>
             </div>
             <div class="modal-body">
+                <div class="endrepassord">
+                    <p>Nåværende passord</p>
+                    <input id="text" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv nåværende passord her">
+                </div>
+                <br>
                 <div class="nypassord">
                     <p>Nytt passord</p>
-                    <input id="nyttpassord" type="text" class="form-control" name="textfield" placeholder="Skriv nytt passord her">
+                    <input id="navn" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv nytt passord her">
                 </div>
                 <br>
                 <div class="bekreft">
                     <p>Bekreft nytt passord</p>
-                    <input id="bekreftnytt" type="text" class="form-control" name="textfield" placeholder="Bekreft nytt passord her">
+                    <input id="navn2" type="text" class="form-control" name="textfield"
+                           placeholder="Bekreft nytt passord her">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="lukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                <button type="button" id="lagreendringer" class="btn btn-primary">Lagre endringer</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                <button type="button" id="lagreendringerknapp" class="btn btn-primary">Lagre endringer</button>
             </div>
         </div>
     </div>
@@ -75,10 +85,10 @@
             <div class="modal-body">
                 <div class="endrenavn">
                     <p>Navn:</p>
-                    <input id="nyttnavn" type="text" class="form-control" name="textfield" placeholder="Skriv navn her">
+                    <input id="nynavn" type="text" class="form-control" name="textfield" placeholder="Skriv navn her">
                 </div>
                 <div class="modal-footer">
-                    <button id="button" type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
                     <button id="endre" type="button" class="btn btn-primary">Endre navn</button>
                 </div>
             </div>
@@ -87,15 +97,24 @@
 </div>
 <div class="row grid-divider">
     <div class="col-md-6">
-        <a href="https://some.addres" imageanchor="1"><img align="left" src="web-res/profileicon.png" width="14%" border="0"></a>
-        <h1 id="navnpåpers">Ola Normann</h1>
-        <div class="well well-sm">
-           olanormann@gmail.com
+
+        <a href="https://some.addres" imageanchor="1"><img align="left" src="web-res/profileicon.png" width="141"
+                                                           border="0"></a>
+        <div class="info">
+            <h1>Ola Normann
+                <small>  olanormann@gmail.com</small></h1>
+            <button id="navnknapp" type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#navnmodal">Endre navn
+            </button>
+            <button id="epostknapp" type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#epostmodal">Endre epost
+            </button>
+            <button id="passord" type="button" class="btn btn-primary" data-toggle="modal" data-target="#passordmodal">
+                Endre passord
+            </button>
+
+
         </div>
-        <button id="navnknapp" type="button" class="btn btn-primary pull-left" data-toggle="modal"
-                data-target="#navnmodal">Endre navn</button>
-        <button id="passord" type="button" class="btn btn-primary" data-toggle="modal" data-target="#passordmodal">Endre passord</button>
-        <button id="epostknapp" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#epostmodal">Endre epost</button>
     </div>
     <div class="col-md-6" align="center">
         <h2>Dine husstander </h2>
