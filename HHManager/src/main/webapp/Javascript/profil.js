@@ -8,6 +8,7 @@ var epost = localStorage.getItem("epost");
 var husholdningId;
 var medlemmer;
 $(document).ready(function () {
+
     var MD5 = function (string) {
         function RotateLeft(lValue, iShiftBits) {
             return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
@@ -234,8 +235,11 @@ $(document).ready(function () {
         var brukerId = minBruker.brukerId;
         var endrepassord1 = $("#nyttpassord").val();
         var endrepassord2 = $("#bekreftnytt").val();
-
-        if (endrepassord1 == endrepassord2) {
+        if (endrepassord1 == "" || endrepassord2 == "") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
+        else if (endrepassord1 == endrepassord2) {
             endrepassord1 = MD5(endrepassord1);
             var bruker = {
                 brukerId: brukerId,
@@ -274,11 +278,14 @@ $(document).ready(function () {
         var brukerId = minBruker.brukerId;
         var nyttNavn = $("#nyttnavn").val();
         console.log(nyttNavn);
-
         var bruker = {
             brukerId: brukerId,
             navn: nyttNavn
         };
+        if (nyttNavn == "") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
         $.ajax({
             url: "server/BrukerService/endreNavn",
             type: 'PUT',
@@ -308,8 +315,12 @@ $(document).ready(function () {
         var brukerId = minBruker.brukerId;
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
+        if (nyepost1 == "" || nyepost2 =="") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
 
-        if (nyepost1 == nyepost2) {
+        else if (nyepost1 == nyepost2) {
             var bruker = {
                 brukerId: brukerId,
                 epost: nyepost1
