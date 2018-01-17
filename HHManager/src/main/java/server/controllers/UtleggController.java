@@ -24,11 +24,13 @@ public class UtleggController {
         return GenereltController.slettRad("utlegg",utleggId);
     }
 
+    /* Mulig denne metoden skal brukes, mulig den ikke trengs. -Toni
     /**
      * Tar et ResultSet og legger informasjonen inn i et utlegg-objekt
      * @param utleggId Unik ID for å identifisere hvert utlegg
      * @return utlegg Et fullt utleggsobjekt.
      */
+    /*
     private static Utlegg lagutleggObjekt(ResultSet tomutlegg, int utleggId, ArrayList<Vare> varer) throws SQLException {
 
         Utlegg utlegg = new Utlegg(utleggId);
@@ -42,34 +44,41 @@ public class UtleggController {
 
         return utlegg;
     }
+    */
 
     public static ArrayList<Utlegg> getUtleggene(int brukerId) {
         String getUtleggQuery = "SELECT * FROM utlegg WHERE utleggerId = "+brukerId+"";
         String navn = BrukerController.getNavn(brukerId);
+        int teller = 0;
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement getUtleggStatement = connection.prepareStatement(getUtleggQuery)){
             ResultSet resultset = getUtleggStatement.executeQuery();
 
+            ArrayList<Utlegg> utleggene = new ArrayList<Utlegg>();
+
             while (resultset.next()) {
+                int utleggId = resultset.getInt("utleggId");
                 Utlegg utlegg = new Utlegg();
                 utlegg.setBeskrivelse(resultset.getString("beskrivelse"));
                 utlegg.setSum(resultset.getInt("sum"));
                 utlegg.setUtleggerId(resultset.getInt("utleggerId"));
-                utlegg.setUtleggId(resultset.getInt("utleggId"));
+                utlegg.setUtleggId(utleggId);
+                utlegg.setUtleggerNavn(navn);
+                utlegg.setFolkSomSkylderPenger(getUtleggsbetalere(utleggId,navn));
+                utleggene.add(utlegg);
             }
-            return varer;
+            return utleggene;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
-
-        return null;
     }
 
-    public static ArrayList<Utleggsbetaler> getUtleggsbetalere(int utleggId) {
+    public static ArrayList<Utleggsbetaler> getUtleggsbetalere(int utleggId, String navn) {
 
         String query = "SELECT * FROM utleggsbetaler WHERE utleggId = "+utleggId+"";
+        ArrayList<Utleggsbetaler> utleggsbetalere = new ArrayList<Utleggsbetaler>();
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement getUtleggStatement = connection.prepareStatement(query)){
@@ -77,10 +86,13 @@ public class UtleggController {
 
             while (resultset.next()) {
                 Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
-                utleggsbetaler.setBrukerId(resultset.getInt("skyldigBrukerId"));
-                utleggsbetaler.get
+                utleggsbetaler.setSkyldigBrukerId(resultset.getInt("skyldigBrukerId"));
+                utleggsbetaler.setBetalt(resultset.getInt("betalt")==1);
+                utleggsbetaler.setDelSum(resultset.getDouble("delSum"));
+                utleggsbetaler.setNavn(navn);
+                utleggsbetalere.add(utleggsbetaler);
             }
-            return varer;
+            return utleggsbetalere;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
