@@ -6,12 +6,13 @@ var brukerId = localStorage.getItem("brukerId");
 var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var handlelisteNavn = $("#handlelisteNavn").val();
+var alleHandlelister;
 
 
 $(document).ready(function () {
     gethhData();
     getBrukerData();
-    getHandlelister();
+    getHandlelisterData();
     setTimeout(setupPage,1000);
 
     $("#leggTilKnapp").on("click", function () {
@@ -123,24 +124,44 @@ function getBrukerData() {
     });
 }
 
-function getHandlelister() {
-    $.getJSON("server/HandlelisteService/" + husholdningId + "/" + brukerId, function (data) {
-        handlelister = data;
+function getHandlelisterData() {
+    $.getJSON("server/handleliste/" + husholdningId + "/" + brukerId, function (data) {
+        alleHandlelister = data;
     });
 }
 
 function setupPage() {
-    var handlelister = husholdning.handlelister;
+    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, varenavn, kjøpt, kjøperId, datokjøpt;
 
-    for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){
-        var vare = handlelister[0].varer[k];
-        var varenavn = vare.varenavn;
-        var checked = vare.kjøpt;
-        var string = "";
-        if (checked){
-            string = "checked";
+    for(var i = 0; i < alleHandlelister.length; i++){
+        tittel = alleHandlelister[i].tittel;
+        handlelisteId = alleHandlelister[i].handlelisteId;
+        husholdningId = alleHandlelister[i].husholdningId;
+        skaperId = alleHandlelister[i].skaperId;
+        varer = alleHandlelister[i].varer;
+        offentlig = alleHandlelister[i].offentlig;
+        frist = alleHandlelister[i].frist;
+        for(var j = 0; j < varer.length; j++){
+            vareId = varer[j].vareId;
+            varenavn = varer[j].varenavn;
+            kjøpt = varer[j].kjøpt;
+            kjøperId = varer[j].kjøperId;
+            //datokjøpt = new Date(varer[j].datokjøpt);
         }
-        $("#handlelisterSide").append('<li class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right" '+string+'> </li>');
-    }
 
+        $("#handlelister").append('<div class="panel panel-default"><div class="container-fluid"><div class="panel-heading clearfix"><h4 class="panel-titel' +
+            ' pull-left" style="padding-top: 7.5px"><a data-toggle="collapse" data-parent="accordion" href="#collapse1"' +
+            ' aria-expanded="true"></a>' + tittel + '</h4><div><button id="slettHandleliste" class="btn btn-danger pull-right removeButton"' +
+            ' type="button">Slett handleliste</button></div></div></div><div id="collapse1" class="panel-collapse collapse in" aria-expanded="true"><div' +
+            ' class="panel-body"><div class="panel-body"><ul class="list-group">' + varenavn + '</ul><div id="list1"' +
+            ' class="list-group"><form><div class="input-group"><input id="leggTilNyGjenstand" class="form-control"' +
+            ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit">' +
+            ' <i class="glyphicon glyphicon-plus"></i></button></div></div></form><button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal"' +
+            ' data-target="#utleggmodal">Lag utlegg</button><!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input ' +
+            ' type="checkbox"><span class="slider round"></span></label></div></div></div></div></div>');
+
+        if(offentlig){
+            $(".slider").click();
+        }
+    }
 }
