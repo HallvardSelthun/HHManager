@@ -11,8 +11,10 @@ import static org.junit.Assert.*;
  * Created by Hallvard on 17.01.2018.
  */
 public class BrukerTest {
+    private Bruker bruker;
     @Before
     public void setUp() throws Exception {
+        bruker = new Bruker();
 
     }
 
@@ -22,78 +24,46 @@ public class BrukerTest {
     }
 
     @Test
-    public void getNavn() throws Exception {
-
+    public void setOgGetNavn() throws Exception {
+        bruker.setNavn("Per");
+        assertEquals("Per", bruker.getNavn());
     }
 
     @Test
-    public void setNavn() throws Exception {
-
+    public void addOgGetGjøremål() throws Exception {
+        Gjøremål gjøremål = new Gjøremål();
+        bruker.addGjøremål(gjøremål);
+        assertEquals(gjøremål, bruker.getGjøremål().get(0));
     }
 
     @Test
-    public void getGjøremål() throws Exception {
-
+    public void setOgGetBrukerId() throws Exception {
+        bruker.setBrukerId(1);
+        assertEquals(1,bruker.getBrukerId());
     }
 
     @Test
-    public void addGjøremål() throws Exception {
-
+    public void setOgGetPassord() throws Exception {
+        bruker.setPassord("passord");
+        assertEquals("passord",bruker.getPassord());
     }
 
     @Test
-    public void getBrukerId() throws Exception {
-
+    public void setOgGetBalanse() throws Exception {
+        bruker.setBalanse(30);
+        assertEquals(30, bruker.getBalanse(), 0.01);
     }
 
     @Test
-    public void setBrukerId() throws Exception {
-
+    public void setOgGetEpost() throws Exception {
+        bruker.setEpost("epost@hotmail.com");
+        assertEquals("epost@hotmail.com", bruker.getEpost());
     }
 
     @Test
-    public void getPassord() throws Exception {
-
-    }
-
-    @Test
-    public void getNyttPassord() throws Exception {
-
-    }
-
-    @Test
-    public void setPassord() throws Exception {
-
-    }
-
-    @Test
-    public void getEpost() throws Exception {
-
-    }
-
-    @Test
-    public void getBalanse() throws Exception {
-
-    }
-
-    @Test
-    public void setBalanse() throws Exception {
-
-    }
-
-    @Test
-    public void setEpost() throws Exception {
-
-    }
-
-    @Test
-    public void getFavHusholdning() throws Exception {
-
-    }
-
-    @Test
-    public void setFavHusholdning() throws Exception {
-
+    public void setOgGetFavHusholdning() throws Exception {
+        bruker.setFavHusholdning(3);
+        assertEquals(3, bruker.getFavHusholdning());
     }
 
 }

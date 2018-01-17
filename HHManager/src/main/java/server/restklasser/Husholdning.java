@@ -3,6 +3,7 @@ package server.restklasser;
 import java.util.ArrayList;
 
 /**
+ *
  * Created by BrageHalse on 10.01.2018.
  */
 public class Husholdning {

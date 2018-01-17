@@ -11,9 +11,10 @@ import static org.junit.Assert.*;
  * Created by Hallvard on 17.01.2018.
  */
 public class HHMedlemTest {
+    HHMedlem hhMedlem;
     @Before
     public void setUp() throws Exception {
-
+        hhMedlem = new HHMedlem();
     }
 
     @After
@@ -22,33 +23,21 @@ public class HHMedlemTest {
     }
 
     @Test
-    public void getHhBrukerId() throws Exception {
-
+    public void setOgGetHhBrukerId() throws Exception {
+        hhMedlem.setHhBrukerId(2);
+        assertEquals(2, hhMedlem.getHhBrukerId());
     }
 
     @Test
-    public void setHhBrukerId() throws Exception {
-
+    public void setOgGetHusholdningsId() throws Exception {
+        hhMedlem.setHusholdningsId(1);
+        assertEquals(1, hhMedlem.getHusholdningsId());
     }
 
     @Test
-    public void getHusholdningsId() throws Exception {
-
-    }
-
-    @Test
-    public void setHusholdningsId() throws Exception {
-
-    }
-
-    @Test
-    public void isAdmin() throws Exception {
-
-    }
-
-    @Test
-    public void setAdmin() throws Exception {
-
+    public void setOgGetAdmin() throws Exception {
+        hhMedlem.setAdmin(false);
+        assertFalse(hhMedlem.isAdmin());
     }
 
 }
