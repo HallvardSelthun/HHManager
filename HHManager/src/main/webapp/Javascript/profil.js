@@ -228,7 +228,7 @@ $(document).ready(function () {
     console.log(minBruker);
 
     $("#navnpåpers").text(minBruker.navn);
-    $("#epost").text(minBruker.epost);
+    $("#mail").text(minBruker.epost);
 
 
     $("#lagreendringer").on('click', function () {
@@ -264,17 +264,19 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
+
     function lagreEndringer() {
     }
 
 
-$("#endre").on('click', function () {
-    var brukerId = localStorage.getItem("brukerId");
-    var nyttNavn = $("#nyttnavn").val();
+    $("#endre").on('click', function () {
+        var brukerId = minBruker.brukerId;
+        var nyttNavn = $("#nyttnavn").val();
+        console.log(nyttNavn);
 
-    var bruker = {
+        var bruker = {
             brukerId: brukerId,
-            navn: nyttNavn,
+            navn: nyttNavn
         };
         $.ajax({
             url: "server/BrukerService/endreNavn",
@@ -285,22 +287,21 @@ $("#endre").on('click', function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 $("#navnpåpers").text(nyttNavn);
-
-                window.location = "profil.html";
-
-                alert("Navnet er endret");
-
+                minBruker.navn = nyttNavn;
+                localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
                 alert("Noe gikk galt :(")
             }
+        })
+        $("#button").on('click', function () {
+            alert("Du har valgt å avbryte")
         });
-
-    $("#button").on('click', function () {
-        alert("Du har valgt å avbryte")
     });
 
-});
+    function endre() {
+    }
+
     $("#lagre").on('click', function () {
         var brukerId = localStorage.getItem("brukerId");
         var nyepost1 = $("#nyepost").val();
@@ -334,6 +335,7 @@ $("#endre").on('click', function () {
             alert("Du har valgt å avbryte")
         });
     });
+
     function lagre() {
     }
 });
