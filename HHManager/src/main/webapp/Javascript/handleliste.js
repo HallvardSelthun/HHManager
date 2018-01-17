@@ -17,15 +17,15 @@ $(document).ready(function () {
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
         leggTilNyHandleliste();
     });
-    /*$("#leggTilNyGjenstandKnapp").on("click", function () {
+    $("#leggTilNyGjenstandKnapp").on("click", function () {
         leggTilNyGjenstand();
-    });*/
+    });
     $("#slettHandlelisteKnapp").on("click", function () {
         slettHandleliste();
     });
-    $("#offentligKnapp").on("click", function () {
+    /*$("#offentligKnapp").on("click", function () {
         offentligKnapp();
-    });
+    });*/
 });
 
 function leggTilNyHandleliste() {
@@ -116,10 +116,10 @@ function slettHandleliste() {
 
 
 // IKKE FERDIG ENNÅ
-function offentligKnapp() {
+/*function offentligKnapp() {
     var offentligKnapp = $("#offentligKnapp").val();
     var handlelisteId = $(this).closest('id').prop("id");
-    console.log(handlelisteId);
+    //console.log(handlelisteId);
 
     $.ajax({
         url: "server/handleliste/" + handlelisteId + "/private",
@@ -138,7 +138,7 @@ function offentligKnapp() {
             alert("serverfeil :/")
         }
     })
-}
+}*/
 
 function gethhData() {
     $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
@@ -170,7 +170,19 @@ function setupPage() {
         offentlig = alleHandlelister[i].offentlig;
         frist = alleHandlelister[i].frist;
 
-        $("#handlelister").append('<div class="panel panel-default"><div class="container-fluid"><div class="panel-heading clearfix"><h4 class="panel-titel' +
+        $("#handlelister").append('<div class="panel panel-default" data-toggle="collapse" data-parent="#handlelister" data-target=".collapsible"><div class="panel-heading' +
+            ' clearfix"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div><button id="slettHandlelisteKnapp" class="btn btn-danger pull-right removeButton col-md-3" type="button">Slett' +
+            ' handleliste</button></div></div><div class="panel-collapse collapse in collapsible"><div class="panel-body"><ul class="list-group"></ul><div id="list1"' +
+            ' class="list-group"><form><div id="' + handlelisteId + '" class="input-group leggTilNyGjenstand"><input class="form-control" placeholder="Legg til ny gjenstand i listen"' +
+            ' type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>' +
+            '</button></div></div></form><button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
+            '<!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span>' +
+            '</label></div></div></div></div>');
+
+
+
+
+        /*$("#handlelister").append('<div class="panel panel-default"><div class="container-fluid"><div class="panel-heading clearfix"><h4 class="panel-titel' +
             ' pull-left" style="padding-top: 7.5px"><a data-toggle="collapse" data-parent="accordion" href="#collapse1" aria-expanded="true"></a>' +
             tittel + '</h4><div><button id="slettHandlelisteKnapp" class="btn btn-danger pull-right removeButton" type="button">Slett handleliste</button></div></div></div><div' +
             ' id="collapse1" class="panel-collapse collapse in" aria-expanded="true"><div class="panel-body"><div class="panel-body"><ul class="list-group"></ul><div id="list1"' +
@@ -178,7 +190,7 @@ function setupPage() {
             ' type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>' +
             '</button></div></div></form><button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
             '<!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span>' +
-            '</label></div></div></div></div></div>');
+            '</label></div></div></div></div></div>');*/
 
         for(var j = 0; j < varer.length; j++){
             vareId = varer[j].vareId;
