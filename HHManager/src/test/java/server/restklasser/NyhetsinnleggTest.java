@@ -1,5 +1,6 @@
 package server.restklasser;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Date;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
 public class NyhetsinnleggTest {
     private Nyhetsinnlegg ni;
 
+    @Before
     public void setUp() throws Exception {
         ni = new Nyhetsinnlegg();
     }
