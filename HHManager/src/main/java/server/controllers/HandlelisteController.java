@@ -85,11 +85,14 @@ public class HandlelisteController {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement getStatement = connection.prepareStatement(getQuery)){
 
+            //Handleliste uten varer
             ResultSet tomHandleliste = getStatement.executeQuery();
 
             ArrayList<Vare> varer =  getVarer(handlelisteId,connection);
             tomHandleliste.next();
+
             return lagHandlelisteObjekt(tomHandleliste,handlelisteId,varer);
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

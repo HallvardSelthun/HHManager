@@ -6,6 +6,7 @@ public class Utleggsbetaler {
     private double delSum;
     private int skyldigBrukerId;
     String navn;
+    String beskrivelse; //Beskrvelse av utlegget, hentes fra Utlegg-klassen ved uthenting
 
     public Utleggsbetaler(){
 
@@ -50,4 +51,13 @@ public class Utleggsbetaler {
     public void setSkyldigBrukerId(int skyldigBrukerId) {
         this.skyldigBrukerId = skyldigBrukerId;
     }
+
+    public String getBeskrivelse() {
+        return beskrivelse;
+    }
+
+    public void setBeskrivelse(String beskrivelse) {
+        this.beskrivelse = beskrivelse;
+    }
+
 }
