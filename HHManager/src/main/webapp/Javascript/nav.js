@@ -30,6 +30,7 @@ $(document).ready(function (){
         window.location = "oppgjor.html"
     });
     $('body').on('click', 'a#loggut', function() {
+        localStorage.clear();
         window.location = "index.html"
     });
     // til lagNyHusstandModalen
