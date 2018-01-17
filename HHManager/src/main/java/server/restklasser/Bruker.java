@@ -7,6 +7,7 @@ public class Bruker {
     int brukerId;
     String navn;
     String passord;
+    String nyttpassord;
     String epost;
     int favHusholdning;
     HHMedlem[] HHMedlemmer;
@@ -44,6 +45,8 @@ public class Bruker {
     public String getPassord() {
         return passord;
     }
+
+    public String getNyttPassord(){return nyttpassord;}
 
     public void setPassord(String passord) {
         this.passord = passord;

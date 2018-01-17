@@ -238,13 +238,19 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
-                var data = JSON.parse(result);
-                if (data){
-                    localStorage.setItem("epost", brukerEpost);
-                    window.location = "forside.html";
-                }else{
+                var innBruker = (result);
+                console.log(innBruker);
+                if (innBruker == null) {
                     alert("feil epost eller passord!");
+                    return;
+                }else if(innBruker.favHusholdning > 0){
+                    localStorage.setItem("bruker", JSON.stringify(innBruker));
+                    window.location = "forside.html";
+                    console.log(innBruker);
+                    return;
                 }
+                localStorage.setItem("bruker", JSON.stringify(innBruker));
+                window.location = "profil.html";
 
             },
             error: function () {
@@ -257,3 +263,10 @@ $(document).ready(function () {
     });
 });
 
+function keyCode(event) {
+    var x = event.keyCode;
+    if (x == 13) {
+        $("#loggInnBtn").click();
+    }
+}
+var favHus;

@@ -1,32 +1,42 @@
 var navnIHuset = [];
+var bruker = JSON.parse(localStorage.getItem("bruker"));
+var navn = bruker.navn;
 
 $(document).ready(function (){
     $(function(){
         $("#navbar").load("nav.html");
+
         $("#modaldiv").load("lagnyhusstand.html");
     });
-    $('body').on('click', '#bildenav', function() {
-        window.location="forside.html"
-    });
-    $('body').on('click', '#gjoremaalsknapp', function() {
-        window.location="gjoremaal.html"
-    });
-    $('body').on('click', '#kalenderknapp', function() {
-        window.location="kalender.html"
-    });
-    $('body').on('click', '#handlelisteknapp', function() {
-        window.location="handlelister.html"
-    });
-    $('body').on('click', '#bildeknapp', function() {
+
+    $('body').on('click', 'a#bildenav', function() {
         window.location = "forside.html"
     });
-    $('body').on('click', '#brukernavn', function() {
+    $('body').on('click', 'a#gjoremaalsknapp', function() {
+        window.location = "gjoremaal.html"
+    });
+    $('body').on('click', 'a#kalenderknapp', function() {
+        window.location = "kalender.html"
+    });
+    $('body').on('click', 'a#handlelisteknapp', function() {
+        window.location = "handlelister.html"
+    });
+    $('body').on('click', 'a#bildeknapp', function() {
+        window.location = "forside.html"
+    });
+
+    $('body').on('click', 'a#profilNavn', function() {
         window.location = "profil.html"
     });
+
     $('body').on('click', '#oppgjorknapp', function() {
         window.location = "oppgjor.html"
     });
 
+    $('body').on('click', 'a#loggut', function() {
+        localStorage.clear();
+        window.location = "index.html"
+    });
     // til lagNyHusstandModalen
     $('body').on('click', '#leggTilMedlemKnapp', function () {
         var medlem = {
@@ -69,4 +79,8 @@ $(document).ready(function (){
             }
         })
     });
+    setTimeout(function () {
+        $("a#profilNavn").text(navn);
+    }, 150);
+
 });

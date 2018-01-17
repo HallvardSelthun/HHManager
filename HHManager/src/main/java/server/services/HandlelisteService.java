@@ -1,10 +1,12 @@
 package server.services;
 
+import server.controllers.GenereltController;
 import server.controllers.HandlelisteController;
 import server.restklasser.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -19,7 +21,6 @@ public class HandlelisteService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public int lagHandleliste(Handleliste handleliste) {
-        System.out.println("Vi er inne i lag Handleliste");
         return HandlelisteController.lagHandleliste(handleliste);
     }
 
@@ -44,8 +45,7 @@ public class HandlelisteService {
     @DELETE
     @Path("/{handlelisteId}")
     public boolean slett(@PathParam("handlelisteId") int handlelisteId) {
-        //Her skal det komme kode
-        return false;
+        return HandlelisteController.slettHandleliste(handlelisteId);
     }
 
     /**
@@ -90,12 +90,19 @@ public class HandlelisteService {
     }
 
     @GET
-    @Path("/{handlelisteId}/{brukerId}")
+    @Path("/{husholdningId}/{brukerId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Handleliste> getHandlelister(@PathParam("handlelisteId") int handlelisteId, @PathParam("brukerId") int brukerId) {
-        return HandlelisteController.getHandlelister(handlelisteId, brukerId);
+    public ArrayList<Handleliste> getHandlelister(@PathParam("husholdningId") int husholdningId, @PathParam("brukerId") int brukerId) {
+        return HandlelisteController.getHandlelister(husholdningId, brukerId);
     }
 
+    //Returnerer ID til varen som ble lagt inn
+    @POST
+    @Path("/{handlelisteId}/{brukerId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int leggTilVare(Vare vare) {
+        return HandlelisteController.leggInnVare(vare);
+    }
 
 
 }

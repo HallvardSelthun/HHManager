@@ -3,6 +3,7 @@ package server.controllers;
 import com.mysql.cj.jdbc.util.ResultSetUtil;
 import com.sun.org.apache.regexp.internal.RE;
 import server.Mail;
+//import com.mysql.cj.jdbc.util.ResultSetUtil;
 import server.database.ConnectionPool;
 import server.util.RandomGenerator;
 import server.restklasser.*;
@@ -15,6 +16,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.sql.*;
 
 public class HusholdningController {
     private static final String TABELLNAVN = "husholdning";
@@ -235,7 +237,6 @@ public class HusholdningController {
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = "+fav;
             String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = "+fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = "+fav +" AND (offentlig = 1 OR skaperId = "+brukerId+")";
-            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = "+handlelisteId;
 
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
@@ -268,14 +269,16 @@ public class HusholdningController {
             Handleliste handleliste = new Handleliste();
             s = con.createStatement();
             rs = s.executeQuery(hentHandleliste);
-            while (rs.next()){
+            rs.next();
 
-                handleliste.setTittel(rs.getString("navn"));
-                handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
-                handleliste.setHusholdningId(fav);
-                huset.addHandleliste(handleliste);
-                handlelisteId = rs.getInt("handlelisteId");
-            }
+            handleliste.setTittel(rs.getString("navn"));
+            handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
+            handleliste.setHusholdningId(fav);
+            handleliste.setOffentlig(true);
+            huset.addHandleliste(handleliste);
+            handlelisteId = rs.getInt("handlelisteId");
+
+            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = "+handlelisteId;
 
             s = con.createStatement();
             rs = s.executeQuery(hentVarer);
@@ -300,5 +303,26 @@ public class HusholdningController {
 
     static void slettSisteTegn(StringBuilder stringBuilder, int antTegn) {
         stringBuilder.delete(stringBuilder.length() - antTegn, stringBuilder.length());
+    }
+
+    public static boolean postNyhetsinnlegg(Nyhetsinnlegg nyhetsinnlegg){
+        int husholdningId = nyhetsinnlegg.getHusholdningsId();
+        int forfatterId = nyhetsinnlegg.getForfatterId();
+        Date dato = nyhetsinnlegg.getDato();
+        String tekst = nyhetsinnlegg.getTekst();
+        String query = "INSERT INTO nyhetsinnlegg (forfatterId, husholdningId, dato, tekst) VALUES (?, ?, ?, ?)";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,forfatterId);
+            ps.setInt(2,husholdningId);
+            ps.setDate(3,dato);
+            ps.setString(4,tekst);
+            ps.executeUpdate();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

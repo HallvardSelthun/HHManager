@@ -3,6 +3,7 @@ package server.services;
 import server.controllers.HusholdningController;
 
 import server.restklasser.Husholdning;
+import server.restklasser.Nyhetsinnlegg;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.*;
@@ -64,5 +65,12 @@ public class HusholdningsService {
     @Produces(MediaType.APPLICATION_JSON)
     public Husholdning getHhData(@PathParam("epost") String epost){
         return HusholdningController.getHusholdningData(epost);
+    }
+
+    @POST
+    @Path("/nyhetspost")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean postNyhet(Nyhetsinnlegg nyhetsinnlegg){
+        return HusholdningController.postNyhetsinnlegg(nyhetsinnlegg);
     }
 }

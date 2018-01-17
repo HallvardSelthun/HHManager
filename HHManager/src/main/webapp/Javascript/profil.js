@@ -1,29 +1,12 @@
 /**
  * Created by BrageHalse on 10.01.2018.
  */
-$(document).ready(function () {
-    $("#endreEpost").click(function () {
-        var nyEpost = $("#email").val();
-        // TRENGER BRUKERID
-        alert("hey!");
-        if (nyEpost != "") {
-            $.ajax({
-                url: "/BrukerService/endreEpost", //BrukerId i path mangler
-                type: 'PUT',
-                data: JSON.stringify(nyEpost),
-                contentType: 'text/plain',
-                dataType: 'json',
-                success: function () {
-                    alert("Epost endret til " + nyEpost + ".");
-                },
-                error: function () {
-                    alert("Noe gikk galt :(")
-                }
-            })
-        }
-    });
-});
-
+var brukerId;
+var minBruker = JSON.parse(localStorage.getItem("bruker"));
+var bruker;
+var epost = localStorage.getItem("epost");
+var husholdningId;
+var medlemmer;
 $(document).ready(function () {
     var MD5 = function (string) {
 
@@ -242,44 +225,115 @@ $(document).ready(function () {
 
         return temp.toLowerCase();
     }
-    $("#loggInnBtn").click(function () {
-        $("#LagreEndringer").click(function () {
-            var gammeltpassord = $("#gammelt").val();
-            var nyttpassord = $("#nytt").val();
-            var bekreft = $("#bekreft").val();
-            if (gammeltpassord == "" || nyttpassord == "" || bekreft == "") {
-                alert("Skriv inn noe! ");
-                return;
-            }
-            if(nyttpassord == bekreft){
-                nyttpassord = MD5(nyttpassord)
-                var bruker= {
-                    passord:nyttpassord
+    console.log(minBruker);
+
+    $("#navnpåpers").text(minBruker.navn);
+    $("#epost").text(minBruker.epost);
+
+
+    $("#lagreendringer").on('click', function () {
+        var brukerId = localStorage.getItem("brukerId");
+        var endrepassord1 = $("#nyttpassord").val();
+        var endrepassord2 = $("#bekreftnytt").val();
+
+        if (endrepassord1 == endrepassord2) {
+            endrepassord1 = MD5(endrepassord1);
+            var bruker = {
+                brukerId: brukerId,
+                passord: endrepassord1
+            };
+            $.ajax({
+                url: "server/BrukerService/endrePassord",
+                type: 'PUT',
+                data: JSON.stringify(bruker),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    var data = JSON.parse(result);
+                    window.location = "profil.html";
+                    alert("Passordet er endret");
+                },
+                error: function () {
+                    alert("Noe gikk galt :(")
                 }
-            }
+            })
+        } else {
+            alert("Passordet må være likt i begge feltene.")
+        }
+        $("#lukk").on('click', function () {
+            alert("Du har valgt å avbryte")
         });
+    });
+    function lagreEndringer() {
+    }
+
+
+$("#endre").on('click', function () {
+    var brukerId = localStorage.getItem("brukerId");
+    var nyttNavn = $("#nyttnavn").val();
+
+    var bruker = {
+            brukerId: brukerId,
+            navn: nyttNavn,
+        };
         $.ajax({
-            url: "server/BrukerService/endrepassord",
-            type: 'POST',
+            url: "server/BrukerService/endreNavn",
+            type: 'PUT',
             data: JSON.stringify(bruker),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result);
-                if (data){
-                    window.location = "profil.html";
-                }else{
-                    alert("Feil passord");
-                }
+                $("#navnpåpers").text(nyttNavn);
+
+                window.location = "profil.html";
+
+                alert("Navnet er endret");
+
             },
             error: function () {
-                alert("serverfeil :/")
+                alert("Noe gikk galt :(")
             }
-        })
-    })
-    $("#regBruker").click(function () {
-        window.location = "lagbruker.html";
+        });
+
+    $("#button").on('click', function () {
+        alert("Du har valgt å avbryte")
     });
+
 });
+    $("#lagre").on('click', function () {
+        var brukerId = localStorage.getItem("brukerId");
+        var nyepost1 = $("#nyepost").val();
+        var nyepost2 = $("#nyepost2").val();
 
-
+        if (nyepost1 == nyepost2) {
+            var bruker = {
+                brukerId: brukerId,
+                epost: nyepost1
+            };
+            $.ajax({
+                url: "server/BrukerService/endreEpost",
+                type: 'PUT',
+                data: JSON.stringify(bruker),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    $("#epost").text(nyepost1);
+                    var data = JSON.parse(result);
+                    window.location = "profil.html";
+                    alert("Eposten er endret");
+                },
+                error: function () {
+                    alert("Noe gikk galt :(")
+                }
+            });
+        } else {
+            alert("Epostene du skrev inn var ikke like.")
+        }
+        $("#lukkvindu").on('click', function () {
+            alert("Du har valgt å avbryte")
+        });
+    });
+    function lagre() {
+    }
+});

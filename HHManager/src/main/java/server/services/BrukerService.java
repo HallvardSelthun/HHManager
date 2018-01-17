@@ -35,10 +35,12 @@ public class BrukerService {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean loginGodkjent(Bruker bruker){
+    public Bruker loginGodkjent(Bruker bruker){
         //må ha en plass der en finne ut om d e rett
         return BrukerController.loginOk(bruker.getEpost(), bruker.getPassord());
     }
+
+
     /*
     @PUT
     @Path("/{brukerId}/endrePassord")
@@ -64,29 +66,33 @@ public class BrukerService {
 
     /**
      * Endrer Eposten i DataBasen til brukeren med gitt brukerId dersom eposten er
-     * @param nyEpos
+     * @param
      * @return
      */
+
     @PUT
-    @Path("/{brukerId}/endreEpost")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public boolean endreEpost(@PathParam("brukerId") String brukerId ,String nyEpos){
-        BrukerController.setNyEpost(nyEpos, brukerId);
-        // sjekk om den nye Epostadressa innholder @ , . , com/no. Dersom epostadressen er gyldig skal Epostadressen i
-        // Databasen der brukerIden er lik den som gitt i parameteret
+    @Path("/endreEpost")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean endreEpost(Bruker bruker){
+        BrukerController.setNyEpost(Integer.toString(bruker.getBrukerId()), bruker.getEpost());
         return false;
     }
 
     @PUT
-    @Path("/{brukerId}/endrePassord")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public boolean endrePassord(@PathParam("brukerId") String brukerId ,String nyttPassord){
-        BrukerController.setNyttPassord(nyttPassord, brukerId);
-        // sjekk om den nye Epostadressa innholder @ , . , com/no. Dersom epostadressen er gyldig skal Epostadressen i
-        // Databasen der brukerIden er lik den som gitt i parameteret
+    @Path("/endrePassord")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean endrePassord(Bruker bruker){
+        BrukerController.setNyttPassord(Integer.toString(bruker.getBrukerId()), bruker.getPassord());
         return false;
     }
 
+    @PUT
+    @Path("/endreNavn")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean endreNavn(Bruker bruker){
+        BrukerController.setNyttNavn(Integer.toString(bruker.getBrukerId()), bruker.getNavn());
+        return false;
+    }
 
     @GET
     @Path("/{epost}/brukerData")
