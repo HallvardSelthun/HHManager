@@ -3,6 +3,7 @@ package server.restklasser;
 import java.sql.Date;
 
 /**
+ *
  * Created by BrageHalse on 10.01.2018.
  */
 public class Nyhetsinnlegg {

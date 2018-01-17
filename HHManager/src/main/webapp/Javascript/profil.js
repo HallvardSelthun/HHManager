@@ -8,8 +8,8 @@ var epost = localStorage.getItem("epost");
 var husholdningId;
 var medlemmer;
 $(document).ready(function () {
-    var MD5 = function (string) {
 
+    var MD5 = function (string) {
         function RotateLeft(lValue, iShiftBits) {
             return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
         }
@@ -228,15 +228,18 @@ $(document).ready(function () {
     console.log(minBruker);
 
     $("#navnpåpers").text(minBruker.navn);
-    $("#epost").text(minBruker.epost);
+    $("#mail").text(minBruker.epost);
 
 
     $("#lagreendringer").on('click', function () {
-        var brukerId = localStorage.getItem("brukerId");
+        var brukerId = minBruker.brukerId;
         var endrepassord1 = $("#nyttpassord").val();
         var endrepassord2 = $("#bekreftnytt").val();
-
-        if (endrepassord1 == endrepassord2) {
+        if (endrepassord1 == "" || endrepassord2 == "") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
+        else if (endrepassord1 == endrepassord2) {
             endrepassord1 = MD5(endrepassord1);
             var bruker = {
                 brukerId: brukerId,
@@ -250,7 +253,9 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (result) {
                     var data = JSON.parse(result);
+                    minBruker.passord = endrepassord1;
                     window.location = "profil.html";
+                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Passordet er endret");
                 },
                 error: function () {
@@ -264,18 +269,23 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
+
     function lagreEndringer() {
     }
 
 
-$("#endre").on('click', function () {
-    var brukerId = localStorage.getItem("brukerId");
-    var nyttNavn = $("#nyttnavn").val();
-
-    var bruker = {
+    $("#endre").on('click', function () {
+        var brukerId = minBruker.brukerId;
+        var nyttNavn = $("#nyttnavn").val();
+        console.log(nyttNavn);
+        var bruker = {
             brukerId: brukerId,
-            navn: nyttNavn,
+            navn: nyttNavn
         };
+        if (nyttNavn == "") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
         $.ajax({
             url: "server/BrukerService/endreNavn",
             type: 'PUT',
@@ -285,26 +295,30 @@ $("#endre").on('click', function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 $("#navnpåpers").text(nyttNavn);
-
+                minBruker.navn = nyttNavn;
                 window.location = "profil.html";
-
-                alert("Navnet er endret");
-
+                localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
                 alert("Noe gikk galt :(")
             }
         });
-
-    $("#button").on('click', function () {
-        alert("Du har valgt å avbryte")
+        $("#button").on('click', function () {
+            alert("Du har valgt å avbryte")
+        });
     });
 
-});
+    function endre() {
+    }
+
     $("#lagre").on('click', function () {
-        var brukerId = localStorage.getItem("brukerId");
+        var brukerId = minBruker.brukerId;
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
+        if (nyepost1 == "" || nyepost2 =="") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
 
         if (nyepost1 == nyepost2) {
             var bruker = {
@@ -319,8 +333,10 @@ $("#endre").on('click', function () {
                 dataType: 'json',
                 success: function (result) {
                     $("#epost").text(nyepost1);
+                    minBruker.epost = nyepost1;
                     var data = JSON.parse(result);
                     window.location = "profil.html";
+                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Eposten er endret");
                 },
                 error: function () {
@@ -334,6 +350,7 @@ $("#endre").on('click', function () {
             alert("Du har valgt å avbryte")
         });
     });
+
     function lagre() {
     }
 });
