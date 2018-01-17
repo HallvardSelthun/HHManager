@@ -27,10 +27,11 @@ public class UtleggService {
      * @return ArrayList over alle utleggsbetalere for et unikt utlegg via utleggid
      */
 
+    /*
     @GET
     @Path("/{utleggId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Utleggsbetaler> getUtleggsBetalere(@PathParam("utleggId") int utleggId) {
         return UtleggController.getUtleggsbetalere(utleggId);
-    }
+    }*/
 }
