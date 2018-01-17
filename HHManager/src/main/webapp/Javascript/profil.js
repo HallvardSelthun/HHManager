@@ -9,7 +9,6 @@ var husholdningId;
 var medlemmer;
 $(document).ready(function () {
     var MD5 = function (string) {
-
         function RotateLeft(lValue, iShiftBits) {
             return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
         }
