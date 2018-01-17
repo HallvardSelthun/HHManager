@@ -225,12 +225,10 @@ $(document).ready(function () {
 
         return temp.toLowerCase();
     }
+    console.log(minBruker);
 
-    brukerId = bruker.brukerId;
-    navnpåpers = bruker.navn;
-    console.log(bruker);
-    localStorage.setItem("brukerId", brukerId);
     $("#navnpåpers").text(minBruker.navn);
+    $("#epost").text(minBruker.epost);
 
 
     $("#lagreendringer").on('click', function () {
@@ -286,8 +284,12 @@ $("#endre").on('click', function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result);
+                $("#navnpåpers").text(nyttNavn);
+
                 window.location = "profil.html";
+
                 alert("Navnet er endret");
+
             },
             error: function () {
                 alert("Noe gikk galt :(")
@@ -316,6 +318,7 @@ $("#endre").on('click', function () {
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (result) {
+                    $("#epost").text(nyepost1);
                     var data = JSON.parse(result);
                     window.location = "profil.html";
                     alert("Eposten er endret");

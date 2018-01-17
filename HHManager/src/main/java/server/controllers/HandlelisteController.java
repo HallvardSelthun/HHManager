@@ -94,7 +94,6 @@ public class HandlelisteController {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-
         }
     }
 
