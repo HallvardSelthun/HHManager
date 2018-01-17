@@ -20,14 +20,14 @@ public class HusholdningsService {
 
     /**
      * Legger inn en ny husholdning og returnerer dens ID
-     * @param navn Husholdningens nye navn
+     * @param husholdning ny husholdning
      * @return int Husholdningens ID i databasen og til bruk på nettsiden.
      */
     @POST
-    @Path("/husholdning/{navn}")
+    @Path("/husholdning/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public int lagreNyHusholdning(@PathParam("navn") String navn) {
-        return HusholdningController.ny(navn);
+    public int lagreNyHusholdning(Husholdning husholdning) {
+        return HusholdningController.ny(husholdning);
 
     }
 

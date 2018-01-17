@@ -1,6 +1,8 @@
 package server.controllers;
 
 import com.mysql.cj.jdbc.util.ResultSetUtil;
+import com.sun.org.apache.regexp.internal.RE;
+import server.Mail;
 import server.database.ConnectionPool;
 import server.util.RandomGenerator;
 import server.restklasser.*;
@@ -10,6 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class HusholdningController {
     private static final String TABELLNAVN = "husholdning";
@@ -40,25 +45,127 @@ public class HusholdningController {
     }
 
     /**
-     * lager en ny husholdning
-     * @param navn navnet på den nye husholdningen
+     * Lager en ny husholdning og registrerer brukerne ved oppstart
+     *
+     * @param husholdning er nye husholdningen
+     * @return IDen til den nye husholdningen
      */
-    public static int ny(String navn) {
-        String sqlsetning = "insert into " + TABELLNAVN + "(navn) values (?)";
-        int pk = -1;
-        try(Connection connection = ConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning, PreparedStatement.RETURN_GENERATED_KEYS)){
-            preparedStatement.setString(1, navn);
+    public static int ny(Husholdning husholdning) {
+        // !sjekker først om medlemmene allerede finnes i databasen.
+        // !legger til alle brukerene som ikke finnes
+        // !henter ut alle brukerIDene som trengs
+        // !Legger til husholdning og henter ut husId
+        // !legger alle brukerne i husholdningen.
+        // _De som allerede finnes får en mail om at de er lagt til å husholdning x
+        // _de som ikke finnes får en mail med en
+        // _"registrer deg"-knapp. Den tar personen med seg til lag bruker-siden med eposten ferdig utfylt. Når denne personen
+        // >registrerer denne brukeren, utfylles resten av informasjonen om denne brukeren i databasen, og er dermed allerede lagt
+        // >til i husstanden.
+        String navnHus = husholdning.getNavn();
+        ArrayList<String> nyeMedlemmerEpost = new ArrayList<>();
+        for (Bruker bruker :
+                husholdning.getMedlemmer()) {
+            nyeMedlemmerEpost.add(bruker.getEpost());
+        }
+        String adminId = husholdning.getAdminId();
 
-            if (preparedStatement.executeUpdate() > 0) {
+        StringBuilder selectAllerBrukereSB = new StringBuilder("SELECT epost from bruker WHERE epost in (");
+        StringBuilder insertNyeBrukereSB = new StringBuilder("insert into bruker (epost) values ");
+        StringBuilder selectIdBrukereSB = new StringBuilder("select brukerId from bruker where epost in (");
+        String insertHus = "insert into " + TABELLNAVN + " (navn) values (?)";
+        StringBuilder insertBrukereIHusSB = new StringBuilder("insert into hhmedlem (brukerId, husholdningId) values ");
 
+        int husId;
+        ArrayList<Integer> idBrukereAL = new ArrayList<>();
+
+        try(Connection connection = ConnectionPool.getConnection()){
+
+            if (nyeMedlemmerEpost.size() > 0) {
+                // finner brukere som allerede finnes og de som ikke finnes
+                for (int i = 0; i < nyeMedlemmerEpost.size(); i++) {
+                    selectAllerBrukereSB.append("?, ");
+                }
+                slettSisteTegn(selectAllerBrukereSB, 2); // fjerner ', ', altså to siste tegn i strengen
+                selectAllerBrukereSB.append(")");
+                PreparedStatement prepSelectAllerBrukere = connection.prepareStatement(selectAllerBrukereSB.toString());
+                for (int i = 0; i < nyeMedlemmerEpost.size(); i++) {
+                    prepSelectAllerBrukere.setString(i + 1, nyeMedlemmerEpost.get(i));
+                }
+                ResultSet allerBrukereRS = prepSelectAllerBrukere.executeQuery(); // kjører selectsetningen
+                ArrayList<String> alleredeBrukereAL = new ArrayList<>();
+                while (allerBrukereRS.next()){
+                    alleredeBrukereAL.add(allerBrukereRS.getString(1));
+                }
+                ArrayList<String> ikkeBruker = new ArrayList<>(nyeMedlemmerEpost);
+                ikkeBruker.removeAll(alleredeBrukereAL);
+                prepSelectAllerBrukere.close();
+
+                // setter inn alle brukere som ikke finnes
+                if (ikkeBruker.size() > 0) {
+                    for (int i = 0; i < ikkeBruker.size(); i++) {
+                        insertNyeBrukereSB.append("(?), ");
+                    }
+                    slettSisteTegn(insertNyeBrukereSB, 2);
+
+                    PreparedStatement prepInsertNyeBrukere = connection.prepareStatement(insertNyeBrukereSB.toString());
+                    for (int i = 0; i < ikkeBruker.size(); i++) {
+                        prepInsertNyeBrukere.setString(i + 1, ikkeBruker.get(i));
+                    }
+                    prepInsertNyeBrukere.executeUpdate();
+                    prepInsertNyeBrukere.close();
+                }
+
+                //henter ut alle brukeridene som trengs
+                for (int i = 0; i < nyeMedlemmerEpost.size(); i++) {
+                    selectIdBrukereSB.append("?, ");
+                }
+                slettSisteTegn(selectIdBrukereSB, 2);
+                selectIdBrukereSB.append(")");
+                PreparedStatement prepSelectIdBrukere = connection.prepareStatement(selectIdBrukereSB.toString());
+                for (int i = 0; i < nyeMedlemmerEpost.size(); i++) {
+                    prepSelectIdBrukere.setString(i + 1, nyeMedlemmerEpost.get(i));
+                }
+                ResultSet idBrukereRS = prepSelectIdBrukere.executeQuery();
+                while (idBrukereRS.next()) idBrukereAL.add(idBrukereRS.getInt(1));
+                prepSelectIdBrukere.close();
             }
-            ResultSet rs = preparedStatement.getGeneratedKeys();
 
-            while (rs.next()) {
-                 pk = rs.getInt(1);
+            // legger til husholdning og henter ut Id
+            PreparedStatement prepInsertHus = connection.prepareStatement(insertHus, PreparedStatement.RETURN_GENERATED_KEYS);
+            prepInsertHus.setString(1, navnHus);
+            prepInsertHus.executeUpdate();
+            ResultSet idHusRS = prepInsertHus.getGeneratedKeys();
+            idHusRS.next();
+            husId = idHusRS.getInt(1);
+            prepInsertHus.close();
+
+            // legger til alle brukerne i husholdningen
+            if (nyeMedlemmerEpost.size() > 0) {
+                for (int i = 0; i < nyeMedlemmerEpost.size(); i++) {
+                    insertBrukereIHusSB.append("(?, ?), ");
+                }
+                slettSisteTegn(insertBrukereIHusSB, 2);
+                String insertBrukereIHusS = insertBrukereIHusSB.toString();
+                PreparedStatement prepInsertBrukereIHus = connection.prepareStatement(insertBrukereIHusS);
+                int j =0;
+                for (int i = 0; i < nyeMedlemmerEpost.size() * 2; i += 2) {
+                    prepInsertBrukereIHus.setString(i + 1, Integer.toString(idBrukereAL.get(j)));
+                    prepInsertBrukereIHus.setString(i + 2, Integer.toString(husId));
+                    j++;
+                }
+                prepInsertBrukereIHus.executeUpdate();
+                prepInsertBrukereIHus.close();
             }
-            return pk;
+
+            // setter admin på husstand
+            String adminSqlsetning = "update hhmedlem set admin=1 where brukerId=? and husholdningId=?";
+            PreparedStatement prepAdmin = connection.prepareStatement(adminSqlsetning);
+            prepAdmin.setString(1, adminId);
+            prepAdmin.setString(2, Integer.toString(husId));
+
+            //Mail.sendny(ikkeBruker);
+            //Mail.sendGamle(alleredeBrukereAL);
+            return husId;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,5 +296,9 @@ public class HusholdningController {
             e.printStackTrace();
         }
         return huset;
+    }
+
+    static void slettSisteTegn(StringBuilder stringBuilder, int antTegn) {
+        stringBuilder.delete(stringBuilder.length() - antTegn, stringBuilder.length());
     }
 }

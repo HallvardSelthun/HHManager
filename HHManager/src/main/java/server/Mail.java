@@ -14,6 +14,8 @@ import static database.Databasecommunication.*;
 import static security.Security.generateRandomPassword;
 import static security.Security.hashPassword;*/
 
+// trenger en metode som sender mail til en array med personer samtidig. To forskjellige mailer. En til gamle medlemmer
+// som legges til i en ny husholdning og en til nye medlemmer som må registrere seg før de automatisk legges til i husholdningen.
 
 /**
  * Denne klassen kobles opp mot Googles mail servere og sender mail til en bruker

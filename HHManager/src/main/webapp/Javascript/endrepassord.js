@@ -231,7 +231,7 @@ $(document).ready(function () {
                     passord:nyttpassord
                 }
             }
-        }
+        });
         $.ajax({
             url: "server/BrukerService/endrepassord",
             type: 'POST',
