@@ -119,6 +119,7 @@ public class HandlelisteController {
                 nyVare.setVarenavn(varerResultset.getString("vareNavn"));
                 nyVare.setKjøpt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
                 nyVare.setDatoKjøpt(varerResultset.getDate("datoKjøpt"));
+                nyVare.setHandlelisteId(varerResultset.getInt("handlelisteId"));
                 varer.add(nyVare);
             }
             return varer;
