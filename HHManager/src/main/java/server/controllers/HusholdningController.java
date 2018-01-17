@@ -383,7 +383,7 @@ public class HusholdningController {
 
     private static Husholdning lagHusholdningsObjekt(ResultSet tomHusholdning, int husholdningsId, ArrayList<Bruker> medlemmer) throws SQLException {
         Husholdning husholdning = new Husholdning();
-        husholdning.setHusholdningId(tomHusholdning.getInt("husholdningsId"));
+        husholdning.setHusholdningId(tomHusholdning.getInt("husholdningId"));
         husholdning.setMedlemmer(medlemmer);
 
         return husholdning;
@@ -395,7 +395,7 @@ public class HusholdningController {
      * @return ArrayList med Husholdningsobjekter.
      */
     public static ArrayList<Husholdning> getHusholdninger(int brukerId) {
-        final String getQuery = "SELECT navn FROM husholdning LEFT JOIN hhmedlem h ON husholdning.husholdningId = h.husholdningId WHERE h.brukerId = " + brukerId;
+        final String getQuery = "SELECT navn, hus.husholdningId FROM husholdning hus LEFT JOIN hhmedlem h ON hus.husholdningId = h.husholdningId WHERE h.brukerId = " + brukerId;
         ArrayList<Husholdning> husholdninger = new ArrayList<>();
 
         try (Connection connection = ConnectionPool.getConnection();
@@ -403,9 +403,12 @@ public class HusholdningController {
             ResultSet tomHusholdning = getStatement.executeQuery();
 
             while(tomHusholdning.next()) {
-                int husholdningsId = tomHusholdning.getInt("husholdningsId");
+                Husholdning husholdning = new Husholdning();
+                int husholdningsId = tomHusholdning.getInt("husholdningId");
+                husholdning.setNavn(tomHusholdning.getString("navn"));
                 ArrayList<Bruker> medlemmer = getMedlemmer(husholdningsId, connection);
-                husholdninger.add(lagHusholdningsObjekt(tomHusholdning,husholdningsId,medlemmer));
+                husholdning.setMedlemmer(medlemmer);
+                husholdninger.add(husholdning);
             }
             return husholdninger;
 
