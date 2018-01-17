@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -11,9 +13,10 @@ import static org.junit.Assert.*;
  * Created by Hallvard on 17.01.2018.
  */
 public class VareTest {
+    private Vare vare;
     @Before
     public void setUp() throws Exception {
-
+        vare = new Vare();
     }
 
     @After
@@ -22,63 +25,42 @@ public class VareTest {
     }
 
     @Test
-    public void getDatoKjøpt() throws Exception {
+    public void getOgSetDatoKjøpt() throws Exception {
+        vare.setDatoKjøpt(new Date(112, 05,04));
+        assertEquals("2012-06-04",vare.getDatoKjøpt().toString());
+    }
 
+
+    @Test
+    public void getOgSetHandlelisteId() throws Exception {
+        vare.setHandlelisteId(1);
+        assertEquals(1,vare.getHandlelisteId());
+    }
+
+
+    @Test
+    public void getOgSetKjøperId() throws Exception {
+        vare.setKjøperId(1);
+        assertEquals(1, vare.getKjøperId());
     }
 
     @Test
-    public void setDatoKjøpt() throws Exception {
-
+    public void getOgSetVareId() throws Exception {
+        vare.setVareId(1);
+        assertEquals(1, vare.getVareId());
     }
 
     @Test
-    public void getHandlelisteId() throws Exception {
-
+    public void getOgSetVarenavn() throws Exception {
+        vare.setVarenavn("Varenavn");
+        assertEquals("Varenavn", vare.getVarenavn());
     }
 
-    @Test
-    public void setHandlelisteId() throws Exception {
-
-    }
 
     @Test
-    public void getKjøperId() throws Exception {
-
-    }
-
-    @Test
-    public void setKjøperId() throws Exception {
-
-    }
-
-    @Test
-    public void getVareId() throws Exception {
-
-    }
-
-    @Test
-    public void setVareId() throws Exception {
-
-    }
-
-    @Test
-    public void getVarenavn() throws Exception {
-
-    }
-
-    @Test
-    public void setVarenavn() throws Exception {
-
-    }
-
-    @Test
-    public void isKjøpt() throws Exception {
-
-    }
-
-    @Test
-    public void setKjøpt() throws Exception {
-
+    public void isOgSetKjøpt() throws Exception {
+        vare.setKjøpt(false);
+        assertFalse(vare.isKjøpt());
     }
 
 }
