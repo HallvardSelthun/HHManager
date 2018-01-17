@@ -244,12 +244,13 @@ $(document).ready(function () {
                     alert("feil epost eller passord!");
                     return;
                 }else if(innBruker.favHusholdning > 0){
-                    localStorage.setItem("epost", brukerEpost);
+                    localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
                     console.log(innBruker);
+                    alert("WAIT!");
                     return;
                 }
-                localStorage.setItem("epost", brukerEpost);
+                localStorage.setItem("bruker", JSON.stringify(innBruker));
                 window.location = "profil.html";
 
             },

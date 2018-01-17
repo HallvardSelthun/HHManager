@@ -47,6 +47,7 @@ $(document).ready(function (){
 
     setTimeout(function () {
         $("a#profilNavn").text(navn);
-    }, 300);
+        console.log(navn);
+    }, 150);
 
 });
