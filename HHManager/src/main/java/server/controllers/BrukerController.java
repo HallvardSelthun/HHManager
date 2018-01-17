@@ -70,15 +70,18 @@ public class BrukerController {
      * @return true hvis dataene stemmer
      */
     public static Bruker loginOk(String epost, String passord) {
-        String query = "SELECT passord, favorittHusholdning FROM bruker WHERE epost = ?";
+        String query = "SELECT passord, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
         Bruker bruker = new Bruker();
         int favHus = 0;
         bruker.setFavHusholdning(favHus);
+        bruker.setEpost(epost);
         try (Connection con = ConnectionPool.getConnection()) {
             ps = con.prepareStatement(query);
             ps.setString(1, epost);
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
+                bruker.setNavn(rs.getString("navn"));
+                bruker.setBrukerId(rs.getInt("brukerId"));
                 String res = rs.getString("passord");
                 int favHusDB = rs.getInt("favorittHusholdning");
                 if (favHus != favHusDB){
