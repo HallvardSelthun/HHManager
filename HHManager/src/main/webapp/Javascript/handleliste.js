@@ -23,6 +23,9 @@ $(document).ready(function () {
     $("#slettHandleliste").on("click", function () {
         slettHandleliste();
     });
+    $("#offentligKnapp").on("click", function () {
+        offentligKnapp();
+    });
 });
 
 function leggTilNyHandleliste() {
@@ -34,7 +37,6 @@ function leggTilNyHandleliste() {
     if (isChecked) {
         offentlig = 1;
     }
-
 
     var handlelisteObjekt = {
         tittel: handlelisteNavn,
@@ -71,11 +73,7 @@ function leggTilNyHandleliste() {
 
 function leggTilNyGjenstand() {
     var nyGjenstandNavn = $("#leggTilNyGjenstand").val();
-    var handlelisteId;
-    
-    function getHadlelisteId() {
-
-    }
+    var handlelisteId = $(this).closest("div").attr("id");
 
     var vare = {
         varenavn: nyGjenstandNavn,
@@ -89,15 +87,17 @@ function leggTilNyGjenstand() {
 
 
     $.ajax({
-        url: "server/handleliste/" + husholdningId + "/",
+        url: "server/handleliste/" + handlelisteId + "/"+brukerId,
         type: 'POST',
         data: JSON.stringify(vare),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
+            console.log(data);
+            alert("Det gikk bra!");
+
             if (data) {
-                alert("Det gikk bra!");
                 //window.location = "handlelister.html";
             } else {
                 alert("feil!");
@@ -111,6 +111,33 @@ function leggTilNyGjenstand() {
 
 function slettHandleliste() {
     
+}
+
+
+
+// IKKE FERDIG ENNÅ
+function offentligKnapp() {
+    var offentligKnapp = $("#offentligKnapp").val();
+    var handlelisteId = $(this).closest('id').prop("id");
+    console.log(handlelisteId);
+
+    $.ajax({
+        url: "server/handleliste/" + handlelisteId + "/private",
+        type: 'PUT',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if (data) {
+                window.location = "handlelister.html";
+            } else {
+                alert("feil!");
+            }
+        },
+        error: function () {
+            alert("serverfeil :/")
+        }
+    })
 }
 
 function gethhData() {
@@ -143,18 +170,15 @@ function setupPage() {
         offentlig = alleHandlelister[i].offentlig;
         frist = alleHandlelister[i].frist;
 
-
         $("#handlelister").append('<div class="panel panel-default"><div class="container-fluid"><div class="panel-heading clearfix"><h4 class="panel-titel' +
-            ' pull-left" style="padding-top: 7.5px"><a data-toggle="collapse" data-parent="accordion" href="#collapse1"' +
-            ' aria-expanded="true"></a>' + tittel + '</h4><div><button id="slettHandleliste" class="btn btn-danger pull-right removeButton"' +
-            ' type="button">Slett handleliste</button></div></div></div><div id="collapse1" class="panel-collapse collapse in" aria-expanded="true"><div' +
-            ' class="panel-body"><div class="panel-body"><ul class="list-group"></ul><div id="list1"' +
-            ' class="list-group"><form><div class="input-group"><input id="leggTilNyGjenstand" class="form-control"' +
-            ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit">' +
-            ' <i class="glyphicon glyphicon-plus"></i></button></div></div></form><button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal"' +
-            ' data-target="#utleggmodal">Lag utlegg</button><!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input ' +
-            ' type="checkbox"><span class="slider round"></span></label></div></div></div></div></div>');
-
+            ' pull-left" style="padding-top: 7.5px"><a data-toggle="collapse" data-parent="accordion" href="#collapse1" aria-expanded="true"></a>' +
+            tittel + '</h4><div><button id="slettHandleliste" class="btn btn-danger pull-right removeButton" type="button">Slett handleliste</button></div></div></div><div' +
+            ' id="collapse1" class="panel-collapse collapse in" aria-expanded="true"><div class="panel-body"><div class="panel-body"><ul class="list-group"></ul><div id="list1"' +
+            ' class="list-group"><form><div id="' + handlelisteId + '" class="input-group"><input class="form-control" placeholder="Legg til ny gjenstand i listen"' +
+            ' type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>' +
+            '</button></div></div></form><button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
+            '<!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span>' +
+            '</label></div></div></div></div></div>');
 
         for(var j = 0; j < varer.length; j++){
             vareId = varer[j].vareId;
@@ -164,10 +188,8 @@ function setupPage() {
             //datokjøpt = new Date(varer[j].datokjøpt);
             $("#handlelister ul").append('<li class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right"></li>');
         }
-
-
-        if(offentlig){
-            $(".slider").click();
-        }
+    }
+    if(offentlig){
+        $(".slider").click();
     }
 }
