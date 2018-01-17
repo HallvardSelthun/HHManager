@@ -32,7 +32,6 @@ $(document).ready(function (){
     $('body').on('click', 'a#loggut', function() {
         window.location = "index.html"
     });
-
     // til lagNyHusstandModalen
     $('body').on('click', 'a#leggTilMedlemKnapp', function () {
         navnIHuset.push(document.getElementById("navnMeldlemHusstand"));
