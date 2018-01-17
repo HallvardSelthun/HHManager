@@ -14,7 +14,7 @@
     margin-top:20px;
 }
 
-#navnknapp {
+/*#navnknapp {
     margin-top: 10px;
     margin-left: 89px;
 }
@@ -23,7 +23,7 @@
     margin-top: 10px;
     margin-right: 3px;
 }
-
+*/
 #accordion {
     margin-right: 10px;
 }
@@ -36,8 +36,13 @@
     margin-left: 89px;
 }
 
-#passord {
+/*#passord {
     margin-top: 10px;
+    margin-left: 100px;
+}*/
+
+.info{
+    width: 400px;
     margin-left: 100px;
 }
 
