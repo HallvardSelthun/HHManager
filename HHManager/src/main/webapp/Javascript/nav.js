@@ -29,6 +29,9 @@ $(document).ready(function (){
     $('body').on('click', 'a#oppgjorknapp', function() {
         window.location = "oppgjor.html"
     });
+    $('body').on('click', 'a#loggut', function() {
+        window.location = "index.html"
+    });
 
     // til lagNyHusstandModalen
     $('body').on('click', 'a#leggTilMedlemKnapp', function () {
