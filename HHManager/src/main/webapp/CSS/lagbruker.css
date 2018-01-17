@@ -6,8 +6,13 @@
     margin-left: 500px;
 }
 div {
+    margin-right: auto;
+    margin-left: auto;
     display: block;
     /*width: 500px;*/
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.logo{
+    border: 0px;
 }
