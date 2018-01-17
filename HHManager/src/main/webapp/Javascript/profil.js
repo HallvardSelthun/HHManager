@@ -320,7 +320,7 @@ $(document).ready(function () {
             return;
         }
 
-        else if (nyepost1 == nyepost2) {
+        if (nyepost1 == nyepost2) {
             var bruker = {
                 brukerId: brukerId,
                 epost: nyepost1
