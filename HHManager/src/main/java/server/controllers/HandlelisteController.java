@@ -69,6 +69,7 @@ public class HandlelisteController {
         handleliste.setTittel(tomHandleliste.getString("navn"));
         handleliste.setOffentlig((tomHandleliste.getInt("offentlig"))==1); //Gjør om tinyInt til boolean
         handleliste.setFrist(tomHandleliste.getDate("frist"));
+        handleliste.setHandlelisteId(tomHandleliste.getInt("handlelisteId"));
         handleliste.setVarer(varer);
 
         return handleliste;
@@ -91,6 +92,7 @@ public class HandlelisteController {
             ArrayList<Vare> varer =  getVarer(handlelisteId,connection);
             tomHandleliste.next();
             return lagHandlelisteObjekt(tomHandleliste,handlelisteId,varer);
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
