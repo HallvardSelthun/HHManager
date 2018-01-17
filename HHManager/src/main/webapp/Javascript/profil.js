@@ -231,7 +231,7 @@ $(document).ready(function () {
 
 
     $("#lagreendringer").on('click', function () {
-        var brukerId = localStorage.getItem("brukerId");
+        var brukerId = minBruker.brukerId;
         var endrepassord1 = $("#nyttpassord").val();
         var endrepassord2 = $("#bekreftnytt").val();
 
@@ -249,7 +249,9 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (result) {
                     var data = JSON.parse(result);
+                    minBruker.passord = endrepassord1;
                     window.location = "profil.html";
+                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Passordet er endret");
                 },
                 error: function () {
@@ -303,7 +305,7 @@ $(document).ready(function () {
     }
 
     $("#lagre").on('click', function () {
-        var brukerId = localStorage.getItem("brukerId");
+        var brukerId = minBruker.brukerId;
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
 
@@ -320,8 +322,10 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (result) {
                     $("#epost").text(nyepost1);
+                    minBruker.epost = nyepost1;
                     var data = JSON.parse(result);
                     window.location = "profil.html";
+                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Eposten er endret");
                 },
                 error: function () {
