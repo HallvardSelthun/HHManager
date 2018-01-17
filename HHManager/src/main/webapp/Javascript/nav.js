@@ -43,7 +43,6 @@ $(document).ready(function (){
         var navnHus = $("#navnHusstand").valueOf();
 
     });
-
     setTimeout(function () {
         $("a#profilNavn").text(navn);
         console.log(navn);
