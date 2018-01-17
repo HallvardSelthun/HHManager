@@ -288,12 +288,13 @@ $(document).ready(function () {
                 var data = JSON.parse(result);
                 $("#navnpåpers").text(nyttNavn);
                 minBruker.navn = nyttNavn;
+                window.location = "profil.html";
                 localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
                 alert("Noe gikk galt :(")
             }
-        })
+        });
         $("#button").on('click', function () {
             alert("Du har valgt å avbryte")
         });
