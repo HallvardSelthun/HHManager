@@ -27,9 +27,17 @@ public class UtleggControllerTest {
             assertEquals((int)utleggJegSkylder.get(i).getDelSum(), (int)100);
         }
 
-
+        //Finn ut hva folk skylder meg
         ArrayList<Oppgjor> oppgjor2 = UtleggController.getMineOppgjor(1);
-        System.out.println(oppgjor2.get(0).getNavn());
+
+        if (oppgjor2.get(0).getUtleggDenneSkylderMeg().size() > 0) {
+            assertEquals(oppgjor2.get(0).getNavn(),"bruker2");
+            assertEquals(oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getNavn(), "bruker2");
+
+            assertEquals(oppgjor2.get(1).getNavn(),"bruker3");
+            assertEquals(oppgjor2.get(1).getUtleggDenneSkylderMeg().get(0).getNavn(), "bruker3");
+        }
+        System.out.println();
         //System.out.println("Bruker 1 skylder"+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getDelSum()+" kroner for "+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getBeskrivelse());
     }
 
