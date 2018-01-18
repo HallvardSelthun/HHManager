@@ -9,5 +9,4 @@ public class GenereltControllerTest {
     public void getString() throws Exception {
         assertEquals("team6", GenereltController.getString("navn", "husholdning", 1));
     }
-
 }

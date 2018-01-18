@@ -118,19 +118,21 @@ public class GenereltController {
     }
 
     /**
-     * Oppdaterer/endrer én celle. Må bruke id.
+     * Oppdaterer/endrer én celle.
+     * Må bruke id.
+     * Kan brukes til alt selv om det 'setData' er en String.
      *
      * @param tabell som skal oppdateres
-     * @param hvaOppdater som skal oppdateres
-     * @param setId id til dataen som skal endres
+     * @param kolonneOppdater kolonne som skal oppdateres
+     * @param setData dataen som skal endres
      * @param whereId id til etiteten som skal oppdateres
      */
-    static void update(String tabell, String hvaOppdater, String setId, String whereId) {
-        String q = "update " + tabell + " set " + hvaOppdater + "=? where " + tabell + "Id=?";
+    static void update(String tabell, String kolonneOppdater, String setData, int whereId) {
+        String q = "update " + tabell + " set " + kolonneOppdater + "=? where " + tabell + "Id=?";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(q)) {
-            preparedStatement.setString(1, setId);
-            preparedStatement.setString(2, whereId);
+            preparedStatement.setString(1, setData);
+            preparedStatement.setInt(2, whereId);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
