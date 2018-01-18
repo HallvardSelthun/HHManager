@@ -10,15 +10,13 @@ var alleHandlelister;
 
 
 $(document).ready(function () {
-    //   gethhData();
-    // getBrukerData();
     getHandlelisterData();
     setTimeout(setupPage,1000);
 
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
         leggTilNyHandleliste();
     });
-    $("#leggTilNyGjenstandKnapp").on("click", function () {
+    /*$("#leggTilNyGjenstandKnapp").on("click", function () {
         leggTilNyGjenstand();
     });
     $("#slettHandlelisteKnapp").on("click", function () {
@@ -73,8 +71,9 @@ function leggTilNyHandleliste() {
 }
 
 function leggTilNyGjenstand() {
-    var nyGjenstandNavn = $(".leggTilNyGjenstand input").val();
-    var handlelisteId = $(".leggtilNyGjenstand input").get;
+    var nyGjenstandNavn = $(".leggTilNyGjenstand").val();
+    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1);
+    console.log(nyGjenstandNavn + "\n" + handlelisteId);
 
     var vare = {
         varenavn: nyGjenstandNavn,
@@ -88,9 +87,35 @@ function leggTilNyGjenstand() {
 
 
     $.ajax({
-        url: "server/handleliste/" + handlelisteId + "/"+brukerId,
+        url: "server/handleliste/" + handlelisteId + "/" + brukerId,
         type: 'POST',
         data: JSON.stringify(vare),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            alert("Det gikk bra!");
+
+            if (data) {
+                //window.location = "handlelister.html";
+            } else {
+                alert("feil!");
+            }
+        },
+        error: function () {
+            alert("serverfeil :/")
+        }
+    })
+}
+
+function slettHandleliste() {
+    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1)
+    console.log(handlelisteId);
+
+    $.ajax({
+        url: "server/handleliste/" + handlelisteId,
+        type: 'DELETE',
+        data: JSON.stringify(handlelisteId),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
@@ -108,10 +133,6 @@ function leggTilNyGjenstand() {
             alert("serverfeil :/")
         }
     })
-}
-
-function slettHandleliste() {
-    
 }
 
 
@@ -141,17 +162,6 @@ function slettHandleliste() {
     })
 }*/
 
-function gethhData() {
-    $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
-        husholdning = data;
-    });
-}
-
-function getBrukerData() {
-    $.getJSON("server/BrukerService/" + epost + "/brukerData", function (data) {
-        bruker = data;
-    });
-}
 
 function getHandlelisterData() {
     $.getJSON("server/handleliste/" + husholdningId + "/" + brukerId, function (data) {
@@ -169,18 +179,18 @@ function setupPage() {
         skaperId = alleHandlelister[i].skaperId;
         varer = alleHandlelister[i].varer;
         offentlig = alleHandlelister[i].offentlig;
-        frist = alleHandlelister[i].frist;
+        //frist = alleHandlelister[i].frist;
 
         $("#handlelister").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister"' +
-            ' data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="collapse"><button' +
-            ' id="slettHandlelisteKnapp"' +
-            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Slett handleliste</button></div></div><div id="' + handlelisteId + '"' +
-            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul><div id="list1" class="list-group"><form><div' +
-            ' class="input-group leggTilNyGjenstand"><input class="form-control" placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn">' +
-            '<button id="\' + handlelisteId + \'" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form><button id="utlegg"' +
-            ' type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button><!-- Rounded switch --><h5 id="offtekst"' +
-            ' class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span></label></div></div></div></div>');
-
+            ' data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div onclick="slettHandleliste()">' +
+            '<button class="btn btn-danger pull-right col-md-3" type="button">Slett handleliste</button></div></div>' +
+            '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
+            '<div id="list1" class="list-group"><form><div class="input-group"><input id="#' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
+            ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilNyGjenstand()">' +
+            '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
+            '<button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
+            '<!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round">' +
+            '</span></label></div></div></div></div>');
 
 
 
@@ -200,7 +210,7 @@ function setupPage() {
             kjøpt = varer[j].kjøpt;
             kjøperId = varer[j].kjøperId;
             //datokjøpt = new Date(varer[j].datokjøpt);
-            $("#handlelister ul").append('<li class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right"></li>');
+            $("#handlelister ul").append('<li class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
         }
     }
     if(offentlig){

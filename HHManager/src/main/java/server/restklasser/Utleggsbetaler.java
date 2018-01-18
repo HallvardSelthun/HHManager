@@ -5,8 +5,8 @@ public class Utleggsbetaler {
     private boolean betalt;
     private double delSum;
     private int skyldigBrukerId;
-    String navn; //Navn som hører til skyldigBrukerId
-    String beskrivelse; //Beskrvelse av utlegget, hentes fra Utlegg-klassen ved uthenting
+    private String navn; //Navn som hører til skyldigBrukerId
+    private String beskrivelse; //Beskrvelse av utlegget, hentes fra Utlegg-klassen ved uthenting
 
     public Utleggsbetaler(){
 

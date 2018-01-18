@@ -246,7 +246,6 @@ $(document).ready(function () {
                 }else if(innBruker.favHusholdning > 0){
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
-                    console.log(innBruker);
                     return;
                 }
                 localStorage.setItem("bruker", JSON.stringify(innBruker));

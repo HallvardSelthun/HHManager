@@ -5,12 +5,13 @@ var husholdning;
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var epost = bruker.epost;
 var brukerId;
-var husholdningId;
+var husholdningId
 var medlemmer;
 
 $(document).ready(function () {
+    husholdningId = bruker.favHusholdning;
+
     gethhData();
-    //getBrukerData();
     setTimeout(setupPage,1000);
     $("#commentBtn").on("click", function () {
         postInnlegg();
@@ -19,7 +20,6 @@ $(document).ready(function () {
 
 function setupPage() {
     console.log(husholdning);
-    husholdningId = husholdning.husholdningId;
     var husNavn = husholdning.navn;
     var nyhetsinnlegg = husholdning.nyhetsinnlegg;
     medlemmer = husholdning.medlemmer;
@@ -55,7 +55,7 @@ function setupPage() {
 }
 
 function gethhData() {
-    $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
+    $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
         husholdning = data;
     });
 }
