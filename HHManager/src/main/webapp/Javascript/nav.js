@@ -56,7 +56,7 @@ $(document).ready(function () {
         var medlem = {
             epost: $("#navnMedlem").val()
         };
-        $("#navnMedlem").val("");
+        $("#navnMedlem").val('');
         navnIHuset.push(medlem);
         console.log(navnIHuset);
         $("#fade").show();
@@ -71,6 +71,11 @@ $(document).ready(function () {
     $("body").on("click", "#lagreHusKnapp", function () {
         var navnHus = $("#navnHusstand").val();
         var medlemHus = $("#navnMedlem").val();
+
+        navnIHuset.push(
+            {
+                epost: bruker
+            });
 
         var husObj = {
             navn: navnHus,
