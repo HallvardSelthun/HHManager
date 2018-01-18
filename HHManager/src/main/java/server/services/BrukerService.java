@@ -60,7 +60,7 @@ public class BrukerService {
     @PUT
     @Path("/{brukerId}/favHusholdning")
     @Consumes(MediaType.TEXT_PLAIN)
-    public void setFavHusholdning(@PathParam("brukerId") String brukerId, String favHusholdningsId){
+    public void setFavHusholdning(@PathParam("brukerId") int brukerId, String favHusholdningsId){
         BrukerController.setNyFavoritthusholdning(brukerId, favHusholdningsId);
     }
 
@@ -74,7 +74,7 @@ public class BrukerService {
     @Path("/endreEpost")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean endreEpost(Bruker bruker){
-        BrukerController.setNyEpost(bruker.getEpost(),Integer.toString(bruker.getBrukerId()));
+        BrukerController.setNyEpost(bruker.getEpost(),(bruker.getBrukerId()));
         return false;
     }
 
@@ -82,7 +82,7 @@ public class BrukerService {
     @Path("/endrePassord")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean endrePassord(Bruker bruker){
-        BrukerController.setNyttPassord(Integer.toString(bruker.getBrukerId()), bruker.getPassord());
+        BrukerController.setNyttPassord((bruker.getBrukerId()), bruker.getPassord());
         return false;
     }
 
@@ -90,7 +90,7 @@ public class BrukerService {
     @Path("/endreNavn")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean endreNavn(Bruker bruker){
-        BrukerController.setNyttNavn(Integer.toString(bruker.getBrukerId()), bruker.getNavn());
+        BrukerController.setNyttNavn((bruker.getBrukerId()), bruker.getNavn());
         return false;
     }
 

@@ -56,7 +56,7 @@ $(document).ready(function () {
         var medlem = {
             epost: $("#navnMedlem").val()
         };
-        $("#navnMedlem").val("");
+        $("#navnMedlem").val('');
         navnIHuset.push(medlem);
         console.log(navnIHuset);
         $("#fade").show();
@@ -72,6 +72,11 @@ $(document).ready(function () {
         var navnHus = $("#navnHusstand").val();
         var medlemHus = $("#navnMedlem").val();
 
+        navnIHuset.push(
+            {
+                epost: bruker
+            });
+
         var husObj = {
             navn: navnHus,
             medlemmer: navnIHuset,
@@ -80,11 +85,9 @@ $(document).ready(function () {
         console.log(husObj);
         console.log("Prøver å sende husstand");
 
-        if (navnHus == "" || medlemHus == "") {
+        if (navnHus == "") {
             alert("Skriv inn noe");
             return;
-            window.location = "index.html"
-            console.log("inni if");
         }
         $.ajax({
             url: "server/hhservice/husholdning",

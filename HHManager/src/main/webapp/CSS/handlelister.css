@@ -81,6 +81,9 @@ h1 {
 #overskrift2 {
     font-weight: bold;
 }
+
+
+/* SKAL SKJULE SLETTHANDLELISTKNAPP             MÅ FIKSES           */
 #slettHandlelisteKnapp .collapse{
-    visibility: hidden;
+    display: none;
 }
