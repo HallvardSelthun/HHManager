@@ -4,19 +4,20 @@
 var brukerId;
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
+brukerId = minBruker.brukerId;
 var epost =minBruker.epost;
 var husholdningId;
 var husholdninger;
 var medlemmer;
 
 function gethhData() {
-    $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
+    $.getJSON("server/hhservice/" + brukerId + "/husholdningData", function (data) {
         husholdning = data;
     });
 }
 
 function getHusholdninger() {
-    $.getJSON("server/hhservice/husholdning/" + minBruker.brukerId, function (data) {
+    $.getJSON("server/hhservice/husholdning/" + minBruker.favHusholdning, function (data) {
         husholdninger = data;
     });
 }

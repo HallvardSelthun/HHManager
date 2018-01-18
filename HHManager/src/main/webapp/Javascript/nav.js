@@ -106,13 +106,10 @@ $(document).ready(function () {
                 console.log(husObj)
             }
         });
-        setTimeout(function () {
-            $("a#profilNavn").text(navn);
-        }, 150);
-
     });
-
-
+    setTimeout(function () {
+        $("a#profilNavn").text(navn);
+    }, 150);
 });
 
 
