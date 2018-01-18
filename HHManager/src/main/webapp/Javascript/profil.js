@@ -337,7 +337,6 @@ $(document).ready(function () {
             alert("PLIS SKRIV IN NOKE...")
             return;
         }
-
         if (nyepost1 == nyepost2) {
             var bruker = {
                 brukerId: brukerId,
