@@ -85,11 +85,9 @@ $(document).ready(function () {
         console.log(husObj);
         console.log("Prøver å sende husstand");
 
-        if (navnHus == "" || medlemHus == "") {
+        if (navnHus == "") {
             alert("Skriv inn noe");
             return;
-            window.location = "index.html"
-            console.log("inni if");
         }
         $.ajax({
             url: "server/hhservice/husholdning",

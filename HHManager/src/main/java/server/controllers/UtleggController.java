@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class UtleggController {
     private static PreparedStatement ps;
     private static Statement s;
-    private final static String TABELLNAVN = "bruker";
+    private final static String TABELLNAVN = "oppgjørsbetaler";
 
 
     public static String getBrukernavn (int brukerid) {
@@ -45,6 +45,20 @@ public class UtleggController {
         return utlegg;
     }
     */
+
+    public static boolean setMotatt(int brukerId, int utleggId) {
+        String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
+                + brukerId + " AND utleggsbetaler.utleggId =  " + utleggId;
+
+        try (Connection connection = ConnectionPool.getConnection()) {
+            PreparedStatement updateStatment = connection.prepareStatement(getQuery);
+            updateStatment.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     /**
