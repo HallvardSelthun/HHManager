@@ -1,17 +1,19 @@
-.husstander{
+.husstand{
     margin-top:10px;
-    margin-bottom: 20px;
 }
 .medlemmer{
     margin-top: 10px;
-    margin-bottom: 10px;
+    padding-bottom:10px;
 }
 
 #navnHusstand{
     border-style: solid;
     border-color: darkorange;
 }
-#navn{
+#navnMedlem {
     border-stye: solid;
     border-color: darkorange;
+}
+.knapp{
+    margin-bottom: 10px;
 }

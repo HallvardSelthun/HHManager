@@ -22,6 +22,18 @@ public class UtleggService {
     }
 
     /**
+     * Henter alle Oppgjor-objektene tilknyttet en bruker-ID
+     * @param brukerId er unik id for hver bruker i databasen.
+     * @return ArrayList med Oppgjør. Inneholder to arrays av Utleggsbetaler for utlegg brukeren skylder og andre skylder brukeren
+     */
+    @GET
+    @Path("/oppgjor/{brukerId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId) {
+        return UtleggController.getMineOppgjor(brukerId);
+    }
+
+    /**
      * Henter alle brukere som er involvert i et unikt utlegg.
      * @param utleggId er en unik id for å indentifisere utlegg.
      * @return ArrayList over alle utleggsbetalere for et unikt utlegg via utleggid
