@@ -380,13 +380,14 @@ public class HusholdningController {
      */
     public static Husholdning getFavHusholdningData(String epost){
         Husholdning huset = new Husholdning();
-        int fav = 0;
+        int fav = husholdningId;
+        huset.setHusholdningId(fav);
         int brukerId = 0;
         int handlelisteId = 0;
-        String hentFav = "SELECT favorittHusholdning, brukerId FROM bruker WHERE epost = ?";
+        //String hentFav = "SELECT favorittHusholdning, brukerId FROM bruker WHERE epost = ?";
 
         try (Connection con = ConnectionPool.getConnection()) {
-            ps = con.prepareStatement(hentFav);
+            /*ps = con.prepareStatement(hentFav);
             ps.setString(1, epost);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -397,8 +398,7 @@ public class HusholdningController {
                     }
                     huset.setHusholdningId(fav);
                 }
-
-            }
+            }*/
             String hentHus = "SELECT * FROM husholdning WHERE husholdningId = " + fav;
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = " + fav;
             String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
@@ -525,6 +525,7 @@ public class HusholdningController {
                 Husholdning husholdning = new Husholdning();
                 int husholdningsId = tomHusholdning.getInt("husholdningId");
                 husholdning.setNavn(tomHusholdning.getString("navn"));
+                husholdning.setHusholdningId(husholdningsId);
                 ArrayList<Bruker> medlemmer = getMedlemmer(husholdningsId, connection);
                 husholdning.setMedlemmer(medlemmer);
                 husholdninger.add(husholdning);

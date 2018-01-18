@@ -10,8 +10,8 @@ var alleHandlelister;
 
 
 $(document).ready(function () {
-    //   gethhData();
-    // getBrukerData();
+    //gethhData();
+    //getBrukerData();
     getHandlelisterData();
     setTimeout(setupPage,1000);
 

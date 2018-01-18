@@ -1,6 +1,7 @@
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var navn = bruker.navn;
+var husholdninger;
 
 $(document).ready(function () {
     $(function () {
@@ -8,12 +9,21 @@ $(document).ready(function () {
 
         $("#modaldiv").load("lagnyhusstand.html");
     });
+    getHusholdninger();
 
     setTimeout(function () {
         $("#fade").hide()
     }, 150);
 
     $('body').on('click', 'a#bildenav', function () {
+    $('#husholdninger3').on('click', 'li', function () {
+        alert("Clicked list." + $(this).html());
+        var i = this.id;
+        console.log(i+"_---_");
+
+    });
+
+    $('body').on('click', 'a#bildenav', function() {
         window.location = "forside.html"
     });
     $('body').on('click', 'a#gjoremaalsknapp', function () {
@@ -62,8 +72,7 @@ $(document).ready(function () {
     $("body").on("click", "#lagreHusKnapp", function () {
         var navnHus = $("#navnHusstand").val();
         var medlemHus = $("#navnMedlem").val();
-        console.log("hei")
-        console.log("else");
+
         var husObj = {
             navn: navnHus,
             medlemmer: navnIHuset,
@@ -105,3 +114,18 @@ $(document).ready(function () {
     });
 });
 
+
+function getHusholdninger() {
+    $.getJSON("server/hhservice/husholdning/"+bruker.brukerId, function (data) {
+        husholdninger = data;
+    });
+    setTimeout(function () {
+        for(i = 0, l = husholdninger.length; i<l; i++){
+            var navn = husholdninger[i].navn;
+            var id = husholdninger[i].husholdningId;
+            console.log(husholdninger[i]);
+            $("#husholdninger3").prepend('<li id="'+id+'"><a href="#">'+navn+'</a></li>');
+        }
+    },250);
+
+}
