@@ -170,14 +170,14 @@ function setupPage() {
         offentlig = alleHandlelister[i].offentlig;
         frist = alleHandlelister[i].frist;
 
-        $("#handlelister").append('<div class="panel panel-default" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '"><div ' +
-            'class="panel-heading clearfix"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div><button id="slettHandlelisteKnapp" class="btn btn-danger pull-right' +
-            ' removeButton col-md-3" type="button">Slett handleliste</button></div></div><div id="' + handlelisteId + '" class="panel-collapse collapse in"><div ' +
-            'class="panel-body"><ul class="list-group"></ul><div id="list1" class="list-group"><form><div id="' + handlelisteId + '" class="input-group leggTilNyGjenstand">' +
-            '<input class="form-control" placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" ' +
-            'class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form><button id="utlegg" type="button" ' +
-            'class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button><!-- Rounded switch --><h5 id="offtekst" class="pull-right">' +
-            'Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span></label></div></div></div></div>');
+        $("#handlelister").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister"' +
+            ' data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div><button id="slettHandlelisteKnapp"' +
+            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Slett handleliste</button></div></div><div id="' + handlelisteId + '"' +
+            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul><div id="list1" class="list-group"><form><div' +
+            ' class="input-group leggTilNyGjenstand"><input class="form-control" placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn">' +
+            '<button id="\' + handlelisteId + \'" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form><button id="utlegg"' +
+            ' type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button><!-- Rounded switch --><h5 id="offtekst"' +
+            ' class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span></label></div></div></div></div>');
 
 
 
@@ -203,5 +203,14 @@ function setupPage() {
     }
     if(offentlig){
         $(".slider").click();
+    }
+}
+
+function displayDiv() {
+    var x = document.getElementsByClassName("invisibleDiv");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
     }
 }
