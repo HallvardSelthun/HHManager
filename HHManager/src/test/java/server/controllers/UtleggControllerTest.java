@@ -19,7 +19,6 @@ public class UtleggControllerTest {
             System.out.println("oppgjor.size() "+oppgjor.size());
             System.out.println("oppgjor.get(i).getBrukerId() "+oppgjor.get(i).getBrukerId());
             if (oppgjor.get(i).getBrukerId() == 1) {
-                System.out.println("Check good");
                 utleggJegSkylder = oppgjor.get(i).getUtleggJegSkylder();
             }
         }
@@ -27,6 +26,7 @@ public class UtleggControllerTest {
             System.out.println("Skylder bruker 1 "+utleggJegSkylder.get(i).getDelSum()+" kroner for "+utleggJegSkylder.get(i).getBeskrivelse());
             assertEquals((int)utleggJegSkylder.get(i).getDelSum(), (int)100);
         }
+
 
         ArrayList<Oppgjor> oppgjor2 = UtleggController.getMineOppgjor(1);
         System.out.println(oppgjor2.get(0).getNavn());
