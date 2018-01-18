@@ -80,7 +80,7 @@ $(document).ready(function () {
         console.log(husObj);
         console.log("Prøver å sende husstand");
 
-        if (navnHus == "" || medlemHus == "") {
+        if (navnHus == "") {
             alert("Skriv inn noe");
             return;
         }
