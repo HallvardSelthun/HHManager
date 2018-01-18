@@ -291,7 +291,6 @@ $(document).ready(function () {
     function lagreEndringer() {
     }
 
-
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
         var nyttNavn = $("#nyttnavn").val();
@@ -368,8 +367,6 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
-
-
 
     function lagre() {
     }
