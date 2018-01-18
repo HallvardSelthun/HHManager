@@ -7,20 +7,9 @@ public class Utlegg {
     private int utleggId;
     private double sum;
     private String beskrivelse;
-    private ArrayList<Utleggsbetaler> folkSomSkylderPenger; //idene til medlemmer som skylder penger, gjør om til liste av utleggsbetalere
     private ArrayList<Vare> varer;
-    private String utleggerNavn;
 
     public Utlegg() {}
-
-    public Utlegg(int utleggerId, int utleggId, double sum, String beskrivelse, ArrayList<Utleggsbetaler> folkSomSkylderPenger, ArrayList<Vare> varer) {
-        this.utleggerId = utleggerId;
-        this.utleggId = utleggId;
-        this.sum = sum;
-        this.beskrivelse = beskrivelse;
-        this.folkSomSkylderPenger = folkSomSkylderPenger;
-        this.varer = varer;
-    }
 
     public Utlegg(int utleggId) {
         this.utleggId = utleggId;
@@ -65,23 +54,6 @@ public class Utlegg {
 
     public void setVarer(ArrayList<Vare> varer) {
         this.varer = varer;
-    }
-
-
-    public ArrayList<Utleggsbetaler> getFolkSomSkylderPenger() {
-        return folkSomSkylderPenger;
-    }
-
-    public void setFolkSomSkylderPenger(ArrayList<Utleggsbetaler> folkSomSkylderPenger) {
-        this.folkSomSkylderPenger = folkSomSkylderPenger;
-    }
-
-    public String getUtleggerNavn() {
-        return utleggerNavn;
-    }
-
-    public void setUtleggerNavn(String utleggerNavn) {
-        this.utleggerNavn = utleggerNavn;
     }
 
 }
