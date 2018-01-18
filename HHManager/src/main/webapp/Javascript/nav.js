@@ -1,43 +1,52 @@
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var navn = bruker.navn;
+var husholdninger;
 
-$(document).ready(function (){
-    $(function(){
+$(document).ready(function () {
+    $(function () {
         $("#navbar").load("nav.html");
 
         $("#modaldiv").load("lagnyhusstand.html");
     });
+    getHusholdninger();
 
     setTimeout(function () {
         $("#fade").hide()
     }, 150);
 
-    $('body').on('click', 'a#bildenav', function() {
+    $('#husholdninger3').on('click', 'li', function () {
+        alert("Clicked list." + $(this).html());
+        var i = this.id;
+        console.log(i + "_---_");
+
+    });
+
+    $('body').on('click', 'a#bildenav', function () {
         window.location = "forside.html"
     });
-    $('body').on('click', 'a#gjoremaalsknapp', function() {
+    $('body').on('click', 'a#gjoremaalsknapp', function () {
         window.location = "gjoremaal.html"
     });
-    $('body').on('click', 'a#kalenderknapp', function() {
+    $('body').on('click', 'a#kalenderknapp', function () {
         window.location = "kalender.html"
     });
-    $('body').on('click', 'a#handlelisteknapp', function() {
+    $('body').on('click', 'a#handlelisteknapp', function () {
         window.location = "handlelister.html"
     });
-    $('body').on('click', 'a#bildeknapp', function() {
+    $('body').on('click', 'a#bildeknapp', function () {
         window.location = "forside.html"
     });
 
-    $('body').on('click', 'a#profilNavn', function() {
+    $('body').on('click', 'a#profilNavn', function () {
         window.location = "profil.html"
     });
 
-    $('body').on('click', '#oppgjorknapp', function() {
+    $('body').on('click', '#oppgjorknapp', function () {
         window.location = "oppgjor.html"
     });
 
-    $('body').on('click', 'a#loggut', function() {
+    $('body').on('click', 'a#loggut', function () {
         localStorage.clear();
         window.location = "index.html"
     });
@@ -69,8 +78,14 @@ $(document).ready(function (){
             adminId: 1 // denne verdien er ikke konstant. Bare for testing til ting er på plass
         };
         console.log(husObj);
-
         console.log("Prøver å sende husstand");
+
+        if (navnHus == "" || medlemHus == "") {
+            alert("Skriv inn noe");
+            return;
+            window.location = "index.html"
+            console.log("inni if");
+        }
         $.ajax({
             url: "server/hhservice/husholdning",
             type: 'POST',
@@ -79,10 +94,10 @@ $(document).ready(function (){
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: "+data);
-                if (data){
+                console.log("Data: " + data);
+                if (data) {
                     alert("Det gikk bra!");
-                }else{
+                } else {
                     alert("feil!");
                 }
             },
@@ -90,9 +105,26 @@ $(document).ready(function (){
                 alert("serverfeil :/");
                 console.log(husObj)
             }
-        })
+        });
     });
     setTimeout(function () {
         $("a#profilNavn").text(navn);
     }, 150);
 });
+
+
+function getHusholdninger() {
+    $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
+        husholdninger = data;
+    });
+    setTimeout(function () {
+        for (i = 0, l = husholdninger.length; i < l; i++) {
+            var navn = husholdninger[i].navn;
+            var id = husholdninger[i].husholdningId;
+            console.log(husholdninger[i]);
+            $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
+        }
+    }, 250);
+}
+
+

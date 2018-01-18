@@ -102,7 +102,7 @@ public class BrukerController {
      *
      * @return true hvis operasjonen ble godkjent
      */
-    public static void setNyFavoritthusholdning(String brukerId, String husholdningId) {
+    public static void setNyFavoritthusholdning(int brukerId, String husholdningId) {
         GenereltController.update(TABELLNAVN, "husholdningId", husholdningId, brukerId);
     }
 
@@ -154,15 +154,15 @@ public class BrukerController {
         return bruker;
     }
 
-    public static void setNyEpost(String epost, String brukerId) {
+    public static void setNyEpost(String epost, int brukerId) {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);
     }
 
-    public static void setNyttPassord(String brukerId, String passord) {
+    public static void setNyttPassord(int brukerId, String passord) {
         GenereltController.update(TABELLNAVN, "passord", passord, brukerId);
     }
 
-    public static void setNyttNavn(String brukerId, String navn){
+    public static void setNyttNavn(int brukerId, String navn){
         GenereltController.update(TABELLNAVN, "navn", navn, brukerId);
     }
 

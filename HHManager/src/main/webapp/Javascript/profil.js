@@ -4,19 +4,20 @@
 var brukerId;
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
+brukerId = minBruker.brukerId;
 var epost =minBruker.epost;
 var husholdningId;
 var husholdninger;
 var medlemmer;
 
 function gethhData() {
-    $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
+    $.getJSON("server/hhservice/" + brukerId + "/husholdningData", function (data) {
         husholdning = data;
     });
 }
 
 function getHusholdninger() {
-    $.getJSON("server/hhservice/husholdning/" + minBruker.brukerId, function (data) {
+    $.getJSON("server/hhservice/husholdning/" + minBruker.favHusholdning, function (data) {
         husholdninger = data;
     });
 }
@@ -291,7 +292,6 @@ $(document).ready(function () {
     function lagreEndringer() {
     }
 
-
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
         var nyttNavn = $("#nyttnavn").val();
@@ -369,8 +369,6 @@ $(document).ready(function () {
         });
     });
 
-
-
     function lagre() {
     }
 });
@@ -382,9 +380,9 @@ function hentliste() {
         console.log(husholdnavn);
 
         $("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
-            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 id="tittel" class="panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
-            '<div><button id="meldut"' +
-            ' class="btn btn-danger pull-right removeButton col-md-3" type="button" style="width: 70px">Forlat</button></div>' +
+            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 id="tittel" class= "panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
+            '<div class = "collapse"><button id="meldut"' +
+            ' class="btn btn-danger pull-right removeButton col-md-3" type="button" style="width: 70px" >Forlat</button></div>' +
             '</div><div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
             '<div id="list1" class="list-group">' + '</div></div></div></div>');

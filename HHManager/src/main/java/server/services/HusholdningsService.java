@@ -83,10 +83,9 @@ public class HusholdningsService {
     }
 
     @GET
-    @Path("/{epost}/husholdningData")
+    @Path("/{husholdningId}/husholdningData")
     @Produces(MediaType.APPLICATION_JSON)
-    public Husholdning getHhData(@PathParam("epost") String epost){
-        return HusholdningController.getFavHusholdningData(epost);
+    public Husholdning getHhData(@PathParam("husholdningId") int husholdningId){return HusholdningController.getFavHusholdningData(husholdningId);
     }
 
     @POST
