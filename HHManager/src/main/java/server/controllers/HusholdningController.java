@@ -29,22 +29,23 @@ public class HusholdningController {
 
     public static ArrayList<Husholdning> getAlleHusholdninger () {
         String selectAll = "select * from husholdning";
-        String handlelister = "SELECT FROM husholdning " +
+        String selectHandlelister = "SELECT * FROM husholdning " +
                 "LEFT JOIN handleliste on handleliste.husholdningId = husholdning.husholdningId ORDER BY husholdning.husholdningId";
-        String gjoremal = "SELECT * " +
+        String selectGjoremal = "SELECT * " +
                 "FROM husholdning " +
                 "LEFT JOIN gjøremål on husholdning.husholdningId = gjøremål.husholdningId ORDER BY husholdning.husholdningId;";
-        String nyhetsinnlegg = "SELECT * " +
+        String selectNyhetsinnlegg = "SELECT * " +
                 "FROM husholdning " +
                 "LEFT JOIN nyhetsinnlegg ON husholdning.husholdningId = nyhetsinnlegg.husholdningId ORDER BY husholdning.husholdningId";
 
         try(Connection connection = ConnectionPool.getConnection();
-            PreparedStatement prepSelectAll = connection.prepareStatement(selectAll);
-            PreparedStatement prepHandlelister = connection.prepareStatement(handlelister);
-            PreparedStatement prepGjoremal = connection.prepareStatement(gjoremal);
-            PreparedStatement prepNyhetsinnlegg = connection.prepareStatement(nyhetsinnlegg)) {
-            ResultSet resultSet = prepSelectAll.executeQuery();
+            PreparedStatement prepHus = connection.prepareStatement(selectAll);
+            PreparedStatement prepHandlelister = connection.prepareStatement(selectHandlelister);
+            PreparedStatement prepGjoremal = connection.prepareStatement(selectGjoremal);
+            PreparedStatement prepNyhetsinnlegg = connection.prepareStatement(selectNyhetsinnlegg)) {
 
+            // select * from husholdning
+            ResultSet resultSet = prepHus.executeQuery();
             ArrayList<Husholdning> husArray = new ArrayList<>();
             while (resultSet.next()) {
                 Husholdning husholdning = new Husholdning();
@@ -53,10 +54,123 @@ public class HusholdningController {
                 husArray.add(husholdning);
             }
 
+            // legger til alle handlelister
             resultSet = prepHandlelister.executeQuery();
-            while (resultSet.next()) {
+            int i = 0;
+            ArrayList<Handleliste> handlelister = new ArrayList<>();;
+            while (resultSet.next()) { // itererer gjennom resultsettet
+                Husholdning husholdning = husArray.get(i);
+                Handleliste handleliste;
+                if (husholdning.getHusholdningId() == resultSet.getInt(1)) {
+                    handleliste = new Handleliste();
+                    handleliste.setHusholdningId(husholdning.getHusholdningId());
+                    handleliste.setFrist(resultSet.getDate(5));
+                    handleliste.setOffentlig(resultSet.getBoolean(6));
+                    handleliste.setTittel(resultSet.getString(7));
+                    handleliste.setSkaperId(resultSet.getInt(8));
+                    handlelister.add(handleliste);
+                    continue;
+                }
+                husholdning.setHandlelister(handlelister);
+                if (husholdning.getHusholdningId() < resultSet.getInt(1)){
+                    for (; i < husArray.size(); i++) {
+                        husholdning = husArray.get(i);
+                        if (husholdning.getHusholdningId() == resultSet.getInt(1))
+                            break;
+                    }
+                }
+            }
 
-// begynn å jobb her
+            // legger til alle gjøremål
+            resultSet = prepGjoremal.executeQuery();
+            i = 0;
+            ArrayList<Gjøremål> gjøremåls;
+            while (resultSet.next()) { // itererer gjennom resultsettet
+                gjøremåls = new ArrayList<>();
+                Husholdning husholdning = husArray.get(i);
+                Gjøremål gjoremal;
+                if (resultSet.getString(3) == null) continue;
+                if (husholdning.getHusholdningId() == resultSet.getInt(1)) {
+                    gjoremal = new Gjøremål();
+                    gjoremal.setHusholdningId(resultSet.getInt(1));
+                    gjoremal.setGjøremålId(resultSet.getInt(3));
+                    gjoremal.setHhBrukerId(resultSet.getInt(5));
+                    gjoremal.setFullført(resultSet.getBoolean(6));
+                    gjoremal.setBeskrivelse(resultSet.getString(7));
+                    gjoremal.setFrist(resultSet.getDate(8));
+                    gjøremåls.add(gjoremal);
+                    continue;
+                }
+                husholdning.setGjøremål(gjøremåls);
+                if (husholdning.getHusholdningId() < resultSet.getInt(1)){
+                    for (; i < husArray.size(); i++) {
+                        husholdning = husArray.get(i);
+                        if (husholdning.getHusholdningId() == resultSet.getInt(1))
+                            break;
+                    }
+                }
+            }
+
+            // legger til nyhetsinnlegg
+            resultSet = prepNyhetsinnlegg.executeQuery();
+            i = 0;
+            ArrayList<Nyhetsinnlegg> nyhetsinnleggs;
+            while (resultSet.next()) { // itererer gjennom resultsettet
+                nyhetsinnleggs = new ArrayList<>();
+                Husholdning husholdning = husArray.get(i);
+                Nyhetsinnlegg nyhetsinnlegg;
+                if (resultSet.getString(3) == null) continue;
+                if (husholdning.getHusholdningId() == resultSet.getInt(1)) {
+                    nyhetsinnlegg = new Nyhetsinnlegg();
+                    nyhetsinnlegg.setHusholdningId(resultSet.getInt(1));
+                    nyhetsinnlegg.setNyhetsinnleggId(resultSet.getInt(3));
+                    nyhetsinnlegg.setTekst(resultSet.getString(5));
+                    nyhetsinnlegg.setDato(resultSet.getDate(6));
+                    nyhetsinnlegg.setForfatterId(resultSet.getInt(7));
+                    nyhetsinnleggs.add(nyhetsinnlegg);
+                    continue;
+                }
+                husholdning.setNyhetsinnlegg(nyhetsinnleggs);
+                if (husholdning.getHusholdningId() < resultSet.getInt(1)){
+                    for (; i < husArray.size(); i++) {
+                        husholdning = husArray.get(i);
+                        if (husholdning.getHusholdningId() == resultSet.getInt(1))
+                            break;
+                    }
+                }
+            }
+
+            // har en liste over alle gjøremål. Disse må være sortert etter husId. Det er de pga autoinkrement
+            // går gjennom resultsettet og legger linjen til det riktige huselementet
+            //      Har det første objektet
+            //      Sjekker om ID-en til objektet matcher nummeret i resultsettet
+            //      Hvis ja -- legger data til objektet. Går til neste linje i rs.
+            //      Hvis rs nei og høyere -- går til neste objekt
+            //      catch array out of bounds ex ved å bare si seg ferdig og gå videre
+
+            // legger til nyhetsinnlegg
+            resultSet = prepNyhetsinnlegg.executeQuery();
+            i = 0;
+            ArrayList<Bruker> hhMedlems;
+            while (resultSet.next()) { // itererer gjennom resultsettet
+                hhMedlems = new ArrayList<>();
+                Husholdning husholdning = husArray.get(i);
+                Bruker hhMedlem;
+                if (resultSet.getString(3) == null) continue;
+                if (husholdning.getHusholdningId() == resultSet.getInt(1)) {
+                    hhMedlem = new Bruker();
+                    hhMedlem.setBrukerId(resultSet.getInt(3));
+                    hhMedlems.add(hhMedlem);
+                    continue;
+                }
+                husholdning.setMedlemmer(hhMedlems);
+                if (husholdning.getHusholdningId() < resultSet.getInt(1)){
+                    for (; i < husArray.size(); i++) {
+                        husholdning = husArray.get(i);
+                        if (husholdning.getHusholdningId() == resultSet.getInt(1))
+                            break;
+                    }
+                }
             }
 
             return husArray;
@@ -66,11 +180,12 @@ public class HusholdningController {
         }
     }
 
-    private Husholdning finnHusholdning(ArrayList<Husholdning> husholdningArrayList, int id) {
+    private static Husholdning finnHusholdning(ArrayList<Husholdning> husholdningArrayList, int id) {
         for (Husholdning h :
                 husholdningArrayList) {
             if (h.getHusholdningId() == id) return h;
         }
+        return null;
     }
 
     /**
@@ -240,7 +355,12 @@ public class HusholdningController {
         }
     }
 
-    public static Husholdning getHusholdningData(String epost){
+    /**
+     * Henter ut dataene til favoritthusholdningen til en bruker
+     * @param epost til brukeren
+     * @return dataene til favoritthusholdningen
+     */
+    public static Husholdning getFavHusholdningData(String epost){
         Husholdning huset = new Husholdning();
         int fav = 0;
         int brukerId = 0;
