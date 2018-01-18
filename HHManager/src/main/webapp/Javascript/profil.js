@@ -1,10 +1,11 @@
 /**
  * Created by BrageHalse on 10.01.2018.
  */
-var brukerId;
+
+
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
-brukerId = minBruker.brukerId;
+var brukerId = minBruker.brukerId;
 var epost = minBruker.epost;
 var husholdningId;
 var husholdninger;
