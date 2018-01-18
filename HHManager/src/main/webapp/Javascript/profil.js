@@ -370,6 +370,10 @@ $(document).ready(function () {
 
     function lagre() {
     }
+
+    $("#nyHusProfil").on("click", function () {
+        $("#modaldiv").load("lagnyhusstand.html");
+    })
 });
 function hentliste() {
     console.log(husholdninger);
