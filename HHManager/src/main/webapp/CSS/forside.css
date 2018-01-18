@@ -11,7 +11,7 @@
     height: 150px;
     margin-right: 120px;
     margin-left: 120px;
-    margin-top: 0px;
+    margin-top: 10px;
 }
 
 .container-checkbox{
@@ -30,6 +30,7 @@
     margin-right: 200px;
     margin-left: 100px;
     margin-top: 30px;
+    margin-bot:20px;
 }
 
 .glyphicon-plus-sign{
@@ -47,8 +48,8 @@
     content: "";
     border-left: 1px solid #DDD;
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 10px;
+    bottom: 10px;
 }
 
 .vl{
