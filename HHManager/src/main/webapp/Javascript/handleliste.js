@@ -1,16 +1,17 @@
 /**
  * Created by Karol on 14.01.2018.
  */
-var epost = localStorage.getItem("epost");
-var brukerId = localStorage.getItem("brukerId");
+var bruker = JSON.parse(localStorage.getItem("bruker"));
+var epost = bruker.epost;
+var brukerId = bruker.brukerId;
 var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
 
 
 $(document).ready(function () {
-    gethhData();
-    getBrukerData();
+    //   gethhData();
+    // getBrukerData();
     getHandlelisterData();
     setTimeout(setupPage,1000);
 
