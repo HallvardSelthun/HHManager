@@ -4,7 +4,7 @@
 var brukerId;
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
-var epost = localStorage.getItem("epost");
+var epost =minBruker.epost;
 var husholdningId;
 var husholdninger;
 var medlemmer;
