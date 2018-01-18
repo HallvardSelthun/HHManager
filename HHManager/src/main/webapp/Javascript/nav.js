@@ -83,8 +83,6 @@ $(document).ready(function () {
         if (navnHus == "" || medlemHus == "") {
             alert("Skriv inn noe");
             return;
-            window.location = "index.html"
-            console.log("inni if");
         }
         $.ajax({
             url: "server/hhservice/husholdning",
