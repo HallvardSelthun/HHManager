@@ -7,6 +7,8 @@ import server.restklasser.Nyhetsinnlegg;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.*;
+import java.util.ArrayList;
+
 /**
  * <h1>Service for de fleste funksjoner innad i programmet</h1>
  * Gateway til å hente og legge inn all data i databasen.
@@ -21,15 +23,22 @@ public class HusholdningsService {
 
     /**
      * Legger inn en ny husholdning og returnerer dens ID
-     * @param navn Husholdningens nye navn
+     * @param husholdning ny husholdning
      * @return int Husholdningens ID i databasen og til bruk på nettsiden.
      */
     @POST
-    @Path("/husholdning/{navn}")
+    @Path("/husholdning/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public int lagreNyHusholdning(@PathParam("navn") String navn) {
-        return HusholdningController.ny(navn);
+    public int lagreNyHusholdning(Husholdning husholdning) {
+        return HusholdningController.ny(husholdning);
 
+    }
+
+    @GET
+    @Path("/husholdning")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Husholdning> getInfoHusholdning() {
+        return HusholdningController.getAlleHusholdninger();
     }
 
     /**
@@ -49,6 +58,19 @@ public class HusholdningsService {
     }
 
     /**
+     * Henter alle husholdninger for en gitt brukerid.
+     * @param brukerId int id for å skille brukere fra hverandre
+     * @return ArrayList med husholdninger.
+     */
+
+    @GET
+    @Path("/husholdning/{brukerid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Husholdning> getHusholdninger(@PathParam("brukerid") int brukerId) {
+        return HusholdningController.getHusholdninger(brukerId);
+    }
+
+    /**
      * Brukes for å slette en husholdning fra databasen.
      * @param id Husholdningens ID
      * @return boolean True hvis det lykkes, false hvis det ikke lykkes.
@@ -64,7 +86,7 @@ public class HusholdningsService {
     @Path("/{epost}/husholdningData")
     @Produces(MediaType.APPLICATION_JSON)
     public Husholdning getHhData(@PathParam("epost") String epost){
-        return HusholdningController.getHusholdningData(epost);
+        return HusholdningController.getFavHusholdningData(epost);
     }
 
     @POST

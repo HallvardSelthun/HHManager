@@ -94,7 +94,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                <button id="leggTilKnapp" type="button" class="btn btn-primary">Legg til</button>
+                <button id="leggTilNyHandlelisteKnapp" type="button" class="btn btn-primary">Legg til</button>
             </div>
         </div>
     </div>
@@ -105,104 +105,12 @@
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <h1>Handlelister</h1>
-
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
-                        <a id="handlelisteTittel" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                            Søndagslista</a>
-                    </h4>
-                    <div>
-                        <button id="slettHandleliste" type="button" class="btn btn-danger pull-right">Slett handleliste</button>
-                    </div>
-                </div>
-                <div id="collapse1" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        <div class="panel-body">
-                            <ul class="list-group" id="handlelisterSide"></ul>
-
-
-                            <div class="list-group" id="list1">
-                                <form>
-                                    <div class="input-group">
-                                        <input id="leggTilNyGjenstand" type="text" class="form-control"
-                                               placeholder="Legg til ny gjenstand i listen">
-                                        <div class="input-group-btn">
-                                            <button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit">
-                                                <i class="glyphicon glyphicon-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <br>
-                                <button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal"
-                                        data-target="#utleggmodal">Lag utlegg
-                                </button>
-                                <!-- Rounded switch -->
-                                <h5 id="offtekst" class="pull-right">Offentlig</h5>
-                                <label class="switch pull-right">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                                Festliste</a>
-                        </h4>
-                    </div>
-                    <div id="collapse2" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="list-group" id="list2">
-                                <a href="#" class="list-group-item ">List 1 <input title="toggle all" type="checkbox"
-                                                                                   class="all pull-right"></a>
-                                <a href="#" class="list-group-item">Second item <input type="checkbox"
-                                                                                       class="pull-right"></a>
-                                <a href="#" class="list-group-item">Third item <input type="checkbox"
-                                                                                      class="pull-right"></a>
-                                <a href="#" class="list-group-item">More item <input type="checkbox" class="pull-right"></a>
-                                <a href="#" class="list-group-item">Another <input type="checkbox"
-                                                                                   class="pull-right"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                                    Vasking</a>
-                            </h4>
-                        </div>
-                        <div id="collapse3" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div class="list-group" id="list3">
-                                    <a href="#" class="list-group-item ">List 1 <input title="toggle all"
-                                                                                       type="checkbox"
-                                                                                       class="all pull-right"></a>
-                                    <a href="#" class="list-group-item">Second item <input type="checkbox"
-                                                                                           class="pull-right"></a>
-                                    <a href="#" class="list-group-item">Third item <input type="checkbox"
-                                                                                          class="pull-right"></a>
-                                    <a href="#" class="list-group-item">More item <input type="checkbox"
-                                                                                         class="pull-right"></a>
-                                    <a href="#" class="list-group-item">Another <input type="checkbox"
-                                                                                       class="pull-right"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="container-fluid">
+            <h1>Handlelister</h1>
+            <div id="handlelister" class="panel-group"></div>
+            <div class="container-fluid">
+                <button id="nyhandel" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#leggTilNyHandlelisteModal">Legg til ny handleliste</button>
             </div>
-        </div>
-        <div class="container">
-            <button id="nyhandel" type="button" class="btn btn-primary pull-left" data-toggle="modal"
-            data-target="#leggTilNyHandlelisteModal">Legg til ny handleliste</button>
         </div>
     </div>
     <div class="col-md-3"></div>

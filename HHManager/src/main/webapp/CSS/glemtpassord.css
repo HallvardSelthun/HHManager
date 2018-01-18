@@ -1,4 +1,6 @@
 div {
+    margin-right: auto;
+    margin-left: auto;
     display: block;
     /*width: 500px;*/
     margin-top: 10px;
@@ -6,4 +8,7 @@ div {
 }
 .logo{
     border: 0px;
+}
+#all{
+    width: 60%;
 }

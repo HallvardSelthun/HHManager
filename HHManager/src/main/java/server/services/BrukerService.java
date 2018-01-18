@@ -74,7 +74,7 @@ public class BrukerService {
     @Path("/endreEpost")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean endreEpost(Bruker bruker){
-        BrukerController.setNyEpost(Integer.toString(bruker.getBrukerId()), bruker.getEpost());
+        BrukerController.setNyEpost(bruker.getEpost(),Integer.toString(bruker.getBrukerId()));
         return false;
     }
 

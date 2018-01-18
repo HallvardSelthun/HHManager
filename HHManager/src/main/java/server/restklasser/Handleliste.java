@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 /**
+ *
  * Created by BrageHalse on 10.01.2018.
  */
 public class Handleliste {

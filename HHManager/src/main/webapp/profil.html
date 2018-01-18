@@ -13,24 +13,25 @@
     <script src="Javascript/nav.js"></script>
     <script src="Javascript/profil.js"></script>
 </head>
-
 <body>
-<div id="epostmodal" class= "modal fade">
+<div id="epostmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"> <span class="glyphicon glyphicon-envelope"></span> Endre epostadresse</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span> Endre epostadresse</h4>
             </div>
             <div class="modal-body">
                 <div class="endrepost">
                     <p>Ny epostadresse</p>
-                    <input id="nyepost" type="text" class="form-control" name="textfield" placeholder="Skriv ny epostadresse her">
+                    <input id="nyepost" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv ny epostadresse her">
                 </div>
                 <br>
                 <div class="bekreftepost">
                     <p>Bekreft ny epostadresse</p>
-                    <input id="nyepost2" type="text" class="form-control" name="textfield" placeholder="Bekreft ny epostadresse her">
+                    <input id="nyepost2" type="text" class="form-control" name="textfield"
+                           placeholder="Bekreft ny epostadresse her">
                 </div>
             </div>
             <div class="modal-footer">
@@ -40,22 +41,24 @@
         </div>
     </div>
 </div>
-<div id="passordmodal" class= "modal fade">
+<div id="passordmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"> <span class="glyphicon glyphicon-lock"></span> Endre passord</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Endre passord</h4>
             </div>
             <div class="modal-body">
                 <div class="nypassord">
                     <p>Nytt passord</p>
-                    <input id="nyttpassord" type="text" class="form-control" name="textfield" placeholder="Skriv nytt passord her">
+                    <input id="nyttpassord" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv nytt passord her">
                 </div>
                 <br>
                 <div class="bekreft">
                     <p>Bekreft nytt passord</p>
-                    <input id="bekreftnytt" type="text" class="form-control" name="textfield" placeholder="Bekreft nytt passord her">
+                    <input id="bekreftnytt" type="text" class="form-control" name="textfield"
+                           placeholder="Bekreft nytt passord her">
                 </div>
             </div>
             <div class="modal-footer">
@@ -88,44 +91,51 @@
 </div>
 <div class="row grid-divider">
     <div class="col-md-6">
-        <a href="https://some.addres" imageanchor="1"><img align="left" src="web-res/profileicon.png" width="14%" border="0"></a>
-        <h1 id="navnpåpers">Ola Normann</h1>
-        <div class="well well-sm">
-            <p id="epost">olanormann@gmail.com</p>
+        <a href="https://some.addres" imageanchor="1"><img align="left" src="web-res/profileicon.png" width="14%"
+                                                           border="0"></a>
+        <div class="info">
+            <h1 id="navnpåpers">Ola Normann</h1>
+            <h4 id="mail"> olanormann@gmail.com</h4>
+            <button id="navnknapp" type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#navnmodal">Endre navn
+            </button>
+            <button id="passord" type="button" class="btn btn-primary" data-toggle="modal" data-target="#passordmodal">
+                Endre passord
+            </button>
+            <button id="epostknapp" type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#epostmodal">Endre epost
+            </button>
         </div>
-        <button id="navnknapp" type="button" class="btn btn-primary pull-left" data-toggle="modal"
-                data-target="#navnmodal">Endre navn</button>
-        <button id="passord" type="button" class="btn btn-primary" data-toggle="modal" data-target="#passordmodal">Endre passord</button>
-        <button id="epostknapp" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#epostmodal">Endre epost</button>
     </div>
+
+
     <div class="col-md-6" align="center">
-        <h2>Dine husstander </h2>
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
+
+        <div class="container-fluid">
+            <h2>Dine husstander </h2>
+            <div id="husstander" class="panel-group"></div>
+            <div class="container-fluid">
+            </div>
+        </div>
+        <!--<ul class="panel-group" id="accordion">
+            <li class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                            Hustand 1</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Hustand 1</a>
                     </h4>
                     <div>
                         <button type="button" class="btn btn-danger pull-right">Slett husstand</button>
                     </div>
                 </div>
-                <div id="collapse1" class="panel-collapse collapse in">
+                <div id="collapse2" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        <div class="panel-body">
-                            <div class="list-group" id="list1">
-                                <a href="#" class="list-group-item ">List 1</a>
-                                <a href="#" class="list-group-item">Second item</a>
-                                <a href="#" class="list-group-item">Third item</a>
-                                <a href="#" class="list-group-item">More item</a>
-                                <a href="#" class="list-group-item">Another</a>
-                            </div>
-                        </div>
+                        <ul class="list-group" id="list1">
+                            <li class="list-group-item ">List 1</li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>-->
     </div>
 </div>
 <div id="modaldiv"></div>

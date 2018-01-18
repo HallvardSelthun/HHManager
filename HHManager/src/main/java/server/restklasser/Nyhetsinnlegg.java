@@ -3,6 +3,7 @@ package server.restklasser;
 import java.sql.Date;
 
 /**
+ *
  * Created by BrageHalse on 10.01.2018.
  */
 public class Nyhetsinnlegg {
@@ -11,6 +12,10 @@ public class Nyhetsinnlegg {
     private int husholdningId;
     private Date dato;
     private String tekst;
+
+    public Nyhetsinnlegg (){
+
+    }
 
     public int getNyhetsinnleggId() {
         return nyhetsinnleggId;

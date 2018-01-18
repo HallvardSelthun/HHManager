@@ -4,12 +4,30 @@
 var brukerId;
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
-var epost = localStorage.getItem("epost");
+var epost =minBruker.epost;
 var husholdningId;
+var husholdninger;
 var medlemmer;
-$(document).ready(function () {
-    var MD5 = function (string) {
 
+function gethhData() {
+    $.getJSON("server/hhservice/" + epost + "/husholdningData", function (data) {
+        husholdning = data;
+    });
+}
+
+function getHusholdninger() {
+    $.getJSON("server/hhservice/husholdning/" + minBruker.brukerId, function (data) {
+        husholdninger = data;
+    });
+}
+$(document).ready(function () {
+    gethhData();
+    getHusholdninger();
+    setTimeout(function () {
+        hentliste();
+    },400);
+
+    var MD5 = function (string) {
         function RotateLeft(lValue, iShiftBits) {
             return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
         }
@@ -228,15 +246,18 @@ $(document).ready(function () {
     console.log(minBruker);
 
     $("#navnpåpers").text(minBruker.navn);
-    $("#epost").text(minBruker.epost);
+    $("#mail").text(minBruker.epost);
 
 
     $("#lagreendringer").on('click', function () {
-        var brukerId = localStorage.getItem("brukerId");
+        var brukerId = minBruker.brukerId;
         var endrepassord1 = $("#nyttpassord").val();
         var endrepassord2 = $("#bekreftnytt").val();
-
-        if (endrepassord1 == endrepassord2) {
+        if (endrepassord1 == "" || endrepassord2 == "") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
+        else if (endrepassord1 == endrepassord2) {
             endrepassord1 = MD5(endrepassord1);
             var bruker = {
                 brukerId: brukerId,
@@ -250,7 +271,9 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (result) {
                     var data = JSON.parse(result);
+                    minBruker.passord = endrepassord1;
                     window.location = "profil.html";
+                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Passordet er endret");
                 },
                 error: function () {
@@ -264,18 +287,23 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
+
     function lagreEndringer() {
     }
 
 
-$("#endre").on('click', function () {
-    var brukerId = localStorage.getItem("brukerId");
-    var nyttNavn = $("#nyttnavn").val();
-
-    var bruker = {
+    $("#endre").on('click', function () {
+        var brukerId = minBruker.brukerId;
+        var nyttNavn = $("#nyttnavn").val();
+        console.log(nyttNavn);
+        var bruker = {
             brukerId: brukerId,
-            navn: nyttNavn,
+            navn: nyttNavn
         };
+        if (nyttNavn == "") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
         $.ajax({
             url: "server/BrukerService/endreNavn",
             type: 'PUT',
@@ -285,26 +313,30 @@ $("#endre").on('click', function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 $("#navnpåpers").text(nyttNavn);
-
+                minBruker.navn = nyttNavn;
                 window.location = "profil.html";
-
-                alert("Navnet er endret");
-
+                localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
                 alert("Noe gikk galt :(")
             }
         });
-
-    $("#button").on('click', function () {
-        alert("Du har valgt å avbryte")
+        $("#button").on('click', function () {
+            alert("Du har valgt å avbryte")
+        });
     });
 
-});
+    function endre() {
+    }
+
     $("#lagre").on('click', function () {
-        var brukerId = localStorage.getItem("brukerId");
+        var brukerId = minBruker.brukerId;
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
+        if (nyepost1 == "" || nyepost2 =="") {
+            alert("PLIS SKRIV IN NOKE...")
+            return;
+        }
 
         if (nyepost1 == nyepost2) {
             var bruker = {
@@ -319,8 +351,10 @@ $("#endre").on('click', function () {
                 dataType: 'json',
                 success: function (result) {
                     $("#epost").text(nyepost1);
+                    minBruker.epost = nyepost1;
                     var data = JSON.parse(result);
                     window.location = "profil.html";
+                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Eposten er endret");
                 },
                 error: function () {
@@ -334,6 +368,54 @@ $("#endre").on('click', function () {
             alert("Du har valgt å avbryte")
         });
     });
+
+
+
     function lagre() {
     }
 });
+function hentliste() {
+    console.log(husholdninger);
+    for(var k = 0, lengt = husholdninger.length; k< lengt; k++) {
+        husholdningId = husholdninger[k].husholdningId;
+        var husholdnavn = husholdninger[k].navn;
+        console.log(husholdnavn);
+
+        $("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
+            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 id="tittel" class="panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
+            '<div><button id="meldut"' +
+            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Forlat</button></div>' +
+            '</div><div id="' + husholdningId + '"' +
+            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
+            '<div id="list1" class="list-group">' + '</div></div></div></div>');
+
+       /* $("#accordion").append('<li class="panel panel-default">' +
+            '<div class="panel-heading clearfix"><h4 class="panel-title pull-left" style="padding-top: 7.5px;">' +
+            ' <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">'+husholdnavn+'</a> </h4> <div>' +
+            '<button id="slett '+ husholdnavn+'" type="button" class="btn btn-danger pull-right">Slett husstand</button></div></div> ' +
+            '<div id="collapse1" class="panel-collapse collapse in"> <div class="panel-body">' +
+            '<ul class="list-group" id='+husholdnavn+'>');*/
+
+
+        for (var p = 0, lengt2 = husholdninger[k].medlemmer.length; p<lengt2; p++){
+            var medlemnavn = husholdninger[k].medlemmer[p].navn;
+            console.log(medlemnavn);
+
+            $("#husstander ul").append('<li class="list-group-item "> '+medlemnavn+'</li>');
+
+            /*
+                        $("#accordion").append('<li class="list-group-item ">'+medlemnavn+'</li>');
+            */
+       // $("#accordion").append('</ul></div></div></li>');
+    }
+}
+}
+
+function displayDiv() {
+    var x = document.getElementsByClassName("invisibleDiv");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}

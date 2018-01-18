@@ -3,6 +3,7 @@ package server.restklasser;
 import java.util.ArrayList;
 
 /**
+ *
  * Created by BrageHalse on 10.01.2018.
  */
 public class Husholdning {
@@ -12,6 +13,15 @@ public class Husholdning {
     private ArrayList<Gjøremål> gjøremål = new ArrayList<>();
     private ArrayList<Nyhetsinnlegg> nyhetsinnlegg = new ArrayList<>();
     private ArrayList<Bruker> medlemmer = new ArrayList<>();
+    private String adminId;
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
 
     public ArrayList<Handleliste> getHandlelister() {
         return handlelister;

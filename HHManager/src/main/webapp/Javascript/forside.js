@@ -2,15 +2,15 @@
  * Created by BrageHalse on 12.01.2018.
  */
 var husholdning;
-var bruker;
-var epost = localStorage.getItem("epost");
+var bruker = JSON.parse(localStorage.getItem("bruker"));
+var epost = bruker.epost;
 var brukerId;
 var husholdningId;
 var medlemmer;
 
 $(document).ready(function () {
     gethhData();
-    getBrukerData();
+    //getBrukerData();
     setTimeout(setupPage,1000);
     $("#commentBtn").on("click", function () {
         postInnlegg();
@@ -20,12 +20,10 @@ $(document).ready(function () {
 function setupPage() {
     console.log(husholdning);
     husholdningId = husholdning.husholdningId;
-    bruker.favHusholdning = husholdningId;
     var husNavn = husholdning.navn;
     var nyhetsinnlegg = husholdning.nyhetsinnlegg;
     medlemmer = husholdning.medlemmer;
     var handlelister = husholdning.handlelister;
-    localStorage.setItem("bruker", JSON.stringify(bruker));
     localStorage.setItem("husholdningId", husholdningId);
 
     for (var i = 0, len = nyhetsinnlegg.length; i < len; i++) {
@@ -36,7 +34,6 @@ function setupPage() {
     brukernavn = bruker.navn;
     var gjøremål = bruker.gjøremål;
     console.log(bruker);
-
 
     $("#nyhet").html(husNavn);
 
@@ -64,7 +61,7 @@ function gethhData() {
 }
 function getBrukerData() {
     $.getJSON("server/BrukerService/" + epost + "/brukerData", function (data) {
-        bruker = data;
+        //bruker = data;
     });
 }
 function postInnlegg() {

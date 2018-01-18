@@ -14,6 +14,10 @@
     margin-top:20px;
 }
 
+.panel-title {
+    text-align: left;
+}
+
 /*#navnknapp {
     margin-top: 10px;
     margin-left: 89px;
