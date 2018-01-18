@@ -375,10 +375,10 @@ public class HusholdningController {
 
     /**
      * Henter ut dataene til favoritthusholdningen til en bruker
-     * @param epost til brukeren
+     * @param husholdningId aktuell husholdningid
      * @return dataene til favoritthusholdningen
      */
-    public static Husholdning getFavHusholdningData(String epost){
+    public static Husholdning getFavHusholdningData(int husholdningId){
         Husholdning huset = new Husholdning();
         int fav = husholdningId;
         huset.setHusholdningId(fav);
