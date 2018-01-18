@@ -384,7 +384,7 @@ function hentliste() {
         $("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 id="tittel" class="panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
             '<div><button id="meldut"' +
-            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Forlat</button></div>' +
+            ' class="btn btn-danger pull-right removeButton col-md-3" type="button" style="width: 70px">Forlat</button></div>' +
             '</div><div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
             '<div id="list1" class="list-group">' + '</div></div></div></div>');
