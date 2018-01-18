@@ -151,6 +151,7 @@ public class UtleggController {
      * en ArrayList med Utleggsbetaler, der minBrukerId er utleggsbetaler.
      * Oppgjørenes brukerId er brukerne minBrukerId skylder penger.
      * @param minBrukerId Id til brukeren vi henter oppgjørene til
+     * @param connection Sendes videre fra moder-metoden getMineOppgjør()
      * @return ArrayList med Utleggsbetaler.
      */
     private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection) {
@@ -208,6 +209,7 @@ public class UtleggController {
      * og det legges inn Utleggsbetaler-objekter for hvert utlegg de skylder meg penger for.
      * @param eksisterendeOppgjor Array av oppgjør laget av getAlleOppgjorJegSkylder()
      * @param minBrukerId Id til brukeren vi henter oppgjørene til
+     * @param connection Sendes videre fra moder-metoden getMineOppgjør()
      * @return ArrayList med Utleggsbetaler.
      */
     private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection) throws SQLException{
@@ -244,6 +246,14 @@ public class UtleggController {
         return eksisterendeOppgjor;
     }
 
+
+    /**
+     * Tar inn en brukerId og returnerer en array med Oppgjør-objekter.
+     * Hvert oppgjør-objekt inneholder BrukerIden til en person man enten skylder penger, den skylder deg,
+     * eller begge. Hvor mye som skyldes lagres i to ArrayLists med "Utleggsbetaler"-objekter.
+     * @param minBrukerId ID til brukeren som vi henter oppgjørene til
+     * @return Array med alle pågående oppgjør
+     */
     public static ArrayList<Oppgjor> getMineOppgjor(int minBrukerId) {
 
             ArrayList<Oppgjor> mineOppgjor = new ArrayList<Oppgjor>();
@@ -253,31 +263,6 @@ public class UtleggController {
                 ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection);
 
                 return mineOppgjorNy;
-
-                //Utlegg jeg skylder folk for
-                //Gå inn i utleggsbetaler-tabellen og returer alle utlegg som har min skyldigBrukerId
-                // - Sett sammen disse resultatene med utlegg-tabellen, slik at vi får utleggerIdene
-                // - Disse utleggerIdene hører til folka jeg skylder penger
-                // - Lag Oppgjør-objekter med vha. disse utleggerIdene
-                // - For hver unike utleggerId, legg inn "utleggsbetaler" som har min skyldigBrukerId
-                // - Nå har alle Oppgjør-objektene info om hva jeg skylder den personen
-
-                //Utlegg folk skylder meg for
-                //Select alle utlegg med min utleggerId fra utlegg-tabellen
-                // - Inner join på utleggsbetaler på utleggId og få alle skyldigBrukerId samt utleggerId
-                // - Sjekk om utleggerId matcher utleggerIder i Oppgjør-objektene
-                // - Hvis en match finnes, lag nye Utleggsbetaler-objekter og legg dem inn i
-                //   Arrayen
-                // - Hvis vi ikke finner en match, lag nye Oppgjørs-objekter med alle skyldigBrukerId
-                //   som ikke allerede finnes i Oppgjørs-objektene
-                // - Legg inn alle utleggsbetaler i de nye Oppgjørs-objektene som har samme skyldigBrukerId
-                //   som Oppgjørs-objektet
-
-                //På denne måten vil noen oppgjør bare bestå av penger jeg skylder, noen bare penger
-                //folk skylder meg, og noen med begge.
-
-                //I JavaScript skal man kunne:
-
 
             } catch (SQLException e) {
                 e.printStackTrace();
