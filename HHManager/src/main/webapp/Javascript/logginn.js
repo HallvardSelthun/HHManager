@@ -251,7 +251,6 @@ $(document).ready(function () {
                 }
                 localStorage.setItem("bruker", JSON.stringify(innBruker));
                 window.location = "profil.html";
-
             },
             error: function () {
                 alert("serverfeil :/")

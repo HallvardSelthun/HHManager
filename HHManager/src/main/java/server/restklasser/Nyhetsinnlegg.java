@@ -13,6 +13,10 @@ public class Nyhetsinnlegg {
     private Date dato;
     private String tekst;
 
+    public Nyhetsinnlegg (){
+
+    }
+
     public int getNyhetsinnleggId() {
         return nyhetsinnleggId;
     }

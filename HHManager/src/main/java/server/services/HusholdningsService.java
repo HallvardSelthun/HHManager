@@ -58,6 +58,19 @@ public class HusholdningsService {
     }
 
     /**
+     * Henter alle husholdninger for en gitt brukerid.
+     * @param brukerId int id for å skille brukere fra hverandre
+     * @return ArrayList med husholdninger.
+     */
+
+    @GET
+    @Path("/husholdning/{brukerid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Husholdning> getHusholdninger(@PathParam("brukerid") int brukerId) {
+        return HusholdningController.getHusholdninger(brukerId);
+    }
+
+    /**
      * Brukes for å slette en husholdning fra databasen.
      * @param id Husholdningens ID
      * @return boolean True hvis det lykkes, false hvis det ikke lykkes.

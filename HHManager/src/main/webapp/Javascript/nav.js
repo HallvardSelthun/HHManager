@@ -9,6 +9,10 @@ $(document).ready(function (){
         $("#modaldiv").load("lagnyhusstand.html");
     });
 
+    setTimeout(function () {
+        $("#fade").hide()
+    }, 150);
+
     $('body').on('click', 'a#bildenav', function() {
         window.location = "forside.html"
     });
@@ -37,42 +41,50 @@ $(document).ready(function (){
         localStorage.clear();
         window.location = "index.html"
     });
+
     // til lagNyHusstandModalen
     $('body').on('click', '#leggTilMedlemKnapp', function () {
         var medlem = {
-            navn:$("#navnMeldlemHusstand").val()
+            epost: $("#navnMedlem").val()
         };
-        $("#navnMeldlemHusstand").val("");
+        $("#navnMedlem").val("");
         navnIHuset.push(medlem);
         console.log(navnIHuset);
+        $("#fade").show();
+        console.log("funker");
+    });
+
+    $('body').on('click', "a#alertbox", function () {
+        $("#fade").hide();
+        console.log("hide");
     });
 
     $("body").on("click", "#lagreHusKnapp", function () {
         var navnHus = $("#navnHusstand").val();
+        var medlemHus = $("#navnMedlem").val();
 
         var husObj = {
             navn: navnHus,
             medlemmer: navnIHuset,
             adminId: 1 // denne verdien er ikke konstant. Bare for testing til ting er på plass
         };
+        console.log(husObj);
 
         console.log("Prøver å sende husstand");
         $.ajax({
-            url: "server/hhservice",
+            url: "server/hhservice/husholdning",
             type: 'POST',
             data: JSON.stringify(husObj),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
-                console.log("Sender ny lagret ny husstand");
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log(data);
+                console.log("Data: "+data);
                 if (data){
                     alert("Det gikk bra!");
                 }else{
                     alert("feil!");
                 }
-
             },
             error: function () {
                 alert("serverfeil :/");
@@ -83,5 +95,4 @@ $(document).ready(function (){
     setTimeout(function () {
         $("a#profilNavn").text(navn);
     }, 150);
-
 });
