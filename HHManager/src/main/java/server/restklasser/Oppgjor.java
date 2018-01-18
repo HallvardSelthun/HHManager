@@ -2,8 +2,11 @@ package server.restklasser;
 
 import java.util.ArrayList;
 
-//Litt usikker på om vi faktisk skal ha denne klassen. -Toni
-//Sum kalkuleres clientside
+/**
+ * Et oppgjør tar bare for seg én bruker, sett fra mitt perspektiv. (perspektivet til en innlogget bruker på nettsiden)
+ * Det inneholder en liste over utlegg (utleggsbetaler-objekter) brukeren skylder meg penger for
+ * og en liste over utlegg(utleggsbetaler-objekter) jeg skylder brukeren for
+ */
 public class Oppgjor {
 
     ArrayList<Utleggsbetaler> utleggJegSkylder = new ArrayList<>();

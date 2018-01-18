@@ -46,6 +46,12 @@ public class UtleggController {
     }
     */
 
+
+    /**
+     * Henter alle utlegg som en brukerId har laget
+     * @param brukerId er unik id for hver bruker i databasen.
+     * @return ArrayList med Utlegg.
+     */
     public static ArrayList<Utlegg> getUtleggene(int brukerId) {
         String getUtleggQuery = "SELECT * FROM utlegg WHERE utleggerId = "+brukerId+"";
         String navn = BrukerController.getNavn(brukerId);
@@ -73,7 +79,13 @@ public class UtleggController {
         }
     }
 
-    private static ArrayList<Utleggsbetaler> getUtleggsbetalere(int utleggId, String navn) {
+    /**
+     * Hjelpemetode som gir en arraylist av Utleggsbetalere. De inneholder en skyldigBrukerId
+     * samt summen som skyldes mm. Brukes ikke til noe atm.
+     * @param utleggId er unik id for hvert utlegg i databasen
+     * @return ArrayList med Utleggsbetaler.
+     */
+    private static ArrayList<Utleggsbetaler> getUtleggsbetalere(int utleggId) {
 
         String query = "SELECT * FROM utleggsbetaler WHERE utleggId = "+utleggId+"";
         ArrayList<Utleggsbetaler> utleggsbetalere = new ArrayList<Utleggsbetaler>();
@@ -92,6 +104,12 @@ public class UtleggController {
         }
     }
 
+    /**
+     * Mye brukt hjelpemetode som lager en Utleggsbetaler ut ifra et ResultSet hentet fra
+     * databasen
+     * @param resultset SQL-resultset som inneholder all nødvendig informasjon til å lage et Utleggsbetaler-objekt
+     * @return ArrayList med Utleggsbetaler.
+     */
     private static Utleggsbetaler lagUtleggsbetalerObjekt(ResultSet resultset) throws SQLException{
         Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
         utleggsbetaler.setSkyldigBrukerId(resultset.getInt("skyldigBrukerId"));
@@ -102,7 +120,18 @@ public class UtleggController {
         return utleggsbetaler;
     }
 
-    //Krevet at ResultSet inneholder bruker-sql-data
+    /**
+     * Hjelpemetode som lager et Oppgjor-objekt fra et ResultSet.
+     * Tar også inne en boolean brukerenSkylderMeg, som bestemmer om om det er din eller
+     * den som skylder deg sin ID som blir lagret som Oppgjørers brukerID.
+     * Poenget med dette er:
+     * Hvis noen skylder deg penger, skal deres ID lagres som oppgjørets brukerId
+     * Hvis du skylder noen penger, skal deres ID (utleggerId på utlegget) lagres som oppgjørets brukerId
+     * Slik er Oppgjøret knyttet til en annen person enn deg uansett.
+     * @param resultset SQL-resultset som inneholder all nødvendig informasjon til å lage et Oppgjor-objekt
+     * @param brukerenSkylderMeg true hvis man vil lagre den som skylder deg som Oppgjørets brukerId, false hvis den du skylder skal lagres
+     * @return ArrayList med Utleggsbetaler.
+     */
     private static Oppgjor lagOppgjorObjekt(ResultSet resultset, boolean brukerenSkylderMeg) throws SQLException{
         Oppgjor nyttOppgjor = new Oppgjor();
         nyttOppgjor.setNavn(resultset.getString("navn"));
@@ -116,7 +145,14 @@ public class UtleggController {
     }
 
 
-    //Utlegg jeg skylder folk for
+    /**
+     * Hjelpemetode. Må alltid kjøres før appendAlleOppgjorFolkSkylderMeg().
+     * Tar utgangspunkt i brukerId og lager oppgjør som utelukkende består av
+     * en ArrayList med Utleggsbetaler, der minBrukerId er utleggsbetaler.
+     * Oppgjørenes brukerId er brukerne minBrukerId skylder penger.
+     * @param minBrukerId Id til brukeren vi henter oppgjørene til
+     * @return ArrayList med Utleggsbetaler.
+     */
     private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection) {
 
         //Gir alle utleggere som jeg skylder penger, samt beløpet jeg skylder mm.
@@ -163,7 +199,17 @@ public class UtleggController {
         }
     }
 
-    //Utlegg folk skylder meg for
+    /**
+     * Hjelpemetode. Må alltid kjøres etter getAlleOppgjorJegSkylder().
+     * Tar utgangspunkt i brukerId og Oppgjør-objektene getAlleOppgjorJegSkylder() laget
+     * Legger så inn hva andre skylder "meg" (brukerIden vi sender inn) i de allerde
+     * eksisterende Oppgjør-objektene (må være snakk om samme brukerIder som tidligere).
+     * Hvis det ikke eksisterer oppgjør for folk som skylder meg penger, lages disse Oppgjørs-objektene
+     * og det legges inn Utleggsbetaler-objekter for hvert utlegg de skylder meg penger for.
+     * @param eksisterendeOppgjor Array av oppgjør laget av getAlleOppgjorJegSkylder()
+     * @param minBrukerId Id til brukeren vi henter oppgjørene til
+     * @return ArrayList med Utleggsbetaler.
+     */
     private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection) throws SQLException{
         String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE utleggerId = "+minBrukerId+"";
 
