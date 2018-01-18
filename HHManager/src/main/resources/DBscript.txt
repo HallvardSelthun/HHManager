@@ -43,19 +43,19 @@ INSERT INTO vare  (handlelisteId, vareNavn, kjøpt) VALUES (1, 'mat',0);
 INSERT INTO vare  (handlelisteId, vareNavn, kjøpt) VALUES (1, 'mindre kule ting',0);
 INSERT INTO vare  (handlelisteId, vareNavn, kjøpt) VALUES (1, 'superkule ting',0);
 
--- oppgjør:
-INSERT INTO oppgjør (utleggerId, sum, beskrivelse)VALUES (1, 200, 'varer');
-INSERT INTO oppgjør (utleggerId, sum, beskrivelse)VALUES (1, 300, 'varer');
+-- utlegg:
+INSERT INTO utlegg (utleggerId, sum, beskrivelse)VALUES (1, 200, 'varer');
+INSERT INTO utlegg (utleggerId, sum, beskrivelse)VALUES (1, 300, 'varer');
 
--- oppgjørsvarer:
-INSERT INTO oppgjørsvare (vareId, oppgjørsId) VALUES (1,1);
-INSERT INTO oppgjørsvare (vareId, oppgjørsId) VALUES (2,2);
+-- utleggsvarer:
+INSERT INTO utleggsvare (vareId, utleggsId) VALUES (1,1);
+INSERT INTO utleggsvare (vareId, utleggsId) VALUES (2,2);
 
 
--- oppgjørsbetaler
-INSERT INTO oppgjørsbetaler (oppgjørsId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 100.0);
-INSERT INTO oppgjørsbetaler (oppgjørsId, medlemsId, betalt,delSum)  VALUES (1,3, 1, 100.0);
-INSERT INTO oppgjørsbetaler (oppgjørsId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 150.0);
+-- utleggsbetaler
+INSERT INTO utleggsbetaler (utleggsId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 100.0);
+INSERT INTO utleggsbetaler (utleggsId, medlemsId, betalt,delSum)  VALUES (1,3, 1, 100.0);
+INSERT INTO utleggsbetaler (utleggsId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 150.0);
 
 
 

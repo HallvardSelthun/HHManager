@@ -1,18 +1,63 @@
 .balanse{
     width: 550px;
-    height: 900px;
-    margin-right: 200px;
-    margin-left: 100px;
-    margin-top: 52px;
+    height: auto;
+    margin-right: 20px;
+    margin-left: 10px;
+    margin-top: 20px;
 }
 
-.checkbox-success{
+.labels {
+    text-align: right;
+}
+
+#betalt {
+    margin-right: 10px;
+}
+.panel-group {
+    width: 600px;
+    margin: auto ;
+    margin-bottom: 100px;
+}
+
+#forespør {
+    display: inline;
+}
+
+.caret {
+    text-align: right;
+}
+
+#historikk {
+    color: blue;
+    margin-top: 50px;
+
+}
+
+.dropdown-menu-item {
     text-align: center;
 }
 
-#beskrivelse-input{
-    width: 200px;
-    height: 100px;
+.titteldiv {
+    text-align: right ;
+    margin-right: 5px;
+}
+
+#skylder {
+    color: #32CD32;
+    margin-right: 50px;
+}
+
+#skyldertittel {
+    margin-right: 40px  ;
+}
+
+.checkbox2 {
+    text-align: left;
+    margin-left: 10px;
+}
+
+#betalt {
+    text-align: right;
 }
 
 .krev-penger{
@@ -22,6 +67,7 @@
     margin-left: 100px;
     margin-top: 52px;
 }
+
 
 .firkant{
     border-radius: 25px;
