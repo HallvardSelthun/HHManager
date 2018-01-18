@@ -73,7 +73,7 @@ function leggTilNyHandleliste() {
 
 function leggTilNyGjenstand() {
     var nyGjenstandNavn = $(".leggTilNyGjenstand input").val();
-    var handlelisteId = $(this).closest("div").attr("id");
+    var handlelisteId = $(".leggtilNyGjenstand input").get;
 
     var vare = {
         varenavn: nyGjenstandNavn,
@@ -171,7 +171,8 @@ function setupPage() {
         frist = alleHandlelister[i].frist;
 
         $("#handlelister").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister"' +
-            ' data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div><button id="slettHandlelisteKnapp"' +
+            ' data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="collapse"><button' +
+            ' id="slettHandlelisteKnapp"' +
             ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Slett handleliste</button></div></div><div id="' + handlelisteId + '"' +
             ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul><div id="list1" class="list-group"><form><div' +
             ' class="input-group leggTilNyGjenstand"><input class="form-control" placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn">' +
