@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+
 import static javax.swing.JOptionPane.*;
+
 import server.controllers.*;
+import server.util.*;
 /*
 import static database.Databasecommunication.*;
 import static security.Security.generateRandomPassword;
@@ -21,25 +24,40 @@ import static security.Security.hashPassword;*/
 /**
  * Denne klassen kobles opp mot Googles mail servere og sender mail til en bruker
  */
-public class Mail{
+public class Mail {
     private static final String avsender = "officialHouseHoldManager";
     private static final String passord = "HHManagerT6";
-    private static final String sub = "Velkommen til HouseHoldManager";
-    private static final String midNavn = "Kimia";
-    private static Connection con;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
+    private static final String sub = "Registrert i husholdning i HouseHoldManager";
+    private static final String glemtsub = "Nytt passord til HouseHoldManager";
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static final int PASSORD_LENGDE = 8;
-    private String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
+    private static final int PASSORD_LENGDE = 10;
+    private static String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
             + "\nHouseHoldManagers utviklingsteam <3";
 
 
-    /**
-     * Sender mail til alle nye medlemmer i en husholdning, som ER en del av systemet
-     */
+    public static void sendAllerede(ArrayList<String> eposter, String hushold) {
+        StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+                "\n\nDu har blitt lagt til i husholdningen " + hushold +
+                "\nKopier lenken inn i nettleseren for å kommme til HHManagers forside: http://localhost:8080/HHManager");
+        sendTilFlere(eposter, s);
+    }
 
-    public static void sendAllerede(ArrayList<String> eposter, String husholdnig) {
+    public static void sendUreg(ArrayList<String> eposter, String hushold) {
+        StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+                "\n\nDu har blitt lagt til i husholdningen" + hushold +
+                "\nKopier lenken under inn i nettleseren for å kommme til HHManagers registreringsside, " +
+                "slik at du kan lage en bruker på systemet." +
+                "\nHusk å bruke samme epost som denne." +
+                "\nhttp://localhost:8080/HHManager/lagbruker.html");
+    }
+
+    /**
+     * Sender mail til alle nye medlemmer i en husholdning, som ER en del av systemet allerede
+     *
+     * @param eposter ArrayList over alle epostadressene som skal få mail
+     * @param msg     String med innholdet i eposten.
+     */
+    public static void sendTilFlere(ArrayList<String> eposter, StringBuilder msg) {
         for (String epost :
                 eposter) {
             epost.trim().toLowerCase();
@@ -55,17 +73,14 @@ public class Mail{
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(avsender,passord);
+                        return new PasswordAuthentication(avsender, passord);
                     }
                 });
 
         try {
             MimeMessage message = new MimeMessage(session);
             message.setSubject(sub);
-            String msg = "Velkommen til HouseHoldManager, systemet som gir deg en enklere hverdag." +
-                    "\nDu har blitt lagt til i husholdningen " + husholdnig +
-                    "\nTrykk på linken for å komme til HHManager sin forside: localhost:8080/HHManager\n";
-            message.setText(msg);
+            message.setText(msg.append(regards).toString());
 
             InternetAddress[] addresses = new InternetAddress[eposter.size()];
             for (int i = 0; i < eposter.size(); i++) {
@@ -74,47 +89,17 @@ public class Mail{
             message.addRecipients(Message.RecipientType.BCC, addresses);
             Transport.send(message);
 
-        } catch(MessagingException e){throw new RuntimeException(e);}
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Denne metoden sjekker om en email allerede eksisterer i databasen
-     * @param emailad er email-adressen til brukeren som får nytt passord generert
-     * @return true hvis email-adressen er funnet i databasen, false hvis ikke.
-   **/
-
-    private static boolean sjekkEmail(String emailad) {
-        boolean ok = false;
-/*try {
-            con = getConnection();   // creates connection to the database
-            ps = con.prepareStatement("SELECT COUNT(*)'number' FROM users WHERE email = ?;");
-            ps.setString(1, emailad);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int answer = rs.getInt("number");
-                ok = answer != 0;
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            ok = false;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            closePreparedStatement(ps);
-            closeResultSet(rs);
-            closeConnection(con);
-        }*/
-
-        ok = true;
-        return ok;
-    }
-
-/**
      * Denne metoden genererer et nytt passord og sender det til emailen til en bruker fra selskapets email.
      * @param email er email-adressen til brukeren
-
-**/
-    public static void sendEn(String email){
+     * @param brukerId er int som indentifiserer en bruker.
+     **/
+    public static void sendGlemtPassord(String email, int brukerId) {
         String out = email.trim().toLowerCase();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -123,46 +108,37 @@ public class Mail{
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-//checks if password is correct to login to email account
-
+        //checks if password is correct to login to email account
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(avsender,passord);
+                        return new PasswordAuthentication(avsender, passord);
                     }
                 });
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(out));
+            message.setSubject(glemtsub);
 
-        if(sjekkEmail(out)) {
-            try {
-                MimeMessage message = new MimeMessage(session);
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(out));
-                message.setSubject(sub);
-
-                String pw = generateRandomPassword();   // generates random password
-                if (updatePassword(out, pw)) {
-                    String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
-                            + "\nHouseHoldManagers utviklingsteam <3";
-                    String msg = "Velkommen til HouseHoldManager, systemet som gir deg en enklere hverdag. Her er ditt generte passord. Bruk dette når du skal logge deg inn i systemet for første gang.";
-                    String text = "Hei " + midNavn + "!"  + "\n" + msg +  "\n\n" + "Passord: " + pw + regards;
-                    message.setText(text);
-                    Transport.send(message);
-                    //showMessageDialog(null, "New password generated and sent to your email!");
-                } else {
-                    //showMessageDialog(null, "Something went wrong when updating the password in the database.\nPlease try again", "Error", ERROR_MESSAGE);
-                }
-            } catch(MessagingException e){throw new RuntimeException(e);}
-        } else{
-            showMessageDialog(null, "Email not found in database.", "Error", ERROR_MESSAGE);
+            String pw = RandomGenerator.stringuln(PASSORD_LENGDE);  // generates random password
+            String hash = Sikkerhet.hashPassord(pw);                //Metoden er ikke laget enda
+            BrukerController.setNyttPassord(brukerId, hash);
+            String msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+                    "\n\nHer er ditt nye genererte passord: " + pw + regards;
+            message.setText(msg);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
         }
     }
 
-/**
+    /**
      * This method updates the new password in the database
+     *
      * @param email is the email-address of the user
      * @param pw    is the new generated password of the user
      * @return true if the password is successfully updated in database, false if not.
-
-**/
+     **/
 
     private static boolean updatePassword(String email, String pw) {
         boolean ok = false;
@@ -189,10 +165,10 @@ public class Mail{
     }
 
 /**
-     * This method gets the name of the user with the specific email address.
-     * @param email is the email of the user
-     * @return the fullname of the user
-**/
+ * This method gets the name of the user with the specific email address.
+ * @param email is the email of the user
+ * @return the fullname of the user
+ **/
 
     /*public static String getName(String email){
         String name = "";
@@ -218,11 +194,11 @@ public class Mail{
 
 
 /**
-     * Denne metoden returnerer et tilfeldig generert passord med lengden av objekt variabelen PASSORD_LENGDE
-     * @return et tilfeldig generert passord
-  **/
+ * Denne metoden returnerer et tilfeldig generert passord med lengden av objekt variabelen PASSORD_LENGDE
+ * @return et tilfeldig generert passord
+ **/
 
-    public static String generateRandomPassword() {
+    /*public static String generateRandomPassword() {
         if(PASSORD_LENGDE < 1) {
             return "The length of the password generated must be positive";
         }
@@ -239,11 +215,5 @@ public class Mail{
         }
         return sb.toString();
     }
-
-    public static void main(String[] args) {
-        Mail mail = new Mail();
-        String email = "kimia.abtahi@gmail.com";
-        mail.sendEn(email);
-
-    }
+*/
 }
