@@ -52,4 +52,29 @@ public class StatistikkController {
         }
         return null;
     }
+
+    public static ArrayList<List<String>> getUtleggstatistikk(int husholdningId){
+        ArrayList<List<String>> utleggstatistikk = new ArrayList<List<String>>();
+        String query = "";
+        return utleggstatistikk;
+    }
+
+    public static ArrayList<List<String>> getVarekjøpstatistikk(int husholdningId){
+        ArrayList<List<String>> varestatistikk = new ArrayList<>();
+        String query = "SELECT COUNT(vareId) antallVarer, bruker.navn FROM vare LEFT JOIN handleliste ON vare.handlelisteId = handleliste.handlelisteId LEFT JOIN bruker ON kjøperId = brukerId WHERE husholdningId = "+husholdningId+" AND kjøpt=1 AND vare.datoKjøpt>DATE_ADD(NOW(), INTERVAL -1 MONTH)  GROUP BY kjøperId;";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                ArrayList<String> list = new ArrayList<>();
+                list.add(Integer.toString(rs.getInt("antallVarer")));
+                list.add(rs.getString("navn"));
+                varestatistikk.add(list);
+            }
+            return varestatistikk;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
