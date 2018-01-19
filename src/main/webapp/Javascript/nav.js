@@ -74,7 +74,7 @@ $(document).ready(function () {
 
         navnIHuset.push(
             {
-                epost: bruker
+                epost: bruker.epost
             });
 
         var husObj = {
