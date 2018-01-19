@@ -1,7 +1,9 @@
 package server.controllers;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import server.database.ConnectionPool;
+import server.restklasser.*;
+
+import java.sql.*;
 
 /**
  * Created by Nora on 19.01.2018.
@@ -12,22 +14,27 @@ public class GjoremalController {
     private static Statement s;
 
 
-    /*public static int ny(Gjøremål gjøremål) {
+    public static boolean ny(Gjøremål gjøremål) {
         String beskrivelse = gjøremål.getBeskrivelse();
         int utførerId = gjøremål.getHhBrukerId();
+        int husholdningId = gjøremål.getHusholdningId();
+        Date frist = gjøremål.getFrist();
 
-        String insertGjoremal = "insert into " + TABELLNAVN + " (navn) values (?)";
+        String insertGjoremal = "insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";
 
         try (Connection connection = ConnectionPool.getConnection()) {
 
-            PreparedStatement prepInsertGjoremal = connection.prepareStatement(insertGjoremal, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement prepInsertGjoremal = connection.prepareStatement(insertGjoremal);
             prepInsertGjoremal.setString(1, beskrivelse);
+            prepInsertGjoremal.setInt(2, utførerId);
+            prepInsertGjoremal.setInt(3, husholdningId);
+            prepInsertGjoremal.setDate(4, frist);
             prepInsertGjoremal.executeUpdate();
-            ResultSet idHusRS = prepInsertGjoremal.getGeneratedKeys();
-            idHusRS.next();
-            husId = idHusRS.getInt(1);
-            prepInsertHus.close();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
         }
-    }*/
+        return  false;
+    }
 }
 

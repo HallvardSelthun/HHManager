@@ -1,8 +1,7 @@
 package server.services;
 
-import server.controllers.HusholdningController;
+import server.controllers.GjoremalController;
 import server.restklasser.Gjøremål;
-import server.restklasser.Husholdning;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,7 +15,7 @@ public class GjøremålService {
     @POST
     @Path("/LeggTilGjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String lagreMittGjoremal(Gjøremål gjoremal) {
-        //return GjoremalController.ny(gjoremal);
+    public boolean lagreMittGjoremal(Gjøremål gjoremal) {
+        return GjoremalController.ny(gjoremal);
     }
 }

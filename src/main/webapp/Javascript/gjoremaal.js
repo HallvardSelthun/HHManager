@@ -8,11 +8,13 @@ $(document).ready(function () {
         var beskrivelse = $("#gjoremalInput").val();
         var utførerId = $("#menu1").val();
         var frist = $("#dato").val();
+        var husholdningId = localStorage.getItem("husholdningId");
 
         var gjoremal = {
             beskrivelse: beskrivelse,
             utførerId: utførerId,
-            frist: frist
+            frist: frist,
+            husholdningId: husholdningId
         };
 
         console.log("halo ja")
@@ -50,11 +52,13 @@ $(document).ready(function () {
     $("body").on("click", "#lagreMineGjoremal", function () {
         var beskrivelse = $("#mineGjoremalInput").val();
         var frist = $("#minDato").val();
+        var husholdningId = localStorage.getItem("husholdningId");
 
         var gjoremal = {
             utførerId: minBruker.brukerId,
             beskrivelse: beskrivelse,
-            frist: frist
+            frist: frist,
+            husholdningId: husholdningId
         };
 
         if (beskrivelse == "") {
