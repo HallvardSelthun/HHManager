@@ -5,7 +5,7 @@ var husholdning;
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var epost = bruker.epost;
 var brukerId;
-var husholdningId
+var husholdningId;
 var medlemmer;
 
 $(document).ready(function () {
@@ -32,7 +32,7 @@ function setupPage() {
 
     brukerId = bruker.brukerId;
     brukernavn = bruker.navn;
-    var gjøremål = bruker.gjøremål;
+    gjoremal = bruker.gjøremål;
     console.log(bruker);
 
     $("#nyhet").html(husNavn);
@@ -40,6 +40,11 @@ function setupPage() {
     for(var j = 0, leng = medlemmer.length; j< leng; j++){
         var medlemnavn = medlemmer[j].navn;
         $("#medlemsliste").append('<li class="list-group-item">'+medlemnavn+'</li>');
+    }
+
+    for(var g = 0, length = gjoremal.length; g<length; g++){
+        var beskrivelse = gjoremal[g].beskrivelse;
+        $("#gjøremålForside").append('<li class="list-group-item">'+beskrivelse+'<input title="toggle all" type="checkbox" class="all pull-right"></li>')
     }
 
     for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){

@@ -71,6 +71,7 @@ public class BrukerController {
      */
     public static Bruker loginOk(String epost, String passord) {
         String query = "SELECT passord, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
+
         Bruker bruker = new Bruker();
         int favHus = 0;
         bruker.setFavHusholdning(favHus);
@@ -88,6 +89,17 @@ public class BrukerController {
                     bruker.setFavHusholdning(favHusDB);
                 }
                 if (res.equals(passord)) {
+                    String hentGjoremal = "SELECT * FROM gjøremål WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
+                    ps = con.prepareStatement(hentGjoremal);
+                    ResultSet rs2 = ps.executeQuery();
+                    while(rs2.next()){
+                        Gjøremål gjøremål = new Gjøremål();
+                        gjøremål.setFrist(rs2.getDate("frist"));
+                        gjøremål.setBeskrivelse(rs2.getString("beskrivelse"));
+                        gjøremål.setGjøremålId(rs2.getInt("gjøremålId"));
+                        gjøremål.setHhBrukerId(bruker.getBrukerId());
+                        bruker.addGjøremål(gjøremål);
+                    }
                     return bruker;
                 }
             }
