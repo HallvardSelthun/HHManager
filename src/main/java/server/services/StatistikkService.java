@@ -25,6 +25,13 @@ public class StatistikkService {
         return StatistikkController.getNyhetsatistikk(husholdningId);
     }
 
+    @GET
+    @Path("{husholdningId}/gjøremål")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<List<String>> getGjøremålStatistikk(@PathParam("husholdningId") int husholdningId){
+        return StatistikkController.getGjøremålstatistikk(husholdningId);
+    }
+
 
 }
 

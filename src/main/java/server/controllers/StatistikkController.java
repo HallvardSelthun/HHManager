@@ -32,4 +32,24 @@ public class StatistikkController {
         }
         return null;
     }
+
+    public static ArrayList<List<String>> getGjøremålstatistikk(int husholdningId){
+        ArrayList<List<String>> gjøremålstatistikk = new ArrayList<List<String>>();
+        String query = "SELECT COUNT(gjøremålId) antal, navn FROM gjøremål LEFT JOIN bruker ON utførerId = brukerId WHERE husholdningId = "+husholdningId+" AND fullført = 1 GROUP BY utførerId";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                ArrayList<String> list = new ArrayList<>();
+                list.add(Integer.toString(rs.getInt("antal")));
+                list.add(rs.getString("navn"));
+                gjøremålstatistikk.add(list);
+            }
+            return gjøremålstatistikk;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
