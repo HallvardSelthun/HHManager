@@ -24,12 +24,60 @@ $(document).ready(function () {
         })
     }
 
-    var template = $('#hidden-template').html();
+    var input = [
+        {brukerNavn: "Toni Vucic"}
+    ];
 
-    $("#buttonnn").click(function() {
-        $('#right').append(template);
+    $("#buttonn").click(function() {
+        // Compile the markup as a named template
+        $.template( "oppgjorTemplate", $("#test-oppgjor"));
+        //Append compiled markup
+        $.tmpl( "oppgjorTemplate", input).appendTo($("#accordion"));
+
     });
 
 
+
+
+
+    var kake = "Bløtkake";
+    var markup = "<h1> Tekst og variabel: ${variabel} </h1>"
+
+    //Mal: $.tmpl( myTemplate, myData ).appendTo( "#target" );
+
+
+    var template = $('#hidden-template').html();
+
+    var movies = [
+        { Name: "The Red Violin", ReleaseYear: "1998" },
+        { Name: "Eyes Wide Shut", ReleaseYear: "1999" },
+        { Name: "The Inheritance", ReleaseYear: "1976" }
+    ];
+
+    var extra = [
+        {extra: "Blautkake"}
+    ]
+
+    var markup =
+        "<li>" +
+            "<b>${Name}</b> (${ReleaseYear})" +
+        "</li>";
+
+    var markup2 =
+        "<li>" +
+            "Jeg liker <b>${extra}</b>" +
+        "</li>";
+
+    $("#buttonnn").click(function() {
+        // Compile the markup as a named template
+        $.template( "movieTemplate", markup );
+        $.template( "extraTemplate", markup2/*$("#test-template")*/);
+
+        // Render the template with the movies data and insert
+        // the rendered HTML under the "movieList" element
+        $.tmpl( "movieTemplate", movies ).appendTo($("#left"));
+        $.tmpl( "extraTemplate", extra).appendTo($("#left"));
+
+    });
 
 });
