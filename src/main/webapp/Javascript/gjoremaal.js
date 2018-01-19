@@ -1,8 +1,44 @@
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
 var utførerId = minBruker.brukerId;
+var minegjoremal = minBruker.gjøremål;
+var fellesgjoremal;
+var husholdningId = localStorage.getItem("husholdningId")
+
+
+function hentFellesGjoremal() {
+    for(var i = 0, len = fellesgjoremal.length; i<len; i++){
+        var fellesnavn = fellesgjoremal[i].beskrivelse;
+
+        $("#fellesGjoremaal").append('<li class="list-group-item ">'+ fellesnavn +
+            '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
+    }
+
+}
+function hentFellesGjoremalData() {
+    $.getJSON("server/gjoremal/" + husholdningId, function (data) {
+        fellesgjoremal = data;
+        console.log(fellesgjoremal);
+    });
+}
+function hentMinegjoremal() {
+    /*var etgjoremal ={
+        beskrivelse:"Vaske badet"
+    }*/
+    /*gjoremal.push(etgjoremal)*/
+    for (var i = 0,len = minegjoremal.length; i< len; i++){
+        var beskrivelse = minegjoremal[i].beskrivelse;
+        console.log(minegjoremal);
+
+        $("#mineGjoremaal").append('<li class="list-group-item ">'+ beskrivelse +
+            '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
+    }
+}
 
 $(document).ready(function () {
+    hentFellesGjoremalData();
+    hentMinegjoremal();
+    setTimeout(function(){hentFellesGjoremal();},300);
 
     $("body").on("click", "#lagreGjoremal", function () {
         var beskrivelse = $("#gjoremalInput").val();
