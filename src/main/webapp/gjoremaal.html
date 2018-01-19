@@ -15,14 +15,14 @@
 </head>
 
 <body>
-<div id="navbar">
-</div>
+<div id="navbar"></div>
 <div class="row grid-divider">
+    <div class="col-md-3"></div>
     <div class="col-md-6">
         <div class="nytt-gjøremål">
             <h2>Nytt gjøremål</h2>
             <br>
-            <textarea rows="4" cols="40" placeholder="Hva må gjøres?"></textarea>
+            <textarea rows="4" cols="40" id="tekstboks" placeholder="Hva må gjøres?"></textarea>
             <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Person
                     <span class="caret"></span></button>
@@ -48,44 +48,87 @@
                 <input type="text" class="form-control">
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
-                </div>
-            </div> -->
-            <br>
-            <button id="leggtil" class="btn warning">Legg til</button>
-        </div>
-    </div>
-
-    <div class="col-md-6">
         <div class="eksisterende-gjøremål">
-            <h2>Mine gjøremål</h2>
-            <div class="mine-checkbox">
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 1</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
-                </div>
-                <div class="checkbox disabled">
-                    <label><input type="checkbox" value="" disabled>Option 3</label>
+            <div class="container-list">
+                <br>
+                <div id="accordion2" role="tablist">
+                    <div class="panel panel-default collapse in">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <span class="glyphicon glyphicon-pushpin"></span> Mine gjøremål
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="panel-body">
+                                <ul class="list-group" id="mineGjoremaal">
+                                    <li class="list-group-item ">gjøremål 1 <input title="toggle all" type="checkbox"
+                                                                                   class="all pull-right"></li>
+                                    <br>
+                                    <button id="leggTilMine" type="button" class="btn btn-primary">Legg til</button>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <h2>Felles gjøremål</h2>
-            <div class="mine-checkbox">
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 1</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
-                </div>
-                <div class="checkbox disabled">
-                    <label><input type="checkbox" value="" disabled>Option 3</label>
+            <div class="container-list">
+                <br>
+                <div id="accordion3" role="tablist">
+                    <div class="panel panel-default collapse in">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <span class="glyphicon glyphicon-pushpin"></span> Felles gjøremål
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="panel-body">
+                                <ul class="list-group" id="fellesGjoremaal">
+                                    <li class="list-group-item ">gjøremål 1 <input title="toggle all" type="checkbox"
+                                                                                   class="all pull-right"></li>
+                                    <br>
+                                    <button id="leggTilFelles" type="button" class="btn btn-primary">Legg til</button>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-3"></div>
 
 </div>
-<div id = "modaldiv"></div>
+<div id="modaldiv"></div>
 
 </body>
 </html>
+
+
+<!-- <div class="nytt-gjøremål">
+            <h2>Nytt gjøremål</h2>
+            <br>
+            <input type="text" placeholder="Hva må gjøres?" style="width: 300px; height: 90px"></textarea>
+            <div class="dropdown">
+                <br>
+                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Person
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 1</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 2</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 3</a></li>
+                </ul>
+            </div>
+            <br>
+            <input type="date" id="dato">
+            <input type="time" id="tid">
+
+            <br>
+            <br>
+            <button id="leggtil" class="btn btn-lg btn-primary btn-block" style="width: 100px">Legg til</button>
+        </div>-->

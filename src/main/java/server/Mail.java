@@ -4,11 +4,12 @@ import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 import static javax.swing.JOptionPane.*;
+import server.controllers.*;
 /*
 import static database.Databasecommunication.*;
 import static security.Security.generateRandomPassword;
@@ -30,8 +31,53 @@ public class Mail{
     private static ResultSet rs;
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final int PASSORD_LENGDE = 8;
+    private String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
+            + "\nHouseHoldManagers utviklingsteam <3";
 
-/**
+
+    /**
+     * Sender mail til alle nye medlemmer i en husholdning, som ER en del av systemet
+     */
+
+    public static void sendAllerede(ArrayList<String> eposter, String husholdnig) {
+        for (String epost :
+                eposter) {
+            epost.trim().toLowerCase();
+        }
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        //checks if password is correct to login to email account
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(avsender,passord);
+                    }
+                });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setSubject(sub);
+            String msg = "Velkommen til HouseHoldManager, systemet som gir deg en enklere hverdag." +
+                    "\nDu har blitt lagt til i husholdningen " + husholdnig +
+                    "\nTrykk på linken for å komme til HHManager sin forside: localhost:8080/HHManager\n";
+            message.setText(msg);
+
+            InternetAddress[] addresses = new InternetAddress[eposter.size()];
+            for (int i = 0; i < eposter.size(); i++) {
+                addresses[i] = new InternetAddress(eposter.get(i));
+            }
+            message.addRecipients(Message.RecipientType.BCC, addresses);
+            Transport.send(message);
+
+        } catch(MessagingException e){throw new RuntimeException(e);}
+    }
+
+    /**
      * Denne metoden sjekker om en email allerede eksisterer i databasen
      * @param emailad er email-adressen til brukeren som får nytt passord generert
      * @return true hvis email-adressen er funnet i databasen, false hvis ikke.
@@ -68,7 +114,7 @@ public class Mail{
      * @param email er email-adressen til brukeren
 
 **/
-    public static void send(String email){
+    public static void sendEn(String email){
         String out = email.trim().toLowerCase();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -197,7 +243,7 @@ public class Mail{
     public static void main(String[] args) {
         Mail mail = new Mail();
         String email = "kimia.abtahi@gmail.com";
-        mail.send(email);
+        mail.sendEn(email);
 
     }
 }
