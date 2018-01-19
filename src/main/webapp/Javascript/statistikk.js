@@ -18,13 +18,13 @@ function getNyhetsstatistikk(){
     });
 }
 function getGjoremalstatistikk(){
-    $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
+    $.getJSON("server/StatistikkService/" + husholdningId + "/gjoremal", function (data) {
         statistikkListe = data;
         console.log(statistikkListe);
     });
 }
 function getVarekjopstatistikk(){
-    $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
+    $.getJSON("server/StatistikkService/" + husholdningId + "/vare", function (data) {
         getVarekjopListe = data;
         console.log(varekjopListe);
     });

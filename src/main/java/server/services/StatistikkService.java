@@ -38,5 +38,4 @@ public class StatistikkService {
     public ArrayList<List<String>> getVarestatistikk(@PathParam("husholdningId") int husholdningId){
         return StatistikkController.getVarekjøpstatistikk(husholdningId);
     }
-
 }
