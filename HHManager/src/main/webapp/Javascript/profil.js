@@ -27,7 +27,7 @@ $(document).ready(function () {
     getHusholdninger();
     setTimeout(function () {
         hentliste();
-    }, 400);
+    }, 1000);
 
     var MD5 = function (string) {
         function RotateLeft(lValue, iShiftBits) {
