@@ -1,5 +1,30 @@
-/* Pie chart. Hentet fra https://bootsnipp.com/snippets/84D3 */
-;(function ($, window, document, undefined) {
+var bruker = localStorage.getItem("bruker");
+var husholdningId = localStorage.getItem("husholdningId");
+var innleggsListe;
+
+
+$(document).ready(function(){
+    getNyhetsstatistikk();
+});
+
+function getNyhetsstatistikk(){
+    $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
+        innleggsListe= data;
+        console.log(innleggsListe);
+    });
+}
+
+
+
+
+
+
+
+
+
+/*
+/!* Pie chart. Hentet fra https://bootsnipp.com/$snippets/84D3 *!/
+(function ($, window, document, undefined) {
     'use strict';
 
     var Pizza = {
@@ -373,4 +398,5 @@ $(window).load(function() {
     Pizza.init();
 })
 
-/* Line chart. Hentet fra */
+/!* Line chart. Hentet fra *!/
+*/
