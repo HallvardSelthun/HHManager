@@ -13,7 +13,7 @@ public class MailTest {
         eposter.add("kimia.abtahi@gmail.com");
         eposter.add("trulsmatias@gmail.com");
         eposter.add("noraor@stud.ntnu.no");
-        Mail.sendAllerede(eposter, "Huset vårt");
+        //Mail.sendAllerede(eposter, "Huset vårt");
     }
 
 }
