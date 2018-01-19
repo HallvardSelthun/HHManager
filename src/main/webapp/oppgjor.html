@@ -17,63 +17,64 @@
 <div id =header>
     <div id="navbar"></div>
 </div>
-<div id = "container">
-    <div id="left" class="column"></div>
-    <div id="right" class="column"></div>
-    <div id="center" class="column">
-        <div id="oppgjørmodal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Forespør penger</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="suminput">
-                            <p>Sum:</p>
-                            <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
-                        </div>
-                        <br>
-                        <div class="beskrivelse-input">
-                            <p>Beskrivelse:</p>
-                            <input id="beskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
-                        </div>
-                        <br>
-                        <div class="btn-group">
-                            <p>Velg hvilke medlemmer du vil kreve penger fra:</p>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
-                                    class="caret"></span></button>
-                            <ul id="personer" class="dropdown-menu">
-                                <li>
-                                    <label class="dropdown-menu-item checkbox">
-                                        <input type="checkbox">
-                                        Apple
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="dropdown-menu-item checkbox">
-                                        <input type="checkbox"/>
-                                        Banana
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="dropdown-menu-item checkbox">
-                                        <input class="styled" type="checkbox">
-                                        Orange
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                            <button id="endre" type="button" class="btn btn-primary">Forespør penger</button>
-                        </div>
-                    </div>
+<div id="oppgjørmodal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Forespør penger</h4>
+            </div>
+            <div class="modal-body">
+                <div class="suminput">
+                    <p>Sum:</p>
+                    <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
+                </div>
+                <br>
+                <div class="beskrivelse-input">
+                    <p>Beskrivelse:</p>
+                    <input id="beskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
+                </div>
+                <br>
+                <div class="btn-group">
+                    <p>Velg hvilke medlemmer du vil kreve penger fra:</p>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
+                            class="caret"></span></button>
+                    <ul id="personer" class="dropdown-menu">
+                        <li>
+                            <label class="dropdown-menu-item checkbox">
+                                <input type="checkbox">
+                                Apple
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-menu-item checkbox">
+                                <input type="checkbox"/>
+                                Banana
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-menu-item checkbox">
+                                <input class="styled" type="checkbox">
+                                Orange
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <br>
+                <br>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button id="endre" type="button" class="btn btn-primary">Forespør penger</button>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id = "container">
+    <div class = "row">
+    <div id="left" class="col-sm-2"></div>
+    <div id="center" class="col-sm-8">
         <div class="panel-group" id="accordion">
             <div class="labels">
                 <label id="skyldertittel">Balanse </label>
@@ -185,7 +186,8 @@
                 penger
             </button>
         </div>
-        <div id="modaldiv"></div>
+    </div>
+    <div id="right" class="col-sm-2"></div>
     </div>
 </div>
 <div id="footer"></div>

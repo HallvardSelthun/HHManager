@@ -1,6 +1,8 @@
 $(document).ready(function () {
 
-    function
+    function lastInnOppgjor() {
+
+    }
 
     $.ajax({
         url: "server/BrukerService/registrer",
