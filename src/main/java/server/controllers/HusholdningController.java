@@ -220,7 +220,6 @@ public class HusholdningController {
             nyeMedlemmerEpost.add(bruker.getEpost());
         }
         String adminId = husholdning.getAdminId();
-
         StringBuilder selectAllerBrukereSB = new StringBuilder("SELECT epost from bruker WHERE epost in (");
         StringBuilder insertNyeBrukereSB = new StringBuilder("insert into bruker (epost) values ");
         StringBuilder selectIdBrukereSB = new StringBuilder("select brukerId from bruker where epost in (");
@@ -231,6 +230,9 @@ public class HusholdningController {
         ArrayList<Integer> idBrukereAL = new ArrayList<>();
 
         try (Connection connection = ConnectionPool.getConnection()) {
+            ArrayList<String> ikkeBrukerAl = new ArrayList<>();
+            ArrayList<String> alleredeBrukereAL = new ArrayList<>();
+
 
             if (nyeMedlemmerEpost.size() > 0) {
                 // finner brukere som allerede finnes og de som ikke finnes
@@ -244,11 +246,10 @@ public class HusholdningController {
                     prepSelectAllerBrukere.setString(i + 1, nyeMedlemmerEpost.get(i));
                 }
                 ResultSet allerBrukereRS = prepSelectAllerBrukere.executeQuery(); // kjører selectsetningen
-                ArrayList<String> alleredeBrukereAL = new ArrayList<>();
                 while (allerBrukereRS.next()) {
                     alleredeBrukereAL.add(allerBrukereRS.getString(1));
                 }
-                ArrayList<String> ikkeBrukerAl = new ArrayList<>(nyeMedlemmerEpost);
+                ikkeBrukerAl = new ArrayList<>(nyeMedlemmerEpost);
                 ikkeBrukerAl.removeAll(alleredeBrukereAL);
                 prepSelectAllerBrukere.close();
 
@@ -315,8 +316,8 @@ public class HusholdningController {
             prepAdmin.setString(1, adminId);
             prepAdmin.setString(2, Integer.toString(husId));
 
-            //Mail.sendny(ikkeBruker);
-            //Mail.sendGamle(alleredeBrukereAL);
+            Mail.sendUreg(ikkeBrukerAl,navnHus);
+            Mail.sendAllerede(alleredeBrukereAL, navnHus);
             return husId;
         } catch (Exception e) {
             e.printStackTrace();
