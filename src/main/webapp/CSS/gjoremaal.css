@@ -1,14 +1,4 @@
-.nytt-gjøremål{
-    width: 300px;
-    heigth: 300px;
-    margin-right: 80px;
-    margin-left: 80px;
-    margin-top: 52px;
-}
-
 .eksisterende-gjøremål{
-    width: 400px;
-    heigth: 300px;
     margin-left: 50px;
     margin-right: 50px;
     margin-top: 52px;
@@ -16,9 +6,8 @@
 
 .mine-checkbox{
     border-radius: 25px;
-    border: 2px solid #FFA500;
+    border: 2px solid;
     padding: 20px;
     width: 250px;
     height: 150px;
-
 }
