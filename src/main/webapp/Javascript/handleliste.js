@@ -109,13 +109,13 @@ function leggTilNyGjenstand() {
 }
 
 function slettHandleliste() {
-    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1)
+    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1);
     console.log(handlelisteId);
 
     $.ajax({
         url: "server/handleliste/" + handlelisteId,
         type: 'DELETE',
-        data: JSON.stringify(handlelisteId),
+        data: JSON.parse(handlelisteId),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
@@ -181,10 +181,11 @@ function setupPage() {
         offentlig = alleHandlelister[i].offentlig;
         //frist = alleHandlelister[i].frist;
 
-        $("#handlelister").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister"' +
-            ' data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4 class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div onclick="slettHandleliste()">' +
-            '<button class="btn btn-danger pull-right col-md-3" type="button">Slett handleliste</button></div></div>' +
-            '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
+        $("#handlelister").append('<div class="panel panel-default container-fluid"><div' +
+            ' class="panel-heading clearfix row" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4' +
+            ' class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="col-md-3" onclick="slettHandleliste()">' +
+            '<button class="btn btn-danger pull-right" type="button">Slett handleliste</button></div></div>' +
+            '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
             '<div id="list1" class="list-group"><form><div class="input-group"><input id="#' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
             ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilNyGjenstand()">' +
             '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +

@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Created by BrageHalse on 10.01.2018.
+ *
  */
 @Path("/BrukerService")
 public class BrukerService {
@@ -90,7 +91,8 @@ public class BrukerService {
     @Path("/endreNavn")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean endreNavn(Bruker bruker){
-        BrukerController.setNyttNavn((bruker.getBrukerId()), bruker.getNavn());
+        BrukerController.setNyttNavn(
+                (bruker.getBrukerId()), bruker.getNavn());
         return false;
     }
 
