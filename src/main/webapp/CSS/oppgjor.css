@@ -1,5 +1,5 @@
 .balanse{
-    width: 550px;
+    /* width: 550px; */
     height: auto;
     margin-right: 20px;
     margin-left: 10px;
@@ -13,9 +13,11 @@
 #betalt {
     margin-right: 10px;
 }
+
 .panel-group {
-    width: 600px;
-    margin: auto ;
+    /* width: 600px; */
+    margin-right: 20%;
+    margin-left: 20%;
     margin-bottom: 100px;
 }
 
@@ -66,13 +68,4 @@
     margin-right: 200px;*/
     margin-left: 100px;
     margin-top: 52px;
-}
-
-
-.firkant{
-    border-radius: 25px;
-    border: 2px solid #FFA500;
-    padding: 20px;
-    width: 250px;
-    height: 270px;
 }
