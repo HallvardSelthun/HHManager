@@ -213,16 +213,6 @@ public class HusholdningController {
      * @return IDen til den nye husholdningen
      */
     public static int ny(Husholdning husholdning) {
-        // !sjekker først om medlemmene allerede finnes i databasen.
-        // !legger til alle brukerene som ikke finnes
-        // !henter ut alle brukerIDene som trengs
-        // !Legger til husholdning og henter ut husId
-        // !legger alle brukerne i husholdningen.
-        // _De som allerede finnes får en mail om at de er lagt til å husholdning x
-        // _de som ikke finnes får en mail med en
-        // _"registrer deg"-knapp. Den tar personen med seg til lag bruker-siden med eposten ferdig utfylt. Når denne personen
-        // >registrerer denne brukeren, utfylles resten av informasjonen om denne brukeren i databasen, og er dermed allerede lagt
-        // >til i husstanden.
         String navnHus = husholdning.getNavn();
         ArrayList<String> nyeMedlemmerEpost = new ArrayList<>();
         for (Bruker bruker :
@@ -258,20 +248,20 @@ public class HusholdningController {
                 while (allerBrukereRS.next()) {
                     alleredeBrukereAL.add(allerBrukereRS.getString(1));
                 }
-                ArrayList<String> ikkeBruker = new ArrayList<>(nyeMedlemmerEpost);
-                ikkeBruker.removeAll(alleredeBrukereAL);
+                ArrayList<String> ikkeBrukerAl = new ArrayList<>(nyeMedlemmerEpost);
+                ikkeBrukerAl.removeAll(alleredeBrukereAL);
                 prepSelectAllerBrukere.close();
 
                 // setter inn alle brukere som ikke finnes
-                if (ikkeBruker.size() > 0) {
-                    for (int i = 0; i < ikkeBruker.size(); i++) {
+                if (ikkeBrukerAl.size() > 0) {
+                    for (int i = 0; i < ikkeBrukerAl.size(); i++) {
                         insertNyeBrukereSB.append("(?), ");
                     }
                     slettSisteTegn(insertNyeBrukereSB, 2);
 
                     PreparedStatement prepInsertNyeBrukere = connection.prepareStatement(insertNyeBrukereSB.toString());
-                    for (int i = 0; i < ikkeBruker.size(); i++) {
-                        prepInsertNyeBrukere.setString(i + 1, ikkeBruker.get(i));
+                    for (int i = 0; i < ikkeBrukerAl.size(); i++) {
+                        prepInsertNyeBrukere.setString(i + 1, ikkeBrukerAl.get(i));
                     }
                     prepInsertNyeBrukere.executeUpdate();
                     prepInsertNyeBrukere.close();
