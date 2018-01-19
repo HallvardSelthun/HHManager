@@ -1,19 +1,34 @@
 var bruker = localStorage.getItem("bruker");
 var husholdningId = localStorage.getItem("husholdningId");
 var innleggsListe;
+var statistikkListe;
+var varekjopListe;
 
 
 $(document).ready(function(){
     getNyhetsstatistikk();
+    getGjoremalstatistikk();
+    getVarekjopstatistikk()
 });
 
 function getNyhetsstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
-        innleggsListe= data;
+        innleggsListe = data;
         console.log(innleggsListe);
     });
 }
-
+function getGjoremalstatistikk(){
+    $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
+        statistikkListe = data;
+        console.log(statistikkListe);
+    });
+}
+function getVarekjopstatistikk(){
+    $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
+        getVarekjopListe = data;
+        console.log(varekjopListe);
+    });
+}
 
 
 
