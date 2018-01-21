@@ -183,7 +183,7 @@ function setupPage() {
 
         $("#handlelister").append('<div class="panel panel-default container-fluid"><div' +
             ' class="panel-heading clearfix row" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4' +
-            ' class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="col-md-3" onclick="slettHandleliste()">' +
+            ' class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="col-md-3 slettHandlelisteKnapp" onclick="slettHandleliste()">' +
             '<button class="btn btn-danger pull-right" type="button">Slett handleliste</button></div></div>' +
             '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
             '<div id="list1" class="list-group"><form><div class="input-group"><input id="#' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +

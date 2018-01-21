@@ -1,13 +1,10 @@
-.eksisterende-gjøremål{
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-top: 52px;
-}
-
 .mine-checkbox{
     border-radius: 25px;
     border: 2px solid;
     padding: 20px;
     width: 250px;
     height: 150px;
+}
+h1 {
+    text-align: center;
 }
