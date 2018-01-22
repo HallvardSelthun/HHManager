@@ -130,6 +130,7 @@ function getHusholdninger() {
         console.log("BrukerId: "+bruker.brukerId);
         console.log("Fra getHusholdninger: "+data);
         husholdninger = data;
+        localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
 
         setTimeout(function () {
             for (i = 0, l = husholdninger.length; i < l; i++) {

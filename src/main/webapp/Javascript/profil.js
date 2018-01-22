@@ -7,7 +7,7 @@ var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var brukerId = minBruker.brukerId;
 var epost = minBruker.epost;
 var husholdningId;
-var mineHusholdninger;
+var mineHusholdninger; ;
 var medlemmer;
 
 
@@ -23,6 +23,7 @@ $(document).ready(function () {
 
    // getHusholdninger();
     setTimeout(function () {
+        mineHusholdninger=JSON.parse(localStorage.getItem("husholdninger"));
         hentliste();
     }, 1000);
 
@@ -372,9 +373,14 @@ $(document).ready(function () {
     $("#nyHusProfil").on("click", function () {
         $("#modaldiv").load("lagnyhusstand.html");
     })
+
+    var script = document.createElement('script');
+    script.src = "Javascript/nav.js";
+    script.async = true;
+    document.head.appendChild(script);
 });
 function hentliste() {
-    console.log(husholdninger);
+    console.log(mineHusholdninger);
     for (var k = 0, lengt =mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
