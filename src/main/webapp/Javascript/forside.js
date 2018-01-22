@@ -6,7 +6,7 @@ var husholdning;
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var epost = bruker.epost;
 var brukerId;
-var husholdningId
+var husholdningId;
 var medlemmer;
 
 $(document).ready(function () {

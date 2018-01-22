@@ -3,6 +3,7 @@ package server.controllers;
 import server.database.ConnectionPool;
 import server.restklasser.*;
 
+import javax.ws.rs.POST;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -282,5 +283,35 @@ public class UtleggController {
                 e.printStackTrace();
                 return null;
             }
+    }
+
+
+    public static boolean lagNyttUtlegg(Utlegg utlegg){
+        String query = "INSERT INTO utlegg (utleggerId, sum, beskrivelse) VALUES (?,?,?)";
+        String getId = "SELECT LAST_INSERT_ID()";
+        int utleggId;
+        String addUtleggsbetaler = "INSERT INTO utleggsbetaler (utleggId, skyldigBrukerId, delSum) VALUES (?,?,?)";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, utlegg.getUtleggerId());
+            ps.setDouble(2, utlegg.getSum());
+            ps.setString(3, utlegg.getBeskrivelse());
+            ps.execute();
+            ps = con.prepareStatement(getId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            utleggId = rs.getInt(1);
+            for (int i = 0; i < utlegg.utleggsbetalere.size(); i++) {
+                ps = con.prepareStatement(addUtleggsbetaler);
+                ps.setInt(1,utleggId);
+                ps.setInt(2,utlegg.utleggsbetalere.get(i).getSkyldigBrukerId());
+                ps.setDouble(3, utlegg.utleggsbetalere.get(i).getDelSum());
+                ps.execute();
+            }
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }
