@@ -28,9 +28,10 @@ function hentMinegjoremal() {
     /*gjoremal.push(etgjoremal)*/
     for (var i = 0,len = minegjoremal.length; i< len; i++){
         var beskrivelse = minegjoremal[i].beskrivelse;
+        var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
-        $("#mineGjoremaal").append('<li class="list-group-item ">'+ beskrivelse +
+        $("#mineGjoremaal").append('<li class="list-group-item ">'+ beskrivelse + ",  " + frist +
             '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
     }
 }
