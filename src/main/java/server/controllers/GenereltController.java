@@ -127,7 +127,7 @@ public class GenereltController {
      */
     static boolean gjemRad(String tabell, int id) {
         String kollonnenavn = tabell+"Id"; //Genererer et navn for id-kolonnen basert på tabellenavnet
-        String sqlsetning = "UPDATE handleliste SET gjemt=1, WHERE "+kollonnenavn+" = "+id+"";
+        String sqlsetning = "UPDATE handleliste SET gjemt = 1 WHERE "+kollonnenavn+" = "+id+"";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
             try {

@@ -23,8 +23,8 @@ public class HandlelisteControllerTest {
     //så du senere kan teste get-metoder.
 
     @Test
-    public void slettHandleliste() throws Exception {
-        assertTrue(HandlelisteController.slettHandleliste(10));
+    public void gjemHandleliste() throws Exception {
+        assertTrue(HandlelisteController.gjemHandleliste(3));
     }
 
     @Test
