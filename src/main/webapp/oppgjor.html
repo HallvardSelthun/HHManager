@@ -76,107 +76,10 @@
     <div class = "row">
         <div id="left" class="col-sm-2 col-lg-3"></div>
         <div id="center" class="col-sm-8 col-lg-6">
-            <div class="panel-group" id="accordion">
+            <div class="panel-group" id="panelGruppe">
                 <div class="labels">
                     <label id="skyldertittel">Balanse </label>
                     <label id="betalt">Betalt</label>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading clearfix">
-                        <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
-                            <a id="handlelisteTittel" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                                Nora Othilie Ringdal</a>
-                        </h3>
-                        <div id="" class="titteldiv">
-                            <label class="skylder">+300 kr</label>
-                            <input type="checkbox">
-                        </div>
-                    </div>
-                    <div id="collapse1" class="collapse">
-                        <div class="panel-body">
-                            <div class="balanse">
-                                <h4>Du skylder Nora:</h4>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th class="col-sm-3 col-xs-3">Sum</th>
-                                        <th class="col-sm-8 col-xs-8">Beskrivelse</th>
-                                        <th class="col-sm-1 col-xs-1">Betalt</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>10,50</td>
-                                        <td>Toalettpapir</td>
-                                        <td>
-                                            <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox1"
-                                                                                           class="styled">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>15,30</td>
-                                        <td>Håndsåpe</td>
-                                        <td>
-                                            <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox2"
-                                                                                           class="styled">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6,44</td>
-                                        <td>Juice</td>
-                                        <td>
-                                            <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox3"
-                                                                                           class="styled">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <p>Totalt: <strong>NOK 32,24</strong></p>
-                                <br>
-
-                                <h4>Nora skylder deg:</h4>
-
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Sum</th>
-                                        <th>Beskrivelse</th>
-                                        <th>Motatt</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>43,20</td>
-                                        <td>Badematte</td>
-                                        <td>
-                                            <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox4"
-                                                                                           class="styled">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>21,30</td>
-                                        <td>Melk</td>
-                                        <td>
-                                            <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox5"
-                                                                                           class="styled">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <p>Totalt: <strong>NOK 64,50</strong></p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <b><a id="historikk" href="#" target="_blank">Vis historikk</a></b>
@@ -215,9 +118,9 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Sum</th>
-                            <th>Beskrivelse</th>
-                            <th>Betalt</th>
+                            <th class="col-sm-3 col-xs-3">Sum</th>
+                            <th class="col-sm-8 col-xs-8">Beskrivelse</th>
+                            <th class="col-sm-1 col-xs-1">Betalt</th>
                         </tr>
                         </thead>
                         <tbody id="radData${radNr}">
@@ -234,9 +137,9 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Sum</th>
-                            <th>Beskrivelse</th>
-                            <th>Motatt</th>
+                            <th class="col-sm-3 col-xs-3">Sum</th>
+                            <th class="col-sm-8 col-xs-8">Beskrivelse</th>
+                            <th class="col-sm-1 col-xs-1">Motatt</th>
                         </tr>
                         </thead>
                         <tbody>

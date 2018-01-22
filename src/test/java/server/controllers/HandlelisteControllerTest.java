@@ -24,7 +24,7 @@ public class HandlelisteControllerTest {
 
     @Test
     public void slettHandleliste() throws Exception {
-        assertTrue(HandlelisteController.slettHandleliste(10));
+        assertTrue(HandlelisteController.slettHandleliste(13));
     }
 
     @Test

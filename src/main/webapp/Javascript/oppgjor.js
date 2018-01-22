@@ -1,21 +1,43 @@
 $(document).ready(function () {
 
-    function lastInnOppgjor() {
+    //Globale variabler
+    var testBrukerId = 1;
+    var alleOppgjor = {oppgjorene: []};
+
+    //Kjør JavaScript
+    init();
+
+    function init() {
+        lastInnOppgjor(testBrukerId);
+    }
+
+    function displayOppgjor() {
+        //Compile the markup as a named template
+        $.template( "oppgjorTemplate", $("#test-oppgjor"));
+        for (i = 0; i < alleOppgjor.length; i++) {
+            $.tmpl( "oppgjorTemplate", oppgjor[i].appendTo($("#panelGruppe")));
+        }
+        //Append compiled markup
+        leggInnSkylderRader();
+    }
+
+
+
+
+    //SQL-kall
+    function lastInnOppgjor(brukerId) {
         $.ajax({
-            url: "server/BrukerService/registrer",
-            type: 'POST',
-            data: JSON.stringify(bruker),
+            url: "server/utlegg/oppgjor/"+ brukerId,
+            type: 'GET',
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
-                var data = JSON.parse(result);
-                console.log(data +" :D");
+                alleOppgjor = result;
                 if (!result){
-                    alert("Epost er allerede registrert :/");
-                    $("#email").css('color', 'red');
+                    alert("Noe rart har skjedd i lastInnOppgjor");
                 }else{
-                    alert("Bruker registrert!");
-                    window.location = "index.html";
+                    console.log(result)
+                    //alert(alleOppgjor[0].utleggDenneSkylderMeg[0].beskrivelse);
                 }
             },
             error: function () {
@@ -42,14 +64,15 @@ $(document).ready(function () {
         utleggJegSkylder: [],
         utleggDenneSkylderMeg: [],
         brukerId: 123,
-        navn: "Toni Vucic"
+        navn: "Toni Vucic",
+        oppgjorNr: -1 //Denne burde genereres når objektet kommer inn i JavaScript
     };
 
     $("#buttonn").click(function() {
         // Compile the markup as a named template
         $.template( "oppgjorTemplate", $("#test-oppgjor"));
         //Append compiled markup
-        $.tmpl( "oppgjorTemplate", oppgjor).appendTo($("#accordion"));
+        $.tmpl( "oppgjorTemplate", oppgjor).appendTo($("#panelGruppe"));
         leggInnSkylderRader();
 
     });
@@ -63,23 +86,4 @@ $(document).ready(function () {
         //Append compiled markup
         $.tmpl("rad-template", oppgjor.utleggJegSkylder).appendTo($("#radData"));
     }
-
-
-
-
-
-    var kake = "Bløtkake";
-    var markup = "<h1> Tekst og variabel: ${variabel} </h1>"
-
-    //Mal: $.tmpl( myTemplate, myData ).appendTo( "#target" );
-
-
-    var template = $('#hidden-template').html();
-
-    var movies = [
-        { Name: "The Red Violin", ReleaseYear: "1998" },
-        { Name: "Eyes Wide Shut", ReleaseYear: "1999" },
-        { Name: "The Inheritance", ReleaseYear: "1976" }
-    ];
-
 });
