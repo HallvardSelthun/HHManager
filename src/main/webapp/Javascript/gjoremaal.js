@@ -31,7 +31,7 @@ function hentMinegjoremal() {
         var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
-        $("#mineGjoremaal").append('<li class="list-group-item ">'+ beskrivelse + ",  " + frist +
+        $("#mineGjoremaal").append('<div class="fristen">' + frist + '</div>' + '<li class="list-group-item ">'+ beskrivelse +
             '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
     }
 }
