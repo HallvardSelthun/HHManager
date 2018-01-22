@@ -23,12 +23,6 @@ $(document).ready(function () {
          window.location = "forside.html";
     });
 
-    $('#husholdninger3').on('click', 'li', function () {
-        alert("Clicked list." + $(this).html());
-        var i = this.id;
-        console.log(i + "_---_");
-
-    });
 
     $('body').on('click', 'a#bildenav', function () {
         window.location = "forside.html"
