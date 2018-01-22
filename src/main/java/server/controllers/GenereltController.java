@@ -101,7 +101,8 @@ public class GenereltController {
      * @return True hvis vi ikke fikk exceptions.
      */
     static boolean slettRad(String tabell, int id) {
-        String sqlsetning = "DELETE FROM "+tabell+" WHERE handlelisteId = "+id+"";
+        String kollonnenavn = tabell+"Id"; //Genererer et navn for id-kolonnen basert på tabellenavnet
+        String sqlsetning = "DELETE FROM "+tabell+" WHERE "+kollonnenavn+" = "+id+"";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
             try {
