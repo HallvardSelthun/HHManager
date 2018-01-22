@@ -21,7 +21,7 @@ function getHusholdninger() {
 $(document).ready(function () {
     //gethhData();
 
-    getHusholdninger();
+   // getHusholdninger();
     setTimeout(function () {
         hentliste();
     }, 1000);

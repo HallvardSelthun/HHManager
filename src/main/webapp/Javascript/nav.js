@@ -127,6 +127,7 @@ $(document).ready(function () {
 
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
+        console.log("BrukerId: "+bruker.brukerId);
         console.log("Fra getHusholdninger: "+data);
         husholdninger = data;
 
