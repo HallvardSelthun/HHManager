@@ -37,7 +37,7 @@
     border-stye: solid;
 }
 
-body{
+/*body{
     margin-top: 0px;
     padding-top: initial;
     -webkit-transition-timing-function: ease;
@@ -49,8 +49,11 @@ body{
     -webkit-transition-property: padding-top;
     -o-transition-property: padding-top;
     transition-property: padding-top;
-}
+}*/
 
 .vl{
     border-right: 1px solid #DDD;
+}
+body{
+    margin-top:80px;
 }
