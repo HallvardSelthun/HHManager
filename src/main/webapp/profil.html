@@ -5,15 +5,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--link rel="stylesheet" type="text/css" href="CSS/profil.css"-->
+    <!--
+        <link rel="stylesheet" type="text/css" href="CSS/profil.css">
+    -->
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
-    <script src="Javascript/nav.js"></script>
+    <!--<script src="Javascript/nav.js"></script>-->
     <script src="Javascript/profil.js"></script>
 </head>
 <body>
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="bekreftmodal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="bekreftLabel">Bekreft</h4>
+            </div>
+            <div class="modal-body">
+                <div class="innhold">
+                    <p>Er du sikker på at du vil forlate denne husstanden?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="modal-btn-si">Ja</button>
+                <button type="button" class="btn btn-danger" id="modal-btn-no">Nei</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert" role="alert" id="result"></div>
 <div id="epostmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -94,7 +116,8 @@
         <div class="col-md-1"></div>
         <div class="col-md-9">
             <div class="col-md-2">
-                <a class="container-fluid" href="https://some.addres"><img align="left" src="web-res/profileicon.png" width="100%" border="0"></a>
+                <a class="container-fluid" href="https://some.addres"><img align="left" src="web-res/profileicon.png"
+                                                                           width="100%" border="0"></a>
             </div>
             <div class="col-md-4">
                 <div class="container-fluid">
@@ -110,7 +133,8 @@
                                 <button id="navnknapp" type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#navnmodal">Endre navn
                                 </button>
-                                <button id="passord" type="button" class="btn btn-primary" data-toggle="modal" data-target="#passordmodal">
+                                <button id="passord" type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#passordmodal">
                                     Endre passord
                                 </button>
                                 <button id="epostknapp" type="button" class="btn btn-primary" data-toggle="modal"
@@ -122,12 +146,13 @@
                 </div>
             </div>
             <div class="col-md-6" align="center">
-
-            <div class="container-fluid">
-                <h2>Dine husstander </h2>
-                <div id="husstander" class="panel-group"></div>
                 <div class="container-fluid">
-                    <button id="nyHusProfil" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Ny husstand</button>
+                    <h2>Dine husstander </h2>
+                    <div id="husstander" class="panel-group row"></div>
+                    <div class="container-fluid"></div>
+                    <button id="nyHusProfil" type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#myModal">Ny husstand
+                    </button>
                 </div>
             </div>
             <!--<ul class="panel-group" id="accordion">
@@ -150,9 +175,9 @@
                 </li>
             </ul>-->
         </div>
-        </div>
-        <div class="col-md-2"></div>
     </div>
+    <div class="col-md-2"></div>
+</div>
 </div>
 <div id="modaldiv"></div>
 </body>

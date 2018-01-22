@@ -41,6 +41,13 @@ public class BrukerService {
         return BrukerController.loginOk(bruker.getEpost(), bruker.getPassord());
     }
 
+    @DELETE
+    @Path("/fjernBrukerFraHusholdning")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean slettFraHusholdning(Bruker bruker){
+        return BrukerController.slettFraHusholdning(bruker.getBrukerId(), bruker.getFavHusholdning());
+    }
+
 
     /*
     @PUT

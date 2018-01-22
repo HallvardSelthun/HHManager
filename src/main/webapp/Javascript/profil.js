@@ -10,6 +10,7 @@ var epost = minBruker.epost;
 var husholdningId;
 var husholdninger;
 var medlemmer;
+var hhId;
 
 /*function gethhData() {
     $.getJSON("server/hhservice/" + brukerId + "/husholdningData", function (data) {
@@ -22,12 +23,41 @@ function getHusholdninger() {
         husholdninger = data;
     });
 }
+
 $(document).ready(function () {
     //gethhData();
     getHusholdninger();
     setTimeout(function () {
         hentliste();
     }, 1000);
+
+    $("#modal-btn-si").on('click', function () {
+        var slettbruker={
+            brukerId: brukerId,
+            favHusholdning: hhId
+        }
+        console.log("trykket på ja!")
+        $.ajax({
+            url: "server/BrukerService/fjernBrukerFraHusholdning",
+            type: 'DELETE',
+            data: JSON.stringify(slettbruker),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
+                var data = JSON.parse(result);
+                console.log(data);
+                alert("Det gikk bra!");
+                if(data) {
+
+                } else {
+                    alert("feil");
+                }
+            },
+            error: function () {
+                alert("serverfeil :/")
+            }
+        })
+    });
 
     var MD5 = function (string) {
         function RotateLeft(lValue, iShiftBits) {
@@ -374,8 +404,18 @@ $(document).ready(function () {
 
     $("#nyHusProfil").on("click", function () {
         $("#modaldiv").load("lagnyhusstand.html");
+    });
+
+    $(document).on('click', '.btn', function () {
+        hhId = ($(this).parent().parent().attr('id'))
     })
+
+    var script = document.createElement('script');
+    script.src = "Javascript/nav.js";
+    script.async = true;
+    document.head.appendChild(script)
 });
+
 function hentliste() {
     console.log(husholdninger);
     for (var k = 0, lengt = husholdninger.length; k < lengt; k++) {
@@ -383,13 +423,12 @@ function hentliste() {
         var husholdnavn = husholdninger[k].navn;
         console.log(husholdnavn);
 
-        $("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
-            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 id="tittel" class= "panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
-            '<div class = "collapse"><button id="meldut"' +
-            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Forlat</button></div>' +
-            '</div><div id="' + husholdningId + '"' +
-            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
-            '<div id="list1" class="list-group">' + '</div></div></div></div>');
+        $("#husstander").append('<div id ="'+husholdningId+'" class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
+            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title pull-left col-md-9"><a></a>' + husholdnavn + '</h4>' +
+            '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn btn-danger pull-right" type="button">Forlat</button></div>' +
+            '<div id="' + husholdningId + 'Medlemmer"' +
+            ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
+            '<div id="list1" class="list-group"></div></div></div>');
 
         /* $("#accordion").append('<li class="panel panel-default">' +
          '<div class="panel-heading clearfix"><h4 class="panel-title pull-left" style="padding-top: 7.5px;">' +
@@ -411,6 +450,14 @@ function hentliste() {
             // $("#accordion").append('</ul></div></div></li>');
         }
     }
+}
+
+
+function slettmedlem() {
+    event.stopPropagation();
+    $("#bekreftmodal").modal();
+
+
 }
 
 function displayDiv() {

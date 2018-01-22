@@ -21,13 +21,47 @@ public class BrukerController {
         return GenereltController.getString("navn", TABELLNAVN, brukerid);
     }
 
+    /**
+     * Henter epost-adressen til en bruker gitt brukerens id.
+     * @param brukerid int id som identifiserer en bruker.
+     * @return String epost-adressen.
+     */
     public static String getEpost(int brukerid) {
         return GenereltController.getString("epost", TABELLNAVN, brukerid);
     }
 
+    /**
+     * Henter hvilken husholdning som er favoritt gitt en brukers id.
+     * @param brukerid int id som identifiserer en bruker
+     * @return String navnet på husholdningen satt som favoritt.
+     */
     public static String getFavoritthusholdning(int brukerid) {
         return GenereltController.getString("favorittHusholdning", TABELLNAVN, brukerid);
     }
+
+    /**
+     * Sletter et medlem fra en husholdning gitt brukerens id.
+     * @param brukerid int id som identifiserer en bruker
+     * @return true om brukeren ble slettet, false om noe gikk galt under sletting.
+     */
+    public static boolean slettFraHusholdning(int brukerid, int husholdningid) {
+        String getQuery = "DELETE FROM hhmedlem WHERE brukerId = " + brukerid + " AND husholdningId =" + husholdningid;
+
+        try (Connection con = ConnectionPool.getConnection()){
+            ps = con.prepareStatement(getQuery);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Registrerer en bruker i systemet.
+     * @param bruker er et Bruker-objekt som skal registreres
+     * @return true dersom bruker ble registrert, false om noe gikk galt under registrering.
+     */
 
     public static boolean registrerBruker(Bruker bruker) {
         String pass = bruker.getPassord();
@@ -63,8 +97,7 @@ public class BrukerController {
     }
 
     /**
-     * Sjekker om epost og passord stemmer
-     *
+     * Sjekker om epost og passord stemmer.
      * @param epost
      * @param passord
      * @return true hvis dataene stemmer
