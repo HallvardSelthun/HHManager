@@ -91,3 +91,6 @@ ul[data-pie-id] {
 }
 
 /*Line chart. Hentet fra */
+#formControlSelect{
+    width: 40%;
+}
