@@ -19,8 +19,8 @@ public class HandlelisteController {
         return GenereltController.getDate("frist","handleliste", handlelisteId);
     }
 
-    public static boolean slettHandleliste(int handlelisteId) {
-        return GenereltController.slettRad("handleliste",handlelisteId);
+    public static boolean gjemHandleliste(int handlelisteId) {
+        return GenereltController.gjemRad("handleliste",handlelisteId);
     }
 
     /**

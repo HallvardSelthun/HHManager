@@ -119,6 +119,56 @@ public class GenereltController {
     }
 
     /**
+     * Setter gjemt = 1, (dvs. true) på en rad i databasen. Dette betyr at denne raden IKKE
+     * vil hentes ut når man gjør vanlige kall. (Denne sjekken må legges inn i andre SQL-kall)
+     * @param tabell Navnet på tabellen i databasen vi henter data fra
+     * @param id Attributt i tabellen som må hete id og unikt identifisere raden
+     * @return True hvis vi ikke fikk exceptions.
+     */
+    static boolean gjemRad(String tabell, int id) {
+        String kollonnenavn = tabell+"Id"; //Genererer et navn for id-kolonnen basert på tabellenavnet
+        String sqlsetning = "UPDATE handleliste SET gjemt=1, WHERE "+kollonnenavn+" = "+id+"";
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
+            try {
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Setter gjemt = 0, (dvs. false) på en rad i databasen. Dette betyr at denne raden
+     * vil hentes ut når man gjør vanlige kall.
+     * @param tabell Navnet på tabellen i databasen vi henter data fra
+     * @param id Attributt i tabellen som må hete id og unikt identifisere raden
+     * @return True hvis vi ikke fikk exceptions.
+     */
+    static boolean visRad(String tabell, int id) {
+        String kollonnenavn = tabell+"Id"; //Genererer et navn for id-kolonnen basert på tabellenavnet
+        String sqlsetning = "UPDATE handleliste SET gjemt=0, WHERE "+kollonnenavn+" = "+id+"";
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
+            try {
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Oppdaterer/endrer én celle.
      * Må bruke id.
      * Kan brukes til alt selv om det 'setData' er en String.
