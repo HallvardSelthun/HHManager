@@ -71,8 +71,8 @@ function leggTilNyHandleliste() {
 }
 
 function leggTilNyGjenstand() {
-    var nyGjenstandNavn = $(".leggTilNyGjenstand").val();
-    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1);
+    var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
+    var handlelisteId = $(".leggTilNyGjenstand:focus").attr("id");
     console.log(nyGjenstandNavn + "\n" + handlelisteId);
 
     var vare = {
@@ -115,9 +115,9 @@ function slettHandleliste() {
     $.ajax({
         url: "server/handleliste/" + handlelisteId,
         type: 'DELETE',
-        data: JSON.parse(handlelisteId),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
+        //data: JSON.parse(handlelisteId),
+        //contentType: 'application/json; charset=utf-8',
+        //dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
             console.log(data);
@@ -170,7 +170,7 @@ function getHandlelisterData() {
 }
 
 function setupPage() {
-    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, varenavn, kjøpt, kjøperId, datokjøpt;
+    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjøpt, kjøperId, datokjøpt;
 
     for(var i = 0; i < alleHandlelister.length; i++){
         tittel = alleHandlelister[i].tittel;
@@ -181,12 +181,12 @@ function setupPage() {
         offentlig = alleHandlelister[i].offentlig;
         //frist = alleHandlelister[i].frist;
 
-        $("#handlelister").append('<div class="panel panel-default container-fluid"><div' +
-            ' class="panel-heading clearfix row" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4' +
-            ' class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="col-md-3" onclick="slettHandleliste()">' +
-            '<button class="btn btn-danger pull-right" type="button">Slett handleliste</button></div></div>' +
+        $("#handlelister").append('<div class="panel panel-default container-fluid" style="padding: 0px"><div' +
+            ' class="panel-heading clearfix container-fluid" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4' +
+            ' class="panel-titel col-md-9">' + tittel + '</h4><div class="col-md-3" onclick="slettHandleliste()">' +
+            '<button class="btn btn-danger pull-right slettHandlelisteKnapp" type="button">Slett handleliste</button></div></div>' +
             '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
-            '<div id="list1" class="list-group"><form><div class="input-group"><input id="#' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
+            '<div id="list1" class="list-group"><form><div class="input-group"><input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
             ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilNyGjenstand()">' +
             '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
             '<button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
@@ -207,10 +207,12 @@ function setupPage() {
 
         for(var j = 0; j < varer.length; j++){
             vareId = varer[j].vareId;
+            vareHandlelisteId = varer[j].handlelisteId;
             varenavn = varer[j].varenavn;
             kjøpt = varer[j].kjøpt;
             kjøperId = varer[j].kjøperId;
             //datokjøpt = new Date(varer[j].datokjøpt);
+            console.log($(".invisibleDiv").attr("id"));
             $("#handlelister ul").append('<li class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
         }
     }
@@ -221,6 +223,7 @@ function setupPage() {
 
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
+
     if (x.style.display === "none") {
         x.style.display = "block";
     } else {
