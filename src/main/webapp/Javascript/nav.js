@@ -15,6 +15,14 @@ $(document).ready(function () {
         $("#fade").hide()
     }, 150);
 
+    $(document).on('click', '.hhknapp', function(){
+         var nyhhId = ($(this).attr('id'));
+         localStorage.setItem("husholdningId", nyhhId);
+         bruker.favHusholdning = nyhhId;
+         localStorage.setItem("bruker", JSON.stringify(bruker));
+         window.location = "forside.html";
+    });
+
     $('#husholdninger3').on('click', 'li', function () {
         alert("Clicked list." + $(this).html());
         var i = this.id;
@@ -125,7 +133,7 @@ function getHusholdninger() {
             var navn = husholdninger[i].navn;
             var id = husholdninger[i].husholdningId;
             console.log(husholdninger[i]);
-            $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
+            $("#husholdninger3").prepend('<li id="' + id + '" class = "hhknapp"><a href="#">' + navn + '</a></li>');
         }
     }, 250);
 }
