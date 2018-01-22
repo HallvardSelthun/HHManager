@@ -115,7 +115,7 @@ function slettHandleliste() {
     $.ajax({
         url: "server/handleliste/" + handlelisteId,
         type: 'DELETE',
-        data: JSON.parse(handlelisteId),
+        //data: JSON.parse(handlelisteId),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
