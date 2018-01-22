@@ -94,3 +94,10 @@ ul[data-pie-id] {
 #formControlSelect{
     width: 40%;
 }
+
+.statistikkKolonne{
+    margin-left: 75px;
+}
+.medlemmerKolonne{
+    margin-left: 75px;
+}
