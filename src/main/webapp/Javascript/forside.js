@@ -17,6 +17,9 @@ $(document).ready(function () {
     $("#commentBtn").on("click", function () {
         postInnlegg();
     });
+    $(".skrivNyttInnlegg").on("click", function () {
+        skrivNyttInnlegg();
+    });
 });
 
 function setupPage() {
@@ -91,6 +94,7 @@ function postInnlegg() {
             }else{
                 innleggToHtml(nyhetsinnlegg);
                 $("#comment").val("");
+                document.getElementById("skrivNyttInnlegg").style.display = "none";
             }
         }
     })
@@ -106,5 +110,15 @@ function innleggToHtml(nyhetsinnlegg) {
             forfatter = medlemmer[j].navn;
         }
     }
-    $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"> <img src="web-res/avatar.png" class="media-object" style="width:45px"> </div><div class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
-};
+    $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
+        ' class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
+}
+
+function skrivNyttInnlegg() {
+    var x = document.getElementById("skrivNyttInnlegg").style.display;
+    if(x === "none") {
+        document.getElementById("skrivNyttInnlegg").style.display = "";
+    }else {
+        document.getElementById("skrivNyttInnlegg").style.display = "none";
+    }
+}

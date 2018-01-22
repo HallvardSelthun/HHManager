@@ -50,3 +50,7 @@ body{
     -o-transition-property: padding-top;
     transition-property: padding-top;
 }
+
+.vl{
+    border-right: 1px solid #DDD;
+}
