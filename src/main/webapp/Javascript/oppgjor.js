@@ -24,17 +24,45 @@ $(document).ready(function () {
         })
     }
 
-    var input = [
-        {brukerNavn: "Toni Vucic"}
-    ];
+    var skylderRad = {
+        sum: -36,
+        beskrivelse: "Pepperkakedeig",
+        betalt: false,
+        radNr: -1
+    };
+
+    var skylderRad2 = {
+        sum: -60,
+        beskrivelse: "Taxi hjem",
+        betalt: false,
+        radNr: 2
+    };
+
+    var oppgjor = {
+        utleggJegSkylder: [],
+        utleggDenneSkylderMeg: [],
+        brukerId: 123,
+        navn: "Toni Vucic"
+    };
 
     $("#buttonn").click(function() {
         // Compile the markup as a named template
         $.template( "oppgjorTemplate", $("#test-oppgjor"));
         //Append compiled markup
-        $.tmpl( "oppgjorTemplate", input).appendTo($("#accordion"));
+        $.tmpl( "oppgjorTemplate", oppgjor).appendTo($("#accordion"));
+        leggInnSkylderRader();
 
     });
+
+    function leggInnSkylderRader() {
+        oppgjor.utleggJegSkylder.push(skylderRad);
+        oppgjor.utleggJegSkylder.push(skylderRad2);
+
+        //Compile
+        $.template("rad-template", $("#rad-template"));
+        //Append compiled markup
+        $.tmpl("rad-template", oppgjor.utleggJegSkylder).appendTo($("#radData"));
+    }
 
 
 
@@ -53,31 +81,5 @@ $(document).ready(function () {
         { Name: "Eyes Wide Shut", ReleaseYear: "1999" },
         { Name: "The Inheritance", ReleaseYear: "1976" }
     ];
-
-    var extra = [
-        {extra: "Blautkake"}
-    ]
-
-    var markup =
-        "<li>" +
-            "<b>${Name}</b> (${ReleaseYear})" +
-        "</li>";
-
-    var markup2 =
-        "<li>" +
-            "Jeg liker <b>${extra}</b>" +
-        "</li>";
-
-    $("#buttonnn").click(function() {
-        // Compile the markup as a named template
-        $.template( "movieTemplate", markup );
-        $.template( "extraTemplate", markup2/*$("#test-template")*/);
-
-        // Render the template with the movies data and insert
-        // the rendered HTML under the "movieList" element
-        $.tmpl( "movieTemplate", movies ).appendTo($("#left"));
-        $.tmpl( "extraTemplate", extra).appendTo($("#left"));
-
-    });
 
 });

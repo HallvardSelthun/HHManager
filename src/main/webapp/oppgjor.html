@@ -193,19 +193,22 @@
 
 <!-- HTML-mal for nytt oppgjør -->
 
+<!--Viktig -->
 <script id="test-oppgjor" type="text/x-custom-template">
+    <!--Viktig ^^^ -->
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
-                <a id="${brukerNavn}" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                    ${brukerNavn}</a>
+                <!--Viktig -->
+                <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse2"> ${navn} </a>
+                <!--Viktig ^^^ -->
             </h3>
-            <div id="" class="titteldiv">
-                <label id="skylder">+300 kr</label>
+            <div id="??" class="titteldiv">
+                <label id="skylder2">+300 kr</label>
                 <input type="checkbox">
             </div>
         </div>
-        <div id="collapse1" class="collapse">
+        <div id="collapse2" class="collapse">
             <div class="panel-body">
                 <div class="balanse">
                     <h4>Du skylder Nora:</h4>
@@ -217,36 +220,12 @@
                             <th>Betalt</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>10,50</td>
-                            <td>Toalettpapir</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox1"
-                                                                               class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>15,30</td>
-                            <td>Håndsåpe</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox2"
-                                                                               class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6,44</td>
-                            <td>Juice</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox3"
-                                                                               class="styled">
-                                </div>
-                            </td>
-                        </tr>
+                        <tbody id="radData">
+                        <!-- Her skal dynamisk kode inn -->
                         </tbody>
                     </table>
+
+
                     <p>Totalt: <strong>NOK 32,24</strong></p>
                     <br>
 
@@ -261,29 +240,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>43,20</td>
-                            <td>Badematte</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox4"
-                                                                               class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>21,30</td>
-                            <td>Melk</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox5"
-                                                                               class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <!-- Her skal mer generert kode inn-->
                         </tbody>
                     </table>
                     <p>Totalt: <strong>NOK 64,50</strong></p>
@@ -293,14 +250,18 @@
     </div>
 </script>
 
-
-<!-- HTML-kode som kan settes inn der man vil med JavaScript -->
-<script id="test-template" type="text/x-custom-template">
-    <br>
+<script id="rad-template" type="text/x-custom-template">
     <tr>
-        <td>Jeg liker ${extra}</td>
-    <tr>
+        <td>${sum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox2">
+                <input type="checkbox" id="checkbox${radNr}" class="styled">
+            </div>
+        </td>
+    </tr>
 </script>
+
 
 <div id="footer"></div>
 </body>
