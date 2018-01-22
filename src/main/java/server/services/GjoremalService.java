@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by BrageHalse on 10.01.2018.
  */
-@Path("/gjoremal")
+@Path("/gjoremalservice")
 public class GjoremalService {
 
     @GET
@@ -21,9 +21,16 @@ public class GjoremalService {
     }
 
     @POST
-    @Path("/LeggTilGjoremal/")
+    @Path("/nyttgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean lagreMittGjoremal(Gjøremål gjoremal) {
+        return GjoremalController.ny(gjoremal);
+    }
+
+    @POST
+    @Path("/nyttfellesgjoremal/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean lagreFellesGjoremal(Gjøremål gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
 }

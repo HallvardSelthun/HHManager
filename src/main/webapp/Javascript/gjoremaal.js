@@ -60,7 +60,7 @@ $(document).ready(function () {
             return;
         }
         $.ajax({
-            url: "server/hhservice/LeggTilGjoremal",
+            url: "server/gjoremalservice/nyttfellesgoremal",
             type: 'POST',
             data: JSON.stringify(gjoremal),
             contentType: 'application/json; charset=utf-8',
@@ -69,6 +69,9 @@ $(document).ready(function () {
                 var data = JSON.parse(result); // gjør string til json-objekt
                 console.log("Data: " + data);
                 if (data) {
+                    minBruker.gjøremål.push(gjoremal);
+                    localStorage.setItem("bruker",JSON.stringify(minBruker));
+                    window.location = "gjoremaal.html";
                     alert("Det gikk bra!");
                 } else {
                     alert("feil!");
@@ -85,13 +88,19 @@ $(document).ready(function () {
         });
     });
 
+
+
+
+
+
+
     $("body").on("click", "#lagreMineGjoremal", function () {
         var beskrivelse = $("#mineGjoremalInput").val();
         var frist = $("#minDato").val();
         var husholdningId = localStorage.getItem("husholdningId");
 
         var gjoremal = {
-            utførerId: minBruker.brukerId,
+            hhBrukerId: minBruker.brukerId,
             beskrivelse: beskrivelse,
             frist: frist,
             husholdningId: husholdningId
@@ -102,24 +111,24 @@ $(document).ready(function () {
             return;
         }
         $.ajax({
-            url: "server/hhservice/gjøremål",
+            url: "server/gjoremalservice/nyttgjoremal",
             type: 'POST',
             data: JSON.stringify(gjoremal),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
                 if (data) {
+                    minBruker.gjøremål.push(gjoremal);
+                    localStorage.setItem("bruker",JSON.stringify(minBruker));
+                    window.location = "gjoremaal.html";
                     alert("Det gikk bra!");
                 } else {
                     alert("feil!");
                 }
-                window.location = "gjormaal.html";
             },
             error: function () {
                 alert("serverfeil :/");
-                console.log(gjoremal)
             }
         });
         $("#button").on('click', function () {

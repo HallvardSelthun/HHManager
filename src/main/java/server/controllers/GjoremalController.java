@@ -51,10 +51,9 @@ public class GjoremalController {
         int husholdningId = gjøremål.getHusholdningId();
         Date frist = gjøremål.getFrist();
 
-        String insertGjoremal = "insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";
+        String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)"; /*"insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
 
         try (Connection connection = ConnectionPool.getConnection()) {
-
             PreparedStatement prepInsertGjoremal = connection.prepareStatement(insertGjoremal);
             prepInsertGjoremal.setString(1, beskrivelse);
             prepInsertGjoremal.setInt(2, utførerId);
