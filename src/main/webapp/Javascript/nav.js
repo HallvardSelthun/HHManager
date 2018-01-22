@@ -4,12 +4,17 @@ var navn = bruker.navn;
 var husholdninger;
 
 $(document).ready(function () {
+
+    setTimeout(function(){
+        getHusholdninger();
+    }, 200);
+
     $(function () {
         $("#navbar").load("nav.html");
 
         $("#modaldiv").load("lagnyhusstand.html");
     });
-    getHusholdninger();
+
 
     setTimeout(function () {
         $("#fade").hide()
@@ -122,16 +127,18 @@ $(document).ready(function () {
 
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
+        console.log("Fra getHusholdninger: "+data);
         husholdninger = data;
+
+        setTimeout(function () {
+            for (i = 0, l = husholdninger.length; i < l; i++) {
+                var navn = husholdninger[i].navn;
+                var id = husholdninger[i].husholdningId;
+                $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
+            }
+        }, 300);
     });
-    setTimeout(function () {
-        for (i = 0, l = husholdninger.length; i < l; i++) {
-            var navn = husholdninger[i].navn;
-            var id = husholdninger[i].husholdningId;
-            console.log(husholdninger[i]);
-            $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
-        }
-    }, 250);
+
 }
 
 
