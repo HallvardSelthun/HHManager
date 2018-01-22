@@ -5,13 +5,11 @@ var husholdninger;
 
 $(document).ready(function () {
 
-    setTimeout(function(){
-        getHusholdninger();
-    }, 200);
+    getHusholdninger();
+
 
     $(function () {
         $("#navbar").load("nav.html");
-
         $("#modaldiv").load("lagnyhusstand.html");
     });
 
@@ -127,8 +125,6 @@ $(document).ready(function () {
 
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
-        console.log("BrukerId: "+bruker.brukerId);
-        console.log("Fra getHusholdninger: "+data);
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
 
