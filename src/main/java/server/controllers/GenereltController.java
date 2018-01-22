@@ -101,7 +101,32 @@ public class GenereltController {
      * @return True hvis vi ikke fikk exceptions.
      */
     static boolean slettRad(String tabell, int id) {
-        String sqlsetning = "DELETE FROM "+tabell+" WHERE handlelisteId = "+id+"";
+        String kollonnenavn = tabell+"Id"; //Genererer et navn for id-kolonnen basert på tabellenavnet
+        String sqlsetning = "DELETE FROM "+tabell+" WHERE "+kollonnenavn+" = "+id+"";
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
+            try {
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Sletter en rad i databasen. Raden finnes vha. tabellnavn, kolonnenavn og en unikt identifiserbar
+     * entitetsId.
+     * @param tabell Navnet på tabellen i databasen vi henter data fra
+     * @param id Attributt i tabellen som må hete id og unikt identifisere raden
+     * @return True hvis vi ikke fikk exceptions.
+     */
+    static boolean gjemRad(String tabell, int id) {
+        String sqlsetning = "UPDATE gjemt FROM "+tabell+" WHERE handlelisteId = "+id+"";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
             try {
