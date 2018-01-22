@@ -31,6 +31,10 @@ $(document).ready(function () {
         hentliste();
     }, 1000);
 
+    $("#modal-btn-no").on('click', function () {
+        $("#bekreftmodal").modal('hide');
+    });
+
     $("#modal-btn-si").on('click', function () {
         var slettbruker={
             brukerId: brukerId,
