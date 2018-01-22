@@ -120,7 +120,7 @@ function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
         console.log("id " + bruker.brukerId);
         husholdninger = data;
-        localStorage.setItem("husholdninger", husholdninger);
+        localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
         console.log(husholdninger);
     });
     setTimeout(function () {
