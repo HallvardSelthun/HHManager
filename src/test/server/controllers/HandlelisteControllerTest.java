@@ -1,17 +1,11 @@
 package server.controllers;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import server.database.ConnectionPool;
 import server.restklasser.Handleliste;
 import server.restklasser.Vare;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -60,6 +54,7 @@ public class HandlelisteControllerTest {
         testHandleliste.setFrist(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
         testHandleliste.setOffentlig(true);
         testHandleliste.setSkaperId(2);
+        testHandleliste.setGjemt(0);
 
         int nyHandlelisteId = HandlelisteController.lagHandleliste(testHandleliste);
         assertTrue("nyHandleListeId skal være stærre enn -1 ", nyHandlelisteId > -1);
