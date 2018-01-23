@@ -22,7 +22,7 @@ public class GjoremalController {
 
     public static ArrayList<Gjøremål> hentFellesGjøremål(int husholdningsId) {
         ArrayList<Gjøremål> gjøremål = new ArrayList<>();
-        String getQuery ="SELECT beskrivelse FROM gjøremål WHERE husholdningId = " + husholdningsId +" AND utførerId IS NULL ORDER BY frist";
+        String getQuery ="SELECT beskrivelse, frist FROM gjøremål WHERE husholdningId = " + husholdningsId +" AND utførerId IS NULL ORDER BY frist";
 
         try(Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement getStatement = connection.prepareStatement(getQuery);
@@ -31,6 +31,7 @@ public class GjoremalController {
             while(rs.next()){
                 Gjøremål gjøremålet = new Gjøremål();
                 gjøremålet.setBeskrivelse(rs.getString("beskrivelse"));
+                gjøremålet.setFrist(rs.getDate("frist"));
                 gjøremål.add(gjøremålet);
             }
             return gjøremål;
@@ -82,6 +83,24 @@ public class GjoremalController {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static int hentVarselGjøremål(Bruker bruker){
+        int id = bruker.getBrukerId();
+        int result = 0;
+        String query = "SELECT COUNT(gjøremålId) antall FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ? GROUP BY utførerId;";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            result = rs.getInt("antall");
+            return result;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
     }
 }
 

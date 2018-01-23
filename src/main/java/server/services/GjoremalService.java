@@ -1,6 +1,7 @@
 package server.services;
 
 import server.controllers.GjoremalController;
+import server.restklasser.Bruker;
 import server.restklasser.Gjøremål;
 
 import javax.ws.rs.*;
@@ -39,5 +40,12 @@ public class GjoremalService {
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean fullfort(Gjøremål gjoremal){
         return GjoremalController.fullfort(gjoremal);
+    }
+
+    @GET
+    @Path("/varsler")
+    @Produces(MediaType.APPLICATION_JSON)
+    public int hentVarsler(Bruker bruker){
+        return GjoremalController.hentVarselGjøremål(bruker);
     }
 }

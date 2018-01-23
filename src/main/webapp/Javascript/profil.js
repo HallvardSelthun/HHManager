@@ -26,6 +26,7 @@ function getHusholdninger() {
 
 $(document).ready(function () {
     //gethhData();
+
     getHusholdninger();
     setTimeout(function () {
         hentliste();
@@ -439,11 +440,15 @@ function hentliste() {
     for (var k = 0, lengt = husholdninger.length; k < lengt; k++) {
         husholdningId = husholdninger[k].husholdningId;
         var husholdnavn = husholdninger[k].navn;
+        var string ="glyphicon-star-empty";
+        if (husholdninger[k].husholdningId == minBruker.favHusholdning){
+            string = "glyphicon-star";
+        }
         console.log(husholdnavn);
 
         $("#husstander").append('<div id ="'+husholdningId+'" class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title pull-left col-md-9"><a></a>' + husholdnavn + '</h4>' +
-            '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>'+
+            '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon '+string+'"></span>'+
             '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn btn-danger pull-right" type="button">Forlat</button></div>' +
             '<div id="' + husholdningId + 'Medlemmer"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
@@ -473,21 +478,25 @@ function hentliste() {
 }
 
 function settNyFav(id) {
+    var nyId = parseInt(id);
     var bruker= {
         brukerId: brukerId,
-        favhusholdning: parseInt(id)
+        favhusholdning: nyId
     };
     $.ajax({
-        url: "server/BrukerService/favHusholdning",
+        url: "server/BrukerService/nyFavHusholdning",
         type: 'PUT',
         data: JSON.stringify(bruker),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        success: function () {
-            alert("nice");
+        success: function (data) {
+            var result = JSON.parse(data);
+            alert(result);
+            minBruker.favHusholdning = nyId;
         },
-        error: function () {
-            alert("D:");
+        error: function (data) {
+            var result = JSON.parse(data);
+            alert(result);
         }
     })
 }
