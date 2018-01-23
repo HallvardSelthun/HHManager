@@ -9,9 +9,12 @@ var husholdningId = localStorage.getItem("husholdningId")
 function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = fellesgjoremal[i].beskrivelse;
+        var frist = minegjoremal[i].frist;
+        var gjøremålId = minegjoremal[i].gjøremålId;
 
-        $("#fellesGjoremaal").append('<li class="list-group-item ">' + fellesnavn +
-            '<input type="checkbox" class="all pull-right"></li>');
+        $("#fellesGjoremaal").append('<li class="list-group-item ">' + '<b>' + fellesnavn + '</b>' +
+            ",  " + frist +
+            '<input id="checkboxid2' + gjøremålId + '" type="checkbox" class="all pull-right"></li>');
     }
 }
 
@@ -33,11 +36,11 @@ function hentMinegjoremal() {
         console.log(minegjoremal);
 
 
-        $("#mineGjoremaal").append('<li class="list-group-item ">' + '<b>' + beskrivelse + '</b>' + ",  " + frist +
-            '<input id="checkboxid'+gjøremålId + '" type="checkbox" class="all pull-right"></li>');
+        $("#mineGjoremaal").append('<li class="list-group-item ">' + '<b>' + beskrivelse + '</b>' +
+            ",  " + frist +
+            '<input id="checkboxid' + gjøremålId + '" type="checkbox" class="all pull-right"></li>');
     }
 }
-
 
 
 $(document).ready(function () {
@@ -54,7 +57,7 @@ $(document).ready(function () {
             console.log(gjøremålId);
             var fullfort = document.getElementById("checkboxid" + gjøremålId).checked;
             console.log(fullfort);
-            if(fullfort){
+            if (fullfort) {
                 $.ajax({
                     url: "server/gjoremalservice/fullfort",
                     type: 'PUT',
@@ -66,8 +69,8 @@ $(document).ready(function () {
                         console.log("Data: " + data);
                         if (data) {
                             var index = minBruker.gjøremål.indexOf(gjoremal);
-                            console.log("Index: " +index);
-                            minBruker.gjøremål.splice(index,1);
+                            console.log("Index: " + index);
+                            minBruker.gjøremål.splice(index, 1);
                             //minBruker.gjøremål.push(gjoremal);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
                             //window.location = "gjoremaal.html";
