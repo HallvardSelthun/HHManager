@@ -49,6 +49,11 @@ function utregnOppgjorSum() {
     displayOppgjor();
 }
 
+$(document).on("click", ".checkboxes", function(event){
+    var valgtSvarKnapp = $(this).attr('id');
+    var substringed = valgtSvarKnapp.match(/\d+/g);
+
+});
 
 function displayOppgjor() {
 
@@ -56,12 +61,14 @@ function displayOppgjor() {
     $.template( "oppgjorTemplate", $("#test-oppgjor"));
 
     $.template("rad-template", $("#rad-template"));
-    //Append compiled markup
 
+    //Append compiled markup
     for (var i = 0; i < alleOppgjor.length; i++) {
         $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
 
+        console.log(alleOppgjor[i].utleggJegSkylder);
         $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+        console.log(alleOppgjor[i].utleggDenneSkylderMeg);
         $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
     }
 }
@@ -71,11 +78,11 @@ function leggInnRadNr(callback) {
     for (var i = 0; i < alleOppgjor.length; i++) {
         alleOppgjor[i].oppgjorNr = i;
         for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
-            alleOppgjor[i].utleggJegSkylder.radNr = j;
+            alleOppgjor[i].utleggJegSkylder[j].radNr = j;
         }
 
         for (var j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
-            alleOppgjor[i].utleggDenneSkylderMeg.radNr = j;
+            alleOppgjor[i].utleggDenneSkylderMeg[j].radNr = j;
         }
     }
     callback();
