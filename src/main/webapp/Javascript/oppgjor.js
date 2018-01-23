@@ -60,7 +60,7 @@ $(document).on("click", ".checkboxes", function(event){
     if ($(this).is(':checked')) {
         var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
             alert("okii! "+substringed+wrapperId);
-            $(wrapperId).;
+
         });
     }
     else {
