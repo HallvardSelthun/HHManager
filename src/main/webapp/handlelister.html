@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Handlelister</title>
     <meta charset="utf-8">
@@ -26,27 +27,24 @@
             </div>
             <div class="modal-body">
                 <div class="utlegg">
-                    <h4 id="overskrift1">Valgte elementer</h4>
+                    <h4 id="valgteVarer">Valgte elementer</h4>
                     <ul class="list-group">
                         <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
                     </ul>
                 </div>
                 <div class="medlemmer">
-                    <h4 id="overskrift2">Legg til medbetalere</h4>
-                    <a href="#" class="list-group-item ">List 1 <input title="toggle all" type="checkbox"
-                                                                       class="all pull-right"></a>
-                    <a href="#" class="list-group-item">Second item <input type="checkbox"
-                                                                           class="pull-right"></a>
-                    <a href="#" class="list-group-item">Third item <input type="checkbox" class="pull-right"></a>
+                    <h4 id="medbetalere">Legg til medbetalere</h4>
+                    <ul class="list-group"></ul>
+                        <a href="#" class="list-group-item ">List 1 <input title="toggle all" type="checkbox" class="all pull-right"></a>
+                </div>
+                <div class="sum">
+                    <h4>Sum</h4>
+                    <input id="sum" type="number" placeholder="Skriv inn summen for varene">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                <button type="button" class="btn btn-primary">Send utlegg</button>
+                <button id="sendUtlegg" type="button" class="btn btn-primary">Send utlegg</button>
             </div>
         </div>
     </div>
@@ -109,7 +107,7 @@
             <div class="row">
                 <h1>Handlelister</h1>
                 <div class="container-fluid">
-                    <div id="handlelister" class="panel-group row"></div>
+                    <div id="handlelister" class="row panel-group"></div>
                 </div>
                 <div class="container-fluid">
                     <button id="nyhandel" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#leggTilNyHandlelisteModal">Legg til ny handleliste</button>

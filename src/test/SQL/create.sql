@@ -33,7 +33,7 @@ CREATE TABLE `handleliste` (
   `offentlig` tinyint(1) DEFAULT NULL,
   `navn` text,
   `skaperId` int(11) DEFAULT NULL,
-  `gjemt` tinyint(4) NOT NULL,
+  `gjemt` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`handlelisteId`,`husholdningId`),
   CONSTRAINT `handleliste_ibfk_1` FOREIGN KEY (`husholdningId`) REFERENCES `husholdning` (`husholdningId`),
   CONSTRAINT `handleliste_ibfk_2` FOREIGN KEY (`skaperId`) REFERENCES `bruker` (`brukerId`)

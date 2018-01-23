@@ -315,6 +315,8 @@ public class HusholdningController {
             PreparedStatement prepAdmin = connection.prepareStatement(adminSqlsetning);
             prepAdmin.setString(1, adminId);
             prepAdmin.setString(2, Integer.toString(husId));
+            prepAdmin.executeUpdate();
+            prepAdmin.close();
 
             Mail.sendUreg(ikkeBrukerAl,navnHus);
             Mail.sendAllerede(alleredeBrukereAL, navnHus);

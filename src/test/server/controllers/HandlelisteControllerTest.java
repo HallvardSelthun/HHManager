@@ -17,8 +17,8 @@ public class HandlelisteControllerTest {
     //så du senere kan teste get-metoder.
 
     @Test
-    public void slettHandleliste() throws Exception {
-        assertTrue(HandlelisteController.slettHandleliste(1));
+    public void gjemHandleliste() throws Exception {
+        assertTrue(HandlelisteController.gjemHandleliste(3));
     }
 
     @Test
@@ -54,6 +54,7 @@ public class HandlelisteControllerTest {
         testHandleliste.setFrist(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
         testHandleliste.setOffentlig(true);
         testHandleliste.setSkaperId(2);
+        testHandleliste.setGjemt(0);
 
         int nyHandlelisteId = HandlelisteController.lagHandleliste(testHandleliste);
         assertTrue("nyHandleListeId skal være stærre enn -1 ", nyHandlelisteId > -1);

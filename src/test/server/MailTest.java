@@ -19,9 +19,8 @@ public class MailTest {
         Mail.sendAllerede(eposter, "Vår hus");
     }
 
-    @Test
+    /*@Test
     public void sendGlemtPassord() throws Exception {
         Mail.sendGlemtPassord("kimia.abtahi@gmail.com", 6);
-    }
-
+    }*/
 }
