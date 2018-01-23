@@ -52,38 +52,38 @@ function utregnOppgjorSum() {
 
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
-    var utleggId = $(this).data("utleggId");
-    alert(utleggId);
+    var utleggId = $(this).attr('data-utleggId');
+    var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
     var substringed = valgtSvarKnapp.match(/\d+/g);
+    var wrapperId = "#checkboxwrap"+substringed;
 
     if ($(this).is(':checked')) {
-        alert("yup");
+        var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
+            alert("okii! "+substringed+wrapperId);
+            $(wrapperId).;
+        });
     }
     else {
 
     }
 });
 
-function checkMotattRad() {
-    /*
+function checkMotattRad(utleggId, skyldigBrukerId, next) {
+    var test;
+
     $.ajax({
-        url: "server/utlegg/"+,
+        url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
         type: 'PUT',
-        data: JSON.stringify(bruker),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
         success: function (result) {
-            var data = JSON.parse(result);
-            $("#navnpåpers").text(nyttNavn);
-            minBruker.navn = nyttNavn;
-            window.location = "profil.html";
-            localStorage.setItem("bruker", JSON.stringify(minBruker));
+            var suksess = result;
+            alert("server-retur: "+suksess);
+            next();
         },
         error: function () {
             alert("Noe gikk galt :(")
+            return false;
         }
     });
-    */
 }
 
 function displayOppgjor() {
@@ -97,7 +97,6 @@ function displayOppgjor() {
     for (var i = 0; i < alleOppgjor.length; i++) {
         $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
 
-        console.log(alleOppgjor[i].utleggJegSkylder);
         $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
         console.log(alleOppgjor[i].utleggDenneSkylderMeg);
         $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));

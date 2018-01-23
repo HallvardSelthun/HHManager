@@ -66,7 +66,7 @@
 <div id = "container">
     <div class = "row">
         <div id="left" class="col-sm-2 col-lg-3"></div>
-        <div id="center" class="col-sm-8 col-lg-6">
+        <div id="center" class="col-sm-8 col-lg-6>
             <h1 class="tittel">Mine oppgjør</h1>
             <!-- Under her legges det inn dynamisk HTML -->
             <div class="panel-group" id="panelGruppe">
@@ -150,8 +150,8 @@
         <td>${delSum}</td>
         <td>${beskrivelse}</td>
         <td>
-            <div class="checkbox-wrap">
-                <input type="checkbox" id="checkbox${radNr}" class="checkboxes" data-utleggId="${utleggId}">
+            <div class="checkbox-wrap" id="checkboxwrap${radNr}" >
+                <input type="checkbox" id="checkbox${radNr}" class="checkboxes" data-utleggId="${utleggId}" data-skyldigBrukerId="${skyldigBrukerId}">
             </div>
         </td>
     </tr>

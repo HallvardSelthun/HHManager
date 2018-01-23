@@ -48,13 +48,19 @@ public class UtleggController {
     */
 
     public static boolean setMotatt(int brukerId, int utleggId) {
+        System.out.println("brukerId/skyldigBrukerId: "+brukerId+" utleggId: "+utleggId);
         String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
                 + brukerId + " AND utleggsbetaler.utleggId =  " + utleggId;
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement updateStatment = connection.prepareStatement(getQuery);
-            updateStatment.executeUpdate();
-            return true;
+            int success = updateStatment.executeUpdate();
+            if (success == 1) {
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -127,6 +133,7 @@ public class UtleggController {
      */
     private static Utleggsbetaler lagUtleggsbetalerObjekt(ResultSet resultset) throws SQLException{
         Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
+        utleggsbetaler.setutleggId(resultset.getInt("utleggId"));
         utleggsbetaler.setSkyldigBrukerId(resultset.getInt("skyldigBrukerId"));
         utleggsbetaler.setBetalt(resultset.getInt("betalt")==1);
         utleggsbetaler.setDelSum(resultset.getDouble("delSum"));
