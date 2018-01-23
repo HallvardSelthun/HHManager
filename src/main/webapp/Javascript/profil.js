@@ -4,28 +4,26 @@
 
 
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
-var bruker;
 var brukerId = minBruker.brukerId;
 var epost = minBruker.epost;
 var husholdningId;
-var husholdninger;
+var mineHusholdninger; ;
 var medlemmer;
 
-/*function gethhData() {
-    $.getJSON("server/hhservice/" + brukerId + "/husholdningData", function (data) {
-        husholdning = data;
-    });
-}*/
 
 function getHusholdninger() {
-    $.getJSON("server/hhservice/husholdning/" + minBruker.favHusholdning, function (data) {
-        husholdninger = data;
+    $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
+        mineHusholdninger = data;
+        console.log("profil: "+data)
     });
 }
+
 $(document).ready(function () {
     //gethhData();
-    getHusholdninger();
+
+   // getHusholdninger();
     setTimeout(function () {
+        mineHusholdninger=JSON.parse(localStorage.getItem("husholdninger"));
         hentliste();
     }, 1000);
 
@@ -375,12 +373,17 @@ $(document).ready(function () {
     $("#nyHusProfil").on("click", function () {
         $("#modaldiv").load("lagnyhusstand.html");
     })
+
+    var script = document.createElement('script');
+    script.src = "Javascript/nav.js";
+    script.async = true;
+    document.head.appendChild(script);
 });
 function hentliste() {
-    console.log(husholdninger);
-    for (var k = 0, lengt = husholdninger.length; k < lengt; k++) {
-        husholdningId = husholdninger[k].husholdningId;
-        var husholdnavn = husholdninger[k].navn;
+    console.log(mineHusholdninger);
+    for (var k = 0, lengt =mineHusholdninger.length; k < lengt; k++) {
+        husholdningId = mineHusholdninger[k].husholdningId;
+        var husholdnavn = mineHusholdninger[k].navn;
         console.log(husholdnavn);
 
         $("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
@@ -399,8 +402,8 @@ function hentliste() {
          '<ul class="list-group" id='+husholdnavn+'>');*/
 
 
-        for (var p = 0, lengt2 = husholdninger[k].medlemmer.length; p < lengt2; p++) {
-            var medlemnavn = husholdninger[k].medlemmer[p].navn;
+        for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
+            var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             console.log(medlemnavn);
 
             $("#husstander ul").append('<li class="list-group-item "> ' + medlemnavn + '</li>');

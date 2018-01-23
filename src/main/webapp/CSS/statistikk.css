@@ -1,5 +1,5 @@
-.vl {
-    border-right: 1px solid #DDD;
+.rl {
+    border-left: 1px solid #DDD;
 }
 .hl{
 border-bottom: 1px solid #DDD;
@@ -55,7 +55,6 @@ ul[data-pie-id] {
     padding: 10px;
 }
 
-
 [data-pie-id='my-cool-chart'] li:nth-child(0) {
     color: #d84200;
 }
@@ -91,3 +90,13 @@ ul[data-pie-id] {
 }
 
 /*Line chart. Hentet fra */
+#formControlSelect{
+    width: 40%;
+}
+
+.statistikkKolonne{
+    margin-left: 75px;
+}
+.medlemmerKolonne{
+    margin-left: 75px;
+}

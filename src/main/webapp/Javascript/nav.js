@@ -4,12 +4,15 @@ var navn = bruker.navn;
 var husholdninger;
 
 $(document).ready(function () {
+
+    getHusholdninger();
+
+
     $(function () {
         $("#navbar").load("nav.html");
-
         $("#modaldiv").load("lagnyhusstand.html");
     });
-    getHusholdninger();
+
 
     setTimeout(function () {
         $("#fade").hide()
@@ -22,7 +25,6 @@ $(document).ready(function () {
          localStorage.setItem("bruker", JSON.stringify(bruker));
          window.location = "forside.html";
     });
-
 
     $('body').on('click', 'a#bildenav', function () {
         window.location = "forside.html"
@@ -46,6 +48,10 @@ $(document).ready(function () {
 
     $('body').on('click', '#oppgjorknapp', function () {
         window.location = "oppgjor.html"
+    });
+
+    $('body').on('click', '#statistikkknapp', function () {
+        window.location = "statistikk.html"
     });
 
     $('body').on('click', 'a#loggut', function () {
@@ -121,6 +127,17 @@ $(document).ready(function () {
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
         husholdninger = data;
+        localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
+
+        setTimeout(function () {
+            for (i = 0, l = husholdninger.length; i < l; i++) {
+                var navn = husholdninger[i].navn;
+                var id = husholdninger[i].husholdningId;
+                $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
+            }
+        }, 300);
+    });
+
     });
     setTimeout(function () {
         for (i = 0, l = husholdninger.length; i < l; i++) {
