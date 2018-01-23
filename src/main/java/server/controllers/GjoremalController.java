@@ -84,5 +84,17 @@ public class GjoremalController {
         }
         return false;
     }
+
+    public static int hentVarselGjøremål(Bruker bruker){
+        int id = bruker.getBrukerId();
+        String query = "SELECT COUNT(gjøremålId) antall FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = 8 GROUP BY utførerId;";
+
+        try(Connection con = ConnectionPool.getConnection()){
+
+        }catch (SQLException e){
+
+        }
+        return 1;
+    }
 }
 
