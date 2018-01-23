@@ -7,7 +7,7 @@ var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var brukerId = minBruker.brukerId;
 var epost = minBruker.epost;
 var husholdningId;
-var mineHusholdninger; ;
+var mineHusholdninger;
 var medlemmer;
 var hhId;
 
@@ -319,8 +319,6 @@ $(document).ready(function () {
         });
     });
 
-    function lagreEndringer() {
-    }
 
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
@@ -409,15 +407,14 @@ $(document).ready(function () {
         hhId = ($(this).parent().parent().attr('id'))
     })
 /*
-    var script = document.createElement('script');
-    script.src = "Javascript/nav.js";
-    script.async = true;
-    document.head.appendChild(script);*/
 
     var script = document.createElement('script');
     script.src = "Javascript/nav.js";
     script.async = true;
     document.head.appendChild(script);
+
+
+*/
 
     $(document).on('click', '.glyphicon', function () {
         event.stopPropagation();
@@ -441,13 +438,25 @@ function hentliste() {
         var husholdnavn = mineHusholdninger[k].navn;
         console.log(husholdnavn);
 
-        $("#husstander").append('<div id ="'+husholdningId+'" class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
+
+        // Ny design, med knapper
+        $("#husstander").append('<div  class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title pull-left col-md-9"><a></a>' + husholdnavn + '</h4>' +
             '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>'+
-            '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn btn-danger pull-right" type="button">Forlat</button></div>' +
-            '<div id="' + husholdningId + 'Medlemmer"' +
-            ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
+            '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button">Forlat</button></div>' +
+            '<div id="' + husholdningId + '"' +
+            ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
             '<div id="list1" class="list-group"></div></div></div>');
+
+
+        //Gammel design, kan trykkes på
+        /*$("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
+            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
+            '<div class = "collapse"><button id="meldut"' +
+            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Forlat</button></div>' +
+            '</div><div id="' + husholdningId + '"' +
+            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
+            '<div id="list1" class="list-group">' + '</div></div></div></div>');*/
 
         /* $("#accordion").append('<li class="panel panel-default">' +
          '<div class="panel-heading clearfix"><h4 class="panel-title pull-left" style="padding-top: 7.5px;">' +
@@ -463,10 +472,6 @@ function hentliste() {
 
             $("#hhliste"+husholdningId).append('<li class="list-group-item "> ' + medlemnavn + '</li>');
 
-            /*
-             $("#accordion").append('<li class="list-group-item ">'+medlemnavn+'</li>');
-             */
-            // $("#accordion").append('</ul></div></div></li>');
         }
     }
 

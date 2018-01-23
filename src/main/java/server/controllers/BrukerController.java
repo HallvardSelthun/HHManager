@@ -127,7 +127,7 @@ public class BrukerController {
         String epost = bruker.getEpost();
         String epostLedig = "SELECT epost FROM bruker WHERE epost = ?";
 
-        String query = "INSERT INTO bruker (passord, navn, epost) VALUES (?, ?, ?)";
+        String query = "INSERT INTO bruker (hash, navn, epost) VALUES (?, ?, ?)";
 
 
         try (Connection con = ConnectionPool.getConnection()){
@@ -161,7 +161,7 @@ public class BrukerController {
      * @return true hvis dataene stemmer
      */
     public static Bruker loginOk(String epost, String passord) {
-        String query = "SELECT passord, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
+        String query = "SELECT hash, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
 
         Bruker bruker = new Bruker();
         int favHus = 0;
@@ -174,7 +174,7 @@ public class BrukerController {
                 rs.next();
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
-                String res = rs.getString("passord");
+                String res = rs.getString("hash");
                 int favHusDB = rs.getInt("favorittHusholdning");
                 if (favHus != favHusDB){
                     bruker.setFavHusholdning(favHusDB);
@@ -215,7 +215,7 @@ public class BrukerController {
     }
 
     public static void setNyttPassord(int brukerId, String passord) {
-        GenereltController.update(TABELLNAVN, "passord", passord, brukerId);
+        GenereltController.update(TABELLNAVN, "hash", passord, brukerId);
     }
 
     public static void setNyttNavn(int brukerId, String navn){
