@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+
+import server.Sikkerhet.Passord;
 import server.controllers.*;
 import server.util.*;
 
@@ -23,7 +25,7 @@ public class Mail {
     public static void sendAllerede(ArrayList<String> eposter, String hushold) {
         StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen " + hushold +
-                "\nKlikk lenken for å kommme til HHManagers forside: http://localhost:8080/HHManager");
+                "\nKlikk lenken for å kommme til HHManagers forside: http://localhost:8080/server");
         sendTilFlere(eposter, s);
     }
 
@@ -33,7 +35,7 @@ public class Mail {
                 "\nFølg lenken for å kommme til HHManagers registreringsside, " +
                 "slik at du kan lage en bruker på systemet." +
                 "\nHusk å bruke samme epost som denne." +
-                "\nhttp://localhost:8080/HHManager/lagbruker.html");
+                "\nhttp://localhost:8080/server/lagbruker.html");
     }
 
     /**
@@ -101,17 +103,22 @@ public class Mail {
                     }
                 });
         try {
-                MimeMessage message = new MimeMessage(session);
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(out));
-                message.setSubject(glemtsub);
-
+            MimeMessage message = new MimeMessage(session);
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(out));
+            message.setSubject(glemtsub);
+            String msg;
+            if (brukerId < 1){
+                msg = "Hei" +
+                        "\nDenne eposten er ikke registrert hos oss." + regards;
+            } else {
                 String pw = RandomGenerator.stringuln(PASSORD_LENGDE);  // generates random password
-                String hash = Sikkerhet.hashPassord(pw);                //Metoden er ikke laget enda
+                String hash = Passord.hashPassord(pw);                //Metoden er ikke laget enda
                 BrukerController.setNyttPassord(brukerId, hash);
-                String msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+                msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                         "\n\nHer er ditt nye genererte passord: " + pw + regards;
-                message.setText(msg);
-                Transport.send(message);
+            }
+            message.setText(msg);
+            Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

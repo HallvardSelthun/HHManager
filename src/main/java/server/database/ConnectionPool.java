@@ -37,4 +37,15 @@ public final class ConnectionPool {
         return dataSource;
     }
 
+    /**
+     * For testing. Kobler connectionPoolen til h2-databasen
+     */
+    public static void h2() {
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:test");
+        dataSource.setUsername("");
+        dataSource.setPassword("");
+    }
+
+
 }

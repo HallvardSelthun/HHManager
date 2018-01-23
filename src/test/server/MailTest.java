@@ -1,10 +1,9 @@
 package server;
 
 import org.junit.Test;
+import server.Mail;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 
 public class MailTest {
@@ -16,13 +15,13 @@ public class MailTest {
     public void sendAllerede() throws Exception {
         ArrayList<String> eposter = new ArrayList<>();
         eposter.add("kimia.abtahi@gmail.com");
-        eposter.add("trulsmatias@gmail.com");
+        //eposter.add("trulsmatias@gmail.com");
         Mail.sendAllerede(eposter, "Vår hus");
     }
 
     @Test
     public void sendGlemtPassord() throws Exception {
-        Mail.sendGlemtPassord("kimia.abtahi@gmail.com", 15);
+        Mail.sendGlemtPassord("kimia.abtahi@gmail.com", 6);
     }
 
 }
