@@ -209,7 +209,7 @@ public class BrukerController {
          GenereltController.update(TABELLNAVN, "husholdningId", husholdningId, brukerId);
     }
 
-    public static Bruker getBrukerData(String epost) {
+    /*public static Bruker getBrukerData(String epost) {
 
         Bruker bruker = new Bruker();
         String getBrukerId = "SELECT brukerId, navn FROM bruker WHERE epost = ?";
@@ -255,7 +255,7 @@ public class BrukerController {
             e.printStackTrace();
         }
         return bruker;
-    }
+    }*/
 
     public static void setNyEpost(String epost, int brukerId) {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);
