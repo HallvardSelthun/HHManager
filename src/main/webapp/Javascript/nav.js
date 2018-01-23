@@ -10,6 +10,9 @@ $(document).ready(function () {
         $("#modaldiv").load("lagnyhusstand.html");
     });
     getHusholdninger();
+    setTimeout(function(){
+        henteVarsel();
+    },200);
 
     setTimeout(function () {
         $("#fade").hide()
@@ -160,4 +163,15 @@ function paddingSmall() {
 }
 function paddingGreat() {
     selectBody.css('padding-top', heightNavbarExpanded + 'px');
+}
+
+function henteVarsel() {
+
+    console.log(":^)");
+    $.getJSON("server/gjoremalservice/" + bruker.brukerId +"/varsler", function (data) {
+        varselListe=data;
+        console.log(varselListe);
+        $("#antallVarsler").text(varselListe);
+
+    });
 }

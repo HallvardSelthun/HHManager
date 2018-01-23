@@ -77,8 +77,6 @@ function gjøremålsGraf(){
         newArray.push(miniArray);
     }
 
-
-
     function drawChart() {
 
         // Create the data table.

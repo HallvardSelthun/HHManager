@@ -4,6 +4,7 @@ var utførerId = minBruker.brukerId;
 var minegjoremal = minBruker.gjøremål;
 var fellesgjoremal;
 var husholdningId = localStorage.getItem("husholdningId")
+var varselListe;
 var husholdning;
 var id;
 
@@ -211,4 +212,7 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
+
+
+
 });
