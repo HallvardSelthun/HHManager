@@ -37,7 +37,7 @@
     border-stye: solid;
 }
 
-/*body{
+body{
     margin-top: 0px;
     padding-top: initial;
     -webkit-transition-timing-function: ease;
@@ -49,7 +49,7 @@
     -webkit-transition-property: padding-top;
     -o-transition-property: padding-top;
     transition-property: padding-top;
-}*/
+}
 
 .vl{
     border-right: 1px solid #DDD;
@@ -57,3 +57,14 @@
 body{
     margin-top:80px;
 }
+
+#navbar{
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    overflow-y: scroll !important;
+    max-height: 500px;
+}
+
