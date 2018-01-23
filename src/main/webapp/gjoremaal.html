@@ -56,14 +56,11 @@
                 <div class="person">
                     <p>Hvem skal gjøre det?:</p>
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="droppknapp" data-toggle="dropdown">
                             Person
                             <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 1</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 2</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 3</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alle</a></li>
+                        <ul id="medlemmer" class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                            <li id="felles" class ="valgtMedlem" value="0" role="presentation"><a role="menuitem" tabindex="-1" href="#">Felles</a></li>
                         </ul>
                     </div>
                 </div>

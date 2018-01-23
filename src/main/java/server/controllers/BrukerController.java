@@ -103,7 +103,7 @@ public class BrukerController {
      * @return true hvis dataene stemmer
      */
     public static Bruker loginOk(String epost, String passord) {
-        String query = "SELECT passord, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
+        String query = "SELECT hash, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
 
         Bruker bruker = new Bruker();
         int favHus = 0;
@@ -116,7 +116,7 @@ public class BrukerController {
                 rs.next();
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
-                String res = rs.getString("passord");
+                String res = rs.getString("hash");
                 int favHusDB = rs.getInt("favorittHusholdning");
                 if (favHus != favHusDB){
                     bruker.setFavHusholdning(favHusDB);
