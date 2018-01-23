@@ -209,6 +209,53 @@ public class BrukerController {
          GenereltController.update(TABELLNAVN, "husholdningId", husholdningId, brukerId);
     }
 
+    public static Bruker getBrukerData(String epost) {
+
+        Bruker bruker = new Bruker();
+        String getBrukerId = "SELECT brukerId, navn FROM bruker WHERE epost = ?";
+        int brukerId = 0;
+
+        try (Connection con = ConnectionPool.getConnection()) {
+            ps = con.prepareStatement(getBrukerId);
+            ps.setString(1, epost);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    bruker.setEpost(epost);
+                    bruker.setNavn(rs.getString("navn"));
+                    brukerId = rs.getInt("brukerId");
+                    bruker.setBrukerId(brukerId);
+                }
+            }
+
+            ResultSet rs;
+
+            String hentMineGjørmål = "SELECT * FROM gjøremål WHERE utførerId = " + brukerId;
+            s = con.createStatement();
+            rs = s.executeQuery(hentMineGjørmål);
+
+            while (rs.next()) {
+                Gjøremål gjøremål = new Gjøremål();
+                gjøremål.setBeskrivelse(rs.getString("beskrivelse"));
+                int fullført = rs.getInt("fullført");
+                if (fullført == 1) {
+                    gjøremål.setFullført(true);
+                } else {
+                    gjøremål.setFullført(false);
+                }
+                gjøremål.setGjøremålId(rs.getInt("gjøremålId"));
+                gjøremål.setHhBrukerId(brukerId);
+                gjøremål.setFrist(rs.getDate("frist"));
+                bruker.addGjøremål(gjøremål);
+            }
+
+            bruker.setBalanse(0);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bruker;
+    }
 
     public static void setNyEpost(String epost, int brukerId) {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);

@@ -3,7 +3,7 @@
 <head>
     <title>Household Manager</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/oppgjor.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
@@ -11,183 +11,173 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <script src="Javascript/nav.js"></script>
-
+    <script src="Javascript/oppgjor.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js" type="text/javascript"></script>
 </head>
 <body>
 <div id =header>
     <div id="navbar"></div>
 </div>
-<div id = "container">
-    <div id="left" class="column"></div>
-    <div id="right" class="column"></div>
-    <div id="center" class="column">
-        <div id="oppgjørmodal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Forespør penger</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="suminput">
-                            <p>Sum:</p>
-                            <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
-                        </div>
-                        <br>
-                        <div class="beskrivelse-input">
-                            <p>Beskrivelse:</p>
-                            <input id="beskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
-                        </div>
-                        <br>
-                        <div class="btn-group">
-                            <p>Velg hvilke medlemmer du vil kreve penger fra:</p>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
-                                    class="caret"></span></button>
-                            <ul id="personer" class="dropdown-menu">
-                                <li>
-                                    <label class="dropdown-menu-item checkbox">
-                                        <input type="checkbox">
-                                        Apple
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="dropdown-menu-item checkbox">
-                                        <input type="checkbox"/>
-                                        Banana
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="dropdown-menu-item checkbox">
-                                        <input class="styled" type="checkbox">
-                                        Orange
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                            <button id="endre" type="button" class="btn btn-primary">Forespør penger</button>
-                        </div>
-                    </div>
+<div id="oppgjørmodal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Forespør penger</h4>
+            </div>
+            <div class="modal-body">
+                <div class="suminput">
+                    <p>Sum:</p>
+                    <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
+                </div>
+                <br>
+                <div class="beskrivelse-input">
+                    <p>Beskrivelse:</p>
+                    <input id="utleggBeskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
+                </div>
+                <br>
+                <div class="btn-group">
+                    <p>Velg hvilke medlemmer du vil kreve penger fra:</p>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
+                            class="caret"></span></button>
+                    <ul id="personer" class="dropdown-menu">
+                        <script id="listeMedlem" type="text/x-custom-template">
+                            <li>
+                                <label class="dropdown-menu-item checkbox">
+                                    <input id="${brukerId}" type="checkbox" class="medlemCheck">
+                                    ${navn}
+                                </label>
+                            </li>
+                        </script>
+                    </ul>
+                </div>
+                <br>
+                <br>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button id="lagUtlegg" type="button" class="btn btn-primary">Forespør penger</button>
                 </div>
             </div>
         </div>
-        <div class="panel-group" id="accordion">
-            <div class="labels">
-                <label id="skyldertittel">Balanse </label>
-                <label id="betalt">Betalt</label>
+    </div>
+</div>
+
+<!-- Sidens hovedstruktur -->
+<div id="visHistorikk" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Historikk</h4>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
-                        <a id="handlelisteTittel" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                            Nora Othilie Ringdal</a>
-                    </h3>
-                    <div id="" class="titteldiv">
-                        <label id="skylder">+300 kr</label>
-                        <input type="checkbox">
-                    </div>
+                <br>
+                <div class="historikkmargin">
+                    <p>Vis historikk</p>
+                    <button type="button">Vis</button>
                 </div>
-                <div id="collapse1" class="collapse">
-                    <div class="panel-body">
-                        <div class="balanse">
-                            <h4>Du skylder Nora:</h4>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Sum</th>
-                                    <th>Beskrivelse</th>
-                                    <th>Betalt</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>10,50</td>
-                                    <td>Toalettpapir</td>
-                                    <td>
-                                        <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox1"
-                                                                                      class="styled">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>15,30</td>
-                                    <td>Håndsåpe</td>
-                                    <td>
-                                        <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox2"
-                                                                                      class="styled">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6,44</td>
-                                    <td>Juice</td>
-                                    <td>
-                                        <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox3"
-                                                                                      class="styled">
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <p>Totalt: <strong>NOK 32,24</strong></p>
-                            <br>
-
-                            <h4>Nora skylder deg:</h4>
-
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Sum</th>
-                                    <th>Beskrivelse</th>
-                                    <th>Motatt</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>43,20</td>
-                                    <td>Badematte</td>
-                                    <td>
-                                        <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox4"
-                                                                                      class="styled">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>21,30</td>
-                                    <td>Melk</td>
-                                    <td>
-                                        <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox5"
-                                                                                      class="styled">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <p>Totalt: <strong>NOK 64,50</strong></p>
-                        </div>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
                 </div>
             </div>
-            <br>
-            <br>
-            <b><a id="historikk" href="#" target="_blank">Vis historikk</a></b>
+        </div>
+    </div>
+</div>
+
+<div id = "container">
+    <div class = "row">
+        <div id="left" class="col-sm-2 col-lg-3"></div>
+        <div id="center" class="col-sm-8 col-lg-6>
+            <h1 class="tittel">Mine oppgjør</h1>
+            <!-- Under her legges det inn dynamisk HTML -->
+            <div class="panel-group" id="panelGruppe">
+                <div class="labels">
+                    <label id="skyldertittel">Balanse </label>
+                    <label id="betalt">Betalt</label>
+                </div>
+            </div>
+            <b><a id="historikk" href="#" target="_blank" data-toggle="modal" data-target="#visHistorikk">Vis historikk</a></b>
+
             <button id="forespør" type="button" class="btn btn-primary pull-right" data-toggle="modal"
                     data-target="#oppgjørmodal">
                 Forespør
                 penger
             </button>
         </div>
-        <div id="modaldiv"></div>
+    <div id="right" class="col-sm-2 col-lg-3"></div>
     </div>
 </div>
+<!-- HTML-mal for nytt oppgjør -->
+
+<!--Viktig -->
+<script id="test-oppgjor" type="text/x-custom-template">
+    <!--Viktig ^^^ -->
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
+                <!--Viktig -->
+                <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
+                <!--Viktig ^^^ -->
+            </h3>
+            <div class="titteldiv">
+                <label class="totalSum${posNeg}">${totalSum} kr</label>
+                <input type="checkbox">
+            </div>
+        </div>
+        <div id="collapse${oppgjorNr}" class="collapse">
+            <div class="panel-body">
+                <div class="balanse">
+                    <h4>Du skylder Nora:</h4>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-3 col-xs-3">Sum</th>
+                            <th class="col-sm-8 col-xs-8">Beskrivelse</th>
+                            <th class="col-sm-1 col-xs-1">Betalt</th>
+                        </tr>
+                        </thead>
+                        <tbody id="radMinus${oppgjorNr}">
+                        <!-- Her skal dynamisk kode inn -->
+                        </tbody>
+                    </table>
+
+
+                    <p>Totalt: <strong>NOK ${skylderSum}</strong></p>
+                    <br>
+
+                    <h4>Nora skylder deg:</h4>
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-3 col-xs-3">Sum</th>
+                            <th class="col-sm-8 col-xs-8">Beskrivelse</th>
+                            <th class="col-sm-1 col-xs-1">Motatt</th>
+                        </tr>
+                        </thead>
+                        <tbody id="radPlus${oppgjorNr}">
+                        <!-- Her skal mer generert kode inn-->
+                        </tbody>
+                    </table>
+                    <p>Totalt: <strong>NOK ${skylderMegSum}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="rad-template" type="text/x-custom-template">
+    <tr>
+        <td>${delSum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox-wrap" >
+                <input type="checkbox" id="checkbox${radNr}" class="checkboxes" data-utleggId="${utleggId}" data-skyldigBrukerId="${skyldigBrukerId}">
+            </div>
+        </td>
+    </tr>
+</script>
+
+
 <div id="footer"></div>
 </body>
 </html>
