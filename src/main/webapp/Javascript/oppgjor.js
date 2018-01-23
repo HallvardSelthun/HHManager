@@ -21,6 +21,33 @@ $(document).ready(function () {
 
     function utregnOppgjorSum() {
 
+        var sum = 0;
+        var totalSum = 0;
+        console.log("alleOppgjor.length burde være 3 men er: "+alleOppgjor.length);
+        for (var i = 0; i < alleOppgjor.length; i++) {
+            console.log("Nå har vi kjørt loopen "+i+" ganger.");
+            for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
+                sum = sum - alleOppgjor[i].utleggJegSkylder[j].delSum;
+            }
+            alleOppgjor[i].skylderSum = sum;
+            totalSum = sum;
+            sum = 0;
+            console.log("alleOppgjor: "+i);
+            console.log(alleOppgjor[i])
+
+            var length = alleOppgjor[i].utleggDenneSkylderMeg.length;
+            console.log(length)
+
+            for (j = 0; j < length; j++) {
+                sum = sum + alleOppgjor[i].utleggDenneSkylderMeg[j].delSum;
+            }
+
+            alleOppgjor[i].skylderMegSum = sum;
+            totalSum = totalSum + sum;
+            alleOppgjor[i].totalSum = totalSum;
+        }
+
+        displayOppgjor();
     }
 
     function displayOppgjor() {
@@ -31,7 +58,7 @@ $(document).ready(function () {
         $.template("rad-template", $("#rad-template"));
         //Append compiled markup
 
-        for (i = 0; i < alleOppgjor.length; i++) {
+        for (var i = 0; i < alleOppgjor.length; i++) {
             $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
 
             $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
@@ -41,12 +68,13 @@ $(document).ready(function () {
 
     //Legg til indekser på rader og oppgjør så de er raskere å finne senere
     function leggInnRadNr(callback) {
-        for (i = 0; i < alleOppgjor.length; i++) {
+        for (var i = 0; i < alleOppgjor.length; i++) {
             alleOppgjor[i].oppgjorNr = i;
-            for (j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
+            for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
                 alleOppgjor[i].utleggJegSkylder.radNr = j;
             }
-            for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
+
+            for (var j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
                 alleOppgjor[i].utleggDenneSkylderMeg.radNr = j;
             }
         }
@@ -69,7 +97,7 @@ $(document).ready(function () {
                     alert("Noe rart har skjedd i lastInnOppgjor");
                 }else{
                     console.log(result);
-                    leggInnRadNr(displayOppgjor);
+                    leggInnRadNr(utregnOppgjorSum);
                 }
             },
             error: function () {
