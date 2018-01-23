@@ -87,14 +87,20 @@ public class GjoremalController {
 
     public static int hentVarselGjøremål(Bruker bruker){
         int id = bruker.getBrukerId();
-        String query = "SELECT COUNT(gjøremålId) antall FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = 8 GROUP BY utførerId;";
+        int result = 0;
+        String query = "SELECT COUNT(gjøremålId) antall FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ? GROUP BY utførerId;";
 
         try(Connection con = ConnectionPool.getConnection()){
-
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            result = rs.getInt("antall");
+            return result;
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
-        return 1;
+        return result;
     }
 }
 
