@@ -79,6 +79,49 @@ $(document).ready(function () {
         hentMedlemmer();
     }, 300);
 
+
+    $("body").on("click", "#refresh2", function () {
+        for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
+            var gjoremal = fellesgjoremal[i];
+            var gjøremålId = fellesgjoremal[i].gjøremålId;
+            console.log(gjøremålId);
+            var fullfort = document.getElementById("checkboxid2" + gjøremålId).checked;
+            console.log(fullfort);
+            if (fullfort) {
+                $.ajax({
+                    url: "server/gjoremalservice/fullfortfelles",
+                    type: 'PUT',
+                    data: JSON.stringify(gjoremal),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (result) {
+                        var data = JSON.parse(result); // gjør string til json-objekt
+                        console.log("Data: " + data);
+                        if (data) {
+                            var index = minBruker.gjøremål.indexOf(gjoremal);
+                            console.log("Index: " + index);
+                            minBruker.gjøremål.splice(index, 1);
+                            //minBruker.gjøremål.push(gjoremal);
+                            localStorage.setItem("bruker", JSON.stringify(minBruker));
+                            //window.location = "gjoremaal.html";
+                            console.log(minBruker.gjøremål);
+                            alert("Det gikk bra!");
+                        } else {
+                            alert("feil!");
+                        }
+                        window.location = "gjoremaal.html";
+                    },
+                    error: function () {
+                        alert("serverfeil :/");
+                        console.log(gjoremal)
+                    }
+                });
+            }
+
+
+        }
+    });
+
     $("body").on("click", "#refresh", function () {
         for (var i = 0, len = minegjoremal.length; i < len; i++) {
             var gjoremal = minegjoremal[i];

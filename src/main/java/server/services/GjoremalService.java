@@ -36,6 +36,13 @@ public class GjoremalService {
     }
 
     @PUT
+    @Path("/fullfortfelles")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean fullfortFelles(Gjøremål gjoremal){
+        return GjoremalController.fullfortFelles(gjoremal);
+    }
+
+    @PUT
     @Path("/fullfort")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean fullfort(Gjøremål gjoremal){
