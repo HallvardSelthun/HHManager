@@ -88,7 +88,7 @@ $(document).ready(function () {
         var husObj = {
             navn: navnHus,
             medlemmer: navnIHuset,
-            adminId: 1 // denne verdien er ikke konstant. Bare for testing til ting er på plass
+            adminId: bruker.brukerId
         };
         console.log(husObj);
         console.log("Prøver å sende husstand");
