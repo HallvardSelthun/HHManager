@@ -393,7 +393,7 @@ function hentliste() {
             '<div class = "collapse"><button id="meldut"' +
             ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Forlat</button></div>' +
             '</div><div id="' + husholdningId + '"' +
-            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
+            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
             '<div id="list1" class="list-group">' + '</div></div></div></div>');
 
         /* $("#accordion").append('<li class="panel panel-default">' +
@@ -408,7 +408,7 @@ function hentliste() {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             console.log(medlemnavn);
 
-            $("#husstander ul").append('<li class="list-group-item "> ' + medlemnavn + '</li>');
+            $("#hhliste"+husholdningId).append('<li class="list-group-item "> ' + medlemnavn + '</li>');
 
             /*
              $("#accordion").append('<li class="list-group-item ">'+medlemnavn+'</li>');

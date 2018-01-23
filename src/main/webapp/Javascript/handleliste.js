@@ -185,7 +185,7 @@ function setupPage() {
             ' class="panel-heading clearfix container-fluid" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4' +
             ' class="panel-titel col-md-9">' + tittel + '</h4><div class="col-md-3" onclick="slettHandleliste()">' +
             '<button class="btn btn-danger pull-right slettHandlelisteKnapp" type="button">Slett handleliste</button></div></div>' +
-            '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
+            '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul id= "liste'+handlelisteId+'" class="list-group"></ul>' +
             '<div id="list1" class="list-group"><form><div class="input-group"><input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
             ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilNyGjenstand()">' +
             '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
@@ -213,7 +213,7 @@ function setupPage() {
             kjøperId = varer[j].kjøperId;
             //datokjøpt = new Date(varer[j].datokjøpt);
             console.log($(".invisibleDiv").attr("id"));
-            $("#handlelister ul").append('<li class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
+            $("#liste"+handlelisteId).append('<li class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
         }
     }
     if(offentlig){
