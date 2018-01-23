@@ -49,11 +49,42 @@ function utregnOppgjorSum() {
     displayOppgjor();
 }
 
+
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
+    var utleggId = $(this).data("utleggId");
+    alert(utleggId);
     var substringed = valgtSvarKnapp.match(/\d+/g);
 
+    if ($(this).is(':checked')) {
+        alert("yup");
+    }
+    else {
+
+    }
 });
+
+function checkMotattRad() {
+    /*
+    $.ajax({
+        url: "server/utlegg/"+,
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            $("#navnpåpers").text(nyttNavn);
+            minBruker.navn = nyttNavn;
+            window.location = "profil.html";
+            localStorage.setItem("bruker", JSON.stringify(minBruker));
+        },
+        error: function () {
+            alert("Noe gikk galt :(")
+        }
+    });
+    */
+}
 
 function displayOppgjor() {
 
@@ -78,6 +109,7 @@ function leggInnRadNr(callback) {
     for (var i = 0; i < alleOppgjor.length; i++) {
         alleOppgjor[i].oppgjorNr = i;
         for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
+            console.log("utleggId: "+alleOppgjor[i].utleggJegSkylder[j].utleggId);
             alleOppgjor[i].utleggJegSkylder[j].radNr = j;
         }
 

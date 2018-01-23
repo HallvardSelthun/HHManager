@@ -35,6 +35,11 @@
     margin-top: 50px;
 }
 
+.tittel {
+    text-align: center;
+    margin:-2px;
+}
+
 .dropdown-menu-item {
     text-align: center;
 }
