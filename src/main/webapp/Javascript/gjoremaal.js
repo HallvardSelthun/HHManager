@@ -9,8 +9,8 @@ var husholdningId = localStorage.getItem("husholdningId")
 function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = fellesgjoremal[i].beskrivelse;
-        var frist = minegjoremal[i].frist;
-        var gjøremålId = minegjoremal[i].gjøremålId;
+        var frist = fellesgjoremal[i].frist;
+        var gjøremålId = fellesgjoremal[i].gjøremålId;
 
         $("#fellesGjoremaal").append('<li class="list-group-item ">' + '<b>' + fellesnavn + '</b>' +
             ",  " + frist +

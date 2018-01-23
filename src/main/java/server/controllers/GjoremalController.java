@@ -22,7 +22,7 @@ public class GjoremalController {
 
     public static ArrayList<Gjøremål> hentFellesGjøremål(int husholdningsId) {
         ArrayList<Gjøremål> gjøremål = new ArrayList<>();
-        String getQuery ="SELECT beskrivelse FROM gjøremål WHERE husholdningId = " + husholdningsId +" AND utførerId IS NULL ORDER BY frist";
+        String getQuery ="SELECT beskrivelse, frist FROM gjøremål WHERE husholdningId = " + husholdningsId +" AND utførerId IS NULL ORDER BY frist";
 
         try(Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement getStatement = connection.prepareStatement(getQuery);
@@ -31,6 +31,7 @@ public class GjoremalController {
             while(rs.next()){
                 Gjøremål gjøremålet = new Gjøremål();
                 gjøremålet.setBeskrivelse(rs.getString("beskrivelse"));
+                gjøremålet.setFrist(rs.getDate("frist"));
                 gjøremål.add(gjøremålet);
             }
             return gjøremål;
