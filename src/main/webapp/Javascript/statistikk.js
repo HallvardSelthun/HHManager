@@ -54,6 +54,7 @@ function vareGraf(){
         // Set chart options
         var options = {'title':'Antall varer kjøpt per medlem denne måneden',
             'width':400,
+            'is3D': true,
             'height':300};
 
         // Instantiate and draw our chart, passing in some options.
@@ -99,6 +100,7 @@ function gjøremålsGraf(){
         // Set chart options
         var options = {'title':'Antall gjøremål gjort per medlem denne måneden',
             'width':400,
+            'is3D':true,
             'height':300};
 
         // Instantiate and draw our chart, passing in some options.
@@ -144,6 +146,7 @@ function nyhetsGraf(){
         // Set chart options
         var options = {'title':'Antall nyhetsinnlegg per medlem denne måneden',
             'width':400,
+            'is3D': true,
             'height':300};
 
         // Instantiate and draw our chart, passing in some options.
