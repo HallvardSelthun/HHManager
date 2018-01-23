@@ -55,12 +55,12 @@ $(document).on("click", ".checkboxes", function(event){
     var utleggId = $(this).attr('data-utleggId');
     var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
     var substringed = valgtSvarKnapp.match(/\d+/g);
-    var wrapperId = "#checkboxwrap"+substringed;
+
+    var klikketKnapp = $(this);
 
     if ($(this).is(':checked')) {
         var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
-            alert("okii! "+substringed+wrapperId);
-
+            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
         });
     }
     else {
@@ -76,7 +76,6 @@ function checkMotattRad(utleggId, skyldigBrukerId, next) {
         type: 'PUT',
         success: function (result) {
             var suksess = result;
-            alert("server-retur: "+suksess);
             next();
         },
         error: function () {
