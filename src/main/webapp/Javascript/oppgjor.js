@@ -182,7 +182,7 @@ function lagNyttUtlegg() {
             }
         },
         error: function () {
-            alert("RIP");
+            alert("RIPinpeace");
         }
     })
 }
@@ -194,10 +194,11 @@ function lastinn() {
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
+                console.log(husholdninger[j].medlemmer[k].navn);
                 $.template( "medlemmer", $("#listeMedlem"));
-                console.log(husholdninger[j]);
                 $.tmpl("medlemmer", husholdninger[j].medlemmer[k]).appendTo($("#personer"));
             }
         }
     }
 }
+
