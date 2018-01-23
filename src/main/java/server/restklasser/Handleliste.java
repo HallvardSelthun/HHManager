@@ -19,6 +19,16 @@ public class Handleliste {
     private boolean offentlig;
     private Date frist;
 
+    public int getGjemt() {
+        return gjemt;
+    }
+
+    public void setGjemt(int gjemt) {
+        this.gjemt = gjemt;
+    }
+
+    private int gjemt;
+
     public Handleliste() {
         //tom konstruktør
     }
