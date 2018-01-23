@@ -16,7 +16,10 @@ function gethhData() {
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
     console.log(id);
+    $("#droppknapp").text($(this).text());
+/*
     $("#droppknapp").val($(this).val())
+*/
 });
 
 function hentMedlemmer() {
@@ -119,13 +122,16 @@ $(document).ready(function () {
 
     $("body").on("click", "#lagreGjoremal", function () {
         var beskrivelse = $("#gjoremalInput").val();
-        var utførerId = $("#menu1").val();
+        var utførerId = id;
         var frist = $("#dato").val();
         var husholdningId = localStorage.getItem("husholdningId");
 
+        if(id == "null"){
+            id = 0;
+        }
         var gjoremal = {
             beskrivelse: beskrivelse,
-            utførerId: utførerId,
+            hhBrukerId: utførerId,
             frist: frist,
             husholdningId: husholdningId
         };
@@ -137,7 +143,7 @@ $(document).ready(function () {
             return;
         }
         $.ajax({
-            url: "server/gjoremalservice/nyttfellesgoremal",
+            url: "server/gjoremalservice/nyttfellesgjoremal",
             type: 'POST',
             data: JSON.stringify(gjoremal),
             contentType: 'application/json; charset=utf-8',
@@ -146,14 +152,12 @@ $(document).ready(function () {
                 var data = JSON.parse(result); // gjør string til json-objekt
                 console.log("Data: " + data);
                 if (data) {
-                    minBruker.gjøremål.push(gjoremal);
-                    localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";
                     alert("Det gikk bra!");
                 } else {
                     alert("feil!");
                 }
-                window.location = "gjormaal.html";
+                window.location = "gjoremaal.html";
             },
             error: function () {
                 alert("serverfeil :/");
