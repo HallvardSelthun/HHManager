@@ -21,11 +21,13 @@ function getHusholdninger() {
 $(document).ready(function () {
     //gethhData();
 
-   // getHusholdninger();
-    setTimeout(function () {
-        mineHusholdninger=JSON.parse(localStorage.getItem("husholdninger"));
-        hentliste();
-    }, 1000);
+    setTimeout(function(){
+       // getHusholdninger();
+        setTimeout(function () {
+            mineHusholdninger=JSON.parse(localStorage.getItem("husholdninger"));
+            hentliste();
+        }, 300)
+    },400);
 
     var MD5 = function (string) {
         function RotateLeft(lValue, iShiftBits) {
@@ -373,11 +375,11 @@ $(document).ready(function () {
     $("#nyHusProfil").on("click", function () {
         $("#modaldiv").load("lagnyhusstand.html");
     })
-
+/*
     var script = document.createElement('script');
     script.src = "Javascript/nav.js";
     script.async = true;
-    document.head.appendChild(script);
+    document.head.appendChild(script);*/
 });
 function hentliste() {
     console.log(mineHusholdninger);
