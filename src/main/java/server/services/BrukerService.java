@@ -62,14 +62,13 @@ public class BrukerService {
 
     /**
      * Endrer favhusholdning i Databasen til brukerIden som er gitt
-     * @param brukerId
-     * @param favHusholdningsId
+     * @param bruker
      */
     @PUT
-    @Path("/{brukerId}/favHusholdning")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public void setFavHusholdning(@PathParam("brukerId") int brukerId, String favHusholdningsId){
-        BrukerController.setNyFavoritthusholdning(brukerId, favHusholdningsId);
+    @Path("/favHusholdning")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void setFavHusholdning(Bruker bruker){
+        BrukerController.setNyFavoritthusholdning(bruker.getBrukerId(), Integer.toString(bruker.getFavHusholdning()));
     }
 
     /**

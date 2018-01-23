@@ -420,12 +420,17 @@ $(document).ready(function () {
     document.head.appendChild(script);
 
     $(document).on('click', '.glyphicon', function () {
-        if ($(this).hasClass('glyphicon')){
-            alert(":)");
-
-        }
         event.stopPropagation();
-        console.log($(this).attr('id'));
+        if ($(this).hasClass('glyphicon-star-empty')){
+            $(".glyphicon-star").each(function () {
+                $(this).removeClass('glyphicon-star');
+                $(this).addClass('glyphicon-star-empty')
+            });
+            $(this).removeClass('glyphicon-star-empty');
+            $(this).addClass('glyphicon-star');
+            var id = $(this).attr('value');
+            settNyFav(id);
+        }
     });
 });
 
@@ -438,7 +443,7 @@ function hentliste() {
 
         $("#husstander").append('<div id ="'+husholdningId+'" class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title pull-left col-md-9"><a></a>' + husholdnavn + '</h4>' +
-            '<span id="star'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>'+
+            '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>'+
             '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn btn-danger pull-right" type="button">Forlat</button></div>' +
             '<div id="' + husholdningId + 'Medlemmer"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
@@ -467,6 +472,25 @@ function hentliste() {
 
 }
 
+function settNyFav(id) {
+    var bruker= {
+        brukerId: brukerId,
+        favhusholdning: parseInt(id)
+    };
+    $.ajax({
+        url: "server/BrukerService/favHusholdning",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            alert("nice");
+        },
+        error: function () {
+            alert("D:");
+        }
+    })
+}
 
 function slettmedlem() {
     event.stopPropagation();
