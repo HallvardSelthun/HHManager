@@ -9,6 +9,13 @@ h1 {
     text-align: center;
 }
 
+.fristen{
+    font-weight: bold;
+}
+
+#mycheckbox{
+    display: none;
+}
 /*.list-group-item{
     font-weight: bold;
 }*/

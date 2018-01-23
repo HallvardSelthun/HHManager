@@ -33,4 +33,11 @@ public class GjoremalService {
     public boolean lagreFellesGjoremal(Gjøremål gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
+
+    @PUT
+    @Path("/fullfort")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean fullfort(Gjøremål gjoremal){
+        return GjoremalController.fullfort(gjoremal);
+    }
 }

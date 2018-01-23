@@ -66,5 +66,22 @@ public class GjoremalController {
         }
         return  false;
     }
+
+    public static boolean fullfort(Gjøremål gjoremal){
+        int utførerId = gjoremal.getHhBrukerId();
+        int gjoremalId = gjoremal.getGjøremålId();
+
+        String fullforGjoremal = "UPDATE " + TABELLNAVN + " SET fullført = 1 WHERE gjøremålId = " +
+                gjoremalId + " AND utførerId = " + utførerId;
+
+        try (Connection connection = ConnectionPool.getConnection()) {
+            PreparedStatement prepfullforGjoremal = connection.prepareStatement(fullforGjoremal);
+            prepfullforGjoremal.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 
