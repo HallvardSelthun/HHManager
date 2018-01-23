@@ -49,7 +49,6 @@ function utregnOppgjorSum() {
     displayOppgjor();
 }
 
-function merk
 
 function displayOppgjor() {
 
