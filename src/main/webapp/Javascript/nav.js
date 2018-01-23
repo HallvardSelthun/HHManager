@@ -151,10 +151,10 @@ paddingSmall();
 selectNavbarCollapse.on('show.bs.collapse', function () {
     if (heightNavbarExpanded == 0 ) heightNavbarExpanded = heightNavbarCollapsed + $(this).outerHeight(true);
     paddingGreat();
-})
+});
 selectNavbarCollapse.on('hide.bs.collapse', function () {
     paddingSmall();
-})
+});
 
 $(window).resize( function () {
     if (( document.documentElement.clientWidth > 767 ) && selectNavbarCollapse.hasClass('in') ) {

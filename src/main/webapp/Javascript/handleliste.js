@@ -24,71 +24,6 @@ $(document).ready(function () {
     });
 
 
-
-
-    $("body").on("click", "#utlegg", function () {
-        var arrayMedCheckedVarer = [];
-        $("li[type=checkbox]").each(function() {
-            if(this.checked){
-                arrayMedCheckedVarer.push($(this).parent.val());
-            }
-        });
-        console.log(arrayMedCheckedVarer);
-
-
-
-
-
-
-
-        var navnHus = $("#navnHusstand").val();
-        var medlemHus = $("#navnMedlem").val();
-
-        navnIHuset.push(
-            {
-                epost: bruker.epost
-            });
-
-        var husObj = {
-            navn: navnHus,
-            medlemmer: navnIHuset,
-            adminId: 1 // denne verdien er ikke konstant. Bare for testing til ting er på plass
-        };
-        //console.log(husObj);
-        //console.log("Prøver å sende husstand");
-
-        if (navnHus == "") {
-            //alert("Skriv inn noe");
-            return;
-        }
-        $.ajax({
-            url: "server/hhservice/husholdning",
-            type: 'POST',
-            data: JSON.stringify(husObj),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (result) {
-                var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
-                if (data) {
-                    alert("Det gikk bra!");
-                } else {
-                    alert("feil!");
-                }
-            },
-            error: function () {
-                alert("serverfeil :/");
-                console.log(husObj)
-            }
-        });
-    });
-
-
-
-
-
-
-
     /*$("#leggTilNyGjenstandKnapp").on("click", function () {
         leggTilNyGjenstand();
     });
@@ -144,7 +79,6 @@ function leggTilNyHandleliste() {
 function leggTilVare() {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
     var handlelisteId = $(".leggTilNyGjenstand:focus").attr("id");
-    console.log(nyGjenstandNavn + "\n" + handlelisteId);
 
     var vare = {
         varenavn: nyGjenstandNavn,
@@ -190,7 +124,6 @@ function slettHandleliste(sletteId) {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            console.log(data);
             alert("Det gikk bra!");
 
             if (data) {
@@ -213,7 +146,6 @@ function checkEllerUncheck(){
 
 function endrePublic(){
     //var offentlifKnapp = $(".switch input").prop("checked");
-    //console.log(handlelisteId);
 
     $.ajax({
         url: "server/handleliste/" + handlelisteId + "/private",
@@ -240,12 +172,26 @@ function getHandlelisterData() {
     });
 }
 
+function checkChecked(formname) {
+    var anyBoxesChecked = false;
+    $('#' + formname + ' input[type="checkbox"]').each(function() {
+        if ($(this).is(":checked")) {
+            anyBoxesChecked += $(this).is(":checked").attr("id");
+        }
+    });
+
+    if (anyBoxesChecked == false) {
+        alert('Please select at least one checkbox');
+        return false;
+    }
+
+    console.log(anyBoxesChecked);
+}
 
 function setupPage() {
     var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjøpt, kjøperId, datokjøpt;
 
     for (var i = 0; i < alleHandlelister.length; i++) {
-        console.log(alleHandlelister[i])
         if (alleHandlelister[i].gjemt == 0) {
             tittel = alleHandlelister[i].tittel;
             handlelisteId = alleHandlelister[i].handlelisteId;
@@ -265,7 +211,7 @@ function setupPage() {
                 ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilVare()">' +
                 '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
                 '<div class="container-fluid"><div class="row"><button id="utlegg" type="button" class="align-left btn btn-primary' +
-                ' pull-left align-middle" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button><button' +
+                ' pull-left align-middle" data-toggle="modal" data-target="#utleggmodal" onclick="checkChecked("liste'+handlelisteId+'")">Lag utlegg</button><button' +
                 ' id="utenUtlegg" type="button" class="btn btn-primary pull-left align-items-center">Kjøpt uten utlegg</button>' +
                 '<!-- Rounded switch --><div><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input id="switch' + handlelisteId + '" type="checkbox"><span' +
                 ' class="slider round">' +
@@ -278,7 +224,6 @@ function setupPage() {
                 kjøpt = varer[j].kjøpt;
                 kjøperId = varer[j].kjøperId;
                 //datokjøpt = new Date(varer[j].datokjøpt);
-                //console.log($(".invisibleDiv").attr("id"));
                 $("#liste" + handlelisteId).append('<label for="' + varenavn + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" title="toggle' +
                     ' all" type="checkbox" class="all pull-right"></label>');
             }
