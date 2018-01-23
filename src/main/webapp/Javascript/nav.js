@@ -137,16 +137,6 @@ function getHusholdninger() {
             }
         }, 300);
     });
-
-    });
-    setTimeout(function () {
-        for (i = 0, l = husholdninger.length; i < l; i++) {
-            var navn = husholdninger[i].navn;
-            var id = husholdninger[i].husholdningId;
-            console.log(husholdninger[i]);
-            $("#husholdninger3").prepend('<li id="' + id + '" class = "hhknapp"><a href="#">' + navn + '</a></li>');
-        }
-    }, 250);
 }
 
 

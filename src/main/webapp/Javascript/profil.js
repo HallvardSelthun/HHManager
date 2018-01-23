@@ -418,6 +418,7 @@ function hentliste() {
 
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
+    if(x.style==undefined) x.style.display="none";
     if (x.style.display === "none") {
         x.style.display = "block";
     } else {
