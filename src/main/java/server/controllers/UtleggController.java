@@ -172,7 +172,7 @@ public class UtleggController {
     private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection) {
 
         //Gir alle utleggere som jeg skylder penger, samt beløpet jeg skylder mm.
-        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" ORDER BY utleggerId"; //test med 2
+        String query = "SELECT * FROM utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" ORDER BY utleggerId"; //test med 2
 
         try (PreparedStatement statement = connection.prepareStatement(query)){
             ResultSet resultset = statement.executeQuery();

@@ -6,23 +6,48 @@ $(document).ready(function () {
 
     //Globale variabler
     var testBrukerId = 1;
-    var alleOppgjor = {oppgjorene: []};
+    var alleOppgjor = [];
 
     //Kjør JavaScript
     init();
 
     function init() {
         lastInnOppgjor(testBrukerId);
+        //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
+    }
+
+    function utregnOppgjorSum() {
+
     }
 
     function displayOppgjor() {
-        //Compile the markup as a named template
+
+        // Compile the markup as a named template
         $.template( "oppgjorTemplate", $("#test-oppgjor"));
-        for (i = 0; i < alleOppgjor.length; i++) {
-            $.tmpl( "oppgjorTemplate", oppgjor[i].appendTo($("#panelGruppe")));
-        }
+
+        $.template("rad-template", $("#rad-template"));
         //Append compiled markup
-        leggInnSkylderRader();
+
+        for (i = 0; i < alleOppgjor.length; i++) {
+            $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
+
+            $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+            $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
+        }
+    }
+
+    //Legg til indekser på rader og oppgjør så de er raskere å finne senere
+    function leggInnRadNr(callback) {
+        for (i = 0; i < alleOppgjor.length; i++) {
+            alleOppgjor[i].oppgjorNr = i;
+            for (j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
+                alleOppgjor[i].utleggJegSkylder.radNr = j;
+            }
+            for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
+                alleOppgjor[i].utleggDenneSkylderMeg.radNr = j;
+            }
+        }
+        callback();
     }
 
 
@@ -40,8 +65,8 @@ $(document).ready(function () {
                 if (!result){
                     alert("Noe rart har skjedd i lastInnOppgjor");
                 }else{
-                    console.log(result)
-                    //alert(alleOppgjor[0].utleggDenneSkylderMeg[0].beskrivelse);
+                    console.log(result);
+                    leggInnRadNr(displayOppgjor);
                 }
             },
             error: function () {
@@ -49,6 +74,13 @@ $(document).ready(function () {
             }
         })
     }
+
+    var rad = {
+        sum: -36,
+        beskrivelse: "Pepperkakedeig",
+        betalt: false,
+        radNr: -1
+    };
 
     var skylderRad = {
         sum: -36,
@@ -72,25 +104,8 @@ $(document).ready(function () {
         oppgjorNr: -1 //Denne burde genereres når objektet kommer inn i JavaScript
     };
 
-    $("#buttonn").click(function() {
-        // Compile the markup as a named template
-        $.template( "oppgjorTemplate", $("#test-oppgjor"));
-        //Append compiled markup
-        $.tmpl( "oppgjorTemplate", oppgjor).appendTo($("#panelGruppe"));
-        leggInnSkylderRader();
-
-    });
-
-    function leggInnSkylderRader() {
-        oppgjor.utleggJegSkylder.push(skylderRad);
-        oppgjor.utleggJegSkylder.push(skylderRad2);
-
-        //Compile
-        $.template("rad-template", $("#rad-template"));
-        //Append compiled markup
-        $.tmpl("rad-template", oppgjor.utleggJegSkylder).appendTo($("#radData"));
-    }
 });
+
 
 function lagNyttUtlegg() {
     var sum = $("#sum").val();

@@ -72,10 +72,12 @@
     </div>
 </div>
 
+<!-- Sidens hovedstruktur -->
 <div id = "container">
     <div class = "row">
         <div id="left" class="col-sm-2 col-lg-3"></div>
         <div id="center" class="col-sm-8 col-lg-6">
+            <!-- Under her legges det inn dynamisk HTML -->
             <div class="panel-group" id="panelGruppe">
                 <div class="labels">
                     <label id="skyldertittel">Balanse </label>
@@ -103,15 +105,15 @@
         <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
                 <!--Viktig -->
-                <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse2"> ${navn} </a>
+                <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div id="??" class="titteldiv">
+            <div class="titteldiv">
                 <label class="skylder">+300 kr</label>
                 <input type="checkbox">
             </div>
         </div>
-        <div id="collapse2" class="collapse">
+        <div id="collapse${oppgjorNr}" class="collapse">
             <div class="panel-body">
                 <div class="balanse">
                     <h4>Du skylder Nora:</h4>
@@ -123,7 +125,7 @@
                             <th class="col-sm-1 col-xs-1">Betalt</th>
                         </tr>
                         </thead>
-                        <tbody id="radData${radNr}">
+                        <tbody id="radMinus${oppgjorNr}">
                         <!-- Her skal dynamisk kode inn -->
                         </tbody>
                     </table>
@@ -142,7 +144,7 @@
                             <th class="col-sm-1 col-xs-1">Motatt</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="radPlus${oppgjorNr}">
                         <!-- Her skal mer generert kode inn-->
                         </tbody>
                     </table>
@@ -155,7 +157,7 @@
 
 <script id="rad-template" type="text/x-custom-template">
     <tr>
-        <td>${sum}</td>
+        <td>${delSum}</td>
         <td>${beskrivelse}</td>
         <td>
             <div class="checkbox2">
