@@ -43,9 +43,9 @@ public class GjoremalService {
     }
 
     @GET
-    @Path("/varsler")
+    @Path("{brukerId}/varsler")
     @Produces(MediaType.APPLICATION_JSON)
-    public int hentVarsler(Bruker bruker){
-        return GjoremalController.hentVarselGjøremål(bruker);
+    public int hentVarsler(@PathParam("brukerId") int brukerId){
+        return GjoremalController.hentVarselGjøremål(brukerId);
     }
 }

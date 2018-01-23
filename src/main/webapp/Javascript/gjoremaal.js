@@ -4,8 +4,29 @@ var utførerId = minBruker.brukerId;
 var minegjoremal = minBruker.gjøremål;
 var fellesgjoremal;
 var husholdningId = localStorage.getItem("husholdningId")
+var husholdning;
+var id;
 
+function gethhData() {
+    $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
+        husholdning = data;
+    });
+}
 
+$(document).on("click", ".valgtMedlem", function () {
+    id = $(this).attr('value');
+    console.log(id);
+    $("#droppknapp").val($(this).val())
+});
+
+function hentMedlemmer() {
+    var medlemmer = husholdning.medlemmer;
+    for(var j = 0, leng = medlemmer.length; j< leng; j++){
+        var medlemnavn = medlemmer[j].navn;
+        var hhBrukerId = medlemmer[j].brukerId;
+        $("#medlemmer").append('<li class ="valgtMedlem" id="medlem'+ hhBrukerId+'"role="presentation" value="'+hhBrukerId+'"><a  role="menuitem" tabindex="-1" href="#">'+medlemnavn +'</a></li>');
+    }
+}
 function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = fellesgjoremal[i].beskrivelse;
@@ -44,10 +65,14 @@ function hentMinegjoremal() {
 
 
 $(document).ready(function () {
+    gethhData();
     hentFellesGjoremalData();
     hentMinegjoremal();
     setTimeout(function () {
         hentFellesGjoremal();
+    }, 300);
+    setTimeout(function () {
+        hentMedlemmer();
     }, 300);
 
     $("body").on("click", "#refresh", function () {
