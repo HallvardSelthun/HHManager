@@ -417,7 +417,16 @@ $(document).ready(function () {
     var script = document.createElement('script');
     script.src = "Javascript/nav.js";
     script.async = true;
-    document.head.appendChild(script)
+    document.head.appendChild(script);
+
+    $(document).on('click', '.glyphicon', function () {
+        if ($(this).hasClass('glyphicon')){
+            alert(":)");
+
+        }
+        event.stopPropagation();
+        console.log($(this).attr('id'));
+    });
 });
 
 function hentliste() {
@@ -429,6 +438,7 @@ function hentliste() {
 
         $("#husstander").append('<div id ="'+husholdningId+'" class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title pull-left col-md-9"><a></a>' + husholdnavn + '</h4>' +
+            '<span id="star'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>'+
             '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn btn-danger pull-right" type="button">Forlat</button></div>' +
             '<div id="' + husholdningId + 'Medlemmer"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
@@ -454,6 +464,7 @@ function hentliste() {
             // $("#accordion").append('</ul></div></div></li>');
         }
     }
+
 }
 
 
