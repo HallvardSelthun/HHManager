@@ -44,8 +44,13 @@
     margin-right: 5px;
 }
 
-.totalSum {
+.totalSumPos {
     color: #32CD32;
+    margin-right: 50px;
+}
+
+.totalSumNeg {
+    color: #CD3232;
     margin-right: 50px;
 }
 
