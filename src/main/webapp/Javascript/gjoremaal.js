@@ -65,9 +65,9 @@ $(document).ready(function () {
                         var data = JSON.parse(result); // gjør string til json-objekt
                         console.log("Data: " + data);
                         if (data) {
-                            var index = minBruker.gjøremål.indexOf(gjoremal.gjoremalId);
-                            console.log(index);
-                            minBruker.gjøremål.splice(index+1,1);
+                            var index = minBruker.gjøremål.indexOf(gjoremal);
+                            console.log("Index: " +index);
+                            minBruker.gjøremål.splice(index,1);
                             //minBruker.gjøremål.push(gjoremal);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
                             //window.location = "gjoremaal.html";
