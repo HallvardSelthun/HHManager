@@ -38,7 +38,6 @@ import java.sql.DriverManager;
  */
 public class TMGR {
 
-
     @BeforeClass
     public static void setup() throws Exception {
         ConnectionPool.h2();
