@@ -1,8 +1,11 @@
 $(document).ready(function () {
     $("#lagUtlegg").on('click', function () {
-       lagNyttUtlegg();
+        lagNyttUtlegg();
     });
 
+    setTimeout(function () {
+        lastinn()
+    },250);
 
     //Globale variabler
     var testBrukerId = 1;
@@ -110,18 +113,19 @@ $(document).ready(function () {
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = $("#utleggBeskrivelse").val();
+    if(sum == "" || beskrivelse == ""){
+        alert("pls gi en sum og beskrivelse :)");
+        return;
+    }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
-    skyldigBrukerId = 1;
-    var antalDelbetalere = 1;
-    var delSum = sum/antalDelbetalere;
-    for(var i = 0,  leng = antalDelbetalere; i<leng; i++){
+    $('#personer input:checked').each(function () {
         utleggsbetaler = {
-            skyldigBrukerId: skyldigBrukerId,
-            delSum: delSum
+            skyldigBrukerId: $(this).attr('id'),
+            delSum: sum/$('#personer input:checked').length
         };
-        utleggsbetalere.push(utleggsbetaler);
-    }
+        utleggsbetalere.push(utleggsbetaler)
+    });
 
     utlegg = {
         utleggerId: utleggerId,
@@ -149,4 +153,17 @@ function lagNyttUtlegg() {
             alert("RIP");
         }
     })
+}
+function lastinn() {
+    var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
+    var husId = localStorage.getItem("husholdningId");
+    console.log(husholdninger);
+    for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
+        if (husholdninger[j].husholdningId==husId){
+            for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
+                $.template( "medlemmer", $("#listeMedlem"));
+                $.tmpl("medlemmer", husholdninger[j].medlemmer[k]).appendTo($("#personer"));
+            }
+        }
+    }
 }

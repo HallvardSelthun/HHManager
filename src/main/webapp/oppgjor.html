@@ -41,24 +41,14 @@
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
                             class="caret"></span></button>
                     <ul id="personer" class="dropdown-menu">
-                        <li>
-                            <label class="dropdown-menu-item checkbox">
-                                <input type="checkbox">
-                                Apple
-                            </label>
-                        </li>
-                        <li>
-                            <label class="dropdown-menu-item checkbox">
-                                <input type="checkbox"/>
-                                Banana
-                            </label>
-                        </li>
-                        <li>
-                            <label class="dropdown-menu-item checkbox">
-                                <input class="styled" type="checkbox">
-                                Orange
-                            </label>
-                        </li>
+                        <script id="listeMedlem" type="text/x-custom-template">
+                            <li>
+                                <label class="dropdown-menu-item checkbox">
+                                    <input id="${brukerId}" type="checkbox" class="medlemCheck">
+                                    ${navn}
+                                </label>
+                            </li>
+                        </script>
                     </ul>
                 </div>
                 <br>
