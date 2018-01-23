@@ -148,7 +148,7 @@ public class BrukerController {
      * @return true hvis operasjonen ble godkjent
      */
     public static boolean setNyFavoritthusholdning(int brukerId, String husholdningId) {
-         return GenereltController.update(TABELLNAVN, "husholdningId", husholdningId, brukerId);
+         return GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
     }
 
     public static Bruker getBrukerData(String epost) {

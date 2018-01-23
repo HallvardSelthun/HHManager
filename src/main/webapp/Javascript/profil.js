@@ -481,8 +481,9 @@ function settNyFav(id) {
     var nyId = parseInt(id);
     var bruker= {
         brukerId: brukerId,
-        favhusholdning: nyId
+        favHusholdning: nyId
     };
+    console.log(bruker)
     $.ajax({
         url: "server/BrukerService/nyFavHusholdning",
         type: 'PUT',
@@ -491,12 +492,11 @@ function settNyFav(id) {
         dataType: 'json',
         success: function (data) {
             var result = JSON.parse(data);
-            alert(result);
             minBruker.favHusholdning = nyId;
         },
         error: function (data) {
             var result = JSON.parse(data);
-            alert(result);
+            alert("noe gikk galt");
         }
     })
 }
