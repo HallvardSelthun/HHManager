@@ -102,7 +102,6 @@ $(document).ready(function () {
                             minBruker.gjøremål.splice(index, 1);
                             //minBruker.gjøremål.push(gjoremal);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
-                            //window.location = "gjoremaal.html";
                             console.log(minBruker.gjøremål);
                             alert("Det gikk bra!");
                         } else {
@@ -120,6 +119,7 @@ $(document).ready(function () {
 
         }
     });
+
 
     $("body").on("click", "#lagreGjoremal", function () {
         var beskrivelse = $("#gjoremalInput").val();
