@@ -1,6 +1,7 @@
 package server.services;
 
 import server.controllers.GjoremalController;
+import server.restklasser.Bruker;
 import server.restklasser.Gjoremal;
 
 import javax.ws.rs.*;
