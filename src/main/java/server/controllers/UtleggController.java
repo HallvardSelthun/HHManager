@@ -67,6 +67,24 @@ public class UtleggController {
         }
     }
 
+    public static boolean setMotattOppgjor(ArrayList<Utleggsbetaler> utleggsbetalere) {
+        boolean resultat = false;
+        boolean altGikkGreit = true;
+
+        System.out.println(utleggsbetalere.get(0).getSkyldigBrukerId());
+        /*
+        for (Utleggsbetaler element : utleggsbetalere) {
+            resultat = setMotatt(element.getSkyldigBrukerId(),element.getutleggId());
+            if (resultat == false) {
+                altGikkGreit = false;
+            }
+        }
+
+        return altGikkGreit;
+        */
+        return false;
+    }
+
 
     /**
      * Henter alle utlegg som en brukerId har laget
