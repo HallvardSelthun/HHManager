@@ -5,9 +5,7 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import server.Sikkerhet.Passord;
 import server.controllers.*;
-import server.util.*;
 
 /**
  * Denne klassen kobles opp mot Googles mail servere og sender mail til en bruker
@@ -17,7 +15,6 @@ public class Mail {
     private static final String passord = "HHManagerT6";
     private static final String sub = "Registrert i husholdning i HouseHoldManager";
     private static final String glemtsub = "Nytt passord til HouseHoldManager";
-    private static final int PASSORD_LENGDE = 10;
     private static String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
             + "\nHouseHoldManagers utviklingsteam <3";
 
@@ -30,12 +27,13 @@ public class Mail {
     }
 
     public static void sendUreg(ArrayList<String> eposter, String hushold) {
-        StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+        StringBuilder msg = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen" + hushold +
                 "\nFølg lenken for å kommme til HHManagers registreringsside, " +
                 "slik at du kan lage en bruker på systemet." +
-                "\nHusk å bruke samme epost som denne." +
+                "\nNB: Husk å bruke samme epost som denne." +
                 "\nhttp://localhost:8080/server/lagbruker.html");
+        sendTilFlere(eposter, msg);
     }
 
     /**
@@ -44,7 +42,7 @@ public class Mail {
      * @param eposter ArrayList over alle epostadressene som skal få mail
      * @param msg     String med innholdet i eposten.
      */
-    public static void sendTilFlere(ArrayList<String> eposter, StringBuilder msg) {
+    private static void sendTilFlere(ArrayList<String> eposter, StringBuilder msg) {
         for (String epost :
                 eposter) {
             epost.trim().toLowerCase();
@@ -111,9 +109,7 @@ public class Mail {
                 msg = "Hei" +
                         "\nDenne eposten er ikke registrert hos oss." + regards;
             } else {
-                String pw = RandomGenerator.stringuln(PASSORD_LENGDE);  // generates random password
-                String hash = Passord.hashPassord(pw);                //Metoden er ikke laget enda
-                BrukerController.setNyttPassord(brukerId, hash);
+                String pw = BrukerController.nyttTilfeldigPass(brukerId);
                 msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                         "\n\nHer er ditt nye genererte passord: " + pw + regards;
             }

@@ -38,9 +38,10 @@ public class BrukerService {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Bruker loginGodkjent(Bruker bruker){
         //må ha en plass der en finne ut om d e rett
-        return BrukerController.loginOk(bruker.getEpost(), bruker.getPassord());
+        return BrukerController.loginOk(bruker);
     }
 
     @DELETE
@@ -101,14 +102,6 @@ public class BrukerService {
                 (bruker.getBrukerId()), bruker.getNavn());
         return false;
     }
-
-
-    /*@GET
-    @Path("/{epost}/brukerData")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Bruker getHhData(@PathParam("epost") String brukerEpost){
-        return BrukerController.getBrukerData(brukerEpost);
-    }*/
 
     /**
      * Gir beskjed til servereren at det skal genereres et nytt passord for brukeren og sendes en mail med det

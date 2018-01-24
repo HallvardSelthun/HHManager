@@ -1,9 +1,9 @@
 -- brukere:
-INSERT INTO bruker ( passord, navn, epost )VALUES ( 'passord2' ,'bruker2' ,'bruker2@mail.no' );
-INSERT INTO bruker ( passord, navn, epost )VALUES ( 'passord3' ,'bruker3' ,'bruker3@mail.no' );
-INSERT INTO bruker ( passord, navn, epost )VALUES ( 'passord4' ,'bruker4' ,'bruker4@mail.no' );
-INSERT INTO bruker ( passord, navn, epost )VALUES ( 'passord5' ,'bruker6' ,'bruker6@mail.no' );
-INSERT INTO bruker ( passord, navn, epost )VALUES ( 'passord6' ,'bruker6' ,'bruker6@mail.no' );
+INSERT INTO bruker ( hash, navn, epost )VALUES ( 'passord2' ,'bruker2' ,'bruker2@mail.no' );
+INSERT INTO bruker ( hash, navn, epost )VALUES ( 'passord3' ,'bruker3' ,'bruker3@mail.no' );
+INSERT INTO bruker ( hash, navn, epost )VALUES ( 'passord4' ,'bruker4' ,'bruker4@mail.no' );
+INSERT INTO bruker ( hash, navn, epost )VALUES ( 'passord5' ,'bruker6' ,'bruker6@mail.no' );
+INSERT INTO bruker ( hash, navn, epost )VALUES ( 'passord6' ,'bruker6' ,'bruker6@mail.no' );
 
 -- husholdninger:
 INSERT INTO husholdning(navn) VALUES( 'husholdning1');

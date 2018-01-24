@@ -32,7 +32,7 @@ INSERT INTO `husholdning` (`husholdningId`, `navn`) VALUES
 -- Dataark for tabell `bruker`
 --
 
-INSERT INTO `bruker` (`brukerId`, `favorittHusholdning`, `passord`, `navn`, `epost`) VALUES
+INSERT INTO `bruker` (`brukerId`, `favorittHusholdning`, `hash`, `navn`, `epost`) VALUES
 (1, 1, 'f17a90d2d95839d3df484b99411d265f', 'Brage', 'bragehs@hotmail.com'),
 (2, 1, '207023ccb44feb4d7dadca005ce29a64', 'Karol', 'debikkarol@gmail.com'),
 (3, 2, '62c8ad0a15d9d1ca38d5dee762a16e01', 'Truls', 'trulsmatias@gmail.com'),
@@ -155,7 +155,7 @@ INSERT INTO `nyhetsinnlegg` (`nyhetsinnleggId`, `husholdningId`, `tekst`, `dato`
 (81, 1, 'god morgen gruppe<3', '2018-01-18', 8),
 (82, 1, 'God morgen suppe <3', '2018-01-18', 7),
 (89, 1, 'heg er tilbake :DDDD', '2018-01-18', 6),
-(90, 1, 'passord:charlotte', '2018-01-18', 7),
+(90, 1, 'hash:charlotte', '2018-01-18', 7),
 (91, 1, 'pass på det', '2018-01-18', 6),
 (92, 1, 'Scrum er kjempemorsomt!', '2018-01-18', 4),
 (93, 1, 'Møtest i morgen for å jobbe med scrum, venner! :D', '2018-01-18', 8),

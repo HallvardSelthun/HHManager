@@ -22,7 +22,7 @@ public class GenereltController {
      * @param id Attributt i tabellen som må hete id og unikt identifisere raden
      * @return String. verdien til cellen fra select-setningen.
      */
-    public static String getString (String kolonne, String tabell, int id) {
+    static String getString(String kolonne, String tabell, int id) {
         String sqlsetning = "SELECT "+ kolonne + " from "+ tabell + " where " + tabell + "id=?";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
@@ -40,6 +40,28 @@ public class GenereltController {
     }
 
     /**
+     * En mer generell selectsetning som ikke må bruke id for å identifisere
+     * @param kolonne man vil hente
+     * @param tabell man vil hente fra
+     * @param wherekolonne kolonnen man bruker til å identifisere raden
+     * @param wheredata dataen som skal være i wherekolonnnen
+     * @return stringen man ville hente ut
+     */
+    static String getString(String kolonne, String tabell, String wherekolonne, String wheredata) {
+        String sqlsetning = "select " + kolonne + " from " + tabell + " where " + wherekolonne + "=?";
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)) {
+            preparedStatement.setString(1, wheredata);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getString(kolonne);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
      * Henter verdien fra én celle. Cellens innhold må være en int i databasen.
      * Lager en generell select-setning.
      *
@@ -48,8 +70,8 @@ public class GenereltController {
      * @param whereData Attributt i tabellen som unikt identifiserer raden
      * @return Integer. verdien til cellen fra select-setningen.
      */
-    static int getInt(String kolonne, String tabell, String whereKol, String whereData) {
-        String sqlsetning = "SELECT "+ kolonne + " from "+ tabell + " where " + whereKol + "=?";
+    static int getInt(String kolonne, String tabell, String wherekolonne, String whereData) {
+        String sqlsetning = "SELECT "+ kolonne + " from "+ tabell + " where " + wherekolonne + "=?";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
             preparedStatement.setString(1, whereData);

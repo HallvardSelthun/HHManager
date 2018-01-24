@@ -36,7 +36,7 @@ public class UtleggController {
 
         Utlegg utlegg = new Utlegg(utleggId);
         utlegg.setUtleggerId(tomutlegg.getInt("husholdningId"));
-        utlegg.setutleggId(tomutlegg.getInt("skaperId"));
+        utlegg.setUtleggId(tomutlegg.getInt("skaperId"));
         utlegg.setBeskrivelse(tomutlegg.getString("navn"));
         //bruker denne metoden getInt fra GenereltController? Må jeg lage en med getDouble?
         //utlegg.setSum(tomutlegg.getInt("offentlig")==1); //Gjør om tinyInt til boolean (
@@ -56,9 +56,11 @@ public class UtleggController {
             PreparedStatement updateStatment = connection.prepareStatement(getQuery);
             int success = updateStatment.executeUpdate();
             if (success == 1) {
+                System.out.println("setMotatt returnerer true");
                 return true;
             }
             else {
+                System.out.println("Noe gikk galt i setMotatt");
                 return false;
             }
         } catch (SQLException e) {
@@ -72,17 +74,15 @@ public class UtleggController {
         boolean altGikkGreit = true;
 
         System.out.println(utleggsbetalere.get(0).getSkyldigBrukerId());
-        /*
+
         for (Utleggsbetaler element : utleggsbetalere) {
-            resultat = setMotatt(element.getSkyldigBrukerId(),element.getutleggId());
+            resultat = setMotatt(element.getSkyldigBrukerId(),element.getUtleggId());
             if (resultat == false) {
                 altGikkGreit = false;
             }
         }
 
         return altGikkGreit;
-        */
-        return false;
     }
 
 
@@ -151,7 +151,7 @@ public class UtleggController {
      */
     private static Utleggsbetaler lagUtleggsbetalerObjekt(ResultSet resultset) throws SQLException{
         Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
-        utleggsbetaler.setutleggId(resultset.getInt("utleggId"));
+        utleggsbetaler.setUtleggId(resultset.getInt("utleggId"));
         utleggsbetaler.setSkyldigBrukerId(resultset.getInt("skyldigBrukerId"));
         utleggsbetaler.setBetalt(resultset.getInt("betalt")==1);
         utleggsbetaler.setDelSum(resultset.getDouble("delSum"));
@@ -301,7 +301,6 @@ public class UtleggController {
 
                 mineOppgjor = getAlleOppgjorJegSkylder(minBrukerId, connection);
                 ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection);
-
                 return mineOppgjorNy;
 
             } catch (SQLException e) {

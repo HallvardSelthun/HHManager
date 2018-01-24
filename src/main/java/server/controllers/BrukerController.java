@@ -6,6 +6,8 @@ package server.controllers;
 import server.Mail;
 import server.database.ConnectionPool;
 import server.restklasser.*;
+import server.util.Encryption;
+import server.util.RandomGenerator;
 
 import java.sql.*;
 
@@ -73,12 +75,12 @@ public class BrukerController {
      */
 
     public static boolean registrerBruker(Bruker bruker) {
-        String pass = bruker.getPassord();
+        String[] encrypted = Encryption.instance.passEncoding(bruker.getPassord());
         String navn = bruker.getNavn();
         String epost = bruker.getEpost();
         String epostLedig = "SELECT epost FROM bruker WHERE epost = ?";
 
-        String query = "INSERT INTO bruker (hash, navn, epost) VALUES (?, ?, ?)";
+        String query = "INSERT INTO bruker (hash, navn, epost, salt) VALUES (?, ?, ?, ?)";
 
 
         try (Connection con = ConnectionPool.getConnection()){
@@ -94,9 +96,10 @@ public class BrukerController {
                 }
             }
             ps = con.prepareStatement(query);
-            ps.setString(1, pass);
+            ps.setString(1, encrypted[0]);
             ps.setString(2, navn);
             ps.setString(3, epost);
+            ps.setString(4, encrypted[1]);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -107,43 +110,39 @@ public class BrukerController {
 
     /**
      * Sjekker om epost og passord stemmer.
-     * @param epost
-     * @param passord
-     * @return true hvis dataene stemmer
+     * @param bruker brukeren som sjekkes
+     * @return brukerdata hvis ok: epost, navn, id, favoritthusholdning, gjøremal
      */
-    public static Bruker loginOk(String epost, String passord) {
+    public static Bruker loginOk(Bruker bruker) {
         String query = "SELECT hash, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
-
-        Bruker bruker = new Bruker();
-        int favHus = 0;
-        bruker.setFavHusholdning(favHus);
-        bruker.setEpost(epost);
-        try (Connection con = ConnectionPool.getConnection()) {
-            ps = con.prepareStatement(query);
-            ps.setString(1, epost);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, bruker.getEpost());
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
+                if (!Encryption.instance.isPassOk(bruker.getPassord(), rs.getString("hash"), rs.getString("salt"))) return null;
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
-                String res = rs.getString("hash");
-                int favHusDB = rs.getInt("favorittHusholdning");
-                if (favHus != favHusDB){
-                    bruker.setFavHusholdning(favHusDB);
+                bruker.setFavHusholdning(rs.getInt("favorittHusholdning"));
+                String hentGjoremal = "SELECT * FROM gjøremål WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
+                PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
+                ResultSet rs2 = psGjoremal.executeQuery();
+                while(rs2.next()){
+                    Gjøremål gjøremal = new Gjøremål();
+                    gjøremal.setFrist(rs2.getDate("frist"));
+                    gjøremal.setHusholdningId(rs2.getInt("husholdningId"));
+                    gjøremal.setBeskrivelse(rs2.getString("beskrivelse"));
+                    gjøremal.setGjøremålId(rs2.getInt("gjøremålId"));
+                    gjøremal.setHhBrukerId(bruker.getBrukerId());
+                    bruker.addGjøremål(gjøremal);
+
                 }
-                if (res.equals(passord)) {
-                    String hentGjoremal = "SELECT * FROM gjøremål WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
-                    ps = con.prepareStatement(hentGjoremal);
-                    ResultSet rs2 = ps.executeQuery();
-                    while(rs2.next()){
-                        Gjøremål gjøremål = new Gjøremål();
-                        gjøremål.setFrist(rs2.getDate("frist"));
-                        gjøremål.setBeskrivelse(rs2.getString("beskrivelse"));
-                        gjøremål.setGjøremålId(rs2.getInt("gjøremålId"));
-                        gjøremål.setHhBrukerId(bruker.getBrukerId());
-                        bruker.addGjøremål(gjøremål);
-                    }
-                    return bruker;
-                }
+                psGjoremal.close();
+                rs.close();
+                rs2.close();
+                return bruker;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,67 +152,44 @@ public class BrukerController {
 
     /**
      * Setter ny favoritthusholdning til brukeren
-     *
-     * @return true hvis operasjonen ble godkjent
+     * @param brukerId til brukeren det gjelder.
+     * @param husholdningId til husholdningen som skal bli favoritt
      */
     public static boolean setNyFavoritthusholdning(int brukerId, String husholdningId) {
          return GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
     }
 
-    /*public static Bruker getBrukerData(String epost) {
-
-        Bruker bruker = new Bruker();
-        String getBrukerId = "SELECT brukerId, navn FROM bruker WHERE epost = ?";
-        int brukerId = 0;
-
-        try (Connection con = ConnectionPool.getConnection()) {
-            ps = con.prepareStatement(getBrukerId);
-            ps.setString(1, epost);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    bruker.setEpost(epost);
-                    bruker.setNavn(rs.getString("navn"));
-                    brukerId = rs.getInt("brukerId");
-                    bruker.setBrukerId(brukerId);
-                }
-            }
-
-            ResultSet rs;
-
-            String hentMineGjørmål = "SELECT * FROM gjøremål WHERE utførerId = " + brukerId;
-            s = con.createStatement();
-            rs = s.executeQuery(hentMineGjørmål);
-
-            while (rs.next()) {
-                Gjøremål gjøremål = new Gjøremål();
-                gjøremål.setBeskrivelse(rs.getString("beskrivelse"));
-                int fullført = rs.getInt("fullført");
-                if (fullført == 1) {
-                    gjøremål.setFullført(true);
-                } else {
-                    gjøremål.setFullført(false);
-                }
-                gjøremål.setGjøremålId(rs.getInt("gjøremålId"));
-                gjøremål.setHhBrukerId(brukerId);
-                gjøremål.setFrist(rs.getDate("frist"));
-                bruker.addGjøremål(gjøremål);
-            }
-
-            bruker.setBalanse(0);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bruker;
-    }*/
-
     public static void setNyEpost(String epost, int brukerId) {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);
     }
 
+    /**
+     * Lager nytt passord og lagrer det i databasen
+     * @param brukerId til personen som trenger nytt passord
+     * @return det nye passordet
+     */
+    public static String nyttTilfeldigPass(int brukerId) {
+        String passord = RandomGenerator.stringulns(8);
+        setNyttPassord(brukerId, passord);
+        return passord;
+    }
+
+    /**
+     * Oppdaterer databasen med den nye hashen og saltet
+     * @param brukerId til brukeren som får nytt passord
+     * @param passord som skal hashes
+     */
     public static void setNyttPassord(int brukerId, String passord) {
-        GenereltController.update(TABELLNAVN, "hash", passord, brukerId);
+        String[] hashOgSalt = Encryption.instance.passEncoding(passord);
+        String sqlSetning = "update " + TABELLNAVN + " set hash=?, salt=? where " + TABELLNAVN + "id=" + brukerId;
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSetning)) {
+            preparedStatement.setString(1, hashOgSalt[0]);
+            preparedStatement.setString(2, hashOgSalt[1]);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setNyttNavn(int brukerId, String navn){
