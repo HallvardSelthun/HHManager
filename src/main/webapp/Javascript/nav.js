@@ -133,7 +133,7 @@ function getHusholdninger() {
             for (i = 0, l = husholdninger.length; i < l; i++) {
                 var navn = husholdninger[i].navn;
                 var id = husholdninger[i].husholdningId;
-                $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
+                $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
             }
         }, 300);
     });

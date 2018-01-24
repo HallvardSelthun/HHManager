@@ -203,7 +203,7 @@ function setupPage() {
 
             $("#handlelister").append('<div class="container-fluid panel panel-default"><div' +
                 ' class="row panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '"><h4' +
-                ' class="col-md-9 panel-titel" style="display: inline; padding: 0px">' + tittel + '</h4><div class="invisibleDiv"' +
+                ' class="col-md-9 panel-titel" role="button" style="display: inline; padding: 0px">' + tittel + '</h4><div class="invisibleDiv"' +
                 ' onclick="slettHandleliste()" style="display: inline; padding-left: 0px; padding-right: 0px">' +
                 '<button class="col-md-3 btn btn-danger pull-right slettHandlelisteKnapp" id="slett' + handlelisteId + '" type="button" value ="' + handlelisteId + '">Slett handleliste</button></div></div>' +
                 '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul id= "liste' + handlelisteId + '" class="list-group"></ul>' +
