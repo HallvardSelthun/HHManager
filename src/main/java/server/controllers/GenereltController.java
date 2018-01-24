@@ -22,7 +22,7 @@ public class GenereltController {
      * @param id Attributt i tabellen som må hete id og unikt identifisere raden
      * @return String. verdien til cellen fra select-setningen.
      */
-    static String getString (String kolonne, String tabell, int id) {
+    public static String getString (String kolonne, String tabell, int id) {
         String sqlsetning = "SELECT "+ kolonne + " from "+ tabell + " where " + tabell + "id=?";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
@@ -41,18 +41,18 @@ public class GenereltController {
 
     /**
      * Henter verdien fra én celle. Cellens innhold må være en int i databasen.
-     * Lager en generell select-setning, men bruker bare id som identifikasjon.
+     * Lager en generell select-setning.
      *
      * @param kolonne Navnet på kolonnene i tabellen vi henter data fra
      * @param tabell Navnet på tabellen i databasen vi henter data fra
-     * @param id Attributt i tabellen som må hete id og unikt identifisere raden
+     * @param whereData Attributt i tabellen som unikt identifiserer raden
      * @return Integer. verdien til cellen fra select-setningen.
      */
-    static int getInt(String kolonne, String tabell, int id) {
-        String sqlsetning = "SELECT "+ kolonne + " from "+ tabell + " where " + tabell + "id=?";
+    static int getInt(String kolonne, String tabell, String whereKol, String whereData) {
+        String sqlsetning = "SELECT "+ kolonne + " from "+ tabell + " where " + whereKol + "=?";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)){
-            preparedStatement.setString(1, Integer.toString(id));
+            preparedStatement.setString(1, whereData);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getInt(kolonne);

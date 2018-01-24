@@ -32,9 +32,42 @@
 
 #navnHusstand{
     border-style: solid;
-    border-color: darkorange;
 }
 #navn{
     border-stye: solid;
-    border-color: darkorange;
+}
+
+body{
+    margin-top: 80px;
+    padding-top: initial;
+    -webkit-transition-timing-function: ease;
+    -o-transition-timing-function: ease;
+    transition-timing-function: ease;
+    -webkit-transition-duration: .35s;
+    -o-transition-duration: .35s;
+    transition-duration: .35s;
+    -webkit-transition-property: padding-top;
+    -o-transition-property: padding-top;
+    transition-property: padding-top;
+}
+
+.vl{
+    border-right: 1px solid #DDD;
+}
+/*body{
+    margin-top:80px;
+}*/
+
+#navbar{
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    overflow-y: scroll !important;
+    max-height: 500px;
+}
+
+label {
+    font-weight: normal !important;
 }

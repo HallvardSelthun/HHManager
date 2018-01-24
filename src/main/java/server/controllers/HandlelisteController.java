@@ -64,6 +64,7 @@ public class HandlelisteController {
     private static Handleliste lagHandlelisteObjekt(ResultSet tomHandleliste, int handlelisteId, ArrayList<Vare> varer) throws SQLException{
 
         Handleliste handleliste = new Handleliste(handlelisteId);
+        handleliste.setGjemt(tomHandleliste.getInt("gjemt"));
         handleliste.setHusholdningId(tomHandleliste.getInt("husholdningId"));
         handleliste.setSkaperId(tomHandleliste.getInt("skaperId"));
         handleliste.setTittel(tomHandleliste.getString("navn"));

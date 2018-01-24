@@ -60,6 +60,7 @@ public class HandlelisteControllerTest {
         testHandleliste.setFrist(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
         testHandleliste.setOffentlig(true);
         testHandleliste.setSkaperId(2);
+        testHandleliste.setGjemt(0);
 
         int nyHandlelisteId = HandlelisteController.lagHandleliste(testHandleliste);
         assertTrue("nyHandleListeId skal være stærre enn -1 ", nyHandlelisteId > -1);

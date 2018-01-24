@@ -41,36 +41,30 @@ public class BrukerService {
         return BrukerController.loginOk(bruker.getEpost(), bruker.getPassord());
     }
 
-
-    /*
-    @PUT
-    @Path("/{brukerId}/endrePassord")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public boolean setNewPassword(@PathParam("brukerId") String brukerId, String gammeltPassord, String nyttPassord){
-        // sjekker om det gamle paassordet er likt det som er lagret i databasen, dersom det er likt skal det gamle
-        // passordet i databasen bli erstattet med det nye og returnere true
-        return false;
+    @DELETE
+    @Path("/fjernBrukerFraHusholdning")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean slettFraHusholdning(Bruker bruker){
+        return BrukerController.slettFraHusholdning(bruker.getBrukerId(), bruker.getFavHusholdning());
     }
-    */
+
 
     /**
      * Endrer favhusholdning i Databasen til brukerIden som er gitt
-     * @param brukerId
-     * @param favHusholdningsId
+     * @param bruker
      */
     @PUT
-    @Path("/{brukerId}/favHusholdning")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public void setFavHusholdning(@PathParam("brukerId") int brukerId, String favHusholdningsId){
-        BrukerController.setNyFavoritthusholdning(brukerId, favHusholdningsId);
+    @Path("/favHusholdning")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void setFavHusholdning(Bruker bruker){
+        BrukerController.setNyFavoritthusholdning(bruker.getBrukerId(), Integer.toString(bruker.getFavHusholdning()));
     }
 
     /**
      * Endrer Eposten i DataBasen til brukeren med gitt brukerId dersom eposten er
-     * @param
-     * @return
+     * @param bruker er brukeren som skal endre eposten sinn
+     * @return true hvis det gikk bra
      */
-
     @PUT
     @Path("/endreEpost")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -79,6 +73,11 @@ public class BrukerService {
         return false;
     }
 
+    /**
+     * Endrer passordet til brukeren
+     * @param bruker -objekt med det nye passordet
+     * @return true hvis det gikk bra
+     */
     @PUT
     @Path("/endrePassord")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -87,6 +86,11 @@ public class BrukerService {
         return false;
     }
 
+    /**
+     * Endrer navnet til brukeren
+     * @param bruker -objekt med det nye navnet
+     * @return true hvis det går bra
+     */
     @PUT
     @Path("/endreNavn")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -96,10 +100,21 @@ public class BrukerService {
         return false;
     }
 
+
     @GET
     @Path("/{epost}/brukerData")
     @Produces(MediaType.APPLICATION_JSON)
     public Bruker getHhData(@PathParam("epost") String brukerEpost){
         return BrukerController.getBrukerData(brukerEpost);
+    }
+
+    /**
+     * Gir beskjed til servereren at det skal genereres et nytt passord for brukeren og sendes en mail med det
+     * @param epost eposten til brukeren
+     */
+    @PUT
+    @Path("/glemtpassord")
+    public void glemtPassordEpost(String epost) {
+        BrukerController.sendGlemtPassordMail(epost);
     }
 }

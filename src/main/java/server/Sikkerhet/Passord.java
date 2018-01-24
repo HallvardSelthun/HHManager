@@ -1,8 +1,9 @@
-package server;
+package server.Sikkerhet;
 
-public class Sikkerhet {
+public class Passord {
 
     /**
+     * IKKE FERDIG
      * Hasher et passord, på samme måte som javascript hashing
      * @param pw passord uten hashing
      * @return passord etter hashing

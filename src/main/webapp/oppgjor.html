@@ -29,6 +29,7 @@
                 <div class="suminput">
                     <p>Sum:</p>
                     <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Vere med på utlegg selv
                 </div>
                 <br>
                 <div class="beskrivelse-input">
@@ -41,15 +42,10 @@
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
                             class="caret"></span></button>
                     <ul id="personer" class="dropdown-menu">
-                        <script id="listeMedlem" type="text/x-custom-template">
-                            <li>
-                                <label class="dropdown-menu-item checkbox">
-                                    <input id="${brukerId}" type="checkbox" class="medlemCheck">
-                                    ${navn}
-                                </label>
-                            </li>
-                        </script>
                     </ul>
+                    <br>
+                    <br>
+                    <p id="betalere"></p>
                 </div>
                 <br>
                 <br>
@@ -176,6 +172,7 @@
         </td>
     </tr>
 </script>
+<div id="modaldiv"></div>
 
 
 <div id="footer"></div>
