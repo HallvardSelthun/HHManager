@@ -24,14 +24,14 @@ public class GjoremalService {
     @POST
     @Path("/nyttgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean lagreMittGjoremal(Gjøremål gjoremal) {
+    public int lagreMittGjoremal(Gjøremål gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
 
     @POST
     @Path("/nyttfellesgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean lagreFellesGjoremal(Gjøremål gjoremal) {
+    public int lagreFellesGjoremal(Gjøremål gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
 
