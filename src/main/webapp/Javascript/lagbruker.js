@@ -1,9 +1,19 @@
 /**
  * Created by BrageHalse on 11.01.2018.
  */
+
+
 $(document).ready(function () {
     /**
      * Created by Karol on 10-Jan-2018 at 10:55:44.
+     */
+
+    /**
+     * Følgende MD5-variabel er en funksjon som brukes til passordhashing.
+     * Lar brukerens passord bli kryptert slik at det ikke kan brukes av feks utviklere av systemet.
+     * @param string tar inn en string
+     * @returns {string} returnerer en annen string enn passordet som kom inn.
+     * @constructor
      */
     var MD5 = function (string) {
 
@@ -223,6 +233,11 @@ $(document).ready(function () {
         return temp.toLowerCase();
     }
 
+    /**
+     * Legger lytter på knappen registrer deg, fornavn, email og passord lagres i databasen.
+     * Er en eller flere tekstfelter tomme skal bruker få feilmelding. Bruker lagres i Bruker-
+     * Service dersom registrering er ok.
+     */
     $("#registrerBtn").click(function () {
 
         var fornavn = $("#fornavn").val();

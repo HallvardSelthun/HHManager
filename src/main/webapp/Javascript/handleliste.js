@@ -1,6 +1,9 @@
 /**
  * Created by Karol on 14.01.2018.
  */
+/**
+ * Definerer variabler
+ */
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var epost = bruker.epost;
 var brukerId = bruker.brukerId;
@@ -9,6 +12,10 @@ var husholdning;
 var alleHandlelister;
 var boxesChecked = [];
 
+/**
+ * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
+ * og slett handleliste og kaller samtidig på funksjonen leggTilNyHandleliste().
+ */
 $(document).ready(function () {
     getHandlelisterData();
     setTimeout(setupPage,1000);
@@ -37,9 +44,12 @@ $(document).ready(function () {
     })
 });
 
+/**
+ * Funksjon for å legge til ny handleliste i systemet. Lagrer navnet på handlelisten og legger antall
+ * varer i en tabell, samt spør og sjekker om handleliste skal være offentlig eller ikke.
+ */
 function leggTilNyHandleliste() {
     var handlelisteNavn = $("#handlelisteNavn").val();
-
     var varer = [];
     var offentlig = 0;
     var isChecked = $('#offentligKnapp').is(':checked');
@@ -59,7 +69,9 @@ function leggTilNyHandleliste() {
         alert("Skriv navnet til handlelisten!");
         return;
     }
-
+    /**
+     * Kall til handleliste i server fo å legge til handlelisteobjektet som er definert over.
+     */
     $.ajax({
         url: "server/handleliste",
         type: 'POST',
@@ -80,6 +92,10 @@ function leggTilNyHandleliste() {
     })
 }
 
+/**
+ * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
+ * til i riktig handleliste med en handlelisteId.
+ */
 function leggTilVare() {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
     var handlelisteId = $(".leggTilNyGjenstand:focus").attr("id");
@@ -94,7 +110,9 @@ function leggTilVare() {
         return;
     }
 
-
+    /**
+     * Sender et ajax-kall til handleliste i server der varen lagres.
+     */
     $.ajax({
         url: "server/handleliste/" + handlelisteId + "/" + brukerId,
         type: 'POST',
@@ -117,9 +135,12 @@ function leggTilVare() {
     })
 }
 
+/**
+ *
+ * @param sletteId tar inn id på handeliste for å kunne slette riktig handleliste. Id-en sendes til
+ * handleliste i server.
+ */
 function slettHandleliste(sletteId) {
-
-
     $.ajax({
         url: "server/handleliste/" + sletteId,
         type: 'DELETE',
@@ -148,6 +169,10 @@ function checkEllerUncheck(){
 
 }
 
+/**
+ * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
+ * skal ikke kunne gjøre dine handlelister private.
+ */
 function endrePublic(){
     //var offentlifKnapp = $(".switch input").prop("checked");
 
@@ -170,12 +195,20 @@ function endrePublic(){
     })
 }
 
+/**
+ * Henter data om handleliste med husholdningsid og brukerid
+ */
 function getHandlelisterData() {
     $.getJSON("server/handleliste/" + husholdningId + "/" + brukerId, function (data) {
         alleHandlelister = data;
     });
 }
 
+/**
+ *
+ * @param formname lar deg huke av handlelister du er ferdige med.
+ * @returns {boolean}
+ */
 function checkChecked(formname) {
     formname = "liste" + formname.slice(6);
 
@@ -194,6 +227,9 @@ function checkChecked(formname) {
     console.log(boxesChecked);
 }
 
+/**
+ * Lar alle handlelister bli synlige i nettleser.
+ */
 function setupPage() {
     var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjøpt, kjøperId, datokjøpt;
 
@@ -250,6 +286,9 @@ function setupPage() {
 
 }
 
+/**
+ *
+ */
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
     if ($(".invisibleDiv").css("display") === "none") {
