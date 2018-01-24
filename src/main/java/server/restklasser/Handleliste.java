@@ -18,6 +18,15 @@ public class Handleliste {
     private ArrayList<Vare> varer = new ArrayList<>();
     private boolean offentlig;
     private Date frist;
+    private int gjemt;
+
+    public int getGjemt() {
+        return gjemt;
+    }
+
+    public void setGjemt(int gjemt) {
+        this.gjemt = gjemt;
+    }
 
     public Handleliste() {
         //tom konstruktør

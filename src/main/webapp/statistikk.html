@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="CSS/statistikk.css">
+    <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="Javascript/nav.js"></script>
     <script src="Javascript/statistikk.js"></script>
 
@@ -20,67 +22,57 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 vl flytt">
-            <div class="statistikkKolonne">
-                <h1>Statistikk</h1>
-                <h4>Din Husholdning</h4>
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Husholdning <span class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Husholdning 1</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Husholdning 2</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Husholdning 3</a></li>
-                    </ul>
+        <div class="col-md-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="statistikkKolonne">
+                            <h1>Statistikk</h1>
+                            <h4 id="husholdningsNavn">Din Husholdning</h4>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                                    Husholdning <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id = "velgHusholdning">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Husholdning 1</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Husholdning 2</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Husholdning 3</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    <div class="medlemmerKolonne">
+                            <h2>Medlemmer</h2>
+                            <br>
+                            <div class="form-group">
+                                <label for="medlemsListe">Medlemmer</label>
+                                <select multiple class="form-control" id="medlemsListe">
+                                    <option>Pers 1</option>
+                                    <option>Pers 2</option>
+                                    <option>Pers 3</option>
+                                    <option>Pers 4</option>
+                                    <option>Pers 5</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary">Tilbake</button>
+                        </div>
                 </div>
-            </div>
-            <div class="medlemmerKolonne">
-                <h2>Medlemmer</h2>
-                <br>
-                <div class="form-group">
-                    <label for="formControlSelect">Medlemmer</label>
-                    <select multiple class="form-control" id="formControlSelect">
-                        <option>Pers 1</option>
-                        <option>Pers 2</option>
-                        <option>Pers 3</option>
-                        <option>Pers 4</option>
-                        <option>Pers 5</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-primary">Tilbake</button>
             </div>
         </div>
-        <div class="col-md-8 flytt">
-            <div class="lagtUtMest hl">
-                <br>
-                <br>
-                <h3>Hvem har lagt ut mest denne måneden?</h3>
-
-                <div id="svg">
-                    <!-- Skal slettes etter koblingen med javascript-->
-                    <svg height="298" version="1.1" width="298" xmlns="http://www.w3.org/2000/svg" viewBox="-35 -35 315.5 315.5">
-                        <desc>Created with Snap</desc>
-                        <defs></defs>
-                        <path data-cx="129.5" data-cy="129.5" d="M129.5,129.5 L129.5,19.424999999999997 A110.075,110.075 0 0 1 220.60786647211972,191.27266621976423 Z" style="stroke-width: 0;" fill="#4d00ff" stroke="#333333" data-id="s0" transform="matrix(1,0,0,1,0,0)"></path>
-                        <text x="243.91208783567765" y="61.545645465477946" style="opacity: 0;" data-id="s0">35%</text>
-                        <path data-cx="129.5" data-cy="129.5" d="M129.5,129.5 L220.60786647211972,191.27266621976423 A110.075,110.075 0 0 1 157.02850912413152,236.07714018682717 Z" style="stroke-width: 0;" fill="#9900ff" stroke="#333333" data-id="s1" transform="matrix(1,0,0,1,0,0)"></path>
-                        <text x="199.30540958231853" y="248.08754576643122" style="opacity: 0;" data-id="s1">12%</text>
-                        <path data-cx="129.5" data-cy="129.5" d="M129.5,129.5 L157.02850912413152,236.07714018682717 A110.075,110.075 0 0 1 109.7336185813402,237.78571369581522 Z" style="stroke-width: 0;" fill="#e500ff" stroke="#333333" data-id="s2" transform="matrix(1,0,0,1,0,0)"></path>
-                        <text x="124.67967242935012" y="274.4804249386574" style="opacity: 0;" data-id="s2">7%</text>
-                        <path data-cx="129.5" data-cy="129.5" d="M129.5,129.5 L109.7336185813402,237.78571369581522 A110.075,110.075 0 0 1 22.44322694870155,155.0998626723422 Z" style="stroke-width: 0;" fill="#ff00cc" stroke="#333333" data-id="s3" transform="matrix(1,0,0,1,0,0)"></path>
-                        <text x="15.968578994510509" y="234.82379599074818" style="opacity: 0;" data-id="s3">19%</text>
-                        <path data-cx="129.5" data-cy="129.5" d="M129.5,129.5 L22.44322694870155,155.0998626723422 A110.075,110.075 0 0 1 129.49999999999997,19.424999999999997 Z" style="stroke-width: 0;" fill="#ff0080" stroke="#333333" data-id="s4" transform="matrix(1,0,0,1,0,0)"></path>
-                        <text x="1.8472764075827541" y="39.63352899662894" style="opacity: 0;" data-id="s4">29%</text>
-                    </svg>
+        <div class="col-md-8">
+            <div class="container-fluid" style="padding: 0px">
+                <div class="row">
+                    <div class="col-md-6 rl">
+                        <div class="container-fluid" style="padding: 0px">
+                            <div class="row" id="nyhetsChart"></div>
+                            <div class="row" id="vareChart"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="gjøremålsChart"></div>
+                    </div>
                 </div>
-
-            </div>
-            <div class="samledeUtgifter">
-                <h3>Samlede utgifter det siste året</h3>
-                <canvas id="lineChart"></canvas>
             </div>
         </div>
     </div>
 </div>
-<div id = "modaldiv"></div>
+<div id="modaldiv"></div>
 </body>
 </html>

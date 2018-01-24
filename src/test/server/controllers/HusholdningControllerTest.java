@@ -1,17 +1,12 @@
 package server.controllers;
 
+import org.junit.Assert;
 import org.junit.Test;
-import server.restklasser.Bruker;
-import server.restklasser.Husholdning;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class HusholdningControllerTest {
     @Test
     public void getNavn() throws Exception {
-        assertEquals("Scrumgruppa", HusholdningController.getNavn(1));
+        Assert.assertEquals("Scrumgruppa", HusholdningController.getNavn(1));
     }
 /*
     @Test

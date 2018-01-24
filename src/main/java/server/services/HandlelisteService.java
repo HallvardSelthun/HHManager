@@ -45,7 +45,7 @@ public class HandlelisteService {
     @DELETE
     @Path("/{handlelisteId}")
     public boolean slett(@PathParam("handlelisteId") int handlelisteId) {
-        return HandlelisteController.slettHandleliste(handlelisteId);
+        return HandlelisteController.gjemHandleliste(handlelisteId);
     }
 
     /**

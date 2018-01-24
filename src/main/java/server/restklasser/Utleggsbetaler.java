@@ -1,7 +1,7 @@
 package server.restklasser;
 
 public class Utleggsbetaler {
-    private int utleggsId;
+    private int utleggId;
     private boolean betalt;
     private double delSum;
     private int skyldigBrukerId;
@@ -12,12 +12,12 @@ public class Utleggsbetaler {
 
     }
 
-    public int getUtleggsId() {
-        return utleggsId;
+    public int getUtleggId() {
+        return utleggId;
     }
 
-    public void setUtleggsId(int utleggsId) {
-        this.utleggsId = utleggsId;
+    public void setUtleggId(int utleggId) {
+        this.utleggId = utleggId;
     }
 
     public boolean isBetalt() {

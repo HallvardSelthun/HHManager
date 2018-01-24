@@ -6,20 +6,23 @@ var husholdninger;
 $(document).ready(function () {
     $(function () {
         $("#navbar").load("nav.html");
-
         $("#modaldiv").load("lagnyhusstand.html");
     });
     getHusholdninger();
+    setTimeout(function(){
+        henteVarsel();
+    },200);
 
     setTimeout(function () {
         $("#fade").hide()
     }, 150);
 
-    $('#husholdninger3').on('click', 'li', function () {
-        alert("Clicked list." + $(this).html());
-        var i = this.id;
-        console.log(i + "_---_");
-
+    $(document).on('click', '.hhknapp', function(){
+         var nyhhId = ($(this).attr('id'));
+         localStorage.setItem("husholdningId", nyhhId);
+         bruker.favHusholdning = nyhhId;
+         localStorage.setItem("bruker", JSON.stringify(bruker));
+         window.location = "forside.html";
     });
 
     $('body').on('click', 'a#bildenav', function () {
@@ -44,6 +47,10 @@ $(document).ready(function () {
 
     $('body').on('click', '#oppgjorknapp', function () {
         window.location = "oppgjor.html"
+    });
+
+    $('body').on('click', '#statistikkknapp', function () {
+        window.location = "statistikk.html"
     });
 
     $('body').on('click', 'a#loggut', function () {
@@ -74,13 +81,13 @@ $(document).ready(function () {
 
         navnIHuset.push(
             {
-                epost: bruker
+                epost: bruker.epost
             });
 
         var husObj = {
             navn: navnHus,
             medlemmer: navnIHuset,
-            adminId: 1 // denne verdien er ikke konstant. Bare for testing til ting er på plass
+            adminId: bruker.brukerId
         };
         console.log(husObj);
         console.log("Prøver å sende husstand");
@@ -111,7 +118,7 @@ $(document).ready(function () {
         });
     });
     setTimeout(function () {
-        $("a#profilNavn").text(navn);
+        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>'+navn);
     }, 150);
 });
 
@@ -119,15 +126,54 @@ $(document).ready(function () {
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
         husholdninger = data;
+        localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
+
+        setTimeout(function () {
+            for (i = 0, l = husholdninger.length; i < l; i++) {
+                var navn = husholdninger[i].navn;
+                var id = husholdninger[i].husholdningId;
+                $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
+            }
+        }, 300);
     });
-    setTimeout(function () {
-        for (i = 0, l = husholdninger.length; i < l; i++) {
-            var navn = husholdninger[i].navn;
-            var id = husholdninger[i].husholdningId;
-            console.log(husholdninger[i]);
-            $("#husholdninger3").prepend('<li id="' + id + '"><a href="#">' + navn + '</a></li>');
-        }
-    }, 250);
 }
 
 
+var selectBody = $('body');
+var selectNavbarCollapse = $('.navbar-collapse');
+
+var heightNavbarCollapsed = $('.navbar').outerHeight(true);
+var heightNavbarExpanded = 0;
+
+paddingSmall();
+
+selectNavbarCollapse.on('show.bs.collapse', function () {
+    if (heightNavbarExpanded == 0 ) heightNavbarExpanded = heightNavbarCollapsed + $(this).outerHeight(true);
+    paddingGreat();
+});
+selectNavbarCollapse.on('hide.bs.collapse', function () {
+    paddingSmall();
+});
+
+$(window).resize( function () {
+    if (( document.documentElement.clientWidth > 767 ) && selectNavbarCollapse.hasClass('in') ) {
+        selectNavbarCollapse.removeClass('in').attr('aria-expanded','false');
+        paddingSmall();
+    }
+});
+
+function paddingSmall() {
+    selectBody.css('padding-top', heightNavbarCollapsed + 'px');
+}
+function paddingGreat() {
+    selectBody.css('padding-top', heightNavbarExpanded + 'px');
+}
+
+function henteVarsel() {
+    $.getJSON("server/gjoremalservice/" + bruker.brukerId +"/varsler", function (data) {
+        varselListe=data;
+        console.log(varselListe);
+        $("#antallVarsler").text(varselListe);
+        $("#ant").text(varselListe);
+    });
+}
