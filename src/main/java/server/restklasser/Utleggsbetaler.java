@@ -12,11 +12,11 @@ public class Utleggsbetaler {
 
     }
 
-    public int getutleggId() {
+    public int getUtleggId() {
         return utleggId;
     }
 
-    public void setutleggId(int utleggId) {
+    public void setUtleggId(int utleggId) {
         this.utleggId = utleggId;
     }
 
