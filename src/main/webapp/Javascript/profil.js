@@ -31,12 +31,13 @@ $(document).ready(function () {
         $("#bekreftmodal").modal('hide');
     });
 
+
     $("#modal-btn-si").on('click', function () {
         var slettbruker={
             brukerId: brukerId,
             favHusholdning: hhId
-        }
-        console.log("trykket på ja!")
+        };
+        console.log(slettbruker);
         $.ajax({
             url: "server/BrukerService/fjernBrukerFraHusholdning",
             type: 'DELETE',
@@ -46,9 +47,8 @@ $(document).ready(function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 console.log(data);
-                alert("Det gikk bra!");
                 if(data) {
-
+                    window.location = "profil.html";
                 } else {
                     alert("feil");
                 }
@@ -404,9 +404,9 @@ $(document).ready(function () {
         $("#modaldiv").load("lagnyhusstand.html");
     });
 
-    $(document).on('click', '.btn', function () {
-        hhId = ($(this).parent().parent().attr('id'))
-    })
+    $(document).on('click', '.removeButton', function () {
+        hhId = ($(this).attr('value'))
+    });
 /*
 
     var script = document.createElement('script');
@@ -453,7 +453,7 @@ function hentliste() {
             '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em;' +
             ' color: orange" role="button" class="glyphicon '+string+'"></span>' + " " +
             '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" ' +
-            'type="button">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
+            'type="button" value="'+husholdningId+'">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
             '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
             '<div id="list1" class="list-group"></div></div></div>');
