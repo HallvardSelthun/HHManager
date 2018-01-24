@@ -461,10 +461,12 @@ function hentliste() {
 }
 
 function settNyFav(id) {
+    var nyId = parseInt(id);
     var bruker= {
         brukerId: brukerId,
-        favhusholdning: parseInt(id)
+        favHusholdning: nyId
     };
+    console.log(bruker)
     $.ajax({
         url: "server/BrukerService/favHusholdning",
         type: 'PUT',
@@ -472,10 +474,12 @@ function settNyFav(id) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            alert("nice");
+            console.log("Det gikk bra :)");
+            minBruker.favHusholdning = nyId;
+            localStorage.setItem("bruker", JSON.stringify(minBruker));
         },
-        error: function () {
-            alert("D:");
+        error: function (data) {
+            alert("noe gikk galt");
         }
     })
 }
