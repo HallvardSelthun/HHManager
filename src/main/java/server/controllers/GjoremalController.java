@@ -134,10 +134,10 @@ public class GjoremalController {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Gjøremål g = new Gjøremål();
+                Gjoremal g = new Gjoremal();
                 String beskrivelse = rs.getString("beskrivelse");
                 g.setBeskrivelse(beskrivelse);
-                bruker.addGjøremål(g);
+                bruker.addGjoremal(g);
             }
             return bruker;
         } catch (SQLException e) {
