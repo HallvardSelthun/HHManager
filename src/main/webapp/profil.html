@@ -115,42 +115,58 @@
         </div>
     </div>
 </div>
-<div class="row grid-divider">
-    <div class="col-md-1"></div>
-    <div class="col-md-5">
-        <div class="info" href="https://some.addres"><img
-                src="web-res/profileicon.png"
-                width="100px" border="0" align="left">
-            <h1 id="navnpåpers"></h1>
-            <h4 id="mail"></h4>
-            <button id="navnknapp" type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#navnmodal">Endre navn
-            </button>
-            <button id="passord" type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#passordmodal">
-                Endre passord
-            </button>
-            <button id="epostknapp" type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#epostmodal">Endre epost
-            </button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="padding: 0px">
+            <div class="col-md-6">
+                <div class="container-fluid" style="padding: 0px">
+                    <div class="row">
+                        <div class="col-md-12 info">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <a class="container-fluid" href="https://some.addres"><img class="img-fluid" style="max-width: 250px; max-height: 250px; height: auto"
+                                                                                                   src="web-res/profileicon.png" width="100%" border="0" align="center"></a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h1 id="navnpåpers"></h1>
+                                        <h4 id="mail"></h4>
+                                    </div>
+                                </div>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-4" style="padding: 5px">
+                                            <button id="navnknapp" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#navnmodal">Endre
+                                                navn</button>
+                                        </div>
+                                        <div class="col-md-4" style="padding: 5px">
+                                            <button id="passord" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#passordmodal">Endre
+                                                passord</button>
+                                        </div>
+                                        <div class="col-md-4" style="padding: 5px">
+                                            <button id="epostknapp" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#epostmodal">Endre
+                                                epost</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" align="center">
+                <div class="container-fluid">
+                    <h2>Dine husstander </h2>
+                    <div id="husstander" class="panel-group"></div>
+                    <div class="container-fluid"  style="padding: 5px">
+                        <button id="nyHusProfil" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Ny husstand</button>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
-
-    <div class="col-md-1"></div>
-    <div class="col-md-4">
-        <div class="container-fluid" align="center">
-            <h2>Dine husstander </h2>
-        </div>
-        <div id="husstander" class="panel-group row"></div>
-        <div class="container-fluid"></div>
-        <p align="center">
-            <button id="nyHusProfil" type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#myModal">Ny husstand
-            </button>
-        </p>
-
-    </div>
-    <div class="col-md-1"></div>
 </div>
 <!--<ul class="panel-group" id="accordion">
     <li class="panel panel-default">
