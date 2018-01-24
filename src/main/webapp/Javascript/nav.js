@@ -4,15 +4,14 @@ var navn = bruker.navn;
 var husholdninger;
 
 $(document).ready(function () {
-
-    getHusholdninger();
-
-
     $(function () {
         $("#navbar").load("nav.html");
         $("#modaldiv").load("lagnyhusstand.html");
     });
-
+    getHusholdninger();
+    setTimeout(function(){
+        henteVarsel();
+    },200);
 
     setTimeout(function () {
         $("#fade").hide()
@@ -168,4 +167,13 @@ function paddingSmall() {
 }
 function paddingGreat() {
     selectBody.css('padding-top', heightNavbarExpanded + 'px');
+}
+
+function henteVarsel() {
+
+    $.getJSON("server/gjoremalservice/" + bruker.brukerId +"/varsler", function (data) {
+        varselListe=data;
+        console.log(varselListe);
+        $("#antallVarsler").text(varselListe);
+    });
 }

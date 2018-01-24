@@ -37,65 +37,15 @@ public class BrukerController {
      * @return id til favoritthusholdning
      */
     public static int getFavoritthusholdning(int brukerid) {
-        return GenereltController.getInt("favorittHusholdning", TABELLNAVN, "brukerId", Integer.toString(brukerid));
+        return GenereltController.getInt("favorittHusholdning", TABELLNAVN, brukerid);
     }
-
     public static int getBrukerId(String epost) {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
-    }
-
-    public static Bruker getBrukerData(String epost) {
-
-        Bruker bruker = new Bruker();
-        String getBrukerId = "SELECT brukerId, navn FROM bruker WHERE epost = ?";
-        int brukerId = 0;
-
-        try (Connection con = ConnectionPool.getConnection()) {
-            ps = con.prepareStatement(getBrukerId);
-            ps.setString(1, epost);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    bruker.setEpost(epost);
-                    bruker.setNavn(rs.getString("navn"));
-                    brukerId = rs.getInt("brukerId");
-                    bruker.setBrukerId(brukerId);
-                }
-            }
-
-            ResultSet rs;
-
-            String hentMineGjørmål = "SELECT * FROM gjøremål WHERE utførerId = " + brukerId;
-            s = con.createStatement();
-            rs = s.executeQuery(hentMineGjørmål);
-
-            while (rs.next()) {
-                Gjøremål gjøremål = new Gjøremål();
-                gjøremål.setBeskrivelse(rs.getString("beskrivelse"));
-                int fullført = rs.getInt("fullført");
-                if (fullført == 1) {
-                    gjøremål.setFullført(true);
-                } else {
-                    gjøremål.setFullført(false);
-                }
-                gjøremål.setGjøremålId(rs.getInt("gjøremålId"));
-                gjøremål.setHhBrukerId(brukerId);
-                gjøremål.setFrist(rs.getDate("frist"));
-                bruker.addGjøremål(gjøremål);
-            }
-
-            bruker.setBalanse(0);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bruker;
     }
 
     public static void sendGlemtPassordMail(String epost) {
         int brukerId = getBrukerId(epost);
         Mail.sendGlemtPassord(epost, brukerId);
-    }
 
     /**
      * Sletter et medlem fra en husholdning gitt brukerens id.
@@ -205,8 +155,8 @@ public class BrukerController {
      *
      * @return true hvis operasjonen ble godkjent
      */
-    public static void setNyFavoritthusholdning(int brukerId, String husholdningId) {
-         GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
+    public static boolean setNyFavoritthusholdning(int brukerId, String husholdningId) {
+         return GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
     }
 
     /*public static Bruker getBrukerData(String epost) {

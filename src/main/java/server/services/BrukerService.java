@@ -1,9 +1,11 @@
 package server.services;
 //import server.controllers.BrukerController;
+import com.fasterxml.jackson.databind.deser.std.MapEntryDeserializer;
 import server.controllers.BrukerController;
 import server.restklasser.*;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -54,10 +56,10 @@ public class BrukerService {
      * @param bruker
      */
     @PUT
-    @Path("/favHusholdning")
+    @Path("/nyFavHusholdning")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void setFavHusholdning(Bruker bruker){
-        BrukerController.setNyFavoritthusholdning(bruker.getBrukerId(), Integer.toString(bruker.getFavHusholdning()));
+    public boolean setFavHusholdning(Bruker bruker){
+        return BrukerController.setNyFavoritthusholdning(bruker.getBrukerId(), Integer.toString(bruker.getFavHusholdning()));
     }
 
     /**

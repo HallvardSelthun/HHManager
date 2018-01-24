@@ -178,16 +178,18 @@ public class GenereltController {
      * @param setData dataen som skal endres
      * @param whereId id til etiteten som skal oppdateres
      */
-    static void update(String tabell, String kolonneOppdater, String setData, int whereId) {
+    static boolean update(String tabell, String kolonneOppdater, String setData, int whereId) {
         String q = "update " + tabell + " set " + kolonneOppdater + "=? where " + tabell + "Id=?";
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(q)) {
             preparedStatement.setString(1, setData);
             preparedStatement.setInt(2, whereId);
             preparedStatement.executeUpdate();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 }
 
