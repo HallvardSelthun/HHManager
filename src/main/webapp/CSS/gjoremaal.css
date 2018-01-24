@@ -1,15 +1,22 @@
-.eksisterende-gjøremål{
-    margin-top: 52px;
-    position: relative;
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
 .mine-checkbox{
     border-radius: 25px;
-    border: 2px solid #FFA500;
+    border: 2px solid;
     padding: 20px;
     width: 250px;
     height: 150px;
-
 }
+h1 {
+    text-align: center;
+}
+
+.fristen{
+    font-weight: bold;
+}
+
+#mycheckbox{
+    display: none;
+}
+/*.list-group-item{
+    font-weight: bold;
+}*/
+

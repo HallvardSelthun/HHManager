@@ -16,15 +16,21 @@ $(document).ready(function () {
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
         leggTilNyHandleliste();
     });
+    $(".invisibleDiv").on("click", function () {
+        displayDiv();
+    });
+    $(".switch").on("click", function () {
+        endrePublic();
+    });
+
+
     /*$("#leggTilNyGjenstandKnapp").on("click", function () {
         leggTilNyGjenstand();
     });
-    $("#slettHandlelisteKnapp").on("click", function () {
-        slettHandleliste();
+    */
+    $(document).on('click','.slettHandlelisteKnapp', function () {
+        slettHandleliste($(this).attr('value'))
     });
-    /*$("#offentligKnapp").on("click", function () {
-        offentligKnapp();
-    });*/
 });
 
 function leggTilNyHandleliste() {
@@ -70,10 +76,9 @@ function leggTilNyHandleliste() {
     })
 }
 
-function leggTilNyGjenstand() {
-    var nyGjenstandNavn = $(".leggTilNyGjenstand").val();
-    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1);
-    console.log(nyGjenstandNavn + "\n" + handlelisteId);
+function leggTilVare() {
+    var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
+    var handlelisteId = $(".leggTilNyGjenstand:focus").attr("id");
 
     var vare = {
         varenavn: nyGjenstandNavn,
@@ -108,23 +113,21 @@ function leggTilNyGjenstand() {
     })
 }
 
-function slettHandleliste() {
-    var handlelisteId = document.getElementsByClassName("leggTilNyGjenstand")[0].getAttribute("id").slice(1);
-    console.log(handlelisteId);
+function slettHandleliste(sletteId) {
+
 
     $.ajax({
-        url: "server/handleliste/" + handlelisteId,
+        url: "server/handleliste/" + sletteId,
         type: 'DELETE',
-        data: JSON.parse(handlelisteId),
+        data: JSON.parse(sletteId),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            console.log(data);
             alert("Det gikk bra!");
 
             if (data) {
-                //window.location = "handlelister.html";
+                window.location = "handlelister.html";
             } else {
                 alert("feil!");
             }
@@ -135,13 +138,14 @@ function slettHandleliste() {
     })
 }
 
+function endreNavn(){}
 
+function checkEllerUncheck(){
 
-// IKKE FERDIG ENNÅ
-/*function offentligKnapp() {
-    var offentligKnapp = $("#offentligKnapp").val();
-    var handlelisteId = $(this).closest('id').prop("id");
-    //console.log(handlelisteId);
+}
+
+function endrePublic(){
+    //var offentlifKnapp = $(".switch input").prop("checked");
 
     $.ajax({
         url: "server/handleliste/" + handlelisteId + "/private",
@@ -160,8 +164,7 @@ function slettHandleliste() {
             alert("serverfeil :/")
         }
     })
-}*/
-
+}
 
 function getHandlelisterData() {
     $.getJSON("server/handleliste/" + husholdningId + "/" + brukerId, function (data) {
@@ -169,59 +172,73 @@ function getHandlelisterData() {
     });
 }
 
+function checkChecked(formname) {
+    var anyBoxesChecked = false;
+    $('#' + formname + ' input[type="checkbox"]').each(function() {
+        if ($(this).is(":checked")) {
+            anyBoxesChecked += $(this).is(":checked").attr("id");
+        }
+    });
+
+    if (anyBoxesChecked == false) {
+        alert('Please select at least one checkbox');
+        return false;
+    }
+
+    console.log(anyBoxesChecked);
+}
+
 function setupPage() {
-    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, varenavn, kjøpt, kjøperId, datokjøpt;
+    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjøpt, kjøperId, datokjøpt;
 
-    for(var i = 0; i < alleHandlelister.length; i++){
-        tittel = alleHandlelister[i].tittel;
-        handlelisteId = alleHandlelister[i].handlelisteId;
-        husholdningId = alleHandlelister[i].husholdningId;
-        skaperId = alleHandlelister[i].skaperId;
-        varer = alleHandlelister[i].varer;
-        offentlig = alleHandlelister[i].offentlig;
-        //frist = alleHandlelister[i].frist;
+    for (var i = 0; i < alleHandlelister.length; i++) {
+        if (alleHandlelister[i].gjemt == 0) {
+            tittel = alleHandlelister[i].tittel;
+            handlelisteId = alleHandlelister[i].handlelisteId;
+            husholdningId = alleHandlelister[i].husholdningId;
+            skaperId = alleHandlelister[i].skaperId;
+            varer = alleHandlelister[i].varer;
+            offentlig = alleHandlelister[i].offentlig;
+            //frist = alleHandlelister[i].frist;
 
-        $("#handlelister").append('<div class="panel panel-default container-fluid"><div' +
-            ' class="panel-heading clearfix row" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '" onclick="displayDiv()"><h4' +
-            ' class="panel-titel col-md-9"><a></a>' + tittel + '</h4><div class="col-md-3" onclick="slettHandleliste()">' +
-            '<button class="btn btn-danger pull-right" type="button">Slett handleliste</button></div></div>' +
-            '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group"></ul>' +
-            '<div id="list1" class="list-group"><form><div class="input-group"><input id="#' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
-            ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilNyGjenstand()">' +
-            '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
-            '<button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
-            '<!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round">' +
-            '</span></label></div></div></div></div>');
+            $("#handlelister").append('<div class="container-fluid panel panel-default"><div' +
+                ' class="row panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '"><h4' +
+                ' class="col-md-9 panel-titel" role="button" style="display: inline; padding: 0px">' + tittel + '</h4><div class="invisibleDiv"' +
+                ' onclick="slettHandleliste()" style="display: inline; padding-left: 0px; padding-right: 0px">' +
+                '<button class="col-md-3 btn btn-danger pull-right slettHandlelisteKnapp" id="slett' + handlelisteId + '" type="button" value ="' + handlelisteId + '">Slett handleliste</button></div></div>' +
+                '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul id= "liste' + handlelisteId + '" class="list-group"></ul>' +
+                '<div id="list1" class="list-group"><form><div class="input-group"><input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
+                ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilVare()">' +
+                '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
+                '<div class="container-fluid"><div class="row"><button id="utlegg" type="button" class="align-left btn btn-primary' +
+                ' pull-left align-middle" data-toggle="modal" data-target="#utleggmodal" onclick="checkChecked("liste'+handlelisteId+'")">Lag utlegg</button><button' +
+                ' id="utenUtlegg" type="button" class="btn btn-primary pull-left align-items-center">Kjøpt uten utlegg</button>' +
+                '<!-- Rounded switch --><div><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input id="switch' + handlelisteId + '" type="checkbox"><span' +
+                ' class="slider round">' +
+                '</span></label></div></div></div></div></div></div></div>');
 
-
-
-        /*$("#handlelister").append('<div class="panel panel-default"><div class="container-fluid"><div class="panel-heading clearfix"><h4 class="panel-titel' +
-            ' pull-left" style="padding-top: 7.5px"><a data-toggle="collapse" data-parent="accordion" href="#collapse1" aria-expanded="true"></a>' +
-            tittel + '</h4><div><button id="slettHandlelisteKnapp" class="btn btn-danger pull-right removeButton" type="button">Slett handleliste</button></div></div></div><div' +
-            ' id="collapse1" class="panel-collapse collapse in" aria-expanded="true"><div class="panel-body"><div class="panel-body"><ul class="list-group"></ul><div id="list1"' +
-            ' class="list-group"><form><div id="' + handlelisteId + '" class="input-group leggTilNyGjenstand"><input class="form-control" placeholder="Legg til ny gjenstand i listen"' +
-            ' type="text"><div class="input-group-btn"><button id="leggTilNyGjenstandKnapp" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>' +
-            '</button></div></div></form><button id="utlegg" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button>' +
-            '<!-- Rounded switch --><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input type="checkbox"><span class="slider round"></span>' +
-            '</label></div></div></div></div></div>');*/
-
-        for(var j = 0; j < varer.length; j++){
-            vareId = varer[j].vareId;
-            varenavn = varer[j].varenavn;
-            kjøpt = varer[j].kjøpt;
-            kjøperId = varer[j].kjøperId;
-            //datokjøpt = new Date(varer[j].datokjøpt);
-            $("#handlelister ul").append('<li class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right"></li>');
+            for (var j = 0; j < varer.length; j++) {
+                vareId = varer[j].vareId;
+                vareHandlelisteId = varer[j].handlelisteId;
+                varenavn = varer[j].varenavn;
+                kjøpt = varer[j].kjøpt;
+                kjøperId = varer[j].kjøperId;
+                //datokjøpt = new Date(varer[j].datokjøpt);
+                $("#liste" + handlelisteId).append('<label for="' + varenavn + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" title="toggle' +
+                    ' all" type="checkbox" class="all pull-right"></label>');
+            }
+        }
+        if (offentlig) {
+            $("#switch" + handlelisteId).prop("checked", true);
         }
     }
-    if(offentlig){
-        $(".slider").click();
-    }
+
+
 }
 
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
-    if (x.style.display === "none") {
+    if ($(".invisibleDiv").css("display") === "none") {
         x.style.display = "block";
     } else {
         x.style.display = "none";

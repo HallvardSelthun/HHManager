@@ -1,11 +1,13 @@
 /**
+ *
  * Created by BrageHalse on 12.01.2018.
+ *
  */
 var husholdning;
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var epost = bruker.epost;
 var brukerId;
-var husholdningId
+var husholdningId;
 var medlemmer;
 
 $(document).ready(function () {
@@ -15,6 +17,9 @@ $(document).ready(function () {
     setTimeout(setupPage,1000);
     $("#commentBtn").on("click", function () {
         postInnlegg();
+    });
+    $(".skrivNyttInnlegg").on("click", function () {
+        skrivNyttInnlegg();
     });
 });
 
@@ -32,7 +37,7 @@ function setupPage() {
 
     brukerId = bruker.brukerId;
     brukernavn = bruker.navn;
-    var gjøremål = bruker.gjøremål;
+    gjoremal = bruker.gjøremål;
     console.log(bruker);
 
     $("#nyhet").html(husNavn);
@@ -40,6 +45,11 @@ function setupPage() {
     for(var j = 0, leng = medlemmer.length; j< leng; j++){
         var medlemnavn = medlemmer[j].navn;
         $("#medlemsliste").append('<li class="list-group-item">'+medlemnavn+'</li>');
+    }
+
+    for(var g = 0, length = gjoremal.length; g<length; g++){
+        var beskrivelse = gjoremal[g].beskrivelse;
+        $("#gjøremålForside").append('<li class="list-group-item">'+beskrivelse+'<input title="toggle all" type="checkbox" class="all pull-right"></li>')
     }
 
     for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){
@@ -85,6 +95,7 @@ function postInnlegg() {
             }else{
                 innleggToHtml(nyhetsinnlegg);
                 $("#comment").val("");
+                document.getElementById("skrivNyttInnlegg").style.display = "none";
             }
         }
     })
@@ -100,5 +111,15 @@ function innleggToHtml(nyhetsinnlegg) {
             forfatter = medlemmer[j].navn;
         }
     }
-    $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"> <img src="web-res/avatar.png" class="media-object" style="width:45px"> </div><div class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
-};
+    $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
+        ' class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
+}
+
+function skrivNyttInnlegg() {
+    var x = document.getElementById("skrivNyttInnlegg").style.display;
+    if(x === "none") {
+        document.getElementById("skrivNyttInnlegg").style.display = "";
+    }else {
+        document.getElementById("skrivNyttInnlegg").style.display = "none";
+    }
+}

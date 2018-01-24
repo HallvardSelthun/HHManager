@@ -15,17 +15,17 @@ public class BrukerControllerTest {
 
     @Test
     public void getBrukernavn() throws Exception {
-        assertEquals("bruker1", BrukerController.getNavn(1));
+        Assert.assertEquals("Brage", BrukerController.getNavn(1));
     }
 
     @Test
     public void getEpost() throws Exception {
-        assertEquals("bruker1@mail.no", BrukerController.getEpost(1));
+        assertEquals("bragehs@hotmail.com", BrukerController.getEpost(1));
     }
 
     @Test
     public void getFavoritthusholdning() throws Exception {
-        assertEquals("1", BrukerController.getFavoritthusholdning(1));
+        assertEquals(1, BrukerController.getFavoritthusholdning(1));
     }
 
     @Test
