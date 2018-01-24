@@ -56,7 +56,7 @@ public class BrukerService {
      * @param bruker
      */
     @PUT
-    @Path("/nyFavHusholdning")
+    @Path("/favHusholdning")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean setFavHusholdning(Bruker bruker){
         return BrukerController.setNyFavoritthusholdning(bruker.getBrukerId(), Integer.toString(bruker.getFavHusholdning()));
@@ -103,12 +103,12 @@ public class BrukerService {
     }
 
 
-    @GET
+    /*@GET
     @Path("/{epost}/brukerData")
     @Produces(MediaType.APPLICATION_JSON)
     public Bruker getHhData(@PathParam("epost") String brukerEpost){
         return BrukerController.getBrukerData(brukerEpost);
-    }
+    }*/
 
     /**
      * Gir beskjed til servereren at det skal genereres et nytt passord for brukeren og sendes en mail med det

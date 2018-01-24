@@ -36,8 +36,8 @@ public class BrukerController {
      * @param brukerid til brukeren vi finner favoritthusholdningen til
      * @return id til favoritthusholdning
      */
-    public static int getFavoritthusholdning(int brukerid) {
-        return GenereltController.getInt("favorittHusholdning", TABELLNAVN, brukerid);
+    public static String getFavoritthusholdning(int brukerid) {
+        return GenereltController.getString("favorittHusholdning", TABELLNAVN, brukerid);
     }
     public static int getBrukerId(String epost) {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
@@ -46,6 +46,7 @@ public class BrukerController {
     public static void sendGlemtPassordMail(String epost) {
         int brukerId = getBrukerId(epost);
         Mail.sendGlemtPassord(epost, brukerId);
+    }
 
     /**
      * Sletter et medlem fra en husholdning gitt brukerens id.

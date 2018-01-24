@@ -170,7 +170,6 @@ function paddingGreat() {
 }
 
 function henteVarsel() {
-
     $.getJSON("server/gjoremalservice/" + bruker.brukerId +"/varsler", function (data) {
         varselListe=data;
         console.log(varselListe);

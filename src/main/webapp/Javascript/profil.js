@@ -433,8 +433,8 @@ $(document).ready(function () {
 });
 
 function hentliste() {
-    console.log(mineHusholdninger);
-    for (var k = 0, lengt =mineHusholdninger.length; k < lengt; k++) {
+    console.log(husholdninger);
+    for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
         var string ="glyphicon-star-empty";
@@ -457,6 +457,7 @@ function hentliste() {
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
             '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
             '<div id="list1" class="list-group"></div></div></div>');
+
 
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
