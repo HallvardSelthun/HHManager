@@ -2,6 +2,7 @@ var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var navn = bruker.navn;
 var husholdninger;
+var varseler;
 
 $(document).ready(function () {
     $(function () {
@@ -9,20 +10,22 @@ $(document).ready(function () {
         $("#modaldiv").load("lagnyhusstand.html");
     });
     getHusholdninger();
-    setTimeout(function(){
+
+    setTimeout(function () {
         henteVarsel();
-    },200);
+    }, 200);
 
     setTimeout(function () {
         $("#fade").hide()
     }, 150);
 
-    $(document).on('click', '.hhknapp', function(){
-         var nyhhId = ($(this).attr('id'));
-         localStorage.setItem("husholdningId", nyhhId);
-         bruker.favHusholdning = nyhhId;
-         localStorage.setItem("bruker", JSON.stringify(bruker));
-         window.location = "forside.html";
+
+    $(document).on('click', '.hhknapp', function () {
+        var nyhhId = ($(this).attr('id'));
+        localStorage.setItem("husholdningId", nyhhId);
+        bruker.favHusholdning = nyhhId;
+        localStorage.setItem("bruker", JSON.stringify(bruker));
+        window.location = "forside.html";
     });
 
     $('body').on('click', 'a#bildenav', function () {
@@ -118,10 +121,20 @@ $(document).ready(function () {
         });
     });
     setTimeout(function () {
-        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>'+navn);
+        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
     }, 150);
 });
 
+function utgaatteGjoremaal() {
+    var liste = bruker.gjøremål;
+    var today = new Date();
+    for (var f, le = varseler.length; f < le; f++) {
+        console.log(varseler[f].beskrivelse);
+        $("#varselliste").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
+            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0">Du har ett gjøremål som du brude ha gjort <br>' + varseler[f].beskrivelse + '</div>' +
+            '</li>')
+    }
+}
 
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
@@ -148,16 +161,16 @@ var heightNavbarExpanded = 0;
 paddingSmall();
 
 selectNavbarCollapse.on('show.bs.collapse', function () {
-    if (heightNavbarExpanded == 0 ) heightNavbarExpanded = heightNavbarCollapsed + $(this).outerHeight(true);
+    if (heightNavbarExpanded == 0) heightNavbarExpanded = heightNavbarCollapsed + $(this).outerHeight(true);
     paddingGreat();
 });
 selectNavbarCollapse.on('hide.bs.collapse', function () {
     paddingSmall();
 });
 
-$(window).resize( function () {
-    if (( document.documentElement.clientWidth > 767 ) && selectNavbarCollapse.hasClass('in') ) {
-        selectNavbarCollapse.removeClass('in').attr('aria-expanded','false');
+$(window).resize(function () {
+    if (( document.documentElement.clientWidth > 767 ) && selectNavbarCollapse.hasClass('in')) {
+        selectNavbarCollapse.removeClass('in').attr('aria-expanded', 'false');
         paddingSmall();
     }
 });
@@ -170,10 +183,17 @@ function paddingGreat() {
 }
 
 function henteVarsel() {
-    $.getJSON("server/gjoremalservice/" + bruker.brukerId +"/varsler", function (data) {
-        varselListe=data;
+    $.getJSON("server/gjoremalservice/" + bruker.brukerId + "/varsler", function (data) {
+        var brukervarsler = data;
+        console.log(brukervarsler);
+        varseler = brukervarsler.gjøremål;
+        varselListe = brukervarsler.gjøremål.length;
         console.log(varselListe);
         $("#antallVarsler").text(varselListe);
         $("#ant").text(varselListe);
+        setTimeout(function () {
+            utgaatteGjoremaal();
+        }, 300);
+
     });
 }

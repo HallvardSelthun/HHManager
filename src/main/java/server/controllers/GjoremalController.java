@@ -123,22 +123,27 @@ public class GjoremalController {
         return false;
     }
 
-    public static int hentVarselGjøremål(int brukerId) {
+    public static Bruker hentVarselGjoremal(int brukerId) {
+        Bruker bruker = new Bruker();
         int id = brukerId;
         int result = 0;
-        String query = "SELECT COUNT(gjøremålId) antall FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ? GROUP BY utførerId;";
+        String query = "SELECT beskrivelse FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ?;";
 
         try (Connection con = ConnectionPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            result = rs.getInt("antall");
-            return result;
+            while(rs.next()){
+                Gjøremål g = new Gjøremål();
+                String beskrivelse = rs.getString("beskrivelse");
+                g.setBeskrivelse(beskrivelse);
+                bruker.addGjøremål(g);
+            }
+            return bruker;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return bruker;
     }
 }
 
