@@ -12,6 +12,17 @@ var husholdning;
 var id;
 
 /**
+ * Funksjonen henter husholdningsdata.
+ */
+
+function gethhData() {
+    $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
+        husholdning = data;
+
+    });
+}
+
+/**
  * Funksjonen kalles når et nytt gjøremål skal opprettes og det skrives et nytt gjøremål inn
  * i tekstboksen fellesGjoremaal.
  */
