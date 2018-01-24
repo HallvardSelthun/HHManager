@@ -15,7 +15,6 @@ public class Mail {
     private static final String passord = "HHManagerT6";
     private static final String sub = "Registrert i husholdning i HouseHoldManager";
     private static final String glemtsub = "Nytt passord til HouseHoldManager";
-    private static final int PASSORD_LENGDE = 10;
     private static String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
             + "\nHouseHoldManagers utviklingsteam <3";
 
@@ -28,12 +27,13 @@ public class Mail {
     }
 
     public static void sendUreg(ArrayList<String> eposter, String hushold) {
-        StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+        StringBuilder msg = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen" + hushold +
                 "\nFølg lenken for å kommme til HHManagers registreringsside, " +
                 "slik at du kan lage en bruker på systemet." +
-                "\nHusk å bruke samme epost som denne." +
+                "\nNB: Husk å bruke samme epost som denne." +
                 "\nhttp://localhost:8080/server/lagbruker.html");
+        sendTilFlere(eposter, msg);
     }
 
     /**
@@ -42,7 +42,7 @@ public class Mail {
      * @param eposter ArrayList over alle epostadressene som skal få mail
      * @param msg     String med innholdet i eposten.
      */
-    public static void sendTilFlere(ArrayList<String> eposter, StringBuilder msg) {
+    private static void sendTilFlere(ArrayList<String> eposter, StringBuilder msg) {
         for (String epost :
                 eposter) {
             epost.trim().toLowerCase();

@@ -6,8 +6,7 @@ public class Bruker {
 
     private int brukerId;
     private String navn;
-    private String hashen;
-    private String salt;
+    private String passord;
     private String epost;
     private int favHusholdning;
     private HHMedlem[] HHMedlemmer;
@@ -42,20 +41,12 @@ public class Bruker {
         this.brukerId = brukerId;
     }
 
-    public String getHashen() {
-        return hashen;
+    public String getPassord() {
+        return passord;
     }
 
-    public void setHashen(String hashen) {
-        this.hashen = hashen;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setPassord(String passord) {
+        this.passord = passord;
     }
 
     public String getEpost() {

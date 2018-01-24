@@ -3,36 +3,13 @@
  */
 $(document).ready(function () {
 
-    // henter hash og salt ved hjelp av epost
-    // hasher passord fra bruker sammen med saltet
-    // sjekker om lokal hash og hash fra databasen er den samme
-    // hvis ok, logg in
     $("#loggInnBtn").on("click", function () {
+        var brukerEpost = $("#email").val();
+        var passord = $("#password").val();
         if (brukerEpost == "" || passord == "") {
             alert("skriv inn noke pls! ");
             return;
         }
-        $.ajax({
-            url: "BrukerService/" + brukerEpost + "/brukerData",
-            type: 'GET',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (bruker) {
-                var hashenAjax = bruker.hashen;
-                var salt = bruker.salt;
-                var lokalHash = sha1($("#password").val() + salt);
-                if (hashenAjax == lokalHash) {
-
-
-                }
-            },
-            error: function () {
-                alert("Serverfeil :/");
-            }
-        });
-
-
-        passord = MD5(passord);
         var bruker = {
             epost: brukerEpost,
             passord: passord
@@ -58,14 +35,17 @@ $(document).ready(function () {
                 window.location = "profil.html";
             },
             error: function () {
-                alert("serverfeil :/")
+                alert("serverfeil kall 2 :/")
             }
         })
-    })
+    });
+
     $("#regBruker").on("click", function () {
         window.location = "lagbruker.html";
     });
+
 });
+
 
 function keyCode(event) {
     var x = event.keyCode;
@@ -73,4 +53,3 @@ function keyCode(event) {
         $("#loggInnBtn").click();
     }
 }
-var favHus;

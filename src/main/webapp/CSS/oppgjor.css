@@ -1,32 +1,5 @@
-#container {
-    padding-left: 200px;   /* LC width */
-    padding-right: 150px;  /* RC width */
-}
-#container .column {
-    float: left;
-    position: relative;
-}
-#center {
-    width: 100%;
-}
-#left {
-    width: 200px;  /* LC width */
-    margin-left:-100%;
-    right:200px;
-}
-#right {
-    width: 150px;  /* RC width */
-    maring-right:-150px;
-}
-#footer {
-    clear: both;
-}
-body{
-    min-width:550px;
-}
-
 .balanse{
-    width: 550px;
+    /* width: 550px; */
     height: auto;
     margin-right: 20px;
     margin-left: 10px;
@@ -38,12 +11,15 @@ body{
 }
 
 #betalt {
-    margin-right: 10px;
+    padding-right: 10px;
 }
+
 .panel-group {
-    width: 600px;
-    margin: auto ;
+    /* width: 600px;
     margin-bottom: 100px;
+    */
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 #forespør {
@@ -57,7 +33,18 @@ body{
 #historikk {
     color: blue;
     margin-top: 50px;
+    margin-left: 10px;
+}
+#historikkmargin{
+    margin-top: 30px;
+    margin-left: 50%;
+    padding-left: 20px;
+}
 
+
+.tittel {
+    text-align: center;
+    margin:-2px;
 }
 
 .dropdown-menu-item {
@@ -69,18 +56,23 @@ body{
     margin-right: 5px;
 }
 
-#skylder {
+.totalSumPos {
     color: #32CD32;
     margin-right: 50px;
 }
 
-#skyldertittel {
-    margin-right: 40px  ;
+.totalSumNeg {
+    color: #CD3232;
+    margin-right: 50px;
 }
 
-.checkbox2 {
-    text-align: left;
-    margin-left: 10px;
+#skyldertittel {
+    margin-right: 30px  ;
+}
+
+.checkbox-wrap {
+    text-align: center;
+    /*margin-left: 10px;*/
 }
 
 #betalt {
@@ -94,12 +86,7 @@ body{
     margin-left: 100px;
     margin-top: 52px;
 }
-
-
-.firkant{
-    border-radius: 25px;
-    border: 2px solid;
-    padding: 20px;
-    width: 250px;
-    height: 270px;
+.medlemCheck{
+    align-content: left;
 }
+

@@ -1,6 +1,7 @@
 /**
  *
  * Created by BrageHalse on 12.01.2018.
+ *
  */
 var husholdning;
 var bruker = JSON.parse(localStorage.getItem("bruker"));

@@ -44,8 +44,8 @@ public class BrukerTest {
 
     @Test
     public void setOgGetPassord() throws Exception {
-        bruker.setHashen("hash");
-        assertEquals("hash",bruker.getHashen());
+        bruker.setPassord("hash");
+        assertEquals("hash",bruker.getPassord());
     }
 
     @Test

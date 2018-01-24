@@ -48,14 +48,14 @@ INSERT INTO utlegg (utleggerId, sum, beskrivelse)VALUES (1, 200, 'varer');
 INSERT INTO utlegg (utleggerId, sum, beskrivelse)VALUES (1, 300, 'varer');
 
 -- utleggsvarer:
-INSERT INTO utleggsvare (vareId, utleggsId) VALUES (1,1);
-INSERT INTO utleggsvare (vareId, utleggsId) VALUES (2,2);
+INSERT INTO utleggsvare (vareId, utleggId) VALUES (1,1);
+INSERT INTO utleggsvare (vareId, utleggId) VALUES (2,2);
 
 
 -- utleggsbetaler
-INSERT INTO utleggsbetaler (utleggsId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 100.0);
-INSERT INTO utleggsbetaler (utleggsId, medlemsId, betalt,delSum)  VALUES (1,3, 1, 100.0);
-INSERT INTO utleggsbetaler (utleggsId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 150.0);
+INSERT INTO utleggsbetaler (utleggId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 100.0);
+INSERT INTO utleggsbetaler (utleggId, medlemsId, betalt,delSum)  VALUES (1,3, 1, 100.0);
+INSERT INTO utleggsbetaler (utleggId, medlemsId, betalt,delSum)  VALUES (1,2, 1, 150.0);
 
 
 

@@ -3,6 +3,7 @@ package server.controllers;
 import server.database.ConnectionPool;
 import server.restklasser.*;
 
+import javax.ws.rs.POST;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -47,13 +48,19 @@ public class UtleggController {
     */
 
     public static boolean setMotatt(int brukerId, int utleggId) {
+        System.out.println("brukerId/skyldigBrukerId: "+brukerId+" utleggId: "+utleggId);
         String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
                 + brukerId + " AND utleggsbetaler.utleggId =  " + utleggId;
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement updateStatment = connection.prepareStatement(getQuery);
-            updateStatment.executeUpdate();
-            return true;
+            int success = updateStatment.executeUpdate();
+            if (success == 1) {
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -126,6 +133,7 @@ public class UtleggController {
      */
     private static Utleggsbetaler lagUtleggsbetalerObjekt(ResultSet resultset) throws SQLException{
         Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
+        utleggsbetaler.setutleggId(resultset.getInt("utleggId"));
         utleggsbetaler.setSkyldigBrukerId(resultset.getInt("skyldigBrukerId"));
         utleggsbetaler.setBetalt(resultset.getInt("betalt")==1);
         utleggsbetaler.setDelSum(resultset.getDouble("delSum"));
@@ -171,7 +179,7 @@ public class UtleggController {
     private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection) {
 
         //Gir alle utleggere som jeg skylder penger, samt beløpet jeg skylder mm.
-        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" ORDER BY utleggerId"; //test med 2
+        String query = "SELECT * FROM utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" ORDER BY utleggerId"; //test med 2
 
         try (PreparedStatement statement = connection.prepareStatement(query)){
             ResultSet resultset = statement.executeQuery();
@@ -282,5 +290,35 @@ public class UtleggController {
                 e.printStackTrace();
                 return null;
             }
+    }
+
+
+    public static boolean lagNyttUtlegg(Utlegg utlegg){
+        String query = "INSERT INTO utlegg (utleggerId, sum, beskrivelse) VALUES (?,?,?)";
+        String getId = "SELECT LAST_INSERT_ID()";
+        int utleggId;
+        String addUtleggsbetaler = "INSERT INTO utleggsbetaler (utleggId, skyldigBrukerId, delSum) VALUES (?,?,?)";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, utlegg.getUtleggerId());
+            ps.setDouble(2, utlegg.getSum());
+            ps.setString(3, utlegg.getBeskrivelse());
+            ps.execute();
+            ps = con.prepareStatement(getId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            utleggId = rs.getInt(1);
+            for (int i = 0; i < utlegg.utleggsbetalere.size(); i++) {
+                ps = con.prepareStatement(addUtleggsbetaler);
+                ps.setInt(1,utleggId);
+                ps.setInt(2,utlegg.utleggsbetalere.get(i).getSkyldigBrukerId());
+                ps.setDouble(3, utlegg.utleggsbetalere.get(i).getDelSum());
+                ps.execute();
+            }
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

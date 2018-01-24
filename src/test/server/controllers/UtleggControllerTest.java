@@ -41,4 +41,10 @@ public class UtleggControllerTest {
         //System.out.println("Bruker 1 skylder"+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getDelSum()+" kroner for "+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getBeskrivelse());
     }
 
+    @Test
+    public void setMotatt() {
+        //Denne testen kan skrives når jeg er ferdig.
+        assertTrue(UtleggController.setMotatt(1,11));
+    }
+
 }

@@ -45,7 +45,7 @@ public class UtleggService {
     }
 
 
-    /**
+    /*
      * Henter alle brukere som er involvert i et unikt utlegg.
      * @param utleggId er en unik id for å indentifisere utlegg.
      * @return ArrayList over alle utleggsbetalere for et unikt utlegg via utleggid
@@ -57,4 +57,10 @@ public class UtleggService {
     public ArrayList<Utleggsbetaler> getUtleggsBetalere(@PathParam("utleggId") int utleggId) {
         return UtleggController.getUtleggsbetalere(utleggId);
     }*/
+    @POST
+    @Path("nyttutlegg")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean nyttutlegg(Utlegg utlegg){
+        return UtleggController.lagNyttUtlegg(utlegg);
+    }
 }
