@@ -3,7 +3,7 @@
 }
 .hl{
     border-bottom: 1px solid #DDD;
-}
+}/*
 .flytt {
     width: 600px;
     height: 400px;
@@ -13,7 +13,7 @@
 }
 
 /*Line chart. Hentet fra */
-#formControlSelect{
+/*#formControlSelect{
     width: 40%;
 }
 
@@ -22,4 +22,10 @@
 }
 .medlemmerKolonne{
     margin-left: 75px;
-}
+}*/
+
+#nyhetsChart{}
+
+#vareChart{}
+
+#gjøremålsChart{}

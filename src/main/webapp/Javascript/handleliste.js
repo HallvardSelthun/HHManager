@@ -7,7 +7,7 @@ var brukerId = bruker.brukerId;
 var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
-
+var boxesChecked = [];
 
 $(document).ready(function () {
     getHandlelisterData();
@@ -31,6 +31,10 @@ $(document).ready(function () {
     $(document).on('click','.slettHandlelisteKnapp', function () {
         slettHandleliste($(this).attr('value'))
     });
+
+    $(document).on('click', '.utleggKnapp', function(){
+        checkChecked($(this).attr('id'));
+    })
 });
 
 function leggTilNyHandleliste() {
@@ -173,19 +177,21 @@ function getHandlelisterData() {
 }
 
 function checkChecked(formname) {
-    var anyBoxesChecked = false;
+    formname = "liste" + formname.slice(6);
+
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
-            anyBoxesChecked += $(this).is(":checked").attr("id");
+            boxesChecked.push($(this).attr("id"));
         }
+        //$("#utleggmodal").modal('show');
     });
 
-    if (anyBoxesChecked == false) {
-        alert('Please select at least one checkbox');
+    if (boxesChecked == false) {
+        alert('Du må krysse av minst en vare');
         return false;
     }
 
-    console.log(anyBoxesChecked);
+    console.log(boxesChecked);
 }
 
 function setupPage() {
@@ -205,13 +211,15 @@ function setupPage() {
                 ' class="row panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '"><h4' +
                 ' class="col-md-9 panel-titel" role="button" style="display: inline; padding: 0px">' + tittel + '</h4><div class="invisibleDiv"' +
                 ' onclick="slettHandleliste()" style="display: inline; padding-left: 0px; padding-right: 0px">' +
-                '<button class="col-md-3 btn btn-danger pull-right slettHandlelisteKnapp" id="slett' + handlelisteId + '" type="button" value ="' + handlelisteId + '">Slett handleliste</button></div></div>' +
-                '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul id= "liste' + handlelisteId + '" class="list-group"></ul>' +
+                '<button class="col-md-3 btn btn-danger pull-right slettHandlelisteKnapp" id="slett' + handlelisteId + '" type="button" value ="' + handlelisteId + '">Slett' +
+                ' handleliste</button></div></div>' +
+                '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul id="liste' + handlelisteId + '" class="list-group"></ul>' +
                 '<div id="list1" class="list-group"><form><div class="input-group"><input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand"' +
                 ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilVare()">' +
                 '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
-                '<div class="container-fluid"><div class="row"><button id="utlegg" type="button" class="align-left btn btn-primary' +
-                ' pull-left align-middle" data-toggle="modal" data-target="#utleggmodal" onclick="checkChecked("liste'+handlelisteId+'")">Lag utlegg</button><button' +
+                '<div class="container-fluid"><div class="row"><button id="utlegg'+handlelisteId+'" type="button" class="align-left btn btn-primary' +
+                ' pull-left align-middle utleggKnapp" data-toggle="modal" data-target="#utleggmodal">Lag' +
+            ' utlegg</button><button' +
                 ' id="utenUtlegg" type="button" class="btn btn-primary pull-left align-items-center">Kjøpt uten utlegg</button>' +
                 '<!-- Rounded switch --><div><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input id="switch' + handlelisteId + '" type="checkbox"><span' +
                 ' class="slider round">' +
@@ -233,6 +241,12 @@ function setupPage() {
         }
     }
 
+    if(boxesChecked != null){
+        var x = "";
+        for(i = 0; i < boxesChecked.length; i++){
+            $("#valgteVarer").append('<label for="' + boxesChecked[i] + '" class="list-group-item" name="vare"> ' + boxesChecked[i] + '</label>');
+        }
+    }
 
 }
 
