@@ -243,28 +243,48 @@ function setupPage() {
             offentlig = alleHandlelister[i].offentlig;
             //frist = alleHandlelister[i].frist;
 
-            $("#handlelister").append('<div class="container-fluid panel panel-default"><div' +
-                ' class="row panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '"><h4' +
-                ' class="col-md-9 panel-titel" role="button" style="display: inline; padding: 0px">' + tittel + '</h4><div class="invisibleDiv"' +
-                ' onclick="slettHandleliste()" style="display: inline; padding-left: 0px; padding-right: 0px">' +
-                '<button class="col-md-3 btn btn-danger pull-right slettHandlelisteKnapp" id="slett' + handlelisteId + '" type="button" value ="' + handlelisteId + '">Slett' +
-                ' handleliste</button></div></div>' +
-                '<div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv" style="padding: 0px"><div class="panel-body"><div class="row">' +
-                '<ul id="liste' + handlelisteId + '" class="list-group"></ul>' +
-                '<div id="list1" class="list-group"><form style="padding-bottom: 5px"><div class="input-group"><input id="' + handlelisteId + '" class="form-control' +
-                ' leggTilNyGjenstand"' +
-                ' placeholder="Legg til ny gjenstand i listen" type="text"><div class="input-group-btn" onclick="leggTilVare()">' +
-                '<button id="' + handlelisteId + '" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i></button></div></div></form>' +
-                '<div class="container-fluid"><div class="row"><div class="col-md-8" style="padding-left: 0px; padding-top: 10px"><div style="padding-right: 5px"><button' +
-                ' id="utlegg'+handlelisteId+'" type="button"' +
-                ' class="align-left btn' +
-                ' btn-primary' +
-                ' pull-left utleggKnapp" data-toggle="modal" data-target="#utleggmodal">Lag utlegg</button></div><div><button' +
-                ' id="utenUtlegg" type="button" class="btn btn-primary pull-left align-items-center">Kjøpt uten utlegg</button></div></div>' +
-                '<!-- Rounded switch --><div class="col-md-4" style="padding: 0px"><h5 id="offtekst" class="pull-right">Offentlig</h5><label class="switch pull-right"><input' +
-                ' id="switch' + handlelisteId + '" type="checkbox"><span' +
-                ' class="slider round">' +
-                '</span></label></div></div></div></div></div></div></div>');
+            $("#handlelister").append('<div class="container-fluid panel panel-default">' +
+                '   <div class="row panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '">' +
+                '       <h4 class="col-md-9 panel-titel" role="button" style="display: inline; padding: 0px">' + tittel + '</h4>' +
+                '       <div class="invisibleDiv" onclick="slettHandleliste()" style="display: inline">' +
+                '       <button class="col-md-3 btn btn-danger pull-right slettHandlelisteKnapp" id="slett' + handlelisteId + '" type="button" value ="' + handlelisteId + '" style="margin-top: 2px">Slett' +
+                ' handleliste</button>' +
+                '       </div>' +
+                '   </div>' +
+                '   <div id="' + handlelisteId + '" class="panel-collapse collapse invisibleDiv ">' +
+                '       <div class="panel-body row" style="padding-bottom: 0px">' +
+                '           <div class="container-fluid">' +
+                '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
+                '               <div id="list1" class="list-group row">' +
+                '                       <form class="row">' +
+                '                           <div class="input-group container-fluid">' +
+                '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
+            '                                   <div class="input-group-btn" onclick="leggTilVare()">' +
+            '                                       <button id="' + handlelisteId + '" class="btn btn-default" type="submit">' +
+            '                                           <i class="glyphicon glyphicon-plus"></i>' +
+            '                                       </button>' +
+            '                                   </div>' +
+                '                           </div>' +
+                '                       </form>' +
+                '                       <div class="row">' +
+                '                           <div class="container-fluid">' +
+                    '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
+                ' data-target="#utleggmodal" style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
+                    '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left" style="margin-top: 10px">Kjøpt uten' +
+                ' utlegg</button>' +
+                '                           <!-- Rounded switch -->' +
+                '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
+                '                               <label class="switch pull-right" style="alignment: right">' +
+                '                                   <input id="switch' + handlelisteId + '" type="checkbox">' +
+                '                                   <span class="slider round"></span>' +
+                '                               </label>' +
+                '                        </div>' +
+                '                   </div>' +
+                '               </div>' +
+                '           </div>' +
+                '       </div>' +
+                '   </div>' +
+                '</div>');
 
             for (var j = 0; j < varer.length; j++) {
                 vareId = varer[j].vareId;
