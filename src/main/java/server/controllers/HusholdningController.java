@@ -466,7 +466,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.navn, bruker.brukerId FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -474,6 +474,7 @@ public class HusholdningController {
             while (medlemRS.next()) {
                 Bruker nyMedlem = new Bruker();
                 nyMedlem.setNavn(medlemRS.getString("navn"));
+                nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {

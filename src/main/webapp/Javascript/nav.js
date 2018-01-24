@@ -118,7 +118,10 @@ $(document).ready(function () {
 
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
+        console.log("id " + bruker.brukerId);
         husholdninger = data;
+        localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
+        console.log(husholdninger);
     });
     setTimeout(function () {
         for (i = 0, l = husholdninger.length; i < l; i++) {

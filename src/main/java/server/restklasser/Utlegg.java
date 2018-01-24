@@ -7,6 +7,7 @@ public class Utlegg {
     private int utleggId;
     private double sum;
     private String beskrivelse;
+    public ArrayList<Utleggsbetaler> utleggsbetalere;
     private ArrayList<Vare> varer;
 
     public Utlegg() {}
@@ -48,6 +49,14 @@ public class Utlegg {
         this.beskrivelse = beskrivelse;
     }
 
+    public ArrayList<Utleggsbetaler> getUtleggsbetalere(){
+        return utleggsbetalere;
+    }
+
+    public void addUtleggsbetaler(Utleggsbetaler utleggsbetaler){
+        utleggsbetalere.add(utleggsbetaler);
+    }
+
     public ArrayList<Vare> getVarer() {
         return varer;
     }
@@ -55,5 +64,6 @@ public class Utlegg {
     public void setVarer(ArrayList<Vare> varer) {
         this.varer = varer;
     }
+
 
 }
