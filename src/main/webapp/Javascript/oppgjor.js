@@ -2,10 +2,12 @@ $(document).ready(function () {
     $("#lagUtlegg").on('click', function () {
         lagNyttUtlegg();
     });
-
-    setTimeout(function () {
-        lastinn()
-    },250);
+    $(document).on('click', '.medlemCheck', function(){
+        oppdaterBetalere();
+    });
+    $(document).on('click', '#vereMedPaaUtlegg', function () {
+        oppdaterBetalere();
+    });
 
     //Kjør JavaScript
     init();
@@ -15,10 +17,30 @@ $(document).ready(function () {
 //Globale variabler
 var testBrukerId = 1;
 var alleOppgjor = [];
+var delSum = 0;
 
 function init() {
     lastInnOppgjor(testBrukerId);
+    setTimeout(function () {
+        lastinn();
+    },500);
+
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
+}
+function oppdaterBetalere() {
+    $("#betalere").text("");
+    $('.medlemCheck').each(function () {
+        var sum = $("#sum").val();
+        var pluss = 0;
+        if ($("#vereMedPaaUtlegg").is(":checked")){
+            pluss = 1;
+        }
+        delSum = sum/($('#personer input:checked').length+pluss);
+        if ($(this).is(":checked")){
+            console.log($(this).attr('value'));
+            $("#betalere").append('<br> '+$(this).attr('value') +' Sum: '+ delSum);
+        }
+    })
 }
 
 function utregnOppgjorSum() {
@@ -150,10 +172,11 @@ function lagNyttUtlegg() {
     }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
+    //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
-            delSum: sum/$('#personer input:checked').length
+            delSum: delSum
         };
         utleggsbetalere.push(utleggsbetaler)
     });
@@ -190,12 +213,17 @@ function lastinn() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
     console.log(husholdninger);
+    //$.template( "medlemmerListe", $("#listeMedlemPls"));
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
-                console.log(husholdninger[j].medlemmer[k].navn);
-                $.template( "medlemmer", $("#listeMedlem"));
-                $.tmpl("medlemmer", husholdninger[j].medlemmer[k]).appendTo($("#personer"));
+                var navn = husholdninger[j].medlemmer[k].navn;
+                var id = husholdninger[j].medlemmer[k].brukerId;
+                if (id != bruker.brukerId){
+                    $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox">'+
+                        '<input id="'+id+'" type="checkbox" role="button" value="'+navn+'" class="medlemCheck">'+
+                        navn +'</label></div></li>');
+                }
             }
         }
     }
