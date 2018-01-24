@@ -174,5 +174,6 @@ function henteVarsel() {
         varselListe=data;
         console.log(varselListe);
         $("#antallVarsler").text(varselListe);
+        $("#ant").text(varselListe);
     });
 }
