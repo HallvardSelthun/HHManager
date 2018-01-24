@@ -5,9 +5,7 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import server.Sikkerhet.Passord;
 import server.controllers.*;
-import server.util.*;
 
 /**
  * Denne klassen kobles opp mot Googles mail servere og sender mail til en bruker
@@ -111,9 +109,7 @@ public class Mail {
                 msg = "Hei" +
                         "\nDenne eposten er ikke registrert hos oss." + regards;
             } else {
-                String pw = RandomGenerator.stringuln(PASSORD_LENGDE);  // generates random password
-                String hash = Passord.hashPassord(pw);                //Metoden er ikke laget enda
-                BrukerController.setNyttPassord(brukerId, hash);
+                String pw = BrukerController.nyttTilfeldigPass(brukerId);
                 msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                         "\n\nHer er ditt nye genererte passord: " + pw + regards;
             }

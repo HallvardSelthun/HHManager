@@ -6,6 +6,8 @@ package server.controllers;
 import server.Mail;
 import server.database.ConnectionPool;
 import server.restklasser.*;
+import server.util.Encryption;
+import server.util.RandomGenerator;
 
 import java.sql.*;
 
@@ -44,6 +46,11 @@ public class BrukerController {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
     }
 
+    /**
+     * Henter diverse brukerdata ved hjelp av epost
+     * @param epost til brukeren
+     * @return epost, navn, brukerId, gjøremål til brukeren uavhengig av husstand, balanse = 0
+     */
     public static Bruker getBrukerData(String epost) {
 
         Bruker bruker = new Bruker();
@@ -122,7 +129,7 @@ public class BrukerController {
      */
 
     public static boolean registrerBruker(Bruker bruker) {
-        String pass = bruker.getPassord();
+        String pass = bruker.getHashen();
         String navn = bruker.getNavn();
         String epost = bruker.getEpost();
         String epostLedig = "SELECT epost FROM bruker WHERE epost = ?";
@@ -158,10 +165,10 @@ public class BrukerController {
      * Sjekker om epost og passord stemmer.
      * @param epost
      * @param passord
-     * @return true hvis dataene stemmer
+     * @return brukerdata hvis ok: epost, navn, id, favoritthusholdning, gjøremal
      */
     public static Bruker loginOk(String epost, String passord) {
-        String query = "SELECT passord, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
+        String query = "SELECT hash, favorittHusholdning, navn, brukerId, salt FROM bruker WHERE epost = ?";
 
         Bruker bruker = new Bruker();
         int favHus = 0;
@@ -174,12 +181,13 @@ public class BrukerController {
                 rs.next();
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
-                String res = rs.getString("passord");
+                String hash = rs.getString("hash");
+                String salt = rs.getString("salt");
                 int favHusDB = rs.getInt("favorittHusholdning");
                 if (favHus != favHusDB){
                     bruker.setFavHusholdning(favHusDB);
                 }
-                if (res.equals(passord)) {
+                if (Encryption.instance.isPassOk(passord, hash, salt)) {
                     String hentGjoremal = "SELECT * FROM gjøremål WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
                     ps = con.prepareStatement(hentGjoremal);
                     ResultSet rs2 = ps.executeQuery();
@@ -214,8 +222,34 @@ public class BrukerController {
         GenereltController.update(TABELLNAVN, "epost", epost, brukerId);
     }
 
-    public static void setNyttPassord(int brukerId, String passord) {
-        GenereltController.update(TABELLNAVN, "passord", passord, brukerId);
+    /**
+     * Lager nytt passord og lagrer det i databasen
+     * @param brukerId til personen som trenger nytt passord
+     * @return det nye passordet
+     */
+    public static String nyttTilfeldigPass(int brukerId) {
+        String passord = RandomGenerator.stringulns(8);
+        String[] endcoded = Encryption.instance.passEncoding(passord);
+        setNyttPassord(brukerId, endcoded[0], endcoded[1]);
+        return passord;
+    }
+
+    /**
+     * Oppdaterer databasen med den nye hashen og saltet
+     * @param brukerId til brukeren som får nytt passord
+     * @param hash hashen av passordet og saltet
+     * @param salt til hashen
+     */
+    public static void setNyttPassord(int brukerId, String hash, String salt) {
+        String sqlSetning = "update " + TABELLNAVN + " set hash=?, salt=? where " + TABELLNAVN + "id=" + brukerId;
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSetning)) {
+            preparedStatement.setString(1, hash);
+            preparedStatement.setString(2, salt);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setNyttNavn(int brukerId, String navn){

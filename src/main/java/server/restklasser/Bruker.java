@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class Bruker {
 
-    int brukerId;
-    String navn;
-    String passord;
-    String nyttpassord;
-    String epost;
-    int favHusholdning;
-    HHMedlem[] HHMedlemmer;
-    ArrayList<Gjøremål> gjøremål = new ArrayList<>();
-    double balanse;
+    private int brukerId;
+    private String navn;
+    private String hashen;
+    private String salt;
+    private String epost;
+    private int favHusholdning;
+    private HHMedlem[] HHMedlemmer;
+    private ArrayList<Gjøremål> gjøremål = new ArrayList<>();
+    private double balanse;
 
     public HHMedlem[] getHHMedlemmer() {
         return HHMedlemmer;
@@ -42,14 +42,20 @@ public class Bruker {
         this.brukerId = brukerId;
     }
 
-    public String getPassord() {
-        return passord;
+    public String getHashen() {
+        return hashen;
     }
 
-    public String getNyttPassord(){return nyttpassord;}
+    public void setHashen(String hashen) {
+        this.hashen = hashen;
+    }
 
-    public void setPassord(String passord) {
-        this.passord = passord;
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getEpost() {
@@ -74,11 +80,6 @@ public class Bruker {
 
     public void setFavHusholdning(int favHusholdning) {
         this.favHusholdning = favHusholdning;
-    }
-
-    public boolean regBrukerIDB(){
-        //KODE KODE KODE KODE KODE
-        return false;
     }
 
 }

@@ -7,9 +7,10 @@ CREATE TABLE `husholdning` (
 CREATE TABLE `bruker` (
   `brukerId` int(11) NOT NULL AUTO_INCREMENT,
   `favorittHusholdning` int(11) DEFAULT NULL,
-  `passord` varchar(255) DEFAULT NULL,
+  `hash` varchar(255) DEFAULT NULL,
   `navn` varchar(255) DEFAULT NULL,
   `epost` varchar(255) DEFAULT NULL,
+  `salt` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`brukerId`),
   CONSTRAINT `bruker_ibfk_1` FOREIGN KEY (`favorittHusholdning`) REFERENCES `husholdning` (`husholdningId`)
 );

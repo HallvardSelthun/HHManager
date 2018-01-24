@@ -38,7 +38,7 @@ public class BrukerService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Bruker loginGodkjent(Bruker bruker){
         //må ha en plass der en finne ut om d e rett
-        return BrukerController.loginOk(bruker.getEpost(), bruker.getPassord());
+        return BrukerController.loginOk(bruker.getEpost(), bruker.getHashen());
     }
 
     @DELETE
@@ -82,7 +82,7 @@ public class BrukerService {
     @Path("/endrePassord")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean endrePassord(Bruker bruker){
-        BrukerController.setNyttPassord((bruker.getBrukerId()), bruker.getPassord());
+        BrukerController.setNyttPassord((bruker.getBrukerId()), bruker.getHashen(), bruker.getSalt());
         return false;
     }
 
@@ -104,7 +104,7 @@ public class BrukerService {
     @GET
     @Path("/{epost}/brukerData")
     @Produces(MediaType.APPLICATION_JSON)
-    public Bruker getHhData(@PathParam("epost") String brukerEpost){
+    public Bruker getBrukerdata(@PathParam("epost") String brukerEpost){
         return BrukerController.getBrukerData(brukerEpost);
     }
 
