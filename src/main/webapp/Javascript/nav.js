@@ -167,11 +167,9 @@ function paddingGreat() {
 
 function henteVarsel() {
 
-    console.log(":^)");
     $.getJSON("server/gjoremalservice/" + bruker.brukerId +"/varsler", function (data) {
         varselListe=data;
         console.log(varselListe);
         $("#antallVarsler").text(varselListe);
-
     });
 }
