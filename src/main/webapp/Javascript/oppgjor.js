@@ -63,27 +63,58 @@ $(document).on("click", ".checkboxes", function(event){
             klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
         });
     }
-    else {
+});
 
+//Når denne klikkes skal alle inni merkes som betalt i databasen
+$(document).on("click", ".hovedCheckbox", function(event){
+    console.log("BUTTON FIRES TWICE!");
+    console.log(alleOppgjor);
+    var klikketKnapp = $(this);
+    var knappNavn = $(this).attr('id');
+    var oppgjorNr = knappNavn.match(/\d+/g);
+    console.log("oppgjorNr: "+oppgjorNr);
+
+    if ($(this).is(':checked')) {
+        lagUtleggsbetalerListe(oppgjorNr, function () {
+            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+        });
+        //Oppgjoret gjemmes når metoden over er over
     }
 });
 
-function checkMotattRad(utleggId, skyldigBrukerId, next) {
-    var test;
+function lagUtleggsbetalerListe(oppgjorNr, callback) {
+    var utleggsbetalere = [];
+    var i;
+    var gammeltObjekt;
+    var utleggsbetalerObjekt;
 
-    $.ajax({
-        url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
-        type: 'PUT',
-        success: function (result) {
-            var suksess = result;
-            next();
-        },
-        error: function () {
-            alert("Noe gikk galt :(")
-            return false;
-        }
-    });
+    for (i = 0; i < alleOppgjor[oppgjorNr].utleggJegSkylder.length; i++) {
+        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+
+        utleggsbetalerObjekt = {
+            utleggId: gammeltObjekt.utleggId,
+            betalt: true,
+            skyldigBrukerId: gammeltObjekt.skyldigBrukerId
+        };
+
+        utleggsbetalere.push(utleggsbetalerObjekt);
+    }
+    for (i = 0; i < alleOppgjor[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
+        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+
+        utleggsbetalerObjekt = {
+            utleggId: gammeltObjekt.utleggId,
+            betalt: true,
+            skyldigBrukerId: gammeltObjekt.skyldigBrukerId
+        };
+
+        utleggsbetalere.push(utleggsbetalerObjekt);
+    }
+    console.log(utleggsbetalere);
+    return checkOppgjorSum(utleggsbetalere, callback);
 }
+
+
 
 function displayOppgjor() {
 
@@ -118,7 +149,25 @@ function leggInnRadNr(callback) {
     callback();
 }
 
-//SQL-kall
+//////////////////////////////////////////////////////
+                // AJAX below //
+//////////////////////////////////////////////////////
+//Når en rad krysses av i klienten skal den markeres som betalt i databasen
+function checkMotattRad(utleggId, skyldigBrukerId, next) {
+    $.ajax({
+        url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
+        type: 'PUT',
+        success: function (result) {
+            var suksess = result;
+            next();
+        },
+        error: function () {
+            alert("Noe gikk galt :(");
+            return false;
+        }
+    });
+}
+
 function lastInnOppgjor(brukerId) {
     $.ajax({
         url: "server/utlegg/oppgjor/"+ brukerId,
@@ -138,6 +187,24 @@ function lastInnOppgjor(brukerId) {
             alert("Serveren har det røft atm, prøv igjen senere :/");
         }
     })
+}
+
+function checkOppgjorSum(utleggsbetalere, next) {
+    $.ajax({
+        url: 'server/utlegg/utleggsbetaler',
+        type: 'PUT',
+        data: JSON.stringify(utleggsbetalere),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            suksess = result;
+            alert("suksess ny greie: "+suksess)
+            next();
+        },
+        error: function () {
+            alert("Noe gikk galt :(");
+        }
+    });
 }
 
 
