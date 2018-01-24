@@ -60,7 +60,7 @@ function setupPage() {
         if (checked){
             string = "checked";
         }
-        $("#handlelisteForside").append('<li class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right" '+string+'> </li>');
+        $("#handlelisteForside").append('<label class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right" '+string+'> </label>');
     }
 }
 

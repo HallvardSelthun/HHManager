@@ -10,8 +10,8 @@ function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = fellesgjoremal[i].beskrivelse;
 
-        $("#fellesGjoremaal").append('<li class="list-group-item ">' + fellesnavn +
-            '<input type="checkbox" class="all pull-right"></li>');
+        $("#fellesGjoremaal").append('<label class="list-group-item ">' + fellesnavn +
+            '<input type="checkbox" class="all pull-right"></label>');
     }
 }
 
@@ -33,8 +33,8 @@ function hentMinegjoremal() {
         console.log(minegjoremal);
 
 
-        $("#mineGjoremaal").append('<li class="list-group-item ">' + '<b>' + beskrivelse + '</b>' + ",  " + frist +
-            '<input id="checkboxid'+gjøremålId + '" type="checkbox" class="all pull-right"></li>');
+        $("#mineGjoremaal").append('<label class="list-group-item ">' + '<b>' + beskrivelse + '</b>' + ",  " + frist +
+            '<input id="checkboxid'+gjøremålId + '" type="checkbox" class="all pull-right"></label>');
     }
 }
 
