@@ -22,7 +22,7 @@ public class GjoremalController {
 
     public static ArrayList<Gjøremål> hentFellesGjøremål(int husholdningsId) {
         ArrayList<Gjøremål> gjøremål = new ArrayList<>();
-        String getQuery = "SELECT beskrivelse, frist FROM gjøremål WHERE husholdningId = " + husholdningsId + " AND utførerId IS NULL ORDER BY frist";
+        String getQuery = "SELECT beskrivelse, frist, gjøremålId FROM gjøremål WHERE husholdningId = " + husholdningsId + " AND utførerId IS NULL AND fullført = 0 ORDER BY frist ";
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement getStatement = connection.prepareStatement(getQuery);
@@ -30,6 +30,7 @@ public class GjoremalController {
 
             while (rs.next()) {
                 Gjøremål gjøremålet = new Gjøremål();
+                gjøremålet.setGjøremålId(rs.getInt("gjøremålId"));
                 gjøremålet.setBeskrivelse(rs.getString("beskrivelse"));
                 gjøremålet.setFrist(rs.getDate("frist"));
                 gjøremål.add(gjøremålet);
@@ -46,11 +47,12 @@ public class GjoremalController {
      * @param gjøremål
      * @return true dersom alt gikk bra, false dersom noe gikk galt.
      */
-    public static boolean ny(Gjøremål gjøremål) {
+    public static int ny(Gjøremål gjøremål) {
         String beskrivelse = gjøremål.getBeskrivelse();
         int utførerId = gjøremål.getHhBrukerId();
         int husholdningId = gjøremål.getHusholdningId();
         Date frist = gjøremål.getFrist();
+        int gjoremalId = -1;
         if (utførerId == 0) {
             String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, husholdningId, frist, fullført) values (?,?,?,0)"; /*"insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
             try (Connection connection = ConnectionPool.getConnection()) {
@@ -59,13 +61,15 @@ public class GjoremalController {
                 prepInsertGjoremal.setInt(2, husholdningId);
                 prepInsertGjoremal.setDate(3, frist);
                 prepInsertGjoremal.executeUpdate();
-                return true;
+                return gjoremalId;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return false;
+            return gjoremalId;
         } else {
             String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)"; /*"insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
+            String getId = "SELECT LAST_INSERT_ID()";
+
             try (Connection connection = ConnectionPool.getConnection()) {
                 PreparedStatement prepInsertGjoremal = connection.prepareStatement(insertGjoremal);
                 prepInsertGjoremal.setString(1, beskrivelse);
@@ -73,11 +77,15 @@ public class GjoremalController {
                 prepInsertGjoremal.setInt(3, husholdningId);
                 prepInsertGjoremal.setDate(4, frist);
                 prepInsertGjoremal.executeUpdate();
-                return true;
+                prepInsertGjoremal = connection.prepareStatement(getId);
+                ResultSet rs = prepInsertGjoremal.executeQuery();
+                rs.next();
+                gjoremalId = rs.getInt(1);
+                return gjoremalId;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return false;
+            return gjoremalId;
         }
     }
 

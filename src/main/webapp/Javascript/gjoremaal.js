@@ -1,6 +1,7 @@
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
+
 var bruker;
-var utførerId = minBruker.brukerId;
+// var utførerId = minBruker.brukerId;
 var minegjoremal = minBruker.gjøremål;
 var fellesgjoremal;
 var husholdningId = localStorage.getItem("husholdningId")
@@ -18,19 +19,17 @@ $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
     console.log(id);
     $("#droppknapp").text($(this).text());
-/*
-    $("#droppknapp").val($(this).val())
-*/
 });
 
 function hentMedlemmer() {
     var medlemmer = husholdning.medlemmer;
-    for(var j = 0, leng = medlemmer.length; j< leng; j++){
+    for (var j = 0, leng = medlemmer.length; j < leng; j++) {
         var medlemnavn = medlemmer[j].navn;
         var hhBrukerId = medlemmer[j].brukerId;
-        $("#medlemmer").append('<li class ="valgtMedlem" id="medlem'+ hhBrukerId+'"role="presentation" value="'+hhBrukerId+'"><a  role="menuitem" tabindex="-1" href="#">'+medlemnavn +'</a></li>');
+        $("#medlemmer").append('<li class ="valgtMedlem" id="medlem' + hhBrukerId + '"role="presentation" value="' + hhBrukerId + '"><a  role="menuitem" tabindex="-1" href="#">' + medlemnavn + '</a></li>');
     }
 }
+
 function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = fellesgjoremal[i].beskrivelse;
@@ -49,26 +48,23 @@ function hentFellesGjoremalData() {
         console.log(fellesgjoremal);
     });
 }
+
 function hentMinegjoremal() {
-    /*var etgjoremal ={
-     beskrivelse:"Vaske badet"
-     }*/
-    /*gjoremal.push(etgjoremal)*/
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
         var gjøremålId = minegjoremal[i].gjøremålId;
         var beskrivelse = minegjoremal[i].beskrivelse;
         var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
-
-        $("#mineGjoremaal").append('<li class="list-group-item ">' + '<b>' + beskrivelse + '</b>' +
+        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjøremålId + '">' + '<b>' + beskrivelse + '</b>' +
             ",  " + frist +
             '<input id="checkboxid' + gjøremålId + '" type="checkbox" class="all pull-right"></li>');
     }
 }
 
-
 $(document).ready(function () {
+    console.log("Array ved innlastning:");
+    console.log((minBruker.gjøremål));
     gethhData();
     hentFellesGjoremalData();
     hentMinegjoremal();
@@ -78,7 +74,6 @@ $(document).ready(function () {
     setTimeout(function () {
         hentMedlemmer();
     }, 300);
-
 
     $("body").on("click", "#refresh2", function () {
         for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
@@ -98,12 +93,10 @@ $(document).ready(function () {
                         var data = JSON.parse(result); // gjør string til json-objekt
                         console.log("Data: " + data);
                         if (data) {
-                            var index = minBruker.gjøremål.indexOf(gjoremal);
+                            var index = fellesgjoremal.indexOf(gjoremal);
                             console.log("Index: " + index);
-                            minBruker.gjøremål.splice(index, 1);
-                            //minBruker.gjøremål.push(gjoremal);
+                            fellesgjoremal.splice(index, 1);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
-                            //window.location = "gjoremaal.html";
                             console.log(minBruker.gjøremål);
                             alert("Det gikk bra!");
                         } else {
@@ -117,50 +110,56 @@ $(document).ready(function () {
                     }
                 });
             }
-
-
         }
     });
 
     $("body").on("click", "#refresh", function () {
+        var ffListe = [];
         for (var i = 0, len = minegjoremal.length; i < len; i++) {
             var gjoremal = minegjoremal[i];
             var gjøremålId = minegjoremal[i].gjøremålId;
-            console.log(gjøremålId);
             var fullfort = document.getElementById("checkboxid" + gjøremålId).checked;
             console.log(fullfort);
             if (fullfort) {
-                $.ajax({
-                    url: "server/gjoremalservice/fullfort",
-                    type: 'PUT',
-                    data: JSON.stringify(gjoremal),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    success: function (result) {
-                        var data = JSON.parse(result); // gjør string til json-objekt
-                        console.log("Data: " + data);
-                        if (data) {
-                            var index = minBruker.gjøremål.indexOf(gjoremal);
-                            console.log("Index: " + index);
-                            minBruker.gjøremål.splice(index, 1);
-                            //minBruker.gjøremål.push(gjoremal);
-                            localStorage.setItem("bruker", JSON.stringify(minBruker));
-                            console.log(minBruker.gjøremål);
-                            alert("Det gikk bra!");
-                        } else {
-                            alert("feil!");
-                        }
-                        window.location = "gjoremaal.html";
-                    },
-                    error: function () {
-                        alert("serverfeil :/");
-                        console.log(gjoremal)
-                    }
-                });
+                ffListe.push(i);
             }
-
-
+            console.log(ffListe);
         }
+        for (var j = ffListe.length - 1; j >= 0; j--) {
+            console.log(j);
+            gjoremal = minegjoremal[ffListe[j]];
+            $.ajax({
+                url: "server/gjoremalservice/fullfort",
+                type: 'PUT',
+                data: JSON.stringify(gjoremal),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    var data = JSON.parse(result); // gjør string til json-objekt
+                    if (data) {
+                        console.log("Gjøremål som slettes:");
+                        console.log(gjoremal)
+                        alert("Det gikk bra!");
+
+                    } else {
+                        alert("feil!");
+                    }
+                    //window.location = "gjoremaal.html";
+                },
+                error: function () {
+                    alert("serverfeil :/");
+                    console.log(gjoremal)
+                }
+            });
+        }
+        setTimeout(function () {
+            for (var h = ffListe.length - 1; h >= 0; h--) {
+                minegjoremal.splice(ffListe[h], 1);
+            }
+            minBruker.gjøremål = minegjoremal;
+            localStorage.setItem("bruker", JSON.stringify(minBruker));
+
+        }, 200)
     });
 
 
@@ -170,7 +169,7 @@ $(document).ready(function () {
         var frist = $("#dato").val();
         var husholdningId = localStorage.getItem("husholdningId");
 
-        if(id == "null"){
+        if (id == "null") {
             id = 0;
         }
         var gjoremal = {
@@ -179,9 +178,6 @@ $(document).ready(function () {
             frist: frist,
             husholdningId: husholdningId
         };
-
-        console.log("halo ja")
-
         if (beskrivelse == "") {
             alert("Skriv inn noe");
             return;
@@ -223,7 +219,7 @@ $(document).ready(function () {
             hhBrukerId: minBruker.brukerId,
             beskrivelse: beskrivelse,
             frist: frist,
-            husholdningId: husholdningId
+            husholdningId: parseInt(husholdningId)
         };
 
         if (beskrivelse == "") {
@@ -238,8 +234,18 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                if (data) {
-                    minBruker.gjøremål.push(gjoremal);
+                console.log(data);
+                if (data > 0) {
+                    var gjoremal2 = {
+                        gjøremålId: data,
+                        husholdningId: parseInt(husholdningId),
+                        hhBrukerId: minBruker.brukerId,
+                        fullført: false,
+                        beskrivelse: beskrivelse,
+                        frist: frist,
+                    };
+                    console.log("Gjoremal2" + gjoremal2);
+                    minBruker.gjøremål.push(gjoremal2);
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";
                     alert("Det gikk bra!");
@@ -255,7 +261,4 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
-
-
-
 });

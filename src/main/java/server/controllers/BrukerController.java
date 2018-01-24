@@ -128,6 +128,7 @@ public class BrukerController {
                     while(rs2.next()){
                         Gjøremål gjøremål = new Gjøremål();
                         gjøremål.setFrist(rs2.getDate("frist"));
+                        gjøremål.setHusholdningId(rs2.getInt("husholdningId"));
                         gjøremål.setBeskrivelse(rs2.getString("beskrivelse"));
                         gjøremål.setGjøremålId(rs2.getInt("gjøremålId"));
                         gjøremål.setHhBrukerId(bruker.getBrukerId());
