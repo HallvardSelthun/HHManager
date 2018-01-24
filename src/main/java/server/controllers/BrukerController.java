@@ -38,10 +38,9 @@ public class BrukerController {
      * @param brukerid til brukeren vi finner favoritthusholdningen til
      * @return id til favoritthusholdning
      */
-    public static int getFavoritthusholdning(int brukerid) {
-        return GenereltController.getInt("favorittHusholdning", TABELLNAVN, "brukerId", Integer.toString(brukerid));
+    public static String getFavoritthusholdning(int brukerid) {
+        return GenereltController.getString("favorittHusholdning", TABELLNAVN, brukerid);
     }
-
     public static int getBrukerId(String epost) {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
     }
@@ -131,10 +130,12 @@ public class BrukerController {
                 while(rs2.next()){
                     Gjøremål gjøremal = new Gjøremål();
                     gjøremal.setFrist(rs2.getDate("frist"));
+                    gjøremal.setHusholdningId(rs2.getInt("husholdningId"));
                     gjøremal.setBeskrivelse(rs2.getString("beskrivelse"));
                     gjøremal.setGjøremålId(rs2.getInt("gjøremålId"));
                     gjøremal.setHhBrukerId(bruker.getBrukerId());
                     bruker.addGjøremål(gjøremal);
+
                 }
                 psGjoremal.close();
                 rs.close();
@@ -154,8 +155,8 @@ public class BrukerController {
      * @param brukerId til brukeren det gjelder.
      * @param husholdningId til husholdningen som skal bli favoritt
      */
-    public static void setNyFavoritthusholdning(int brukerId, String husholdningId) {
-         GenereltController.update(TABELLNAVN, "husholdningId", husholdningId, brukerId);
+    public static boolean setNyFavoritthusholdning(int brukerId, String husholdningId) {
+         return GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
     }
 
     public static void setNyEpost(String epost, int brukerId) {

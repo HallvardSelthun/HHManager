@@ -1,3 +1,7 @@
+/**
+ * Gjelder dersom passord er glemt. Ved klikk på knappen send nytt passord, sendes et kall til
+ * brukerservice som inneholder metoder for å få nytt passord tilsendt på mail.
+ */
 $(document).ready(
     $("#sendNyttPassordKnapp").on("click", function () {
         $.ajax({

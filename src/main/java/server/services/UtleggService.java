@@ -44,6 +44,14 @@ public class UtleggService {
         return UtleggController.setMotatt(brukerId, utleggId);
     }
 
+    @PUT
+    @Path("/utleggsbetaler")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setMotattOppgjor(ArrayList<Utleggsbetaler> utleggsbetalere) {
+        return UtleggController.setMotattOppgjor(utleggsbetalere);
+    }
+
+
 
     /*
      * Henter alle brukere som er involvert i et unikt utlegg.

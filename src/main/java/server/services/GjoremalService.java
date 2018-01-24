@@ -1,6 +1,7 @@
 package server.services;
 
 import server.controllers.GjoremalController;
+import server.restklasser.Bruker;
 import server.restklasser.Gjøremål;
 
 import javax.ws.rs.*;
@@ -23,15 +24,22 @@ public class GjoremalService {
     @POST
     @Path("/nyttgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean lagreMittGjoremal(Gjøremål gjoremal) {
+    public int lagreMittGjoremal(Gjøremål gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
 
     @POST
     @Path("/nyttfellesgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean lagreFellesGjoremal(Gjøremål gjoremal) {
+    public int lagreFellesGjoremal(Gjøremål gjoremal) {
         return GjoremalController.ny(gjoremal);
+    }
+
+    @PUT
+    @Path("/fullfortfelles")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean fullfortFelles(Gjøremål gjoremal){
+        return GjoremalController.fullfortFelles(gjoremal);
     }
 
     @PUT
@@ -39,5 +47,12 @@ public class GjoremalService {
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean fullfort(Gjøremål gjoremal){
         return GjoremalController.fullfort(gjoremal);
+    }
+
+    @GET
+    @Path("{brukerId}/varsler")
+    @Produces(MediaType.APPLICATION_JSON)
+    public int hentVarsler(@PathParam("brukerId") int brukerId){
+        return GjoremalController.hentVarselGjøremål(brukerId);
     }
 }

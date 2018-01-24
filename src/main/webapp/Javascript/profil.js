@@ -21,6 +21,7 @@ function getHusholdninger() {
 
 $(document).ready(function () {
     //gethhData();
+
     getHusholdninger();
     setTimeout(function () {
         hentliste();
@@ -30,12 +31,14 @@ $(document).ready(function () {
         $("#bekreftmodal").modal('hide');
     });
 
+
     $("#modal-btn-si").on('click', function () {
         var slettbruker={
             brukerId: brukerId,
             favHusholdning: hhId
         };
-        console.log("trykket på ja!");
+
+        console.log(slettbruker);
         $.ajax({
             url: "server/BrukerService/fjernBrukerFraHusholdning",
             type: 'DELETE',
@@ -45,9 +48,8 @@ $(document).ready(function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 console.log(data);
-                alert("Det gikk bra!");
                 if(data) {
-
+                    window.location = "profil.html";
                 } else {
                     alert("feil");
                 }
@@ -185,9 +187,9 @@ $(document).ready(function () {
         $("#modaldiv").load("lagnyhusstand.html");
     });
 
-    $(document).on('click', '.btn', function () {
-        hhId = ($(this).parent().parent().attr('id'))
-    })
+    $(document).on('click', '.removeButton', function () {
+        hhId = ($(this).attr('value'))
+    });
 /*
 
     var script = document.createElement('script');
@@ -214,20 +216,29 @@ $(document).ready(function () {
 });
 
 function hentliste() {
-    console.log(mineHusholdninger);
-    for (var k = 0, lengt =mineHusholdninger.length; k < lengt; k++) {
+    console.log(husholdninger);
+    for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
+        var string ="glyphicon-star-empty";
+        if (mineHusholdninger[k].husholdningId == minBruker.favHusholdning){
+            string = "glyphicon-star";
+        }
         console.log(husholdnavn);
 
 
         // Ny design, med knapper
-        $("#husstander").append('<div  class="panel panel-default container-fluid"><div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander"' +
-            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 class= "panel-title pull-left col-md-9"><a></a>' + husholdnavn + '</h4>' +
-            '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>'+
-            '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button">Forlat</button></div>' +
-            '<div id="' + husholdningId + '"' +
-            ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid"><ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
+        $("#husstander").append('<div  class="panel panel-default container-fluid"><div class="panel-heading clearfix row" ' +
+            'data-toggle="collapse" data-parent="#husstander"' +
+            ' data-target="#' + husholdningId + '" onclick="displayDiv()">' +
+            '<h4 class= "col-md-9 panel-title" style="display: inline; padding: 0px">' + husholdnavn + '</h4>' +
+                '<div class="stjerneogforlat pull-right">' +
+            '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em;' +
+            ' color: orange" role="button" class="glyphicon '+string+'"></span>' + " " +
+            '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" ' +
+            'type="button" value="'+husholdningId+'">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
+            ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
+            '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
             '<div id="list1" class="list-group"></div></div></div>');
 
 
@@ -248,7 +259,6 @@ function settNyFav(id) {
         brukerId: brukerId,
         favHusholdning: nyId
     };
-    console.log(bruker)
     $.ajax({
         url: "server/BrukerService/favHusholdning",
         type: 'PUT',

@@ -2,10 +2,12 @@ $(document).ready(function () {
     $("#lagUtlegg").on('click', function () {
         lagNyttUtlegg();
     });
-
-    setTimeout(function () {
-        lastinn()
-    },250);
+    $(document).on('click', '.medlemCheck', function(){
+        oppdaterBetalere();
+    });
+    $(document).on('click', '#vereMedPaaUtlegg', function () {
+        oppdaterBetalere();
+    });
 
     //Kjør JavaScript
     init();
@@ -15,10 +17,30 @@ $(document).ready(function () {
 //Globale variabler
 var testBrukerId = 1;
 var alleOppgjor = [];
+var delSum = 0;
 
 function init() {
     lastInnOppgjor(testBrukerId);
+    setTimeout(function () {
+        lastinn();
+    },500);
+
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
+}
+function oppdaterBetalere() {
+    $("#betalere").text("");
+    $('.medlemCheck').each(function () {
+        var sum = $("#sum").val();
+        var pluss = 0;
+        if ($("#vereMedPaaUtlegg").is(":checked")){
+            pluss = 1;
+        }
+        delSum = sum/($('#personer input:checked').length+pluss);
+        if ($(this).is(":checked")){
+            console.log($(this).attr('value'));
+            $("#betalere").append('<br> '+$(this).attr('value') +' Sum: '+ delSum);
+        }
+    })
 }
 
 function utregnOppgjorSum() {
@@ -63,27 +85,58 @@ $(document).on("click", ".checkboxes", function(event){
             klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
         });
     }
-    else {
+});
 
+//Når denne klikkes skal alle inni merkes som betalt i databasen
+$(document).on("click", ".hovedCheckbox", function(event){
+    console.log("BUTTON FIRES TWICE!");
+    console.log(alleOppgjor);
+    var klikketKnapp = $(this);
+    var knappNavn = $(this).attr('id');
+    var oppgjorNr = knappNavn.match(/\d+/g);
+    console.log("oppgjorNr: "+oppgjorNr);
+
+    if ($(this).is(':checked')) {
+        lagUtleggsbetalerListe(oppgjorNr, function () {
+            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+        });
+        //Oppgjoret gjemmes når metoden over er over
     }
 });
 
-function checkMotattRad(utleggId, skyldigBrukerId, next) {
-    var test;
+function lagUtleggsbetalerListe(oppgjorNr, callback) {
+    var utleggsbetalere = [];
+    var i;
+    var gammeltObjekt;
+    var utleggsbetalerObjekt;
 
-    $.ajax({
-        url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
-        type: 'PUT',
-        success: function (result) {
-            var suksess = result;
-            next();
-        },
-        error: function () {
-            alert("Noe gikk galt :(")
-            return false;
-        }
-    });
+    for (i = 0; i < alleOppgjor[oppgjorNr].utleggJegSkylder.length; i++) {
+        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+
+        utleggsbetalerObjekt = {
+            utleggId: gammeltObjekt.utleggId,
+            betalt: true,
+            skyldigBrukerId: gammeltObjekt.skyldigBrukerId
+        };
+
+        utleggsbetalere.push(utleggsbetalerObjekt);
+    }
+    for (i = 0; i < alleOppgjor[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
+        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+
+        utleggsbetalerObjekt = {
+            utleggId: gammeltObjekt.utleggId,
+            betalt: true,
+            skyldigBrukerId: gammeltObjekt.skyldigBrukerId
+        };
+
+        utleggsbetalere.push(utleggsbetalerObjekt);
+    }
+    console.log(utleggsbetalere);
+    return checkOppgjorSum(utleggsbetalere, callback);
 }
+
+
 
 function displayOppgjor() {
 
@@ -118,7 +171,25 @@ function leggInnRadNr(callback) {
     callback();
 }
 
-//SQL-kall
+//////////////////////////////////////////////////////
+                // AJAX below //
+//////////////////////////////////////////////////////
+//Når en rad krysses av i klienten skal den markeres som betalt i databasen
+function checkMotattRad(utleggId, skyldigBrukerId, next) {
+    $.ajax({
+        url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
+        type: 'PUT',
+        success: function (result) {
+            var suksess = result;
+            next();
+        },
+        error: function () {
+            alert("Noe gikk galt :(");
+            return false;
+        }
+    });
+}
+
 function lastInnOppgjor(brukerId) {
     $.ajax({
         url: "server/utlegg/oppgjor/"+ brukerId,
@@ -140,6 +211,24 @@ function lastInnOppgjor(brukerId) {
     })
 }
 
+function checkOppgjorSum(utleggsbetalere, next) {
+    $.ajax({
+        url: 'server/utlegg/utleggsbetaler',
+        type: 'PUT',
+        data: JSON.stringify(utleggsbetalere),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            suksess = result;
+            alert("suksess ny greie: "+suksess)
+            next();
+        },
+        error: function () {
+            alert("Noe gikk galt :(");
+        }
+    });
+}
+
 
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
@@ -150,10 +239,11 @@ function lagNyttUtlegg() {
     }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
+    //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
-            delSum: sum/$('#personer input:checked').length
+            delSum: delSum
         };
         utleggsbetalere.push(utleggsbetaler)
     });
@@ -190,12 +280,17 @@ function lastinn() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
     console.log(husholdninger);
+    //$.template( "medlemmerListe", $("#listeMedlemPls"));
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
-                console.log(husholdninger[j].medlemmer[k].navn);
-                $.template( "medlemmer", $("#listeMedlem"));
-                $.tmpl("medlemmer", husholdninger[j].medlemmer[k]).appendTo($("#personer"));
+                var navn = husholdninger[j].medlemmer[k].navn;
+                var id = husholdninger[j].medlemmer[k].brukerId;
+                if (id != bruker.brukerId){
+                    $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox">'+
+                        '<input id="'+id+'" type="checkbox" role="button" value="'+navn+'" class="medlemCheck">'+
+                        navn +'</label></div></li>');
+                }
             }
         }
     }
