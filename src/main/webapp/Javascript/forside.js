@@ -10,6 +10,10 @@ var brukerId;
 var husholdningId;
 var medlemmer;
 
+/**
+ * Metoden under lar deg skrive innlegg i den husholdningen du er medlem av og publiserer slik at
+ * andre medlemmer av husholdningen ser det.
+ */
 $(document).ready(function () {
     husholdningId = bruker.favHusholdning;
 
@@ -23,6 +27,10 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * Funksjonen tar variablene husNavn og nyhetsinnlegg og setter de lik navnet på husstand
+ * samt nyhetsinnlegget og henter medlemmet som skrev det.
+ */
 function setupPage() {
     console.log(husholdning);
     var husNavn = husholdning.navn;
@@ -31,27 +39,48 @@ function setupPage() {
     var handlelister = husholdning.handlelister;
     localStorage.setItem("husholdningId", husholdningId);
 
+    /**
+     * Løkka kaller på funksjonen innleggToHtml og tar inn parameter nyhetsinnlegg
+     */
     for (var i = 0, len = nyhetsinnlegg.length; i < len; i++) {
         innleggToHtml(nyhetsinnlegg[i])
     }
-
+    /**
+     * Setter variablene lik en bruker og henter id, navn og gjøremål fra database.
+     */
     brukerId = bruker.brukerId;
     brukernavn = bruker.navn;
     gjoremal = bruker.gjøremål;
     console.log(bruker);
 
+    /**
+     * Setter nyheten i tekstfeltet
+     */
     $("#nyhet").html(husNavn);
 
+    /**
+     * Løkka legger medlemmenes navn i en liste -medlemnavn- som deretter kan ses fra
+     * medlemliste i programmet.
+     */
     for(var j = 0, leng = medlemmer.length; j< leng; j++){
         var medlemnavn = medlemmer[j].navn;
         $("#medlemsliste").append('<li class="list-group-item">'+medlemnavn+'</li>');
     }
+    /**
+     * Løkka legger beskrivelse av gjøremål i en variabel -beskrivelse- og viser dette
+     * på skjerm i form av en liste.
+     */
 
     for(var g = 0, length = gjoremal.length; g<length; g++){
         var beskrivelse = gjoremal[g].beskrivelse;
         $("#gjøremålForside").append('<li class="list-group-item">'+beskrivelse+'<input title="toggle all" type="checkbox" class="all pull-right"></li>')
     }
 
+    /**
+     * Løkka går gjennom handleliste og går igjennom antall varer. Definerer variabler som legger
+     * varer i en liste, som henter ut varenavnet og om varen er kjøpt eller ikke. Dette sjekkes
+     * ved en checkbox.
+     */
     for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){
         var vare = handlelister[0].varer[k];
         var varenavn = vare.varenavn;
@@ -64,16 +93,27 @@ function setupPage() {
     }
 }
 
+/**
+ * Funksjonen henter data fra hhservice og metoden husholdningsData.
+ */
 function gethhData() {
     $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
         husholdning = data;
     });
 }
+
+/**
+ * Funksjonen henter brukerdata fra serviceklassen Brukerservice
+ */
 function getBrukerData() {
     $.getJSON("server/BrukerService/" + epost + "/brukerData", function (data) {
         //bruker = data;
     });
 }
+
+/**
+ * Funksjonen
+ */
 function postInnlegg() {
     var tekst = $("#comment").val();
     if(tekst==""){
