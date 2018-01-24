@@ -24,10 +24,10 @@ INSERT INTO hhmedlem (hhBrukerId, husholdningsId, admin) VALUES (6,2,1);
 INSERT INTO nyhetsinnlegg(husholdningsId,tekst,dato) VALUES (1, 'nyhestekst', '2012-03-04');
 INSERT INTO nyhetsinnlegg(husholdningsId,tekst,dato) VALUES (1, 'nyhestekst2', '2012-03-04');
 
--- gjøremål:
-INSERT INTO gjøremål ( husholdningsId, utførerId, fullført, beskrivelse, frist) VALUES (1, 1,0, 'vaske huset','2017-02-23');
-INSERT INTO gjøremål ( husholdningsId,  fullført, beskrivelse, frist) VALUES (1, 0, 'rydde rommet','2017-02-23');
-INSERT INTO gjøremål ( husholdningsId, utførerId, fullført, beskrivelse, frist) VALUES (1, 2,0, 'vaske huset','2017-02-23');
+-- gjoremal:
+INSERT INTO gjoremal ( husholdningsId, utførerId, fullført, beskrivelse, frist) VALUES (1, 1,0, 'vaske huset','2017-02-23');
+INSERT INTO gjoremal ( husholdningsId,  fullført, beskrivelse, frist) VALUES (1, 0, 'rydde rommet','2017-02-23');
+INSERT INTO gjoremal ( husholdningsId, utførerId, fullført, beskrivelse, frist) VALUES (1, 2,0, 'vaske huset','2017-02-23');
 
 
 

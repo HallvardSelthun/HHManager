@@ -20,6 +20,12 @@ public class BrukerController {
     private static Statement s;
     private final static String TABELLNAVN = "bruker";
 
+    /**
+     * Henter navn på bruker gitt brukerens id.
+     * @param brukerid int id som identifiserer en bruker.
+     * @return String navnet til brukeren.
+     */
+
     public static String getNavn(int brukerid) {
         return GenereltController.getString("navn", TABELLNAVN, brukerid);
     }
@@ -128,14 +134,13 @@ public class BrukerController {
                 PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
                 ResultSet rs2 = psGjoremal.executeQuery();
                 while(rs2.next()){
-                    Gjøremål gjøremal = new Gjøremål();
-                    gjøremal.setFrist(rs2.getDate("frist"));
-                    gjøremal.setHusholdningId(rs2.getInt("husholdningId"));
-                    gjøremal.setBeskrivelse(rs2.getString("beskrivelse"));
-                    gjøremal.setGjøremålId(rs2.getInt("gjøremålId"));
-                    gjøremal.setHhBrukerId(bruker.getBrukerId());
-                    bruker.addGjøremål(gjøremal);
-
+                    Gjoremal gjoremal = new Gjoremal();
+                    gjoremal.setFrist(rs2.getDate("frist"));
+                    gjoremal.setHusholdningId(rs2.getInt("husholdningId"));
+                    gjoremal.setBeskrivelse(rs2.getString("beskrivelse"));
+                    gjoremal.setGjoremalId(rs2.getInt("gjøremålId"));
+                    gjoremal.setHhBrukerId(bruker.getBrukerId());
+                    bruker.addGjoremal(gjoremal);
                 }
                 psGjoremal.close();
                 rs.close();

@@ -33,8 +33,8 @@ public class StatistikkController {
         return null;
     }
 
-    public static ArrayList<List<String>> getGjøremålstatistikk(int husholdningId){
-        ArrayList<List<String>> gjøremålstatistikk = new ArrayList<List<String>>();
+    public static ArrayList<List<String>> getGjoremalstatistikk(int husholdningId){
+        ArrayList<List<String>> gjoremalstatistikk = new ArrayList<List<String>>();
         String query = "SELECT COUNT(gjøremålId) antal, navn FROM gjøremål LEFT JOIN bruker ON utførerId = brukerId WHERE husholdningId = "+husholdningId+" AND fullført = 1 GROUP BY utførerId";
 
         try(Connection con = ConnectionPool.getConnection()){
@@ -44,9 +44,9 @@ public class StatistikkController {
                 ArrayList<String> list = new ArrayList<>();
                 list.add(Integer.toString(rs.getInt("antal")));
                 list.add(rs.getString("navn"));
-                gjøremålstatistikk.add(list);
+                gjoremalstatistikk.add(list);
             }
-            return gjøremålstatistikk;
+            return gjoremalstatistikk;
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class StatistikkController {
         return utleggstatistikk;
     }
 
-    public static ArrayList<List<String>> getVarekjøpstatistikk(int husholdningId){
+    public static ArrayList<List<String>> getVarekjopstatistikk(int husholdningId){
         ArrayList<List<String>> varestatistikk = new ArrayList<>();
         String query = "SELECT COUNT(vareId) antallVarer, bruker.navn FROM vare LEFT JOIN handleliste ON vare.handlelisteId = handleliste.handlelisteId LEFT JOIN bruker ON kjøperId = brukerId WHERE husholdningId = "+husholdningId+" AND kjøpt=1 AND vare.datoKjøpt>DATE_ADD(NOW(), INTERVAL -1 MONTH)  GROUP BY kjøperId;";
         try(Connection con = ConnectionPool.getConnection()){

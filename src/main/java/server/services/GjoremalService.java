@@ -1,8 +1,7 @@
 package server.services;
 
 import server.controllers.GjoremalController;
-import server.restklasser.Bruker;
-import server.restklasser.Gjøremål;
+import server.restklasser.Gjoremal;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,35 +16,35 @@ public class GjoremalService {
     @GET
     @Path("/{husholdningId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Gjøremål> hentFellesGjøremål(@PathParam("husholdningId") int husholdningId) {
-        return GjoremalController.hentFellesGjøremål(husholdningId);
+    public ArrayList<Gjoremal> hentFellesGjoremal(@PathParam("husholdningId") int husholdningId) {
+        return GjoremalController.hentFellesGjoremal(husholdningId);
     }
 
     @POST
     @Path("/nyttgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public int lagreMittGjoremal(Gjøremål gjoremal) {
+    public int lagreMittGjoremal(Gjoremal gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
 
     @POST
     @Path("/nyttfellesgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public int lagreFellesGjoremal(Gjøremål gjoremal) {
+    public int lagreFellesGjoremal(Gjoremal gjoremal) {
         return GjoremalController.ny(gjoremal);
     }
 
     @PUT
     @Path("/fullfortfelles")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean fullfortFelles(Gjøremål gjoremal){
+    public boolean fullfortFelles(Gjoremal gjoremal){
         return GjoremalController.fullfortFelles(gjoremal);
     }
 
     @PUT
     @Path("/fullfort")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean fullfort(Gjøremål gjoremal){
+    public boolean fullfort(Gjoremal gjoremal){
         return GjoremalController.fullfort(gjoremal);
     }
 
