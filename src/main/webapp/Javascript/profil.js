@@ -443,7 +443,7 @@ function hentliste() {
         $("#husstander").append('<div  class="panel panel-default container-fluid"><div class="panel-heading clearfix row" ' +
             'data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()">' +
-            '<h4 class= "panel-title col-md-9">' + husholdnavn + '</h4>' +
+            '<h4 class= "col-md-9 panel-title" style="display: inline; padding: 0px">' + husholdnavn + '</h4>' +
                 '<div class="stjerneogforlat pull-right">' +
             '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em;' +
             ' color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>' + " " +
@@ -452,7 +452,6 @@ function hentliste() {
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
             '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
             '<div id="list1" class="list-group"></div></div></div>');
-
 
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
