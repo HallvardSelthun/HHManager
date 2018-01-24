@@ -2,6 +2,12 @@
  * Created by BrageHalse on 11.01.2018.
  */
 $(document).ready(function () {
+    /**
+     *
+     * @param string
+     * @returns {string}
+     * @constructor
+     */
     var MD5 = function (string) {
 
         function RotateLeft(lValue, iShiftBits) {

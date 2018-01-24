@@ -115,7 +115,10 @@ function getBrukerData() {
 }
 
 /**
- * Funksjonen
+ * Funksjonen brukes til å poste et innlegg og lar bruker skrive et innlegg til gruppa. Det skal
+ * ikke være lov til å publisere et tomt innlegg. Et nyhetsinnlegg har en forfatterid, en tekst,
+ * husholdningsid, og en dato. Dette hentes med et ajax-kall til hhservice under metoden nyhets-
+ * post.
  */
 function postInnlegg() {
     var tekst = $("#comment").val();
@@ -143,6 +146,12 @@ function postInnlegg() {
         }
     })
 }
+
+/**
+ * Funksjonen henter innlegget med forfatterId, tekst og diverse datoer/tidspunkter for så å
+ * la bruker se det på nettsiden.
+ * @param nyhetsinnlegg tar inn teksten skrevet i inputfeltet på forsiden.
+ */
 function innleggToHtml(nyhetsinnlegg) {
     var fofatterId = nyhetsinnlegg.forfatterId;
     var forfatter = "pls";
@@ -158,6 +167,9 @@ function innleggToHtml(nyhetsinnlegg) {
         ' class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
 }
 
+/**
+ * Funksjonen kalles når bruker trykker på knappen om å publisere innlegg.
+ */
 function skrivNyttInnlegg() {
     var x = document.getElementById("skrivNyttInnlegg").style.display;
     if(x === "none") {

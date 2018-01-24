@@ -1,3 +1,6 @@
+/**
+ * Definerer variabler
+ */
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
 var utførerId = minBruker.brukerId;
@@ -5,6 +8,10 @@ var minegjoremal = minBruker.gjøremål;
 var fellesgjoremal;
 var husholdningId = localStorage.getItem("husholdningId")
 
+/**
+ * Funksjonen kalles når et nytt gjøremål skal opprettes og det skrives et nytt gjøremål inn
+ * i tekstboksen fellesGjoremaal.
+ */
 
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
@@ -35,12 +42,21 @@ function hentFellesGjoremal() {
     }
 }
 
+/**
+ *  Henter felles gjøremål fra gjoremalservice
+ */
+
 function hentFellesGjoremalData() {
     $.getJSON("server/gjoremalservice/" + husholdningId, function (data) {
         fellesgjoremal = data;
         console.log(fellesgjoremal);
     });
 }
+
+/**
+ * Lar deg hente dine egne gjøremål som opprettes med en id, beskrivelse og en frist.
+ * Deretter legges den til på gjøremålsiden med en checkbox.
+ */
 function hentMinegjoremal() {
     /*var etgjoremal ={
      beskrivelse:"Vaske badet"
@@ -59,7 +75,11 @@ function hentMinegjoremal() {
     }
 }
 
-
+/**
+ * Funksjonene kalles i starten av document.ready(). En timeout lar det gå millisekunder før
+ * fellesgjøremål kan hentes. Dette fordi minegjøremål hentes fra localstorage og felles hentes fra
+ * database.
+ */
 $(document).ready(function () {
     hentFellesGjoremalData();
     hentMinegjoremal();
@@ -113,6 +133,11 @@ $(document).ready(function () {
         }
     });
 
+    /**
+     * Et klikk på refreshknappen på siden lar deg oppdatere gjøremålene slik at de som er huket
+     * av forsvinner
+     */
+
     $("body").on("click", "#refresh", function () {
         for (var i = 0, len = minegjoremal.length; i < len; i++) {
             var gjoremal = minegjoremal[i];
@@ -149,12 +174,13 @@ $(document).ready(function () {
                     }
                 });
             }
-
-
         }
     });
 
-
+    /**
+     * Lar deg lagre gjøremålet i databasen når det klikkes på knappen. Lagres med en beskrivelse,
+     * en utførerId, frist og en husholdningsid for hvilken husholdning det skal vises i.
+     */
     $("body").on("click", "#lagreGjoremal", function () {
         var beskrivelse = $("#gjoremalInput").val();
         var utførerId = id;
@@ -177,6 +203,10 @@ $(document).ready(function () {
             alert("Skriv inn noe");
             return;
         }
+        /**
+         * Dersom beskrivelsen av gjøremålet ikke er tomt skal det være et ajax-kall til gjøremål-
+         * service under metoden nyttfellesgoremal.
+         */
         $.ajax({
             url: "server/gjoremalservice/nyttfellesgjoremal",
             type: 'POST',
@@ -204,7 +234,9 @@ $(document).ready(function () {
         });
     });
 
-
+    /**
+     * Lagrer egne gjøremål på samme måte som felles gjøremål.
+     */
     $("body").on("click", "#lagreMineGjoremal", function () {
         var beskrivelse = $("#mineGjoremalInput").val();
         var frist = $("#minDato").val();

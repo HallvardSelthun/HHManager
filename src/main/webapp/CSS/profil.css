@@ -9,9 +9,9 @@
     margin-top: 20px;
 }
 
-.panel-title {
+/*.panel-title {
     text-align: left;
-}
+}*/
 
 /*#navnknapp {
     margin-top: 10px;
@@ -40,13 +40,16 @@
     margin-left: 100px;
 }*/
 
+.husinfo{
+    width: 300px;
+}
+
 .info{
     width: 400px;
     margin-left: 100px;
 }
 
-.glyphicon-star-empty{
+.glyphicon-star-empty {
     font-size: 95%;
     color: #32CD32;
 }
-
