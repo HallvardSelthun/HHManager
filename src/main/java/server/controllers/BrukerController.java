@@ -206,7 +206,7 @@ public class BrukerController {
      * @return true hvis operasjonen ble godkjent
      */
     public static void setNyFavoritthusholdning(int brukerId, String husholdningId) {
-         GenereltController.update(TABELLNAVN, "husholdningId", husholdningId, brukerId);
+         GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
     }
 
     /*public static Bruker getBrukerData(String epost) {
