@@ -118,7 +118,7 @@ $(document).ready(function () {
         });
     });
     setTimeout(function () {
-        $("a#profilNavn").text(navn);
+        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>'+navn);
     }, 150);
 });
 
