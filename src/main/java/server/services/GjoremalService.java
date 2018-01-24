@@ -1,6 +1,7 @@
 package server.services;
 
 import server.controllers.GjoremalController;
+import server.restklasser.Bruker;
 import server.restklasser.Gjøremål;
 
 import javax.ws.rs.*;
@@ -35,9 +36,23 @@ public class GjoremalService {
     }
 
     @PUT
+    @Path("/fullfortfelles")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean fullfortFelles(Gjøremål gjoremal){
+        return GjoremalController.fullfortFelles(gjoremal);
+    }
+
+    @PUT
     @Path("/fullfort")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean fullfort(Gjøremål gjoremal){
         return GjoremalController.fullfort(gjoremal);
+    }
+
+    @GET
+    @Path("{brukerId}/varsler")
+    @Produces(MediaType.APPLICATION_JSON)
+    public int hentVarsler(@PathParam("brukerId") int brukerId){
+        return GjoremalController.hentVarselGjøremål(brukerId);
     }
 }

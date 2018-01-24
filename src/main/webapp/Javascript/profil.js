@@ -21,6 +21,7 @@ function getHusholdninger() {
 
 $(document).ready(function () {
     //gethhData();
+
     getHusholdninger();
     setTimeout(function () {
         hentliste();
@@ -432,10 +433,14 @@ $(document).ready(function () {
 });
 
 function hentliste() {
-    console.log(mineHusholdninger);
-    for (var k = 0, lengt =mineHusholdninger.length; k < lengt; k++) {
+    console.log(husholdninger);
+    for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
+        var string ="glyphicon-star-empty";
+        if (mineHusholdninger[k].husholdningId == minBruker.favHusholdning){
+            string = "glyphicon-star";
+        }
         console.log(husholdnavn);
 
 
@@ -443,10 +448,10 @@ function hentliste() {
         $("#husstander").append('<div  class="panel panel-default container-fluid"><div class="panel-heading clearfix row" ' +
             'data-toggle="collapse" data-parent="#husstander"' +
             ' data-target="#' + husholdningId + '" onclick="displayDiv()">' +
-            '<h4 class= "panel-title col-md-9">' + husholdnavn + '</h4>' +
+            '<h4 class= "col-md-9 panel-title" style="display: inline; padding: 0px">' + husholdnavn + '</h4>' +
                 '<div class="stjerneogforlat pull-right">' +
             '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em;' +
-            ' color: orange" role="button" class="glyphicon glyphicon-star-empty"></span>' + " " +
+            ' color: orange" role="button" class="glyphicon '+string+'"></span>' + " " +
             '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" ' +
             'type="button">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
@@ -471,7 +476,6 @@ function settNyFav(id) {
         brukerId: brukerId,
         favHusholdning: nyId
     };
-    console.log(bruker)
     $.ajax({
         url: "server/BrukerService/favHusholdning",
         type: 'PUT',
