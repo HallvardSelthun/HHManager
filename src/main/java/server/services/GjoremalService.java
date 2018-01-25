@@ -12,7 +12,10 @@ import java.util.ArrayList;
  */
 @Path("/gjoremalservice")
 public class GjoremalService {
-
+    /**
+     * Tar imot IDen til handlelisten fra klienten (i URLen).
+     * @return String Det nye navnet, hentet fra databasen
+     */
     @GET
     @Path("/{husholdningId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -20,6 +23,11 @@ public class GjoremalService {
         return GjoremalController.hentFellesGjoremal(husholdningId);
     }
 
+    /**
+     * Sender nytt gjøremål til database
+     * @param gjoremal
+     * @return nytt gjøremål
+     */
     @POST
     @Path("/nyttgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -27,6 +35,11 @@ public class GjoremalService {
         return GjoremalController.ny(gjoremal);
     }
 
+    /**
+     * Sender nytt felles gjøremål til database
+     * @param gjoremal
+     * @return
+     */
     @POST
     @Path("/nyttfellesgjoremal/")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -34,6 +47,11 @@ public class GjoremalService {
         return GjoremalController.ny(gjoremal);
     }
 
+    /**
+     * Endrer slik at fullførte felles gjøremål oppdateres i database
+     * @param gjoremal som parameter
+     * @return fullførtegjøremål
+     */
     @PUT
     @Path("/fullfortfelles")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -41,6 +59,11 @@ public class GjoremalService {
         return GjoremalController.fullfortFelles(gjoremal);
     }
 
+    /**
+     * Endrer fullførte egne gjøremål
+     * @param gjoremal som parameter er gjøremål
+     * @return gjøremålet som er fullført
+     */
     @PUT
     @Path("/fullfort")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -48,6 +71,11 @@ public class GjoremalService {
         return GjoremalController.fullfort(gjoremal);
     }
 
+    /**
+     * Henter varsler fra database
+     * @param brukerId som parameter for å knytte en varsel til en bruker
+     * @return henter varsel
+     */
     @GET
     @Path("{brukerId}/varsler")
     @Produces(MediaType.APPLICATION_JSON)

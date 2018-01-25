@@ -1,6 +1,7 @@
 package server.restklasser;
 
 public class Utleggsbetaler {
+    //Definerer variabler
     private int utleggId;
     private boolean betalt;
     private double delSum;
@@ -8,10 +9,11 @@ public class Utleggsbetaler {
     private String navn; //Navn som hører til skyldigBrukerId
     private String beskrivelse; //Beskrvelse av utlegget, hentes fra Utlegg-klassen ved uthenting
 
+    //tom konstruktør
     public Utleggsbetaler(){
-
     }
 
+    //Ulike get og set-metoder
     public int getUtleggId() {
         return utleggId;
     }

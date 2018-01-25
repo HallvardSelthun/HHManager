@@ -36,6 +36,7 @@ public class Handleliste {
         //tom konstruktør
     }
 
+    //Konstruktør
     public Handleliste(int handlelisteId, int husholdningId, Date frist, boolean offentlig, String navn, int skaperId) {
         this.handlelisteId = handlelisteId;
         setHusholdningId(husholdningId);
@@ -45,6 +46,10 @@ public class Handleliste {
         setSkaperId(skaperId);
     }
 
+    /**
+     * Metoder for handlelisteId, husholdningsId, hente vare osv.
+     * @param handlelisteId
+     */
     public Handleliste(int handlelisteId) {
         this.handlelisteId = handlelisteId;
     }
@@ -74,7 +79,6 @@ public class Handleliste {
     public void addVarer(Vare vare){
         varer.add(vare);
     }
-
 
     public void setSkaperId(int skaperId) {
         this.skaperId = skaperId;

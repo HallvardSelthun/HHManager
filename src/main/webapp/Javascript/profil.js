@@ -253,6 +253,9 @@ $(document).on('click', '.removeMedlem', function () {
     slettMedlem(brukerSId, husId);
 });
 
+/**
+ * Henter liste over husholdninger slik at en skal kunne sette favoritthusholdning på profilside.
+ */
 function hentliste() {
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;

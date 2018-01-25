@@ -35,6 +35,11 @@ public class HusholdningsService {
 
     }
 
+    /**
+     * Henter info om alle husholdninger
+     * @return
+     */
+
     @GET
     @Path("/husholdning")
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,12 +88,22 @@ public class HusholdningsService {
         return HusholdningController.slett(id);
     }
 
+    /**
+     * Henter husholdningsdata fra database gitt husholdningsid som parameter
+     * @param husholdningId
+     * @return favoritthsholdning gitt id
+     */
     @GET
     @Path("/{husholdningId}/husholdningData")
     @Produces(MediaType.APPLICATION_JSON)
     public Husholdning getHhData(@PathParam("husholdningId") int husholdningId){return HusholdningController.getFavHusholdningData(husholdningId);
     }
 
+    /**
+     * Sender nyhetspost til database
+     * @param nyhetsinnlegg
+     * @return et nyhetsinnlegg
+     */
     @POST
     @Path("/nyhetspost")
     @Consumes(MediaType.APPLICATION_JSON)

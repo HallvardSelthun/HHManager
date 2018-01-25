@@ -3,11 +3,15 @@ package server.restklasser;
 //Husholdningsmedlem
 
 public class HHMedlem {
-
+//definere variabler
     int hhBrukerId;
     int husholdningId;
     boolean admin;
 
+    /**
+     * get og set metoder
+     * @return
+     */
     public int getHhBrukerId() {
         return hhBrukerId;
     }

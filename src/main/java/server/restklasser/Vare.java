@@ -3,6 +3,7 @@ package server.restklasser;
 import java.sql.Date;
 
 public class Vare {
+    //Definerer variabler
     private int vareId;
     private int handlelisteId;
     private String varenavn;
@@ -10,6 +11,7 @@ public class Vare {
     private int kjoperId;
     private Date datoKjopt;
 
+    //Ulike get og set-metoder
     public Date getDatoKjopt() {
         return datoKjopt;
     }

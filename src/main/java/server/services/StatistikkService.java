@@ -17,7 +17,11 @@ import java.util.List;
  */
 @Path("/StatistikkService")
 public class StatistikkService {
-
+    /**
+     * Henter nyheter gitt husholdningsid og skal gi en oversikt over hvem som har publisert flest innlegg
+     * @param husholdningId
+     * @return kaller på metoden getNyhetsstatistikk fra statistikkontroller
+     */
     @GET
     @Path("{husholdningId}/nyheter")
     @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +29,11 @@ public class StatistikkService {
         return StatistikkController.getNyhetsatistikk(husholdningId);
     }
 
+    /**
+     * Henter gjøremål gitt husholdningsid og skal gi en oversikt over hvem som har gjort flest gjøremål
+     * @param husholdningId
+     * @return kaller på metoden getgjoremalstatistikk fra statistikkontroller
+     */
     @GET
     @Path("{husholdningId}/gjoremal")
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,6 +41,11 @@ public class StatistikkService {
         return StatistikkController.getGjoremalstatistikk(husholdningId);
     }
 
+    /**
+     * Henter antall varer kjøpt gitt husholdningsid
+     * @param husholdningId
+     * @return kaller på metoden getvarekjøpsstatistikk fra statistikkontroller
+     */
     @GET
     @Path("{husholdningId}/varer")
     @Produces(MediaType.APPLICATION_JSON)

@@ -3,6 +3,7 @@ package server.restklasser;
 import java.util.ArrayList;
 
 public class Utlegg {
+    //Definerer variabler
     private int utleggerId;
     private int utleggId;
     private double sum;
@@ -10,12 +11,13 @@ public class Utlegg {
     public ArrayList<Utleggsbetaler> utleggsbetalere;
     private ArrayList<Vare> varer;
 
+    //Tom konstruktør
     public Utlegg() {}
 
+    //Ulike get og set-metoder
     public Utlegg(int utleggId) {
         this.utleggId = utleggId;
     }
-
 
     public int getUtleggerId() {
         return utleggerId;

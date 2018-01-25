@@ -36,7 +36,12 @@ public class UtleggService {
         return UtleggController.getMineOppgjor(brukerId, betalt);
     }
 
-
+    /**
+     * Endrer i database at et beløp er registrert
+     * @param brukerId hvem som skriver innlegget
+     * @param utleggId hvem som har lagt ut for beløpet
+     * @return kaller på setMotatt i UtleggController
+     */
     @PUT
     @Path("/{brukerId}/{utleggId}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -44,14 +49,17 @@ public class UtleggService {
         return UtleggController.setMotatt(brukerId, utleggId);
     }
 
+    /**
+     * Endrer i database hvem som er utleggsbetaler
+     * @param utleggsbetalere
+     * @return kaller på metoden setMotattOppgjor i(utleggsbetalere) i UtleggsController
+     */
     @PUT
     @Path("/utleggsbetaler")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean setMotattOppgjor(ArrayList<Utleggsbetaler> utleggsbetalere) {
         return UtleggController.setMotattOppgjor(utleggsbetalere);
     }
-
-
 
     /*
      * Henter alle brukere som er involvert i et unikt utlegg.
