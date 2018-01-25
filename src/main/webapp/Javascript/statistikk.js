@@ -1,12 +1,12 @@
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var husholdningId = localStorage.getItem("husholdningId");
+var husholdninger;
 var innleggsListe;
 var statistikkListe;
 var vareListe;
 
 
 $(document).ready(function(){
-
     getNyhetsstatistikk();
     getGjoremalstatistikk();
     getVarekjopstatistikk();
@@ -15,6 +15,10 @@ $(document).ready(function(){
         nyhetsGraf();
         gjøremålsGraf();
         vareGraf();
+
+        husholdninger= JSON.parse(localStorage.getItem("husholdninger"));
+        console.log("Husholdninger: ");
+        console.log(husholdninger);
     }, 400);
 
 });

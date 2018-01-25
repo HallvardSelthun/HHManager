@@ -53,7 +53,7 @@ function setupPage() {
      */
     brukerId = bruker.brukerId;
     brukernavn = bruker.navn;
-    gjoremal = bruker.gjøremål;
+    gjoremal = bruker.gjoremal;
     console.log(bruker);
 
     /**
