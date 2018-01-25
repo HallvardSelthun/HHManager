@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class UtleggControllerTest {
     @Test
     public void getMineOppgjor() throws Exception {
-        ArrayList<Oppgjor> oppgjor = UtleggController.getMineOppgjor(2);
+        ArrayList<Oppgjor> oppgjor = UtleggController.getMineOppgjor(2,1);
 
         ArrayList<Utleggsbetaler> utleggJegSkylder = new ArrayList<>();
         //Sjekk om jeg (brukerId2) skylder bruker1 no
@@ -28,7 +28,7 @@ public class UtleggControllerTest {
         }
 
         //Finn ut hva folk skylder meg
-        ArrayList<Oppgjor> oppgjor2 = UtleggController.getMineOppgjor(1);
+        ArrayList<Oppgjor> oppgjor2 = UtleggController.getMineOppgjor(1,1);
 
         if (oppgjor2.get(0).getUtleggDenneSkylderMeg().size() > 0) {
             assertEquals("Karol", oppgjor2.get(0).getNavn());
@@ -45,6 +45,21 @@ public class UtleggControllerTest {
     public void setMotatt() {
         //Denne testen kan skrives når jeg er ferdig.
         assertTrue(UtleggController.setMotatt(1,11));
+    }
+
+    @Test
+    public void getMineOppgjorExtraTest() {
+        ArrayList<Oppgjor> betalteOppgjor = UtleggController.getMineOppgjor(1,1);
+        System.out.println("Skriver ut betalte brukerIder");
+        for (Oppgjor item : betalteOppgjor) {
+            System.out.println(item.getBrukerId());
+        }
+
+        ArrayList<Oppgjor> uBetalteOppgjor = UtleggController.getMineOppgjor(1,0);
+        System.out.println("Skriver ut ubetalte brukerIder");
+        for (Oppgjor item : uBetalteOppgjor) {
+            System.out.println(item.getBrukerId());
+        }
     }
 
 }
