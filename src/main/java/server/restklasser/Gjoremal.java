@@ -6,24 +6,24 @@ import java.sql.Date;
  *
  * Created by BrageHalse on 10.01.2018.
  */
-public class Gjøremål {
-    private int gjøremålId;
+public class Gjoremal {
+    private int gjoremalId;
     private int husholdningId;
     private int hhBrukerId;
-    private boolean fullført;
+    private boolean fullfort;
     private String beskrivelse;
     private Date frist;
 
-    public int getGjøremålId(){
-        return gjøremålId;
+    public int getGjoremalId(){
+        return gjoremalId;
     }
 
     public int getHusholdningId(){
         return husholdningId;
     }
 
-    public void setGjøremålId(int gjøremålId) {
-        this.gjøremålId = gjøremålId;
+    public void setGjoremalId(int gjoremalId) {
+        this.gjoremalId = gjoremalId;
     }
 
     public void setHusholdningId(int husholdningId) {
@@ -38,20 +38,20 @@ public class Gjøremål {
         return hhBrukerId;
     }
 
-    public boolean getFullført(){
-        return fullført;
+    public boolean getFullfort(){
+        return fullfort;
     }
 
-    public void setFullført(boolean nyVariabel){
-        this.fullført = nyVariabel;
+    public void setFullfort(boolean nyVariabel){
+        this.fullfort = nyVariabel;
     }
 
     public String getBeskrivelse(){
         return beskrivelse;
     }
 
-    public boolean isFullført() {
-        return fullført;
+    public boolean isFullfort() {
+        return fullfort;
     }
 
     public Date getFrist() {

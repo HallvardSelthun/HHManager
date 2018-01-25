@@ -1,21 +1,15 @@
 package server.controllers;
 
-import com.mysql.cj.jdbc.util.ResultSetUtil;
-import com.sun.org.apache.regexp.internal.RE;
 import server.Mail;
 //import com.mysql.cj.jdbc.util.ResultSetUtil;
 import server.database.ConnectionPool;
-import server.util.RandomGenerator;
 import server.restklasser.*;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.sql.*;
 
 public class HusholdningController {
@@ -101,24 +95,24 @@ public class HusholdningController {
             // legger til alle gjøremål
             resultSet = prepGjoremal.executeQuery();
             i = 0;
-            ArrayList<Gjøremål> gjøremåls;
+            ArrayList<Gjoremal> gjoremals;
             while (resultSet.next()) { // itererer gjennom resultsettet
-                gjøremåls = new ArrayList<>();
+                gjoremals = new ArrayList<>();
                 Husholdning husholdning = husArray.get(i);
-                Gjøremål gjoremal;
+                Gjoremal gjoremal;
                 if (resultSet.getString(3) == null) continue;
                 if (husholdning.getHusholdningId() == resultSet.getInt(1)) {
-                    gjoremal = new Gjøremål();
+                    gjoremal = new Gjoremal();
                     gjoremal.setHusholdningId(resultSet.getInt(1));
-                    gjoremal.setGjøremålId(resultSet.getInt(3));
+                    gjoremal.setGjoremalId(resultSet.getInt(3));
                     gjoremal.setHhBrukerId(resultSet.getInt(5));
-                    gjoremal.setFullført(resultSet.getBoolean(6));
+                    gjoremal.setFullfort(resultSet.getBoolean(6));
                     gjoremal.setBeskrivelse(resultSet.getString(7));
                     gjoremal.setFrist(resultSet.getDate(8));
-                    gjøremåls.add(gjoremal);
+                    gjoremals.add(gjoremal);
                     continue;
                 }
-                husholdning.setGjøremål(gjøremåls);
+                husholdning.setGjoremal(gjoremals);
                 if (husholdning.getHusholdningId() < resultSet.getInt(1)){
                     for (; i < husArray.size(); i++) {
                         husholdning = husArray.get(i);
@@ -447,9 +441,9 @@ public class HusholdningController {
                 vare.setVarenavn(rs.getString("vareNavn"));
                 int i = rs.getInt("kjøpt");
                 if (i == 1) {
-                    vare.setKjøpt(true);
+                    vare.setKjopt(true);
                 } else {
-                    vare.setKjøpt(false);
+                    vare.setKjopt(false);
                 }
                 handleliste.addVarer(vare);
             }

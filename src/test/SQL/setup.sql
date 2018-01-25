@@ -58,10 +58,10 @@ INSERT INTO `hhmedlem` (`brukerId`, `husholdningId`, `admin`) VALUES
   (8, 2, 0);
 
 --
--- Dataark for tabell `gjøremål`
+-- Dataark for tabell `gjoremal`
 --
 
-INSERT INTO `gjøremål` (`gjøremålId`, `husholdningId`, `utførerId`, `fullført`, `beskrivelse`, `frist`) VALUES
+INSERT INTO `gjoremal` (`gjøremålId`, `husholdningId`, `utførerId`, `fullført`, `beskrivelse`, `frist`) VALUES
 (1, 1, 1, 0, 'vaske huset', '2017-02-23'),
 (2, 1, NULL, 0, 'rydde rommet', '2017-02-23'),
 (3, 1, 2, 0, 'vaske huset', '2017-02-23'),

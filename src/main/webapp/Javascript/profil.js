@@ -74,6 +74,10 @@ $(document).ready(function () {
             alert("PLIS SKRIV IN NOKE...")
             return;
         }
+        else if(endrepassord1.length<7){
+            alert("Vennligst velg et passord med flere enn 7 tegn");
+            return;
+        }
         else if (endrepassord1 == endrepassord2) {
             var bruker = {
                 brukerId: brukerId,

@@ -84,7 +84,7 @@ public class Mail {
      * @param email er email-adressen til brukeren
      * @param brukerId er int som indentifiserer en bruker.
      **/
-    public static void sendGlemtPassord(String email, int brukerId) {
+    public static boolean sendGlemtPassord(String email, int brukerId) {
         String out = email.trim().toLowerCase();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -115,8 +115,10 @@ public class Mail {
             }
             message.setText(msg);
             Transport.send(message);
+            return true;
         } catch (MessagingException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

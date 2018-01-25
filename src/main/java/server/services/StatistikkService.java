@@ -28,14 +28,14 @@ public class StatistikkService {
     @GET
     @Path("{husholdningId}/gjoremal")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<List<String>> getGjøremålStatistikk(@PathParam("husholdningId") int husholdningId){
-        return StatistikkController.getGjøremålstatistikk(husholdningId);
+    public ArrayList<List<String>> getGjoremalStatistikk(@PathParam("husholdningId") int husholdningId){
+        return StatistikkController.getGjoremalstatistikk(husholdningId);
     }
 
     @GET
     @Path("{husholdningId}/varer")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<List<String>> getVarestatistikk(@PathParam("husholdningId") int husholdningId){
-        return StatistikkController.getVarekjøpstatistikk(husholdningId);
+        return StatistikkController.getVarekjopstatistikk(husholdningId);
     }
 }

@@ -15,7 +15,7 @@ CREATE TABLE `bruker` (
   CONSTRAINT `bruker_ibfk_1` FOREIGN KEY (`favorittHusholdning`) REFERENCES `husholdning` (`husholdningId`)
 );
 
-CREATE TABLE `gjøremål` (
+CREATE TABLE `gjoremal` (
   `gjøremålId` int(11) NOT NULL AUTO_INCREMENT,
   `husholdningId` int(11) NOT NULL,
   `utførerId` int(11) DEFAULT NULL,

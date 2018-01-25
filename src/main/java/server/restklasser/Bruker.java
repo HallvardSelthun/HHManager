@@ -7,10 +7,11 @@ public class Bruker {
     private int brukerId;
     private String navn;
     private String passord;
+    private String nyttpassord;
     private String epost;
     private int favHusholdning;
     private HHMedlem[] HHMedlemmer;
-    private ArrayList<Gjøremål> gjøremål = new ArrayList<>();
+    private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
     private double balanse;
 
     public HHMedlem[] getHHMedlemmer() {
@@ -25,12 +26,12 @@ public class Bruker {
 
     public void setNavn(String nyttNavn){this.navn = nyttNavn;}
 
-    public ArrayList<Gjøremål> getGjøremål() {
-        return gjøremål;
+    public ArrayList<Gjoremal> getGjoremal() {
+        return gjoremal;
     }
 
-    public void addGjøremål(Gjøremål gjøremål){
-        this.gjøremål.add(gjøremål);
+    public void addGjoremal(Gjoremal gjoremal){
+        this.gjoremal.add(gjoremal);
     }
 
     public int getBrukerId() {

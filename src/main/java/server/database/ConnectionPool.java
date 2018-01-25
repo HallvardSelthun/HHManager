@@ -12,7 +12,7 @@ public final class ConnectionPool {
 
     //Attributter for tilkobling til databsen
     static {
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver"); //Set the specific driver "class name"
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver"); //Set the specific driver "class name"
         dataSource.setUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/g_tdat2003_t6");
         dataSource.setUsername("g_tdat2003_t6");
         dataSource.setPassword("uz4rZOca");

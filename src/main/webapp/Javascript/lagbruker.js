@@ -18,8 +18,17 @@ $(document).ready(function () {
         var fornavn = $("#fornavn").val();
         var email = $("#email").val();
         var password = $("#password").val();
-        if (fornavn == "" || email == "" || password == "") {
+        var password2= $("#password2").val();
+        if (fornavn == "" || email == "" || password == "" || password2 == "") {
             alert("Du må fylle ut alle feltene")
+            return;
+        }
+        if (password!=password2){
+            alert("Passordene er ikke like, vennligst skriv inn riktig!");
+            return;
+        }
+        if(password.length<6){
+            alert('Velg et passord med minst 7 bokstaver!');
             return;
         }
         var bruker = {navn: fornavn, passord: password, epost: email};
@@ -37,7 +46,7 @@ $(document).ready(function () {
                     alert("Epost er allerede registrert :/");
                     $("#email").css('color', 'red');
                 }else{
-                    alert("Bruker registrert!");
+                    alert("Bruker registrert! Logg deg på.");
                     window.location = "index.html";
                 }
             },

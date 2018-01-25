@@ -105,6 +105,8 @@ $(document).on("click", ".hovedCheckbox", function(event){
 });
 
 function lagUtleggsbetalerListe(oppgjorNr, callback) {
+    console.log("OPPGJØRNR: "+oppgjorNr);
+    console.log(alleOppgjor);
     var utleggsbetalere = [];
     var i;
     var gammeltObjekt;
@@ -121,8 +123,13 @@ function lagUtleggsbetalerListe(oppgjorNr, callback) {
 
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
+    console.log("utleggDenneSkylderMeg");
+    console.log(alleOppgjor[oppgjorNr].utleggDenneSkylderMeg);
     for (i = 0; i < alleOppgjor[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
-        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+
+        gammeltObjekt = alleOppgjor[oppgjorNr].utleggDenneSkylderMeg[i];
+        console.log("GammeltObjekt");
+        console.log(gammeltObjekt);
 
         utleggsbetalerObjekt = {
             utleggId: gammeltObjekt.utleggId,
@@ -159,12 +166,13 @@ function displayOppgjor() {
 function leggInnRadNr(callback) {
     for (var i = 0; i < alleOppgjor.length; i++) {
         alleOppgjor[i].oppgjorNr = i;
-        for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
+        var j;
+        for (j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
             console.log("utleggId: "+alleOppgjor[i].utleggJegSkylder[j].utleggId);
             alleOppgjor[i].utleggJegSkylder[j].radNr = j;
         }
 
-        for (var j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
+        for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
             alleOppgjor[i].utleggDenneSkylderMeg[j].radNr = j;
         }
     }

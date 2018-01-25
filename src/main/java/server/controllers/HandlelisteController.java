@@ -118,10 +118,10 @@ public class HandlelisteController {
             while (varerResultset.next()) {
                 Vare nyVare = new Vare();
                 nyVare.setVareId(varerResultset.getInt("vareId"));
-                nyVare.setKjøperId(varerResultset.getInt("kjøperId"));
+                nyVare.setKjoperId(varerResultset.getInt("kjøperId"));
                 nyVare.setVarenavn(varerResultset.getString("vareNavn"));
-                nyVare.setKjøpt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
-                nyVare.setDatoKjøpt(varerResultset.getDate("datoKjøpt"));
+                nyVare.setKjopt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
+                nyVare.setDatoKjopt(varerResultset.getDate("datoKjøpt"));
                 nyVare.setHandlelisteId(varerResultset.getInt("handlelisteId"));
                 varer.add(nyVare);
             }

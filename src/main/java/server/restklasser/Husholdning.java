@@ -10,7 +10,7 @@ public class Husholdning {
     private int husholdningId;
     private String navn;
     private ArrayList<Handleliste> handlelister = new ArrayList<>();
-    private ArrayList<Gjøremål> gjøremål = new ArrayList<>();
+    private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
     private ArrayList<Nyhetsinnlegg> nyhetsinnlegg = new ArrayList<>();
     private ArrayList<Bruker> medlemmer = new ArrayList<>();
     private String adminId;
@@ -31,12 +31,12 @@ public class Husholdning {
         this.handlelister = handlelister;
     }
 
-    public ArrayList<Gjøremål> getGjøremål() {
-        return gjøremål;
+    public ArrayList<Gjoremal> getGjoremal() {
+        return gjoremal;
     }
 
-    public void setGjøremål(ArrayList<Gjøremål> gjøremål) {
-        this.gjøremål = gjøremål;
+    public void setGjoremal(ArrayList<Gjoremal> gjoremal) {
+        this.gjoremal = gjoremal;
     }
 
     public ArrayList<Nyhetsinnlegg> getNyhetsinnlegg() {
@@ -67,8 +67,8 @@ public class Husholdning {
         this.nyhetsinnlegg.add(nyhetsinnlegg);
     }
 
-    public void addGjørmål(Gjøremål gjøremål){
-        this.gjøremål.add(gjøremål);
+    public void addGjormal(Gjoremal gjoremal){
+        this.gjoremal.add(gjoremal);
     }
 
     public int getHusholdningId() {

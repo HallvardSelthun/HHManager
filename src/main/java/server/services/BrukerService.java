@@ -109,7 +109,7 @@ public class BrukerService {
      */
     @PUT
     @Path("/glemtpassord")
-    public void glemtPassordEpost(String epost) {
-        BrukerController.sendGlemtPassordMail(epost);
+    public boolean glemtPassordEpost(String epost) {
+        return BrukerController.sendGlemtPassordMail(epost);
     }
 }

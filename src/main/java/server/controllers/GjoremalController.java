@@ -20,8 +20,8 @@ public class GjoremalController {
      * @return ArrayList med gjøremål
      */
 
-    public static ArrayList<Gjøremål> hentFellesGjøremål(int husholdningsId) {
-        ArrayList<Gjøremål> gjøremål = new ArrayList<>();
+    public static ArrayList<Gjoremal> hentFellesGjoremal(int husholdningsId) {
+        ArrayList<Gjoremal> gjoremal = new ArrayList<>();
         String getQuery = "SELECT beskrivelse, frist, gjøremålId FROM gjøremål WHERE husholdningId = " + husholdningsId + " AND utførerId IS NULL AND fullført = 0 ORDER BY frist ";
 
         try (Connection connection = ConnectionPool.getConnection()) {
@@ -29,13 +29,13 @@ public class GjoremalController {
             ResultSet rs = getStatement.executeQuery();
 
             while (rs.next()) {
-                Gjøremål gjøremålet = new Gjøremål();
-                gjøremålet.setGjøremålId(rs.getInt("gjøremålId"));
-                gjøremålet.setBeskrivelse(rs.getString("beskrivelse"));
-                gjøremålet.setFrist(rs.getDate("frist"));
-                gjøremål.add(gjøremålet);
+                Gjoremal gjoremalet = new Gjoremal();
+                gjoremalet.setGjoremalId(rs.getInt("gjøremålId"));
+                gjoremalet.setBeskrivelse(rs.getString("beskrivelse"));
+                gjoremalet.setFrist(rs.getDate("frist"));
+                gjoremal.add(gjoremalet);
             }
-            return gjøremål;
+            return gjoremal;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -44,17 +44,17 @@ public class GjoremalController {
 
     /**
      * Lager et nytt gjøremåls-objekt
-     * @param gjøremål
+     * @param gjoremal
      * @return true dersom alt gikk bra, false dersom noe gikk galt.
      */
-    public static int ny(Gjøremål gjøremål) {
-        String beskrivelse = gjøremål.getBeskrivelse();
-        int utførerId = gjøremål.getHhBrukerId();
-        int husholdningId = gjøremål.getHusholdningId();
-        Date frist = gjøremål.getFrist();
+    public static int ny(Gjoremal gjoremal) {
+        String beskrivelse = gjoremal.getBeskrivelse();
+        int utforerId = gjoremal.getHhBrukerId();
+        int husholdningId = gjoremal.getHusholdningId();
+        Date frist = gjoremal.getFrist();
         int gjoremalId = -1;
-        if (utførerId == 0) {
-            String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, husholdningId, frist, fullført) values (?,?,?,0)"; /*"insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
+        if (utforerId == 0) {
+            String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, husholdningId, frist, fullført) values (?,?,?,0)"; /*"insert into gjoremal (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
             try (Connection connection = ConnectionPool.getConnection()) {
                 PreparedStatement prepInsertGjoremal = connection.prepareStatement(insertGjoremal);
                 prepInsertGjoremal.setString(1, beskrivelse);
@@ -67,13 +67,13 @@ public class GjoremalController {
             }
             return gjoremalId;
         } else {
-            String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)"; /*"insert into gjøremål (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
+            String insertGjoremal = "insert into " + TABELLNAVN + " (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)"; /*"insert into gjoremal (beskrivelse, utførerId, husholdningId, frist, fullført) values (?,?,?,?,0)";*/
             String getId = "SELECT LAST_INSERT_ID()";
 
             try (Connection connection = ConnectionPool.getConnection()) {
                 PreparedStatement prepInsertGjoremal = connection.prepareStatement(insertGjoremal);
                 prepInsertGjoremal.setString(1, beskrivelse);
-                prepInsertGjoremal.setInt(2, utførerId);
+                prepInsertGjoremal.setInt(2, utforerId);
                 prepInsertGjoremal.setInt(3, husholdningId);
                 prepInsertGjoremal.setDate(4, frist);
                 prepInsertGjoremal.executeUpdate();
@@ -89,8 +89,8 @@ public class GjoremalController {
         }
     }
 
-    public static boolean fullfortFelles(Gjøremål gjoremal) {
-        int gjoremalId = gjoremal.getGjøremålId();
+    public static boolean fullfortFelles(Gjoremal gjoremal) {
+        int gjoremalId = gjoremal.getGjoremalId();
 
         String fullforGjoremal = "UPDATE " + TABELLNAVN + " SET fullført = 1 WHERE gjøremålId = " +
                 gjoremalId;
@@ -105,12 +105,13 @@ public class GjoremalController {
         return false;
     }
 
-    public static boolean fullfort(Gjøremål gjoremal) {
-        int utførerId = gjoremal.getHhBrukerId();
-        int gjoremalId = gjoremal.getGjøremålId();
+
+    public static boolean fullfort(Gjoremal gjoremal) {
+        int utforerId = gjoremal.getHhBrukerId();
+        int gjoremalId = gjoremal.getGjoremalId();
 
         String fullforGjoremal = "UPDATE " + TABELLNAVN + " SET fullført = 1 WHERE gjøremålId = " +
-                gjoremalId + " AND utførerId = " + utførerId;
+                gjoremalId + " AND utførerId = " + utforerId;
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement prepfullforGjoremal = connection.prepareStatement(fullforGjoremal);
@@ -122,22 +123,27 @@ public class GjoremalController {
         return false;
     }
 
-    public static int hentVarselGjøremål(int brukerId) {
+    public static Bruker hentVarselGjoremal(int brukerId) {
+        Bruker bruker = new Bruker();
         int id = brukerId;
         int result = 0;
-        String query = "SELECT COUNT(gjøremålId) antall FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ? GROUP BY utførerId;";
+        String query = "SELECT beskrivelse FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ?;";
 
         try (Connection con = ConnectionPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            result = rs.getInt("antall");
-            return result;
+            while(rs.next()){
+                Gjoremal g = new Gjoremal();
+                String beskrivelse = rs.getString("beskrivelse");
+                g.setBeskrivelse(beskrivelse);
+                bruker.addGjoremal(g);
+            }
+            return bruker;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return bruker;
     }
 }
 
