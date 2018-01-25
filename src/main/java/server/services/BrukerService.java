@@ -109,7 +109,9 @@ public class BrukerService {
      */
     @PUT
     @Path("/glemtpassord")
+    @Consumes(MediaType.APPLICATION_JSON)
     public boolean glemtPassordEpost(String epost) {
-        return BrukerController.sendGlemtPassordMail(epost);
+        String nyepost = epost.substring(1,epost.length()-1);
+        return BrukerController.sendGlemtPassordMail(nyepost);
     }
 }
