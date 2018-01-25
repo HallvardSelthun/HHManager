@@ -53,6 +53,7 @@ public class BrukerController {
     }
 
     public static boolean sendGlemtPassordMail(String epost) {
+        System.out.println(epost);
         int brukerId = getBrukerId(epost);
         return Mail.sendGlemtPassord(epost, brukerId);
     }

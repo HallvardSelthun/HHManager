@@ -106,8 +106,8 @@ public class Mail {
             message.setSubject(glemtsub);
             String msg;
             if (brukerId < 1){
-                msg = "Hei" +
-                        "\nDenne eposten er ikke registrert hos oss." + regards;
+                msg = "Hei!" +
+                        "\nDu er ikke registrert i vårt system, vennligst registrer deg på: http://localhost:8080/server/lagbruker.html" + regards;
             } else {
                 String pw = BrukerController.nyttTilfeldigPass(brukerId);
                 msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
