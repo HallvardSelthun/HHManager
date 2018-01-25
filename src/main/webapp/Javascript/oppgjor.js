@@ -103,12 +103,22 @@ $(document).on("click", ".checkboxes", function(event){
     var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
     var substringed = valgtSvarKnapp.match(/\d+/g);
 
+    var oppgjorNrString = $(this).parent().parent().parent().parent().attr('id');
+    var oppgjorNr = oppgjorNrString.match(/\d+/g);
+
     var klikketKnapp = $(this);
 
     if ($(this).is(':checked')) {
         var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
             klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+            console.log("antall: "+liveOppgjor[oppgjorNr].antallUtleggsbetalere);
+            liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
+            console.log(" etter minus: "+liveOppgjor[oppgjorNr].antallUtleggsbetalere);
+            if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
+                $("#collapse"+oppgjorNr+"").parent().fadeOut(500);
+            }
         });
+
     }
 });
 
@@ -145,6 +155,19 @@ function oppdaterBetalere() {
             $("#betalere").append('<br> '+$(this).attr('value') +' Sum: '+ delSum);
         }
     })
+}
+
+function tellAntallUtleggsbetalere(oppgjorArray) {
+    var utleggsBetalerPerOppgjor = 0;
+
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        utleggsBetalerPerOppgjor = 0;
+        utleggsBetalerPerOppgjor += oppgjorArray[i].utleggDenneSkylderMeg.length;
+        utleggsBetalerPerOppgjor += oppgjorArray[i].utleggJegSkylder.length;
+        oppgjorArray[i].antallUtleggsbetalere = utleggsBetalerPerOppgjor;
+        console.log("Oppgjor "+i+" har "+oppgjorArray[i].antallUtleggsbetalere+" oppgjorsbetalere");
+    }
+    console.log("Ferdig med telling")
 }
 
 function utregnOppgjorSum(oppgjorArray) {
@@ -255,6 +278,7 @@ function lastInnOppgjor(brukerId, betalt) {
             if (betalt === 1) {
                 liveOppgjor = result;
                 valgtOppgjorArray = liveOppgjor;
+                tellAntallUtleggsbetalere(liveOppgjor);
             }
             else {
                 feridgeOppgjor = result;
@@ -354,15 +378,11 @@ function displayOppgjor(oppgjorArray) {
 
         //Append compiled markup
         for (var i = 0; i < oppgjorArray.length; i++) {
-            console.log("i = "+i);
-            console.log("oppgjorArray.length: "+oppgjorArray.length);
             $.tmpl( "oppgjorTemplate", oppgjorArray[i]).appendTo($("#panelGruppe"));
 
             $.tmpl( "rad-template-duSkylder", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
-            console.log(oppgjorArray[i].utleggDenneSkylderMeg);
             $.tmpl( "rad-template-deSkylder", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
         }
-        console.log("Ferdig med loop i displayOppgjor");
     }
     else {
         displayHistorikk(oppgjorArray);
