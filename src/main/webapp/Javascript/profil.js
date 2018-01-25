@@ -222,26 +222,33 @@ $(document).ready(function () {
 
 */
 
-    /**
-     * Bruker kan sette favoritthusholdning
-     */
-    $(document).on('click', '.glyphicon', function () {
-        event.stopPropagation();
-        if ($(this).hasClass('glyphicon-star-empty')){
-            $(".glyphicon-star").each(function () {
-                $(this).removeClass('glyphicon-star');
-                $(this).addClass('glyphicon-star-empty')
-            });
-            $(this).removeClass('glyphicon-star-empty');
-            $(this).addClass('glyphicon-star');
-            var id = $(this).attr('value');
-            settNyFav(id);
-        }
-    });
+
+
+});
+/**
+ * Bruker kan sette favoritthusholdning
+ */
+$(document).on('click', '.glyphicon', function () {
+    event.stopPropagation();
+    if ($(this).hasClass('glyphicon-star-empty')){
+        $(".glyphicon-star").each(function () {
+            $(this).removeClass('glyphicon-star');
+            $(this).addClass('glyphicon-star-empty')
+        });
+        $(this).removeClass('glyphicon-star-empty');
+        $(this).addClass('glyphicon-star');
+        var id = $(this).attr('value');
+        settNyFav(id);
+    }
+});
+
+$(document).on('click', '.removeMedlem', function () {
+    var husId = $(this).attr('value');
+    var brukerSId = $(this).attr('value2');
+    slettMedlem(brukerSId, husId);
 });
 
 function hentliste() {
-    console.log(husholdninger);
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
@@ -269,9 +276,11 @@ function hentliste() {
 
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
+            var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
             console.log(medlemnavn);
 
-            $("#hhliste"+husholdningId).append('<li class="list-group-item "> ' + medlemnavn + '</li>');
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
+                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">slett</button></li>');
 
         }
     }
@@ -288,6 +297,7 @@ function settNyFav(id) {
         brukerId: brukerId,
         favHusholdning: nyId
     };
+
     $.ajax({
         url: "server/BrukerService/favHusholdning",
         type: 'PUT',
@@ -322,4 +332,43 @@ function displayDiv() {
     } else {
         x.style.display = "none";
     }
+}
+
+function slettMedlem(bid, hid) {
+    var idSlett = bid;
+    var husIdSlett = hid;
+    var hus;
+    var t = 0;
+    for(t, lengthh = mineHusholdninger.length; t<lengthh; t++){
+        if(mineHusholdninger[t].husholdningId == husIdSlett){
+            hus = mineHusholdninger[t]
+        }
+    }
+    bruker = {
+        brukerId: idSlett,
+        favHusholdning: husIdSlett
+    };
+    console.log(bruker);
+    $.ajax({
+        url: "server/hhservice/slettMedlem",
+        type: 'DELETE',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            console.log("kkk");
+            /*for(var m = 0, n = hus.medlemmer.length; m<n; m++) {
+                if (hus.medlemmer[m].brukerId == idSlett) {
+                    hus.medlemmer.splice(m, 1);
+                    mineHusholdninger[t].medlemmer = hus.medlemmer;
+                    localStorage.setItem("husholdninger", mineHusholdninger);
+                    break;
+                }
+            }*/
+        },
+        error: function () {
+            console.log(":/");
+        }
+    });
+    //window.location = "profil.html";
 }
