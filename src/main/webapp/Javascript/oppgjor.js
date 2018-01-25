@@ -307,7 +307,7 @@ function lagNyttUtlegg() {
             skyldigBrukerId: $(this).attr('id'),
             delSum: delSum
         };
-        utleggsbetalere.push(utleggsbetaler)
+        utleggsbetalere.push(utleggsbetaler);
     });
 
     utlegg = {

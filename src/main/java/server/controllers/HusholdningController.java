@@ -571,6 +571,14 @@ public class HusholdningController {
         }
         return false;
     }
+
+    public static boolean regNyttMedlem(Bruker bruker){
+        int husholdning = bruker.getFavHusholdning();
+        String epost = bruker.getEpost();
+        String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = epost";
+        String regNyttMedlem = "INSERT INTO hhmedlem (brukerId, husholdningId, admin) VALUES (?, ?, 0)";
+        return false;
+    }
 }
 
 
