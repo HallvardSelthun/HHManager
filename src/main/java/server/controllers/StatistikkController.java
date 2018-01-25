@@ -44,7 +44,7 @@ public class StatistikkController {
      */
     public static ArrayList<List<String>> getGjoremalstatistikk(int husholdningId){
         ArrayList<List<String>> gjoremalstatistikk = new ArrayList<List<String>>();
-        String query = "SELECT COUNT(gjøremålId) antal, navn FROM gjøremål LEFT JOIN bruker ON utførerId = brukerId WHERE husholdningId = "+husholdningId+" AND fullført = 1 GROUP BY utførerId";
+        String query = "SELECT COUNT(gjøremålId) antal, navn FROM gjoremal LEFT JOIN bruker ON utførerId = brukerId WHERE husholdningId = "+husholdningId+" AND fullført = 1 GROUP BY utførerId";
 
         try(Connection con = ConnectionPool.getConnection()){
             PreparedStatement ps = con.prepareStatement(query);
