@@ -282,7 +282,6 @@ $(document).ready(function () {
                     minBruker.gjoremal.push(gjoremal2);
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";
-                    alert("Det gikk bra!");
                 } else {
                     alert("feil!");
                 }
