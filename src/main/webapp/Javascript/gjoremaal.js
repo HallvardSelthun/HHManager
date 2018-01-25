@@ -3,8 +3,8 @@
  */
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var bruker;
-var utførerId = minBruker.brukerId;
-var minegjoremal = minBruker.gjøremål;
+var utforerId = minBruker.brukerId;
+var minegjoremal = minBruker.gjoremal;
 var fellesgjoremal;
 var husholdningId = localStorage.getItem("husholdningId")
 var varselListe;
@@ -46,11 +46,11 @@ function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = fellesgjoremal[i].beskrivelse;
         var frist = fellesgjoremal[i].frist;
-        var gjøremålId = fellesgjoremal[i].gjøremålId;
+        var gjoremalId = fellesgjoremal[i].gjoremalId;
 
         $("#fellesGjoremaal").append('<li class="list-group-item ">' + '<b>' + fellesnavn + '</b>' +
             ",  " + frist +
-            '<input id="checkboxid2' + gjøremålId + '" type="checkbox" class="all pull-right"></li>');
+            '<input id="checkboxid2' + gjoremalId + '" type="checkbox" class="all pull-right"></li>');
     }
 }
 
@@ -71,14 +71,14 @@ function hentFellesGjoremalData() {
  */
 function hentMinegjoremal() {
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
-        var gjøremålId = minegjoremal[i].gjøremålId;
+        var gjoremal = minegjoremal[i].gjoremalId;
         var beskrivelse = minegjoremal[i].beskrivelse;
         var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
-        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjøremålId + '">' + '<b>' + beskrivelse + '</b>' +
+        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremal + '">' + '<b>' + beskrivelse + '</b>' +
             ",  " + frist +
-            '<input id="checkboxid' + gjøremålId + '" type="checkbox" class="all pull-right"></li>');
+            '<input id="checkboxid' + gjoremal + '" type="checkbox" class="all pull-right"></li>');
     }
 }
 
@@ -101,11 +101,12 @@ $(document).ready(function () {
     $("body").on("click", "#refresh2", function () {
         for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
             var gjoremal = fellesgjoremal[i];
-            var gjøremålId = fellesgjoremal[i].gjøremålId;
-            console.log(gjøremålId);
-            var fullfort = document.getElementById("checkboxid2" + gjøremålId).checked;
+            var gjoremalId = fellesgjoremal[i].gjoremalId;
+            console.log(gjoremalId);
+            var fullfort = document.getElementById("checkboxid2" + gjoremalId).checked;
             console.log(fullfort);
             if (fullfort) {
+
                 $.ajax({
                     url: "server/gjoremalservice/fullfortfelles",
                     type: 'PUT',
@@ -145,8 +146,8 @@ $(document).ready(function () {
         var ffListe = [];
         for (var i = 0, len = minegjoremal.length; i < len; i++) {
             var gjoremal = minegjoremal[i];
-            var gjøremålId = minegjoremal[i].gjøremålId;
-            var fullfort = document.getElementById("checkboxid" + gjøremålId).checked;
+            var gjoremal = minegjoremal[i].gjoremalId;
+            var fullfort = document.getElementById("checkboxid" + gjoremal).checked;
             console.log(fullfort);
             if (fullfort) {
                 ffListe.push(i);
@@ -196,7 +197,7 @@ $(document).ready(function () {
      */
     $("body").on("click", "#lagreGjoremal", function () {
         var beskrivelse = $("#gjoremalInput").val();
-        var utførerId = id;
+        var utforerid = id;
         var frist = $("#dato").val();
         var husholdningId = localStorage.getItem("husholdningId");
 
@@ -205,7 +206,7 @@ $(document).ready(function () {
         }
         var gjoremal = {
             beskrivelse: beskrivelse,
-            hhBrukerId: utførerId,
+            hhBrukerId: utforerid,
             frist: frist,
             husholdningId: husholdningId
         };
@@ -274,15 +275,15 @@ $(document).ready(function () {
                 console.log(data);
                 if (data > 0) {
                     var gjoremal2 = {
-                        gjøremålId: data,
+                        gjoremalId: data,
                         husholdningId: parseInt(husholdningId),
                         hhBrukerId: minBruker.brukerId,
-                        fullført: false,
+                        fullfort: false,
                         beskrivelse: beskrivelse,
                         frist: frist,
                     };
                     console.log("Gjoremal2" + gjoremal2);
-                    minBruker.gjøremål.push(gjoremal2);
+                    minBruker.gjoremal.push(gjoremal2);
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";
                     alert("Det gikk bra!");
