@@ -17,11 +17,41 @@ $(document).ready(function(){
         vareGraf();
 
         husholdninger= JSON.parse(localStorage.getItem("husholdninger"));
-        console.log("Husholdninger: ");
-        console.log(husholdninger);
+        console.log("husholdningId: "+husholdningId)
+        for(var i = 0; i<husholdninger.length;i++){
+            var hhId = husholdninger[i].husholdningId;
+            var hhNavn =husholdninger[i].navn;
+            //console.log(hhNavn);
+            if (hhId == husholdningId){
+                $("#husholdningsNavn").text(hhNavn);
+            }
+            $("#hhstatliste").append('<li role="button" class ="hhobjekt" id = "hhobjekt'+hhId+'" value="'+hhId+'">'+hhNavn+'</li>');
+        }
     }, 400);
-
 });
+
+$(document).on('click', '.hhobjekt', function () {
+    husholdningId= $(this).attr('value');
+    $("#husholdningsNavn").text();
+    getNyhetsstatistikk();
+    getGjoremalstatistikk();
+    getVarekjopstatistikk();
+    setTimeout(function(){
+        nyhetsGraf();
+        gjøremålsGraf();
+        vareGraf();
+        for(var i = 0; i<husholdninger.length;i++) {
+            var hhId = husholdninger[i].husholdningId;
+            var hhNavn = husholdninger[i].navn;
+            //console.log(hhNavn);
+            if (hhId == husholdningId) {
+                $("#husholdningsNavn").text(hhNavn);
+            }
+        }
+
+    }, 400);
+});
+
 function vareGraf(){
     // Load the Visualization API and the corechart package.
     google.charts.load('current', {'packages':['corechart']});
@@ -177,7 +207,6 @@ function getGjoremalstatistikk(){
 }
 function getVarekjopstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/varer", function (data) {
-        console.log("Data: "+vareListe);
         vareListe = data;
     });
 }
