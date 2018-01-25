@@ -25,9 +25,9 @@ $(document).ready(function () {
     $("#commentBtn").on("click", function () {
         postInnlegg();
     });
-    $(".skrivNyttInnlegg").on("click", function () {
+    /*$(".skrivNyttInnlegg").on("click", function () {
         skrivNyttInnlegg();
-    });
+    });*/
 });
 
 /**
@@ -170,11 +170,11 @@ function innleggToHtml(nyhetsinnlegg) {
 /**
  * Funksjonen kalles når bruker trykker på knappen om å publisere innlegg.
  */
-function skrivNyttInnlegg() {
+/*function skrivNyttInnlegg() {
     var x = document.getElementById("skrivNyttInnlegg").style.display;
     if(x === "none") {
         document.getElementById("skrivNyttInnlegg").style.display = "";
     }else {
         document.getElementById("skrivNyttInnlegg").style.display = "none";
     }
-}
+}*/
