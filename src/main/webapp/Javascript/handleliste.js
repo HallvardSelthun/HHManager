@@ -18,6 +18,7 @@ var boxesChecked = [];
  */
 $(document).ready(function () {
     getHandlelisterData();
+    gethhData();
     setTimeout(setupPage,1000);
 
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
@@ -29,7 +30,6 @@ $(document).ready(function () {
     $(".switch").on("click", function () {
         endrePublic();
     });
-
 
     /*$("#leggTilNyGjenstandKnapp").on("click", function () {
         leggTilNyGjenstand();
@@ -165,9 +165,7 @@ function slettHandleliste(sletteId) {
 
 function endreNavn(){}
 
-function checkEllerUncheck(){
-
-}
+function checkEllerUncheck(){}
 
 /**
  * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
@@ -204,6 +202,12 @@ function getHandlelisterData() {
     });
 }
 
+function gethhData() {
+    $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
+        husholdning = data;
+    });
+}
+
 /**
  *
  * @param formname lar deg huke av handlelister du er ferdige med.
@@ -225,6 +229,22 @@ function checkChecked(formname) {
     }
 
     console.log(boxesChecked);
+    lagUtleggVarer();
+}
+
+function lagUtleggVarer() {
+    var vareNavn = "";
+    var medlemmer = husholdning.medlemmer;
+    var medlemNavn = "";
+    for(var i = 0; i < boxesChecked.length; i++){
+        vareNavn = boxesChecked[i];
+        console.log(vareNavn);
+        $("#valgteVarer").append('<li class="list-group-item">' + vareNavn + '</li>');
+    }
+    for(var j = 0; j < medlemmer.length; j++){
+        medlemNavn = medlemmer[j].navn;
+    }
+    $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input title="toggle all" type="checkbox" class="all pull-right"></label>');
 }
 
 /**
@@ -259,18 +279,18 @@ function setupPage() {
                 '                       <form class="row">' +
                 '                           <div class="input-group container-fluid">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
-            '                                   <div class="input-group-btn" onclick="leggTilVare()">' +
-            '                                       <button id="' + handlelisteId + '" class="btn btn-default" type="submit">' +
-            '                                           <i class="glyphicon glyphicon-plus"></i>' +
-            '                                       </button>' +
-            '                                   </div>' +
+                '                                   <div class="input-group-btn" onclick="leggTilVare()">' +
+                '                                       <button id="' + handlelisteId + '" class="btn btn-default" type="submit">' +
+                '                                           <i class="glyphicon glyphicon-plus"></i>' +
+                '                                       </button>' +
+                '                                   </div>' +
                 '                           </div>' +
                 '                       </form>' +
                 '                       <div class="row">' +
                 '                           <div class="container-fluid">' +
-                    '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
+                '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
                 ' data-target="#utleggmodal" style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
-                    '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left" style="margin-top: 10px">Kjøpt uten' +
+                '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left" style="margin-top: 10px">Kjøpt uten' +
                 ' utlegg</button>' +
                 '                           <!-- Rounded switch -->' +
                 '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
@@ -308,7 +328,6 @@ function setupPage() {
             $("#valgteVarer").append('<label for="' + boxesChecked[i] + '" class="list-group-item" name="vare"> ' + boxesChecked[i] + '</label>');
         }
     }
-
 }
 
 /**
