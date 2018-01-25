@@ -85,8 +85,6 @@
             <div class="row">
                 <h1>Gjøremål</h1>
                 <br>
-                <p>For å fullføre et eller flere gjøremål, sjekk av avkrysningsboksen(e) og trykk deretter på oppdater-knappen nede til høyre.</p>
-                <br>
                 <div class="container-fluid container-list">
                 <div class="row" id="mineGjoremalListe" role="tablist">
                     <div class="panel panel-default collapse in">
@@ -94,7 +92,7 @@
                             <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
                                 aria-expanded="true"
                                 aria-controls="collapseTwo">
-                                <span class="glyphicon glyphicon-pushpin"></span> Mine gjoremal
+                                <span class="glyphicon glyphicon-pushpin"></span> Mine gjøremål
                             </h4>
                         </div>
                         <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
@@ -102,9 +100,10 @@
                             <div class="panel-body">
                                 <ul class="list-group" id="mineGjoremaal"></ul>
                                 <button id="nyMineGjoremal" type="button" class="btn btn-primary"
-                                        data-toggle="modal" data-target="#mineGjoremal">Legg til
+                                        data-toggle="modal" data-target="#mineGjoremal">Nytt gjøremål
                                 </button>
-                                <button id="refresh" type="button" class="glyphicon glyphicon-refresh pull-right"></button>
+                                <button id="refresh" type="button" class="btn btn-primary pull-right"
+                                        data-toggle="modal" data-target="#oppdatermine">Oppdater liste</button>
                             </div>
                         </div>
                     </div>
@@ -117,7 +116,7 @@
                             <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
                                 aria-expanded="true"
                                 aria-controls="collapseTwo">
-                                <span class="glyphicon glyphicon-pushpin"></span> Felles gjoremal
+                                <span class="glyphicon glyphicon-pushpin"></span> Felles gjøremål
                             </h4>
                         </div>
                         <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
@@ -126,9 +125,10 @@
                                 <ul class="list-group" id="fellesGjoremaal"></ul>
                                 <br>
                                 <button id="nyFellesGjoremal" type="button" class="btn btn-primary"
-                                        data-toggle="modal" data-target="#fellesGjoremal">Legg til
+                                        data-toggle="modal" data-target="#fellesGjoremal">Nytt gjøremål
                                 </button>
-                                <button id="refresh2" type="button" class="glyphicon glyphicon-refresh pull-right"></button>
+                                <button id="refresh2" type="button" class="btn btn-primary pull-right"
+                                data-toggle="modal" data-target="#oppdaterfelles">Oppdater liste</button>
                             </div>
                         </div>
                     </div>
