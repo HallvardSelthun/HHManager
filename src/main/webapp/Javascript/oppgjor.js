@@ -174,16 +174,20 @@ function utregnOppgjorSum(oppgjorArray) {
 
     var sum = 0;
     var totalSum = 0;
+    var j = 0;
     for (var i = 0; i < oppgjorArray.length; i++) {
-        for (var j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
+        sum = 0;
+        for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             sum = sum - oppgjorArray[i].utleggJegSkylder[j].delSum;
         }
         oppgjorArray[i].skylderSum = sum;
+        console.log("Oppgjor "+i+" skylderSum "+ sum);
         totalSum = sum;
         sum = 0;
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             sum = sum + oppgjorArray[i].utleggDenneSkylderMeg[j].delSum;
         }
+        console.log("Oppgjor "+i+" skylderMegSum "+sum);
         oppgjorArray[i].skylderMegSum = sum;
         totalSum = totalSum + sum;
         if (totalSum > 0) {
@@ -194,6 +198,8 @@ function utregnOppgjorSum(oppgjorArray) {
         }
         oppgjorArray[i].totalSum = totalSum;
     }
+    console.log("Summer:");
+    console.log(oppgjorArray);
 
     displayOppgjor(oppgjorArray);
 }
