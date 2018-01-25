@@ -59,6 +59,14 @@
 .vl{
     border-right: 1px solid #DDD;
 }
-#innleggsliste{
-    list-style-type: none;
+
+.innleggsliste {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.innleggsliste li {
+    position: relative;
+    margin-bottom: 10px;
 }
