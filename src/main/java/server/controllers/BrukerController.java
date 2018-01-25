@@ -38,7 +38,6 @@ public class BrukerController {
 
     /**
      * Henter epost-adressen til en bruker gitt brukerens id.
-     *
      * @param brukerid int id som identifiserer en bruker.
      * @return String epost-adressen.
      */
@@ -48,14 +47,12 @@ public class BrukerController {
 
     /**
      * Henter favoritthusholdning til bruker
-     *
      * @param brukerid til brukeren vi finner favoritthusholdningen til
      * @return id til favoritthusholdning
      */
     public static String getFavoritthusholdning(int brukerid) {
         return GenereltController.getString("favorittHusholdning", TABELLNAVN, brukerid);
     }
-
     public static int getBrukerId(String epost) {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
     }
@@ -68,7 +65,6 @@ public class BrukerController {
 
     /**
      * Sletter et medlem fra en husholdning gitt brukerens id.
-     *
      * @param brukerid int id som identifiserer en bruker
      * @return true om brukeren ble slettet, false om noe gikk galt under sletting.
      */
@@ -87,7 +83,6 @@ public class BrukerController {
 
     /**
      * Registrerer en bruker i systemet.
-     *
      * @param bruker er et Bruker-objekt som skal registreres
      * @return true dersom bruker ble registrert, false om noe gikk galt under registrering.
      */
@@ -128,7 +123,6 @@ public class BrukerController {
 
     /**
      * Sjekker om epost og passord stemmer.
-     *
      * @param bruker brukeren som sjekkes
      * @return brukerdata hvis ok: epost, navn, id, favoritthusholdning, gjøremal
      */
@@ -147,7 +141,7 @@ public class BrukerController {
                 String hentGjoremal = "SELECT * FROM gjoremal WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
                 PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
                 ResultSet rs2 = psGjoremal.executeQuery();
-                while (rs2.next()) {
+                while(rs2.next()){
                     Gjoremal gjoremal = new Gjoremal();
                     gjoremal.setFrist(rs2.getDate("frist"));
                     gjoremal.setHusholdningId(rs2.getInt("husholdningId"));
@@ -172,12 +166,11 @@ public class BrukerController {
 
     /**
      * Setter ny favoritthusholdning til brukeren
-     *
-     * @param brukerId      til brukeren det gjelder.
+     * @param brukerId til brukeren det gjelder.
      * @param husholdningId til husholdningen som skal bli favoritt
      */
     public static boolean setNyFavoritthusholdning(int brukerId, String husholdningId) {
-        return GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
+         return GenereltController.update(TABELLNAVN, "favorittHusholdning", husholdningId, brukerId);
     }
 
     public static void setNyEpost(String epost, int brukerId) {
@@ -186,7 +179,6 @@ public class BrukerController {
 
     /**
      * Lager nytt passord og lagrer det i databasen
-     *
      * @param brukerId til personen som trenger nytt passord
      * @return det nye passordet
      */
@@ -212,17 +204,17 @@ public class BrukerController {
         setNyttPassord(brukerId, passord);
         return passord;*/
 
+
     /**
      * Oppdaterer databasen med den nye hashen og saltet
-     *
      * @param brukerId til brukeren som får nytt passord
-     * @param passord  som skal hashes
+     * @param passord som skal hashes
      */
     public static void setNyttPassord(int brukerId, String passord) {
         String[] hashOgSalt = Encryption.instance.passEncoding(passord);
         String sqlSetning = "update " + TABELLNAVN + " set hash=?, salt=? where " + TABELLNAVN + "id=" + brukerId;
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlSetning)) {
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSetning)) {
             preparedStatement.setString(1, hashOgSalt[0]);
             preparedStatement.setString(2, hashOgSalt[1]);
             preparedStatement.executeUpdate();
@@ -231,7 +223,7 @@ public class BrukerController {
         }
     }
 
-    public static void setNyttNavn(int brukerId, String navn) {
+    public static void setNyttNavn(int brukerId, String navn){
         GenereltController.update(TABELLNAVN, "navn", navn, brukerId);
     }
 

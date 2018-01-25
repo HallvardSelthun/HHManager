@@ -87,6 +87,11 @@ public class GjoremalController {
         }
     }
 
+    /**
+     * Sjekker om felles gjøremål er fullført
+     * @param gjoremal
+     * @return true dersom alt går ok.
+     */
     public static boolean fullfortFelles(Gjoremal gjoremal) {
         int gjoremalId = gjoremal.getGjoremalId();
 
@@ -103,7 +108,11 @@ public class GjoremalController {
         return false;
     }
 
-
+    /**
+     * Dersom gjøremål er fullført skal databasen oppdateres og fullført settes til 1.
+     * @param gjoremal
+     * @return false dersom gjøremål ikke er fullført
+     */
     public static boolean fullfort(Gjoremal gjoremal) {
         int utforerId = gjoremal.getHhBrukerId();
         int gjoremalId = gjoremal.getGjoremalId();
@@ -121,6 +130,12 @@ public class GjoremalController {
         return false;
     }
 
+    /**
+     * Henter varsel om gjøremål dersom gjøremålet har gått ut på "dato" og fortsatt ikke er fullført.
+     * Bruker får en varsel i varsellampa i navbar om at gjøremålet ikke er gjort.
+     * @param brukerId
+     * @return bruker
+     */
     public static Bruker hentVarselGjoremal(int brukerId) {
         Bruker bruker = new Bruker();
         int id = brukerId;

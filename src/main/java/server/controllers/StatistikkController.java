@@ -11,6 +11,10 @@ import java.util.*;
  *
  * Created by BrageHalse on 19.01.2018.
  */
+
+/**
+ * Klasse for å beregne antall nyhetsinnlegg skrevet av hvilket medlem, som skal vises på statistikksiden.
+ */
 public class StatistikkController {
 
     public static ArrayList<List<String>> getNyhetsatistikk(int husholdningId){
@@ -33,6 +37,11 @@ public class StatistikkController {
         return null;
     }
 
+    /**
+     * Metoden teller antall gjøremål gjort om hvem som har gjort de.
+     * @param husholdningId
+     * @return
+     */
     public static ArrayList<List<String>> getGjoremalstatistikk(int husholdningId){
         ArrayList<List<String>> gjoremalstatistikk = new ArrayList<List<String>>();
         String query = "SELECT COUNT(gjøremålId) antal, navn FROM gjøremål LEFT JOIN bruker ON utførerId = brukerId WHERE husholdningId = "+husholdningId+" AND fullført = 1 GROUP BY utførerId";
@@ -53,12 +62,22 @@ public class StatistikkController {
         return null;
     }
 
+    /**
+     * Lager en arraylist over hvem som har lagt ut mest
+     * @param husholdningId
+     * @return
+     */
     public static ArrayList<List<String>> getUtleggstatistikk(int husholdningId){
         ArrayList<List<String>> utleggstatistikk = new ArrayList<List<String>>();
         String query = "";
         return utleggstatistikk;
     }
 
+    /**
+     * Får opp varkjøpsstatistikken i husholdningen gitt husholdningsid.
+     * @param husholdningId
+     * @return null
+     */
     public static ArrayList<List<String>> getVarekjopstatistikk(int husholdningId){
         ArrayList<List<String>> varestatistikk = new ArrayList<>();
         String query = "SELECT COUNT(vareId) antallVarer, bruker.navn FROM vare LEFT JOIN handleliste ON vare.handlelisteId = handleliste.handlelisteId LEFT JOIN bruker ON kjøperId = brukerId WHERE husholdningId = "+husholdningId+" AND kjøpt=1 AND vare.datoKjøpt>DATE_ADD(NOW(), INTERVAL -1 MONTH)  GROUP BY kjøperId;";

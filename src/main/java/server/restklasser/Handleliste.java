@@ -9,8 +9,12 @@ import java.util.ArrayList;
  *
  * Created by BrageHalse on 10.01.2018.
  */
+
 public class Handleliste {
 
+    /**
+     * Definerer variabler
+     */
     private String tittel;
     private int handlelisteId;
     private int husholdningId;
@@ -49,10 +53,7 @@ public class Handleliste {
         this.varer = varer;
     }
 
-    public int getHandlelisteId(){
-        return handlelisteId;
-
-    }
+    public int getHandlelisteId(){ return handlelisteId; }
 
     public int getHusholdningId(){
         return husholdningId;

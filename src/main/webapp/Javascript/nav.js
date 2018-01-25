@@ -1,9 +1,18 @@
+/**
+ * Klassen omhandler navbaren øverst i programmet.
+ * Definerer variabler
+ * @type {Array} lager en liste av navn i huset
+ */
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var navn = bruker.navn;
 var husholdninger;
 var varseler;
 
+/**
+ * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
+ *
+ */
 $(document).ready(function () {
     $(function () {
         $("#navbar").load("nav.html");
@@ -19,127 +28,138 @@ $(document).ready(function () {
         $("#fade").hide()
     }, 150);
 
-
+    /**
+     * Når de ulike delene av navbar blir klikket på skal bruker sendes til de ulike html-sidene
+     *
+     */
     $(document).on('click', '.hhknapp', function () {
         var nyhhId = ($(this).attr('id'));
         localStorage.setItem("husholdningId", nyhhId);
         bruker.favHusholdning = nyhhId;
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html";
-    });
 
-    $(document).on('click', '.varslerknapp', function () {
-        window.location = "gjoremaal.html";
-    });
-
-    $('body').on('click', 'a#bildenav', function () {
-        window.location = "forside.html"
-    });
-    $('body').on('click', 'a#gjoremaalsknapp', function () {
-        window.location = "gjoremaal.html"
-    });
-    $('body').on('click', 'a#kalenderknapp', function () {
-        window.location = "kalender.html"
-    });
-    $('body').on('click', 'a#handlelisteknapp', function () {
-        window.location = "handlelister.html"
-    });
-    $('body').on('click', 'a#bildeknapp', function () {
-        window.location = "forside.html"
-    });
-
-    $('body').on('click', 'a#profilNavn', function () {
-        window.location = "profil.html"
-    });
-
-    $('body').on('click', '#oppgjorknapp', function () {
-        window.location = "oppgjor.html"
-    });
-
-    $('body').on('click', '#statistikkknapp', function () {
-        window.location = "statistikk.html"
-    });
-
-    $('body').on('click', 'a#loggut', function () {
-        localStorage.clear();
-        window.location = "index.html"
-    });
-
-    // til lagNyHusstandModalen
-    $('body').on('click', '#leggTilMedlemKnapp', function () {
-        var medlem = {
-            epost: $("#navnMedlem").val()
-        };
-        $("#navnMedlem").val('');
-        navnIHuset.push(medlem);
-        console.log(navnIHuset);
-        $("#fade").show();
-        console.log("funker");
-    });
-
-    $('body').on('click', "a#alertbox", function () {
-        $("#fade").hide();
-        console.log("hide");
-    });
-
-    $("body").on("click", "#lagreHusKnapp", function () {
-        var navnHus = $("#navnHusstand").val();
-        var medlemHus = $("#navnMedlem").val();
-
-        navnIHuset.push(
-            {
-                epost: bruker.epost
-            });
-
-        var husObj = {
-            navn: navnHus,
-            medlemmer: navnIHuset,
-            adminId: bruker.brukerId
-        };
-        console.log(husObj);
-        console.log("Prøver å sende husstand");
-
-        if (navnHus == "") {
-            alert("Skriv inn noe");
-            return;
-        }
-        $.ajax({
-            url: "server/hhservice/husholdning",
-            type: 'POST',
-            data: JSON.stringify(husObj),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (result) {
-                var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
-                if (data) {
-                    if(bruker.favHusholdning==0){
-                        bruker.favHusholdning=0;
-                        localStorage.setItem("bruker", JSON.stringify(bruker));
-                    }
-                } else {
-                    alert("feil!");
-                }
-            },
-            error: function () {
-                alert("serverfeil :/");
-                console.log(husObj)
-            }
+        $(document).on('click', '.hhknapp', function () {
+            var nyhhId = ($(this).attr('id'));
+            localStorage.setItem("husholdningId", nyhhId);
+            bruker.favHusholdning = nyhhId;
+            localStorage.setItem("bruker", JSON.stringify(bruker));
+            window.location = "forside.html";
         });
+
+        $(document).on('click', '.varslerknapp', function () {
+            window.location = "gjoremaal.html";
+        });
+
+        $('body').on('click', 'a#bildenav', function () {
+            window.location = "forside.html"
+        });
+        $('body').on('click', 'a#gjoremaalsknapp', function () {
+            window.location = "gjoremaal.html"
+        });
+        $('body').on('click', 'a#kalenderknapp', function () {
+            window.location = "kalender.html"
+        });
+        $('body').on('click', 'a#handlelisteknapp', function () {
+            window.location = "handlelister.html"
+        });
+        $('body').on('click', 'a#bildeknapp', function () {
+            window.location = "forside.html"
+        });
+        $('body').on('click', 'a#profilNavn', function () {
+            window.location = "profil.html"
+        });
+        $('body').on('click', '#oppgjorknapp', function () {
+            window.location = "oppgjor.html"
+        });
+        $('body').on('click', '#statistikkknapp', function () {
+            window.location = "statistikk.html"
+        });
+        $('body').on('click', 'a#loggut', function () {
+            localStorage.clear();
+            window.location = "index.html"
+        });
+
+        // til lagNyHusstandModalen
+        $('body').on('click', '#leggTilMedlemKnapp', function () {
+            var medlem = {
+                epost: $("#navnMedlem").val()
+            };
+            $("#navnMedlem").val('');
+            navnIHuset.push(medlem);
+            console.log(navnIHuset);
+            $("#fade").show();
+            console.log("funker");
+        });
+
+        $('body').on('click', "a#alertbox", function () {
+            $("#fade").hide();
+            console.log("hide");
+        });
+
+        //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
+        $("body").on("click", "#lagreHusKnapp", function () {
+            var navnHus = $("#navnHusstand").val();
+            var medlemHus = $("#navnMedlem").val();
+
+            navnIHuset.push(
+                {
+                    epost: bruker.epost
+                });
+
+            var husObj = {
+                navn: navnHus,
+                medlemmer: navnIHuset,
+                adminId: bruker.brukerId
+            };
+            console.log(husObj);
+            console.log("Prøver å sende husstand");
+
+            if (navnHus == "") {
+                alert("Skriv inn noe");
+                return;
+            }
+            $.ajax({
+                url: "server/hhservice/husholdning",
+                type: 'POST',
+                data: JSON.stringify(husObj),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    var data = JSON.parse(result); // gjør string til json-objekt
+                    console.log("Data: " + data);
+                    if (data) {
+                        if (bruker.favHusholdning == 0) {
+                            bruker.favHusholdning = 0;
+                            localStorage.setItem("bruker", JSON.stringify(bruker));
+                        }
+                    } else {
+                        alert("feil!");
+                    }
+                },
+                error: function () {
+                    alert("serverfeil :/");
+                    console.log(husObj)
+                }
+            });
+        });
+        setTimeout(function () {
+            $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
+        }, 150);
     });
-    setTimeout(function () {
-        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
-    }, 150);
 });
 
 function utgaatteGjoremaal(liste) {
     for (var f = 0, le = liste.length; f < le; f++) {
         $("#listeVarsel").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
-            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Du har ett gjøremål som du burde ha gjort: <br><p class="beskrivelse" style="font-size: 15px;">'+liste[f].beskrivelse+'</div>' +
+            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Du har ett gjøremål som du burde ha gjort: <br><p class="beskrivelse" style="font-size: 15px;">' + liste[f].beskrivelse + '</div>' +
             '</li>')
     }
 }
 
+/**
+ * henter husholsninger fra hhservice, gitt brukerid.
+ */
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
         husholdninger = data;
@@ -155,7 +175,10 @@ function getHusholdninger() {
     });
 }
 
-
+/**
+ * Style navbar
+ * @type {jQuery|HTMLElement}
+ */
 var selectBody = $('body');
 var selectNavbarCollapse = $('.navbar-collapse');
 
@@ -182,10 +205,12 @@ $(window).resize(function () {
 function paddingSmall() {
     selectBody.css('padding-top', heightNavbarCollapsed + 'px');
 }
+
 function paddingGreat() {
     selectBody.css('padding-top', heightNavbarExpanded + 'px');
 }
 
+//varsellampe i navbar henter alle gjøremål som ikke er gjort og som har gått ut på dato
 function henteVarsel() {
     $.getJSON("server/gjoremalservice/" + bruker.brukerId + "/varsler", function (data) {
         var brukervarsler = data;
@@ -199,4 +224,5 @@ function henteVarsel() {
         }, 300);
 
     });
+
 }
