@@ -113,7 +113,10 @@ $(document).ready(function () {
                 var data = JSON.parse(result); // gjør string til json-objekt
                 console.log("Data: " + data);
                 if (data) {
-                    alert("Det gikk bra!");
+                    if(bruker.favHusholdning==0){
+                        bruker.favHusholdning=0;
+                        localStorage.setItem("bruker", JSON.stringify(bruker));
+                    }
                 } else {
                     alert("feil!");
                 }

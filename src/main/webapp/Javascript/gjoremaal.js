@@ -71,14 +71,14 @@ function hentFellesGjoremalData() {
  */
 function hentMinegjoremal() {
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
-        var gjoremal = minegjoremal[i].gjoremalId;
+        var gjoremalId = minegjoremal[i].gjoremalId;
         var beskrivelse = minegjoremal[i].beskrivelse;
         var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
-        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremal + '">' + '<b>' + beskrivelse + '</b>' +
+        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremalId + '">' + '<b>' + beskrivelse + '</b>' +
             ",  " + frist +
-            '<input id="checkboxid' + gjoremal + '" type="checkbox" class="all pull-right"></li>');
+            '<input id="checkboxid' + gjoremalId + '" type="checkbox" class="all pull-right"></li>');
     }
 }
 
@@ -146,8 +146,8 @@ $(document).ready(function () {
         var ffListe = [];
         for (var i = 0, len = minegjoremal.length; i < len; i++) {
             var gjoremal = minegjoremal[i];
-            var gjoremal = minegjoremal[i].gjoremalId;
-            var fullfort = document.getElementById("checkboxid" + gjoremal).checked;
+            var gjoremalId = minegjoremal[i].gjoremalId;
+            var fullfort = document.getElementById("checkboxid" + gjoremalId).checked;
             console.log(fullfort);
             if (fullfort) {
                 ffListe.push(i);

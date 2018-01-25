@@ -20,7 +20,7 @@ public class GjoremalController {
 
     public static ArrayList<Gjoremal> hentFellesGjoremal(int husholdningsId) {
         ArrayList<Gjoremal> gjoremal = new ArrayList<>();
-        String getQuery = "SELECT beskrivelse, frist, gjøremålId FROM gjøremål WHERE husholdningId = " + husholdningsId + " AND utførerId IS NULL AND fullført = 0 ORDER BY frist ";
+        String getQuery = "SELECT beskrivelse, frist, gjøremålId FROM gjoremal WHERE husholdningId = " + husholdningsId + " AND utførerId IS NULL AND fullført = 0 ORDER BY frist ";
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement getStatement = connection.prepareStatement(getQuery);
@@ -125,7 +125,7 @@ public class GjoremalController {
         Bruker bruker = new Bruker();
         int id = brukerId;
         int result = 0;
-        String query = "SELECT beskrivelse FROM gjøremål WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ?;";
+        String query = "SELECT beskrivelse FROM gjoremal WHERE fullført = 0 AND frist < DATE_ADD(NOW(), INTERVAL -1 DAY) AND utførerId = ?;";
 
         try (Connection con = ConnectionPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
