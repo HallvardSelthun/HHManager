@@ -243,8 +243,8 @@ function lagUtleggVarer() {
     }
     for(var j = 0; j < medlemmer.length; j++){
         medlemNavn = medlemmer[j].navn;
+        $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input title="toggle all" type="checkbox" class="all pull-right"></label>');
     }
-    $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input title="toggle all" type="checkbox" class="all pull-right"></label>');
 }
 
 /**
