@@ -7,7 +7,7 @@ $(document).ready(function () {
         var brukerEpost = $("#email").val();
         var passord = $("#password").val();
         if (brukerEpost == "" || passord == "") {
-            alert("skriv inn noke pls! ");
+            alert("Du må fylle ut alle feltene");
             return;
         }
         var bruker = {
@@ -24,7 +24,7 @@ $(document).ready(function () {
                 var innBruker = (result);
                 console.log(innBruker);
                 if (innBruker == null) {
-                    alert("feil epost eller passord!");
+                    alert("Feil epost eller passord!");
                     return;
                 }else if(innBruker.favHusholdning > 0){
                     localStorage.setItem("bruker", JSON.stringify(innBruker));

@@ -46,7 +46,7 @@ $(document).ready(function () {
                     alert("Epost er allerede registrert :/");
                     $("#email").css('color', 'red');
                 }else{
-                    alert("Bruker registrert!");
+                    alert("Bruker registrert! Logg deg på.");
                     window.location = "index.html";
                 }
             },
