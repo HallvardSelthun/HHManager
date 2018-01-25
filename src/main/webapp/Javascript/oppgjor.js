@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    /**
+     * Legger lytter på knappen som lager utlegg og registrerer om nytt utlegg skal opprettes.
+     */
     $("#lagUtlegg").on('click', function () {
         lagNyttUtlegg();
     });
@@ -43,6 +46,9 @@ function oppdaterBetalere() {
     })
 }
 
+/**
+ * Funksjonen beregner oppgjøret som er opprettetog deler på antall som skal være med på det.
+ */
 function utregnOppgjorSum() {
 
     var sum = 0;
@@ -71,7 +77,9 @@ function utregnOppgjorSum() {
     displayOppgjor();
 }
 
-
+/**
+ * Metoden under lager checkbokser og sjekker om de er avkrysset.
+ */
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
     var utleggId = $(this).attr('data-utleggId');
@@ -104,6 +112,7 @@ $(document).on("click", ".hovedCheckbox", function(event){
     }
 });
 
+//Legger alle som skal har lagt ut for en vare i en liste
 function lagUtleggsbetalerListe(oppgjorNr, callback) {
     console.log("OPPGJØRNR: "+oppgjorNr);
     console.log(alleOppgjor);
@@ -179,9 +188,6 @@ function leggInnRadNr(callback) {
     callback();
 }
 
-//////////////////////////////////////////////////////
-                // AJAX below //
-//////////////////////////////////////////////////////
 //Når en rad krysses av i klienten skal den markeres som betalt i databasen
 function checkMotattRad(utleggId, skyldigBrukerId, next) {
     $.ajax({
@@ -197,6 +203,8 @@ function checkMotattRad(utleggId, skyldigBrukerId, next) {
         }
     });
 }
+
+//Laster inn oppgjør fra server
 
 function lastInnOppgjor(brukerId) {
     $.ajax({
@@ -219,6 +227,7 @@ function lastInnOppgjor(brukerId) {
     })
 }
 
+//Henter utleggsbetaler
 function checkOppgjorSum(utleggsbetalere, next) {
     $.ajax({
         url: 'server/utlegg/utleggsbetaler',
@@ -237,7 +246,7 @@ function checkOppgjorSum(utleggsbetalere, next) {
     });
 }
 
-
+//lager nytt utlegg med sum og en utleggsbeskrivelse samt utleggerid og hvem som skal betale det
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = $("#utleggBeskrivelse").val();

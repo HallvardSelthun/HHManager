@@ -1,3 +1,6 @@
+/**
+ * Testklasse
+ */
 function test() {
     $.ajax({
         url:"../server/brukere",

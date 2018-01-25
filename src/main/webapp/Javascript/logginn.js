@@ -1,6 +1,10 @@
 /**
  * Created by BrageHalse on 11.01.2018.
  */
+/**
+ * Legger lytter på logg inn-knappen og sjekker om epost og passord er tomme. Feilmelding dersom ett av feltene er
+ * tomme. Det opprettes et objekt bruker med epost og passord.
+ */
 $(document).ready(function () {
 
     $("#loggInnBtn").on("click", function () {
@@ -40,13 +44,20 @@ $(document).ready(function () {
         })
     });
 
+    /**
+     * Lytter på knappen registrere bruker, som sender deg videre til lagbruker.html.
+     */
+
     $("#regBruker").on("click", function () {
         window.location = "lagbruker.html";
     });
 
 });
 
-
+/**
+ * Gjør at du kan trykke enter for å logge inn
+ * @param event
+ */
 function keyCode(event) {
     var x = event.keyCode;
     if (x == 13) {
