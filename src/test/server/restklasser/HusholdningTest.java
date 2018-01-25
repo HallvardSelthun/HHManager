@@ -32,10 +32,10 @@ public class HusholdningTest {
     }
 
     @Test
-    public void setOgGetGjøremål() throws Exception {
-        ArrayList<Gjøremål> gjøremåls = new ArrayList<>();
-        husholdning.setGjøremål(gjøremåls);
-        assertEquals(gjøremåls, husholdning.getGjøremål());
+    public void setOgGetGjoremal() throws Exception {
+        ArrayList<Gjoremal> gjoremals = new ArrayList<>();
+        husholdning.setGjoremal(gjoremals);
+        assertEquals(gjoremals, husholdning.getGjoremal());
     }
 
     @Test
@@ -74,10 +74,10 @@ public class HusholdningTest {
     }
 
     @Test
-    public void addGjørmål() throws Exception {
-        Gjøremål gjøremål = new Gjøremål();
-        husholdning.addGjørmål(gjøremål);
-        assertEquals(gjøremål, husholdning.getGjøremål().get(0));
+    public void addGjormal() throws Exception {
+        Gjoremal gjoremal = new Gjoremal();
+        husholdning.addGjormal(gjoremal);
+        assertEquals(gjoremal, husholdning.getGjoremal().get(0));
     }
 
     @Test
