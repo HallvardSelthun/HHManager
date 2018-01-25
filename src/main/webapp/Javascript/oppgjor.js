@@ -16,7 +16,8 @@ $(document).ready(function () {
 
 //Globale variabler
 var testBrukerId = 1;
-var alleOppgjor = [];
+var liveOppgjor = [];
+var feridgeOppgjor = [];
 var delSum = 0;
 
 function init() {
@@ -32,6 +33,27 @@ function init() {
 /////////////////////////////////////////////////////
               // On-Event-funksjoner //
 /////////////////////////////////////////////////////
+
+//Historikk
+$(document).on("click", "#historikk", function(event){
+    // Compile the markup as a named template
+    $.template( "oppgjorTemplate", $("#test-oppgjor"));
+
+    $.template("rad-template", $("#rad-template"));
+
+    //Append compiled markup
+    for (var i = 0; i < liveOppgjor.length; i++) {
+        $.tmpl( "oppgjorTemplate", liveOppgjor[i]).appendTo($("#historikkMain"));
+
+        $.tmpl( "rad-template", liveOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+        console.log(liveOppgjor[i].utleggDenneSkylderMeg);
+        $.tmpl( "rad-template", liveOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
+    }
+});
+
+function populateHistorikk() {
+    
+}
 
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
@@ -50,7 +72,6 @@ $(document).on("click", ".checkboxes", function(event){
 
 //Når denne klikkes skal alle inni merkes som betalt i databasen
 $(document).on("click", ".hovedCheckbox", function(event){
-    console.log(alleOppgjor);
     var klikketKnapp = $(this);
     var knappNavn = $(this).attr('id');
     var oppgjorNr = knappNavn.match(/\d+/g);
@@ -89,25 +110,25 @@ function utregnOppgjorSum() {
 
     var sum = 0;
     var totalSum = 0;
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
-            sum = sum - alleOppgjor[i].utleggJegSkylder[j].delSum;
+    for (var i = 0; i < liveOppgjor.length; i++) {
+        for (var j = 0; j < liveOppgjor[i].utleggJegSkylder.length; j++) {
+            sum = sum - liveOppgjor[i].utleggJegSkylder[j].delSum;
         }
-        alleOppgjor[i].skylderSum = sum;
+        liveOppgjor[i].skylderSum = sum;
         totalSum = sum;
         sum = 0;
-        for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
-            sum = sum + alleOppgjor[i].utleggDenneSkylderMeg[j].delSum;
+        for (j = 0; j < liveOppgjor[i].utleggDenneSkylderMeg.length; j++) {
+            sum = sum + liveOppgjor[i].utleggDenneSkylderMeg[j].delSum;
         }
-        alleOppgjor[i].skylderMegSum = sum;
+        liveOppgjor[i].skylderMegSum = sum;
         totalSum = totalSum + sum;
         if (totalSum > 0) {
-            alleOppgjor[i].posNeg = "Pos";
+            liveOppgjor[i].posNeg = "Pos";
         }
         else {
-            alleOppgjor[i].posNeg = "Neg";
+            liveOppgjor[i].posNeg = "Neg";
         }
-        alleOppgjor[i].totalSum = totalSum;
+        liveOppgjor[i].totalSum = totalSum;
     }
 
     displayOppgjor();
@@ -115,14 +136,14 @@ function utregnOppgjorSum() {
 
 function lagUtleggsbetalerListe(oppgjorNr, callback) {
     console.log("OPPGJØRNR: "+oppgjorNr);
-    console.log(alleOppgjor);
+    console.log(liveOppgjor);
     var utleggsbetalere = [];
     var i;
     var gammeltObjekt;
     var utleggsbetalerObjekt;
 
-    for (i = 0; i < alleOppgjor[oppgjorNr].utleggJegSkylder.length; i++) {
-        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+    for (i = 0; i < liveOppgjor[oppgjorNr].utleggJegSkylder.length; i++) {
+        gammeltObjekt = liveOppgjor[oppgjorNr].utleggJegSkylder[i];
 
         utleggsbetalerObjekt = {
             utleggId: gammeltObjekt.utleggId,
@@ -133,10 +154,10 @@ function lagUtleggsbetalerListe(oppgjorNr, callback) {
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
     console.log("utleggDenneSkylderMeg");
-    console.log(alleOppgjor[oppgjorNr].utleggDenneSkylderMeg);
-    for (i = 0; i < alleOppgjor[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
+    console.log(liveOppgjor[oppgjorNr].utleggDenneSkylderMeg);
+    for (i = 0; i < liveOppgjor[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
 
-        gammeltObjekt = alleOppgjor[oppgjorNr].utleggDenneSkylderMeg[i];
+        gammeltObjekt = liveOppgjor[oppgjorNr].utleggDenneSkylderMeg[i];
         console.log("GammeltObjekt");
         console.log(gammeltObjekt);
 
@@ -154,16 +175,16 @@ function lagUtleggsbetalerListe(oppgjorNr, callback) {
 
 //Legg til indekser på rader og oppgjør så de er raskere å finne senere
 function leggInnRadNr(callback) {
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        alleOppgjor[i].oppgjorNr = i;
+    for (var i = 0; i < liveOppgjor.length; i++) {
+        liveOppgjor[i].oppgjorNr = i;
         var j;
-        for (j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
-            console.log("utleggId: "+alleOppgjor[i].utleggJegSkylder[j].utleggId);
-            alleOppgjor[i].utleggJegSkylder[j].radNr = j;
+        for (j = 0; j < liveOppgjor[i].utleggJegSkylder.length; j++) {
+            console.log("utleggId: "+liveOppgjor[i].utleggJegSkylder[j].utleggId);
+            liveOppgjor[i].utleggJegSkylder[j].radNr = j;
         }
 
-        for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
-            alleOppgjor[i].utleggDenneSkylderMeg[j].radNr = j;
+        for (j = 0; j < liveOppgjor[i].utleggDenneSkylderMeg.length; j++) {
+            liveOppgjor[i].utleggDenneSkylderMeg[j].radNr = j;
         }
     }
     callback();
@@ -196,7 +217,7 @@ function lastInnOppgjor(brukerId) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
-            alleOppgjor = result;
+            liveOppgjor = result;
             if (!result){
                 alert("Noe rart har skjedd i lastInnOppgjor");
             }else{
@@ -263,7 +284,8 @@ function lagNyttUtlegg() {
         dataType: 'json',
         success: function (result) {
             var data =JSON.parse(result);
-            if (data){
+            if (data){ //Returnerer vel true
+                location.reload(true);
                 alert(" :D");
             }else{
                 alert("D:");
@@ -287,17 +309,13 @@ function displayOppgjor() {
     $.template("rad-template", $("#rad-template"));
 
     //Append compiled markup
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
+    for (var i = 0; i < liveOppgjor.length; i++) {
+        $.tmpl( "oppgjorTemplate", liveOppgjor[i]).appendTo($("#panelGruppe"));
 
-        $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
-        console.log(alleOppgjor[i].utleggDenneSkylderMeg);
-        $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
+        $.tmpl( "rad-template", liveOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+        console.log(liveOppgjor[i].utleggDenneSkylderMeg);
+        $.tmpl( "rad-template", liveOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
     }
-}
-
-function leggInnNyttOppgjor() {
-
 }
 
 function lastinn() {
