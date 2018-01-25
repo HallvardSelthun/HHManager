@@ -144,6 +144,7 @@ public class BrukerController {
                     gjoremal.setHhBrukerId(bruker.getBrukerId());
                     bruker.addGjoremal(gjoremal);
                 }
+                bruker.setPassord("");
                 psGjoremal.close();
                 rs.close();
                 rs2.close();
