@@ -110,7 +110,7 @@ public class Mail {
                         "\nDu er ikke registrert i vårt system, vennligst registrer deg på: http://localhost:8080/server/lagbruker.html" + regards;
             } else {
                 String pw = BrukerController.nyttTilfeldigPass(brukerId);
-                msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+                msg = "Velkommen til HouseHoldManger, systemet som gir deg en enklere hverdag." +
                         "\n\nHer er ditt nye genererte passord: " + pw + regards;
             }
             message.setText(msg);

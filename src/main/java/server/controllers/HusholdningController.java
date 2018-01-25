@@ -390,7 +390,6 @@ public class HusholdningController {
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = " + fav;
             String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + fav + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
-
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
             while (rs.next()) {
@@ -419,11 +418,11 @@ public class HusholdningController {
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 huset.addMedlem(bruker);
             }
+            System.out.println(hentHandleliste);
             Handleliste handleliste = new Handleliste();
             s = con.createStatement();
             rs = s.executeQuery(hentHandleliste);
             rs.next();
-
             handleliste.setTittel(rs.getString("navn"));
             handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
             handleliste.setHusholdningId(fav);

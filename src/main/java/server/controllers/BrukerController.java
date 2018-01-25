@@ -5,10 +5,11 @@ package server.controllers;
 
 import server.Mail;
 import server.database.ConnectionPool;
-import server.restklasser.*;
+import server.restklasser.Bruker;
+import server.restklasser.Gjoremal;
 import server.util.Encryption;
-import server.util.RandomGenerator;
 
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.Objects;
 
@@ -20,9 +21,13 @@ public class BrukerController {
     private static PreparedStatement ps;
     private static Statement s;
     private final static String TABELLNAVN = "bruker";
+    private final static int PASSWORD_LENGTH = 8;
+    private static final SecureRandom RANDOM = new SecureRandom();
+
 
     /**
      * Henter navn på bruker gitt brukerens id.
+     *
      * @param brukerid int id som identifiserer en bruker.
      * @return String navnet til brukeren.
      */
@@ -66,11 +71,11 @@ public class BrukerController {
     public static boolean slettFraHusholdning(int brukerid, int husholdningid) {
         String getQuery = "DELETE FROM hhmedlem WHERE brukerId = " + brukerid + " AND husholdningId =" + husholdningid;
 
-        try (Connection con = ConnectionPool.getConnection()){
+        try (Connection con = ConnectionPool.getConnection()) {
             ps = con.prepareStatement(getQuery);
             ps.executeUpdate();
             return true;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -91,7 +96,7 @@ public class BrukerController {
         String query = "INSERT INTO bruker (hash, navn, epost, salt) VALUES (?, ?, ?, ?)";
 
 
-        try (Connection con = ConnectionPool.getConnection()){
+        try (Connection con = ConnectionPool.getConnection()) {
 
             ps = con.prepareStatement(epostLedig);
             ps.setString(1, epost);
@@ -127,7 +132,8 @@ public class BrukerController {
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, bruker.getEpost());
             try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
+
+                if(!rs.next()) return null;
                 if (!Encryption.instance.isPassOk(bruker.getPassord(), rs.getString("hash"), rs.getString("salt"))) return null;
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
@@ -177,10 +183,27 @@ public class BrukerController {
      * @return det nye passordet
      */
     public static String nyttTilfeldigPass(int brukerId) {
-        String passord = RandomGenerator.stringulns(8);
-        setNyttPassord(brukerId, passord);
-        return passord;
+        if (PASSWORD_LENGTH < 1) {
+            return "The length of the password generated must be positive";
+        }
+        StringBuilder sb = new StringBuilder(PASSWORD_LENGTH);
+        for (int i = 0; i < PASSWORD_LENGTH; i++) {
+            int c = RANDOM.nextInt(62);   // generates a random int from zero to 62
+            if (c <= 9) {
+                sb.append(String.valueOf(c));   // adds the number to the StringBuilder
+            } else if (c < 36) {
+                sb.append((char) ('a' + c - 10));   // adds the lower case letter of the number to the StringBuilder
+            } else {
+                sb.append((char) ('A' + c - 36));   // adds the upper case letter of the number to the StringBuilder
+            }
+        }
+        setNyttPassord(brukerId, sb.toString());
+        return sb.toString();
     }
+        /*String passord = RandomGenerator.stringulns(8);
+        setNyttPassord(brukerId, passord);
+        return passord;*/
+
 
     /**
      * Oppdaterer databasen med den nye hashen og saltet

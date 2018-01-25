@@ -12,6 +12,7 @@ var epost = bruker.epost;
 var brukerId;
 var husholdningId;
 var medlemmer;
+var handleliste;
 
 /**
  * Metoden under lar deg skrive innlegg i den husholdningen du er medlem av og publiserer slik at
@@ -19,7 +20,7 @@ var medlemmer;
  */
 $(document).ready(function () {
     husholdningId = bruker.favHusholdning;
-
+    //getHandleliste()
     gethhData();
     setTimeout(setupPage, 1000);
     $("#commentBtn").on("click", function () {
@@ -106,6 +107,12 @@ function setupPage() {
 /**
  * Funksjonen henter data fra hhservice og metoden husholdningsData.
  */
+
+function getHandleliste(){
+    $.getJSON("server/handleliste/forsideListe", function(data){
+        handleliste=data;
+    })
+}
 function gethhData() {
     $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
         husholdning = data;
@@ -177,8 +184,32 @@ function innleggToHtml(nyhetsinnlegg) {
             forfatter = medlemmer[j].navn;
         }
     }
-    $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
+    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
         ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i>' + date + '</i></small></h4><p>' + tekst + '</p></div></li>');
+
+    setTimeout(function () {
+
+
+    var list = $(".innleggsliste li");
+    var numToShow = 7;
+    var button = $("#next");
+    var numInList = list.length;
+    list.hide();
+    if (numInList > numToShow) {
+        button.show();
+    }
+    list.slice(0, numToShow).show();
+
+    button.click(function () {
+        console.log("lll");
+        var showing = list.filter(':visible').length;
+        list.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = list.filter(':visible').length;
+        if (nowShowing >= numInList) {
+            button.hide();
+        }
+    });
+    },0);
 }
 
 /**
