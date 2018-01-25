@@ -6,7 +6,7 @@ var bruker;
 var utforerId = minBruker.brukerId;
 var minegjoremal = minBruker.gjoremal;
 var fellesgjoremal;
-var husholdningId = localStorage.getItem("husholdningId")
+var husholdningId = localStorage.getItem("husholdningId");
 var varselListe;
 var husholdning;
 var id;
