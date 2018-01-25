@@ -121,7 +121,7 @@ $(document).ready(function () {
                             console.log("Index: " + index);
                             fellesgjoremal.splice(index, 1);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
-                            console.log(minBruker.gjøremål);
+                            console.log(minBruker.gjoremal);
                             alert("Det gikk bra!");
                         } else {
                             alert("feil!");
@@ -185,7 +185,7 @@ $(document).ready(function () {
             for (var h = ffListe.length - 1; h >= 0; h--) {
                 minegjoremal.splice(ffListe[h], 1);
             }
-            minBruker.gjøremål = minegjoremal;
+            minBruker.gjoremal = minegjoremal;
             localStorage.setItem("bruker", JSON.stringify(minBruker));
 
         }, 200)
