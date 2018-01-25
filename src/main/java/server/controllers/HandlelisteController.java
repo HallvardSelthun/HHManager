@@ -1,6 +1,7 @@
 package server.controllers;
 
 //import jdk.internal.org.objectweb.asm.Handle;
+//import jdk.internal.org.objectweb.asm.Handle;
 import server.database.ConnectionPool;
 import server.restklasser.Handleliste;
 import server.restklasser.Vare;
@@ -19,8 +20,54 @@ public class HandlelisteController {
         return GenereltController.getDate("frist","handleliste", handlelisteId);
     }
 
+    /**
+     * Gjemmer en handleliste, i stedet for å slette, for å ivareta statistikk
+     * @param handlelisteId id til listen som skal gjemmes
+     * @return en boolean om det gikk bra eller ikke
+     */
     public static boolean gjemHandleliste(int handlelisteId) {
         return GenereltController.gjemRad("handleliste",handlelisteId);
+    }
+
+    /**
+     * Henter en handleliste som skal vises på forsiden til en bruker
+     * @param husholdningId husholdningsId'en til husstanden som vises
+     * @param brukerId brukerId'en til brukeren som er logget inn
+     * @return handlelisten som skal vises
+     */
+    public static Handleliste getForsideListe(int husholdningId, int brukerId){
+        int handlelisteId;
+        String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + husholdningId + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
+        Handleliste handleliste = new Handleliste();
+        try (Connection con = ConnectionPool.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(hentHandleliste);
+            rs.next();
+            handlelisteId = rs.getInt("handlelisteId");
+            handleliste.setHusholdningId(handlelisteId);
+            handleliste.setTittel(rs.getString("navn"));
+            handleliste.setHusholdningId(husholdningId);
+            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
+
+            s = con.createStatement();
+            rs = s.executeQuery(hentVarer);
+            while (rs.next()){
+                Vare vare = new Vare();
+                vare.setHandlelisteId(handlelisteId);
+                vare.setVarenavn(rs.getString("vareNavn"));
+                int i = rs.getInt("kjøpt");
+                if (i == 1) {
+                    vare.setKjopt(true);
+                } else {
+                    vare.setKjopt(false);
+                }
+                handleliste.addVarer(vare);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return handleliste;
     }
 
     /**

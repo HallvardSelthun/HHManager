@@ -132,9 +132,9 @@ public class BrukerController {
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, bruker.getEpost());
             try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
-                if (!Encryption.instance.isPassOk(bruker.getPassord(), rs.getString("hash"), rs.getString("salt")))
-                    return null;
+
+                if(!rs.next()) return null;
+                if (!Encryption.instance.isPassOk(bruker.getPassord(), rs.getString("hash"), rs.getString("salt"))) return null;
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 bruker.setFavHusholdning(rs.getInt("favorittHusholdning"));

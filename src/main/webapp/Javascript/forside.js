@@ -12,6 +12,7 @@ var epost = bruker.epost;
 var brukerId;
 var husholdningId;
 var medlemmer;
+var handleliste;
 
 /**
  * Metoden under lar deg skrive innlegg i den husholdningen du er medlem av og publiserer slik at
@@ -19,7 +20,7 @@ var medlemmer;
  */
 $(document).ready(function () {
     husholdningId = bruker.favHusholdning;
-
+    //getHandleliste()
     gethhData();
     setTimeout(setupPage, 1000);
     $("#commentBtn").on("click", function () {
@@ -106,6 +107,12 @@ function setupPage() {
 /**
  * Funksjonen henter data fra hhservice og metoden husholdningsData.
  */
+
+function getHandleliste(){
+    $.getJSON("server/handleliste/forsideListe", function(data){
+        handleliste=data;
+    })
+}
 function gethhData() {
     $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
         husholdning = data;

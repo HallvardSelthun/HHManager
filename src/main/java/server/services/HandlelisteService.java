@@ -104,5 +104,12 @@ public class HandlelisteService {
         return HandlelisteController.leggInnVare(vare);
     }
 
+    @GET
+    @Path("/forsideListe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Handleliste hentForsideListe(Bruker bruker){
+        return HandlelisteController.getForsideListe(bruker.getFavHusholdning(), bruker.getBrukerId());
+    }
+
 
 }
