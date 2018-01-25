@@ -5,9 +5,9 @@ package server.controllers;
 
 import server.Mail;
 import server.database.ConnectionPool;
-import server.restklasser.*;
+import server.restklasser.Bruker;
+import server.restklasser.Gjoremal;
 import server.util.Encryption;
-import server.util.RandomGenerator;
 
 import java.security.SecureRandom;
 import java.sql.*;
