@@ -131,7 +131,7 @@ public class BrukerController {
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 bruker.setFavHusholdning(rs.getInt("favorittHusholdning"));
-                String hentGjoremal = "SELECT * FROM gjøremål WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
+                String hentGjoremal = "SELECT * FROM gjoremal WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
                 PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
                 ResultSet rs2 = psGjoremal.executeQuery();
                 while(rs2.next()){

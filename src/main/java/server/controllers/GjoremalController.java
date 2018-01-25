@@ -10,9 +10,7 @@ import java.util.ArrayList;
  * Created by Nora on 19.01.2018.
  */
 public class GjoremalController {
-    private static final String TABELLNAVN = "gjøremål";
-    private static PreparedStatement ps;
-    private static Statement s;
+    private static final String TABELLNAVN = "gjoremal";
 
     /**
      * Henter alle gjøremål som er felles for en spesifik husholdning
