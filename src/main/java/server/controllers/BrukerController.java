@@ -128,11 +128,11 @@ public class BrukerController {
             ps.setString(1, bruker.getEpost());
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
-                //if (!Encryption.instance.isPassOk(bruker.getPassord(), rs.getString("hash"), rs.getString("salt"))) return null;
+                if (!Encryption.instance.isPassOk(bruker.getPassord(), rs.getString("hash"), rs.getString("salt"))) return null;
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 bruker.setFavHusholdning(rs.getInt("favorittHusholdning"));
-                String hentGjoremal = "SELECT * FROM gjøremål WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
+                String hentGjoremal = "SELECT * FROM gjoremal WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
                 PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
                 ResultSet rs2 = psGjoremal.executeQuery();
                 while(rs2.next()){
@@ -144,6 +144,7 @@ public class BrukerController {
                     gjoremal.setHhBrukerId(bruker.getBrukerId());
                     bruker.addGjoremal(gjoremal);
                 }
+                bruker.setPassord("");
                 psGjoremal.close();
                 rs.close();
                 rs2.close();

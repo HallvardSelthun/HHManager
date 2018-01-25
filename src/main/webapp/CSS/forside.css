@@ -52,6 +52,10 @@
     bottom: 10px;
 }
 
+#comment{
+    resize:none;
+}
+
 .vl{
     border-right: 1px solid #DDD;
 }

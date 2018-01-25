@@ -48,7 +48,6 @@ $(document).on('click', '.hhobjekt', function () {
                 $("#husholdningsNavn").text(hhNavn);
             }
         }
-
     }, 400);
 });
 

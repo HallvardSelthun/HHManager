@@ -21,13 +21,16 @@ $(document).ready(function () {
     husholdningId = bruker.favHusholdning;
 
     gethhData();
-    setTimeout(setupPage,1000);
+    setTimeout(setupPage, 1000);
     $("#commentBtn").on("click", function () {
         postInnlegg();
     });
     /*$(".skrivNyttInnlegg").on("click", function () {
         skrivNyttInnlegg();
     });*/
+    $("body").on("click", "#refreshGForside", function () {
+        oppdaterGjoremal();
+    });
 });
 
 /**
@@ -65,18 +68,18 @@ function setupPage() {
      * Løkka legger medlemmenes navn i en liste -medlemnavn- som deretter kan ses fra
      * medlemliste i programmet.
      */
-    for(var j = 0, leng = medlemmer.length; j< leng; j++){
+    for (var j = 0, leng = medlemmer.length; j < leng; j++) {
         var medlemnavn = medlemmer[j].navn;
-        $("#medlemsliste").append('<li class="list-group-item">'+medlemnavn+'</li>');
+        $("#medlemsliste").append('<li class="list-group-item">' + medlemnavn + '</li>');
     }
     /**
      * Løkka legger beskrivelse av gjøremål i en variabel -beskrivelse- og viser dette
      * på skjerm i form av en liste.
      */
 
-    for(var g = 0, length = gjoremal.length; g<length; g++){
+    for (var g = 0, length = gjoremal.length; g < length; g++) {
         var beskrivelse = gjoremal[g].beskrivelse;
-        $("#gjøremålForside").append('<li class="list-group-item">'+beskrivelse+'<input title="toggle all" type="checkbox" class="all pull-right"></li>')
+        $("#gjøremålForside").append('<li class="list-group-item">' + beskrivelse + '<input id="gjoremal'+gjoremal[g].gjoremalId+'" title="toggle all" type="checkbox" class="all pull-right"></li>')
     }
 
     /**
@@ -84,16 +87,20 @@ function setupPage() {
      * varer i en liste, som henter ut varenavnet og om varen er kjøpt eller ikke. Dette sjekkes
      * ved en checkbox.
      */
-    for(var k = 0, lengt = handlelister[0].varer.length; k<lengt; k++){
+    for (var k = 0, lengt = handlelister[0].varer.length; k < lengt; k++) {
         var vare = handlelister[0].varer[k];
         var varenavn = vare.varenavn;
         var checked = vare.kjøpt;
         var string = "";
-        if (checked){
+        if (checked) {
             string = "checked";
         }
-        $("#handlelisteForside").append('<label class="list-group-item "> '+varenavn+'<input title="toggle all" type="checkbox" class="all pull-right" '+string+'> </label>');
+        $("#handlelisteForside").append('<label class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right" ' + string + '> </label>');
     }
+    setTimeout(function () {
+        $("#tekst3").append(handlelister[0].tittel);
+    }, 150);
+
 }
 
 /**
@@ -122,7 +129,7 @@ function getBrukerData() {
  */
 function postInnlegg() {
     var tekst = $("#comment").val();
-    if(tekst==""){
+    if (tekst == "") {
         return;
     }
     var dato = new Date(Date.now());
@@ -136,9 +143,9 @@ function postInnlegg() {
         success: function (data) {
             var result = JSON.parse(data);
             console.log(result + " :D");
-            if (!result){
+            if (!result) {
                 alert("noe gikk galt :/");
-            }else{
+            } else {
                 innleggToHtml(nyhetsinnlegg);
                 $("#comment").val("");
                 document.getElementById("skrivNyttInnlegg").style.display = "none";
@@ -156,15 +163,22 @@ function innleggToHtml(nyhetsinnlegg) {
     var fofatterId = nyhetsinnlegg.forfatterId;
     var forfatter = "pls";
     var tekst = nyhetsinnlegg.tekst;
-    var options = {weekday: 'long', year: '2-digit', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit'};
+    var options = {
+        weekday: 'long',
+        year: '2-digit',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
     var date = new Date(nyhetsinnlegg.dato).toLocaleDateString("en-US", options);
-    for (var j = 0, length = medlemmer.length; j<length; j++){
-        if (medlemmer[j].brukerId==fofatterId){
+    for (var j = 0, length = medlemmer.length; j < length; j++) {
+        if (medlemmer[j].brukerId == fofatterId) {
             forfatter = medlemmer[j].navn;
         }
     }
     $("#innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
-        ' class="media-body"><h4 class="media-heading">'+forfatter+'<small><i>'+date+'</i></small></h4><p>'+tekst+'</p></div></li>');
+        ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i>' + date + '</i></small></h4><p>' + tekst + '</p></div></li>');
 }
 
 /**
@@ -172,9 +186,59 @@ function innleggToHtml(nyhetsinnlegg) {
  */
 /*function skrivNyttInnlegg() {
     var x = document.getElementById("skrivNyttInnlegg").style.display;
-    if(x === "none") {
+    if (x === "none") {
         document.getElementById("skrivNyttInnlegg").style.display = "";
-    }else {
+    } else {
         document.getElementById("skrivNyttInnlegg").style.display = "none";
     }
 }*/
+
+function oppdaterGjoremal() {
+    var ffListe = [];
+    var minegjoremal = bruker.gjoremal;
+    for (var i = 0, len = minegjoremal.length; i < len; i++) {
+        var gjoremal = minegjoremal[i];
+        var gjoremalId = minegjoremal[i].gjoremalId;
+        var fullfort = document.getElementById("gjoremal" + gjoremalId).checked;
+        console.log(fullfort);
+        if (fullfort) {
+            ffListe.push(i);
+        }
+        console.log(ffListe);
+    }
+    for (var j = ffListe.length - 1; j >= 0; j--) {
+        console.log(j);
+        gjoremal = minegjoremal[ffListe[j]];
+        console.log(gjoremal);
+        $.ajax({
+            url: "server/gjoremalservice/fullfort",
+            type: 'PUT',
+            data: JSON.stringify(gjoremal),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
+                var data = JSON.parse(result); // gjør string til json-objekt
+                if (data) {
+                    console.log("Gjøremål som slettes:");
+                    console.log(gjoremal)
+                    alert("Det gikk bra!");
+
+                } else {
+                    alert("feil!");
+                }
+                window.location = "forside.html";
+            },
+            error: function () {
+                alert("serverfeil :/");
+                console.log(gjoremal)
+            }
+        });
+    }
+    setTimeout(function () {
+        for (var h = ffListe.length - 1; h >= 0; h--) {
+            minegjoremal.splice(ffListe[h], 1);
+        }
+        bruker.gjoremal = minegjoremal;
+        localStorage.setItem("bruker", JSON.stringify(bruker));
+    }, 200)
+}

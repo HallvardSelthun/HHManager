@@ -16,7 +16,7 @@ public class MailTest {
         ArrayList<String> eposter = new ArrayList<>();
         eposter.add("kimia.abtahi@gmail.com");
         //eposter.add("trulsmatias@gmail.com");
-        Mail.sendAllerede(eposter, "Vår hus");
+        //Mail.sendAllerede(eposter, "Vår hus");
     }
 
     /*@Test

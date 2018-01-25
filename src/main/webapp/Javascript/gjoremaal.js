@@ -6,7 +6,7 @@ var bruker;
 var utforerId = minBruker.brukerId;
 var minegjoremal = minBruker.gjoremal;
 var fellesgjoremal;
-var husholdningId = localStorage.getItem("husholdningId")
+var husholdningId = localStorage.getItem("husholdningId");
 var varselListe;
 var husholdning;
 var id;
@@ -71,14 +71,14 @@ function hentFellesGjoremalData() {
  */
 function hentMinegjoremal() {
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
-        var gjoremal = minegjoremal[i].gjoremalId;
+        var gjoremalId = minegjoremal[i].gjoremalId;
         var beskrivelse = minegjoremal[i].beskrivelse;
         var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
-        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremal + '">' + '<b>' + beskrivelse + '</b>' +
+        $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremalId + '">' + '<b>' + beskrivelse + '</b>' +
             ",  " + frist +
-            '<input id="checkboxid' + gjoremal + '" type="checkbox" class="all pull-right"></li>');
+            '<input id="checkboxid' + gjoremalId + '" type="checkbox" class="all pull-right"></li>');
     }
 }
 
@@ -121,7 +121,7 @@ $(document).ready(function () {
                             console.log("Index: " + index);
                             fellesgjoremal.splice(index, 1);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
-                            console.log(minBruker.gjøremål);
+                            console.log(minBruker.gjoremal);
                             alert("Det gikk bra!");
                         } else {
                             alert("feil!");
@@ -146,8 +146,8 @@ $(document).ready(function () {
         var ffListe = [];
         for (var i = 0, len = minegjoremal.length; i < len; i++) {
             var gjoremal = minegjoremal[i];
-            var gjoremal = minegjoremal[i].gjoremalId;
-            var fullfort = document.getElementById("checkboxid" + gjoremal).checked;
+            var gjoremalId = minegjoremal[i].gjoremalId;
+            var fullfort = document.getElementById("checkboxid" + gjoremalId).checked;
             console.log(fullfort);
             if (fullfort) {
                 ffListe.push(i);
@@ -185,7 +185,7 @@ $(document).ready(function () {
             for (var h = ffListe.length - 1; h >= 0; h--) {
                 minegjoremal.splice(ffListe[h], 1);
             }
-            minBruker.gjøremål = minegjoremal;
+            minBruker.gjoremal = minegjoremal;
             localStorage.setItem("bruker", JSON.stringify(minBruker));
 
         }, 200)
