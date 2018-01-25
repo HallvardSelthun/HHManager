@@ -27,6 +27,48 @@ function init() {
 
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
+
+
+/////////////////////////////////////////////////////
+              // On-Event-funksjoner //
+/////////////////////////////////////////////////////
+
+$(document).on("click", ".checkboxes", function(event){
+    var valgtSvarKnapp = $(this).attr('id');
+    var utleggId = $(this).attr('data-utleggId');
+    var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
+    var substringed = valgtSvarKnapp.match(/\d+/g);
+
+    var klikketKnapp = $(this);
+
+    if ($(this).is(':checked')) {
+        var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
+            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+        });
+    }
+});
+
+//Når denne klikkes skal alle inni merkes som betalt i databasen
+$(document).on("click", ".hovedCheckbox", function(event){
+    console.log(alleOppgjor);
+    var klikketKnapp = $(this);
+    var knappNavn = $(this).attr('id');
+    var oppgjorNr = knappNavn.match(/\d+/g);
+    console.log("oppgjorNr: "+oppgjorNr);
+
+    if ($(this).is(':checked')) {
+        lagUtleggsbetalerListe(oppgjorNr, function () {
+            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+        });
+        //Oppgjoret gjemmes når metoden over er over
+    }
+});
+
+
+//////////////////////////////////////////////////////////////
+        // Funksjoner som behandler data clientside //
+//////////////////////////////////////////////////////////////
+
 function oppdaterBetalere() {
     $("#betalere").text("");
     $('.medlemCheck').each(function () {
@@ -71,39 +113,6 @@ function utregnOppgjorSum() {
     displayOppgjor();
 }
 
-
-$(document).on("click", ".checkboxes", function(event){
-    var valgtSvarKnapp = $(this).attr('id');
-    var utleggId = $(this).attr('data-utleggId');
-    var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
-    var substringed = valgtSvarKnapp.match(/\d+/g);
-
-    var klikketKnapp = $(this);
-
-    if ($(this).is(':checked')) {
-        var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
-            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
-        });
-    }
-});
-
-//Når denne klikkes skal alle inni merkes som betalt i databasen
-$(document).on("click", ".hovedCheckbox", function(event){
-    console.log("BUTTON FIRES TWICE!");
-    console.log(alleOppgjor);
-    var klikketKnapp = $(this);
-    var knappNavn = $(this).attr('id');
-    var oppgjorNr = knappNavn.match(/\d+/g);
-    console.log("oppgjorNr: "+oppgjorNr);
-
-    if ($(this).is(':checked')) {
-        lagUtleggsbetalerListe(oppgjorNr, function () {
-            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
-        });
-        //Oppgjoret gjemmes når metoden over er over
-    }
-});
-
 function lagUtleggsbetalerListe(oppgjorNr, callback) {
     console.log("OPPGJØRNR: "+oppgjorNr);
     console.log(alleOppgjor);
@@ -143,25 +152,6 @@ function lagUtleggsbetalerListe(oppgjorNr, callback) {
     return checkOppgjorSum(utleggsbetalere, callback);
 }
 
-
-
-function displayOppgjor() {
-
-    // Compile the markup as a named template
-    $.template( "oppgjorTemplate", $("#test-oppgjor"));
-
-    $.template("rad-template", $("#rad-template"));
-
-    //Append compiled markup
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
-
-        $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
-        console.log(alleOppgjor[i].utleggDenneSkylderMeg);
-        $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
-    }
-}
-
 //Legg til indekser på rader og oppgjør så de er raskere å finne senere
 function leggInnRadNr(callback) {
     for (var i = 0; i < alleOppgjor.length; i++) {
@@ -179,8 +169,9 @@ function leggInnRadNr(callback) {
     callback();
 }
 
+
 //////////////////////////////////////////////////////
-                // AJAX below //
+                // AJAX-kode //
 //////////////////////////////////////////////////////
 //Når en rad krysses av i klienten skal den markeres som betalt i databasen
 function checkMotattRad(utleggId, skyldigBrukerId, next) {
@@ -282,6 +273,31 @@ function lagNyttUtlegg() {
             alert("RIPinpeace");
         }
     })
+}
+
+
+/////////////////////////////////////////////////////////
+        // Kode for å legge inn dynamisk HTML //
+/////////////////////////////////////////////////////////
+
+function displayOppgjor() {
+    // Compile the markup as a named template
+    $.template( "oppgjorTemplate", $("#test-oppgjor"));
+
+    $.template("rad-template", $("#rad-template"));
+
+    //Append compiled markup
+    for (var i = 0; i < alleOppgjor.length; i++) {
+        $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
+
+        $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+        console.log(alleOppgjor[i].utleggDenneSkylderMeg);
+        $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
+    }
+}
+
+function leggInnNyttOppgjor() {
+
 }
 
 function lastinn() {
