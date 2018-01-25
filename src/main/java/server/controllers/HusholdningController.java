@@ -573,10 +573,47 @@ public class HusholdningController {
     }
 
     public static boolean regNyttMedlem(Bruker bruker){
-        int husholdning = bruker.getFavHusholdning();
+        int husholdningId = bruker.getFavHusholdning();
+        int brukerId;
+        ArrayList<String> medlem = new ArrayList<>();
         String epost = bruker.getEpost();
-        String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = epost";
+        medlem.add(epost);
+        String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = ?";
         String regNyttMedlem = "INSERT INTO hhmedlem (brukerId, husholdningId, admin) VALUES (?, ?, 0)";
+        String lagNyBruker = "INSERT INTO bruker (favorittHusholdning, epost) VALUES (?,?)";
+        String getNyBrukerId = "SELECT LAST_INSERT_ID()";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(getBrukerId);
+            ps.setString(1,epost);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                brukerId = rs.getInt("brukerId");
+                ps = con.prepareStatement(regNyttMedlem);
+                ps.setInt(1,brukerId);
+                ps.setInt(2,husholdningId);
+                ps.executeUpdate();
+                Mail.sendAllerede(medlem, Integer.toString(husholdningId));
+                return true;
+            }else{
+                ps = con.prepareStatement(lagNyBruker);
+                ps.setInt(1,husholdningId);
+                ps.setString(2,epost);
+                ps.executeUpdate();
+                ps = con.prepareStatement(getNyBrukerId);
+                rs = ps.executeQuery();
+                rs.next();
+                brukerId = rs.getInt(1);
+                ps = con.prepareStatement(regNyttMedlem);
+                ps.setInt(1, brukerId);
+                ps.setInt(2,husholdningId);
+                ps.executeUpdate();
+                Mail.sendUreg(medlem, Integer.toString(husholdningId));
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
         return false;
     }
 }

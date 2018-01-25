@@ -117,4 +117,11 @@ public class HusholdningsService {
     public boolean slettMedlem(Bruker bruker){
         return HusholdningController.slettMedlem(bruker);
     }
+
+    @POST
+    @Path("/regNyttMedlem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean regNyttMedlem(Bruker bruker){
+        return HusholdningController.regNyttMedlem(bruker);
+    }
 }

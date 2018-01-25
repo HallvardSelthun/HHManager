@@ -12,6 +12,7 @@ var husholdningId;
 var mineHusholdninger;
 var medlemmer;
 var hhId;
+var leggtilMedlemIHusId;
 
 /**
  * Henter husholdningene som brukeren er medlem av
@@ -253,6 +254,15 @@ $(document).on('click', '.removeMedlem', function () {
     slettMedlem(brukerSId, husId);
 });
 
+$(document).on('click', '#nymedlem', function () {
+   var epost = $("#medlemepost").val();
+   leggTilMedlem(epost, leggtilMedlemIHusId);
+});
+
+$(document).on('click', '#opneLeggTilModal', function () {
+    leggtilMedlemIHusId = $(this).attr('value');
+});
+
 /**
  * Henter liste over husholdninger slik at en skal kunne sette favoritthusholdning på profilside.
  */
@@ -279,7 +289,7 @@ function hentliste() {
             'type="button" value="'+husholdningId+'">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
             '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
-            '<button data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>'+
+            '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>'+
             '<div id="list1" class="list-group"></div></div></div>');
 
 
@@ -377,6 +387,33 @@ function slettMedlem(bid, hid) {
         },
         error: function () {
             console.log(":/");
+        }
+    });
+    window.location = "profil.html";
+}
+
+function leggTilMedlem(epost, husId) {
+    bruker = {
+        favHusholdning: husId,
+        epost: epost
+    };
+    $.ajax({
+        url: "server/hhservice/regNyttMedlem",
+        type: 'POST',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (data) {
+            var result = JSON.parse(data);
+            if(result){
+                alert("bruker registrert");
+                console.log("nice");
+            }else{
+                console.log(": (");
+            }
+        },
+        error: function () {
+            alert("noe gikk galt!");
         }
     });
     //window.location = "profil.html";
