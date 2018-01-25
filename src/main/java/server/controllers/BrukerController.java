@@ -63,7 +63,6 @@ public class BrukerController {
      * @return true dersom mailen ble sendt, false dersom noe gikk galt undder sending.
      */
     public static boolean sendGlemtPassordMail(String epost) {
-        System.out.println(epost);
         int brukerId = getBrukerId(epost);
         return Mail.sendGlemtPassord(epost, brukerId);
     }

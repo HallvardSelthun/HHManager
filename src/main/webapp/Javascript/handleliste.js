@@ -1,5 +1,6 @@
 /**
- * Created by Karol on 14.01.2018.
+ * Created by Karol on
+ * 14.01.2018.
  */
 /**
  * Definerer variabler
@@ -32,10 +33,6 @@ $(document).ready(function () {
         endrePublic();
     });
 
-    /*$("#leggTilNyGjenstandKnapp").on("click", function () {
-        leggTilNyGjenstand();
-    });
-    */
     $(document).on('click','.slettHandlelisteKnapp', function () {
         slettHandleliste($(this).attr('value'))
     });
@@ -101,14 +98,24 @@ function leggTilNyHandleliste() {
  * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
  * til i riktig handleliste med en handlelisteId.
  */
-function leggTilVare() {
+
+$(document).on('click', '.nyVareKnapp', function() {
+    var listeId = $(this).attr('value');
+    var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
+    var temp = "#"+listeId;
+
+    leggTilVare(listeId, input);
+
+});
+function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
-    var handlelisteId = $(".leggTilNyGjenstand:focus").attr("id");
 
     var vare = {
-        varenavn: nyGjenstandNavn,
-        handlelisteId: handlelisteId
+        varenavn: navn,
+        handlelisteId: hlId
     };
+    console.log(vare);
+
 
     if (nyGjenstandNavn == "") {
         alert("Skriv navnet til gjenstanden!");
@@ -118,26 +125,30 @@ function leggTilVare() {
     /**
      * Sender et ajax-kall til handleliste i server der varen lagres.
      */
-    $.ajax({
-        url: "server/handleliste/" + handlelisteId + "/" + brukerId,
-        type: 'POST',
-        data: JSON.stringify(vare),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (result) {
-            var data = JSON.parse(result);
-            alert("Det gikk bra!");
+    setTimeout(function(){
+        $.ajax({
+            url: "server/handleliste/nyVare",
+            type: 'POST',
+            data: JSON.stringify(vare),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
+                var data = JSON.parse(result);
+                window.location = "handlelister.html";
 
-            if (data) {
-                //window.location = "handlelister.html";
-            } else {
-                alert("feil!");
+                if (data) {
+
+                } else {
+                    alert("feil!");
+                }
+            },
+            error: function () {
+                alert("serverfeil :/")
             }
-        },
-        error: function () {
-            alert("serverfeil :/")
-        }
-    })
+        });
+    },200);
+
+
 }
 
 /**
@@ -334,16 +345,16 @@ function setupPage() {
                 '           <div class="container-fluid">' +
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
-                '                       <form class="row">' +
+                '                       ' +
                 '                           <div class="input-group container-fluid">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
-                '                                   <div class="input-group-btn" onclick="leggTilVare()">' +
-                '                                       <button id="' + handlelisteId + '" class="btn btn-default" type="submit">' +
+                '                                   <div class="input-group-btn">' +
+                '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +
                 '                                           <i class="glyphicon glyphicon-plus"></i>' +
                 '                                       </button>' +
                 '                                   </div>' +
                 '                           </div>' +
-                '                       </form>' +
+                '                      ' +
                 '                       <div class="row">' +
                 '                           <div class="container-fluid">' +
                 '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +

@@ -418,33 +418,33 @@ public class HusholdningController {
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 huset.addMedlem(bruker);
             }
-            System.out.println(hentHandleliste);
             Handleliste handleliste = new Handleliste();
             s = con.createStatement();
             rs = s.executeQuery(hentHandleliste);
-            rs.next();
-            handleliste.setTittel(rs.getString("navn"));
-            handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
-            handleliste.setHusholdningId(fav);
-            handleliste.setOffentlig(true);
-            huset.addHandleliste(handleliste);
-            handlelisteId = rs.getInt("handlelisteId");
+            if(rs.next()) {
+                handleliste.setTittel(rs.getString("navn"));
+                handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
+                handleliste.setHusholdningId(fav);
+                handleliste.setOffentlig(true);
+                huset.addHandleliste(handleliste);
+                handlelisteId = rs.getInt("handlelisteId");
 
-            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
+                String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
 
-            s = con.createStatement();
-            rs = s.executeQuery(hentVarer);
-            while (rs.next()) {
-                Vare vare = new Vare();
-                vare.setHandlelisteId(handlelisteId);
-                vare.setVarenavn(rs.getString("vareNavn"));
-                int i = rs.getInt("kjøpt");
-                if (i == 1) {
-                    vare.setKjopt(true);
-                } else {
-                    vare.setKjopt(false);
+                s = con.createStatement();
+                rs = s.executeQuery(hentVarer);
+                while (rs.next()) {
+                    Vare vare = new Vare();
+                    vare.setHandlelisteId(handlelisteId);
+                    vare.setVarenavn(rs.getString("vareNavn"));
+                    int i = rs.getInt("kjøpt");
+                    if (i == 1) {
+                        vare.setKjopt(true);
+                    } else {
+                        vare.setKjopt(false);
+                    }
+                    handleliste.addVarer(vare);
                 }
-                handleliste.addVarer(vare);
             }
 
         }catch (Exception e){

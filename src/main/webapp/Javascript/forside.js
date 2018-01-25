@@ -9,7 +9,7 @@
 var husholdning;
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var epost = bruker.epost;
-var brukerId;
+var brukerId = bruker.brukerId;
 var husholdningId;
 var medlemmer;
 var handleliste;
@@ -20,7 +20,7 @@ var handleliste;
  */
 $(document).ready(function () {
     husholdningId = bruker.favHusholdning;
-    //getHandleliste()
+    getHandleliste();
     gethhData();
     setTimeout(setupPage, 1000);
     $("#commentBtn").on("click", function () {
@@ -55,7 +55,6 @@ function setupPage() {
     /**
      * Setter variablene lik en bruker og henter id, navn og gjøremål fra database.
      */
-    brukerId = bruker.brukerId;
     brukernavn = bruker.navn;
     gjoremal = bruker.gjoremal;
     console.log(bruker);
@@ -88,8 +87,8 @@ function setupPage() {
      * varer i en liste, som henter ut varenavnet og om varen er kjøpt eller ikke. Dette sjekkes
      * ved en checkbox.
      */
-    for (var k = 0, lengt = handlelister[0].varer.length; k < lengt; k++) {
-        var vare = handlelister[0].varer[k];
+    for (var k = 0, lengt = handleliste.varer.length; k < lengt; k++) {
+        var vare = handleliste.varer[k];
         var varenavn = vare.varenavn;
         var checked = vare.kjøpt;
         var string = "";
@@ -99,20 +98,23 @@ function setupPage() {
         $("#handlelisteForside").append('<label class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right" ' + string + '> </label>');
     }
     setTimeout(function () {
-        $("#tekst3").append(handlelister[0].tittel);
+        $("#tekst3").append(handleliste.tittel);
     }, 150);
 
+}
+
+
+function getHandleliste(){
+    $.getJSON("server/handleliste/forsideListe/"+husholdningId+"/"+brukerId, function(data){
+        handleliste=data;
+    })
 }
 
 /**
  * Funksjonen henter data fra hhservice og metoden husholdningsData.
  */
 
-function getHandleliste(){
-    $.getJSON("server/handleliste/forsideListe", function(data){
-        handleliste=data;
-    })
-}
+
 function gethhData() {
     $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
         husholdning = data;

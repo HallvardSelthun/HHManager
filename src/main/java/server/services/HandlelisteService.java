@@ -109,7 +109,7 @@ public class HandlelisteService {
 
     //Returnerer ID til varen som ble lagt inn
     @POST
-    @Path("/{handlelisteId}/{brukerId}")
+    @Path("/nyVare")
     @Consumes(MediaType.APPLICATION_JSON)
     public int leggTilVare(Vare vare) {
         return HandlelisteController.leggInnVare(vare);
@@ -121,11 +121,9 @@ public class HandlelisteService {
      * @return
      */
     @GET
-    @Path("/forsideListe")
+    @Path("/forsideListe/{husholdningId}/{brukerId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Handleliste hentForsideListe(Bruker bruker){
-        return HandlelisteController.getForsideListe(bruker.getFavHusholdning(), bruker.getBrukerId());
+    public Handleliste hentForsideListe(@PathParam("husholdningId") int husholdningId, @PathParam("brukerId") int brukerId){
+        return HandlelisteController.getForsideListe(husholdningId, brukerId);
     }
-
-
 }

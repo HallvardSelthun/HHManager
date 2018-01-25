@@ -63,11 +63,11 @@ public class HandlelisteController {
                 }
                 handleliste.addVarer(vare);
             }
+            return handleliste;
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
-        return handleliste;
     }
 
     /**
@@ -243,36 +243,25 @@ public class HandlelisteController {
      */
     public static int leggInnVare(Vare vare) {
 
-        String INSERT_Vare =
-                "INSERT INTO vare (handlelisteId, vareNavn) VALUES (?, ?)";
-
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(INSERT_Vare, PreparedStatement.RETURN_GENERATED_KEYS);) {
+        String INSERT_Vare = "INSERT INTO vare (handlelisteId, vareNavn) VALUES (?, ?)";
+        String getId = "SELECT LAST_INSERT_ID()";
+        int vareId;
+        try (Connection connection = ConnectionPool.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(INSERT_Vare);
             
-            insertStatement.setInt(1, vare.getHandlelisteId());
-            insertStatement.setString(2, vare.getVarenavn());
-            
-
-            //Kjør insert-kall
-            try {
-                int primaryKey = -1;
-                if (insertStatement.executeUpdate() > 0) {
-                    ResultSet rs = insertStatement.getGeneratedKeys();
-                    while (rs.next()) {
-                        primaryKey = rs.getInt(1);
-                    }
-                }
-                return primaryKey;
+            ps.setInt(1, vare.getHandlelisteId());
+            ps.setString(2, vare.getVarenavn());
+            ps.executeUpdate();
+            ps=connection.prepareStatement(getId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            vareId=rs.getInt(1);
+            return vareId;
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return -1;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     /*
