@@ -551,4 +551,26 @@ public class HusholdningController {
         }
         return false;
     }
+
+    public static boolean slettMedlem (Bruker bruker){
+        int husId = bruker.getFavHusholdning();
+        int brukerid = bruker.getBrukerId();
+        String delete = "DELETE FROM hhmedlem WHERE brukerId = ? AND husholdningId = ?";
+        String favHusDel = "UPDATE bruker SET favorittHusholdning = null WHERE brukerId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(delete);
+            ps.setInt(1,brukerid);
+            ps.setInt(2,husId);
+            ps.executeUpdate();
+            ps = con.prepareStatement(favHusDel);
+            ps.setInt(1,brukerid);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
+
+

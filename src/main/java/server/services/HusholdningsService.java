@@ -2,6 +2,7 @@ package server.services;
 
 import server.controllers.HusholdningController;
 
+import server.restklasser.Bruker;
 import server.restklasser.Husholdning;
 import server.restklasser.Nyhetsinnlegg;
 
@@ -93,5 +94,12 @@ public class HusholdningsService {
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean postNyhet(Nyhetsinnlegg nyhetsinnlegg){
         return HusholdningController.postNyhetsinnlegg(nyhetsinnlegg);
+    }
+
+    @DELETE
+    @Path("/slettMedlem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean slettMedlem(Bruker bruker){
+        return HusholdningController.slettMedlem(bruker);
     }
 }

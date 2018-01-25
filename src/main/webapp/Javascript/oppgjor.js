@@ -18,7 +18,7 @@ $(document).ready(function () {
 });
 
 //Globale variabler
-var testBrukerId = 1;
+var testBrukerId = 8;
 var alleOppgjor = [];
 var delSum = 0;
 
