@@ -131,8 +131,6 @@ $(document).ready(function () {
 
 function utgaatteGjoremaal(liste) {
     for (var f = 0, le = liste.length; f < le; f++) {
-        console.log(":D");
-        console.log(liste[f].beskrivelse);
         $("#listeVarsel").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
             '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Du har ett gjøremål som du burde ha gjort: <br><p class="beskrivelse" style="font-size: 15px;">'+liste[f].beskrivelse+'</div>' +
             '</li>')
@@ -188,11 +186,8 @@ function paddingGreat() {
 function henteVarsel() {
     $.getJSON("server/gjoremalservice/" + bruker.brukerId + "/varsler", function (data) {
         var brukervarsler = data;
-        console.log(brukervarsler);
         varseler = brukervarsler.gjoremal;
         varselListe = brukervarsler.gjoremal.length;
-        console.log(varseler);
-        console.log(varselListe);
         $("#antallVarsler").text(varselListe);
         $("#ant").text(varselListe);
         setTimeout(function () {
