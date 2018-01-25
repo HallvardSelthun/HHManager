@@ -51,9 +51,9 @@ public class BrukerController {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
     }
 
-    public static void sendGlemtPassordMail(String epost) {
+    public static boolean sendGlemtPassordMail(String epost) {
         int brukerId = getBrukerId(epost);
-        Mail.sendGlemtPassord(epost, brukerId);
+        return Mail.sendGlemtPassord(epost, brukerId);
     }
 
     /**

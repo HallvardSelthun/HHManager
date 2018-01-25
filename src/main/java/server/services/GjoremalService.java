@@ -1,8 +1,7 @@
 package server.services;
 
 import server.controllers.GjoremalController;
-import server.restklasser.Bruker;
-import server.restklasser.Gjoremal;
+import server.restklasser.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
