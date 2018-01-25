@@ -12,12 +12,15 @@
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <script src="Javascript/nav.js"></script>
     <script src="Javascript/oppgjor.js"></script>
-    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js" type="text/javascript"></script>
+
 </head>
 <body>
 <div id =header>
     <div id="navbar"></div>
 </div>
+
+<!-- Modals under -->
+
 <div id="oppgjørmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -58,7 +61,7 @@
     </div>
 </div>
 
-<!-- Sidens hovedstruktur -->
+<!-- Historikk-modal -->
 <div id="visHistorikk" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -66,10 +69,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Historikk</h4>
             </div>
-                <br>
-                <div class="historikkmargin">
-                    <p>Vis historikk</p>
-                    <button type="button">Vis</button>
+                <div id="historikkMain">
+                    <div class="panel-group" id="panelGruppeHistorikk">
+                        <div class="labels">
+                            <label class="skyldertittel">Balanse </label>
+                            <label class="betalt">Betalt</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
@@ -79,6 +85,8 @@
     </div>
 </div>
 
+
+<!-- Hovedstruktur for siden -->
 <div id = "container">
     <div class = "row">
         <div id="left" class="col-sm-2 col-lg-3"></div>
@@ -87,8 +95,8 @@
             <!-- Under her legges det inn dynamisk HTML -->
             <div class="panel-group" id="panelGruppe">
                 <div class="labels">
-                    <label id="skyldertittel">Balanse </label>
-                    <label id="betalt">Betalt</label>
+                    <label class="skyldertittel">Balanse </label>
+                    <label class="betalt">Motatt</label>
                 </div>
             </div>
             <b><a id="historikk" href="#" target="_blank" data-toggle="modal" data-target="#visHistorikk">Vis historikk</a></b>
@@ -115,53 +123,69 @@
                 <!--Viktig ^^^ -->
             </h3>
             <div class="titteldiv">
+                <label class="skylderTekst">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
                 <label class="totalSum${posNeg}">${totalSum} kr</label>
-                <input type="checkbox" class="hovedCheckbox" id="hovCheckNr${oppgjorNr}">
+                {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox" id="hovCheckNr${oppgjorNr}">{{else}}<span class="placeholderSpan"> </span>{{/if}}
+
             </div>
         </div>
         <div id="collapse${oppgjorNr}" class="collapse">
             <div class="panel-body">
                 <div class="balanse">
-                    <h4>Du skylder Nora:</h4>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th class="col-sm-3 col-xs-3">Sum</th>
-                            <th class="col-sm-8 col-xs-8">Beskrivelse</th>
-                            <th class="col-sm-1 col-xs-1">Betalt</th>
-                        </tr>
-                        </thead>
-                        <tbody id="radMinus${oppgjorNr}">
-                        <!-- Her skal dynamisk kode inn -->
-                        </tbody>
-                    </table>
+                    <!-- Hadde vært nice å få til litt dynamisk HTML her -->
+                    <div class="duSkylder">
+                        <h4>Du skylder ${navn}:</h4>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3 col-xs-3">Sum</th>
+                                <th class="col-sm-8 col-xs-8">Beskrivelse</th>
+                                <th class="col-sm-1 col-xs-1">Betalt</th>
+                            </tr>
+                            </thead>
+                            <tbody id="radMinus${oppgjorNr}">
+                            <!-- Her skal dynamisk kode inn -->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderSum}</strong></p>
+                        <br>
+                    </div>
+                    <div class="skylderDeg">
+                        <h4>${navn} skylder deg:</h4>
 
-
-                    <p>Totalt: <strong>NOK ${skylderSum}</strong></p>
-                    <br>
-
-                    <h4>Nora skylder deg:</h4>
-
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th class="col-sm-3 col-xs-3">Sum</th>
-                            <th class="col-sm-8 col-xs-8">Beskrivelse</th>
-                            <th class="col-sm-1 col-xs-1">Motatt</th>
-                        </tr>
-                        </thead>
-                        <tbody id="radPlus${oppgjorNr}">
-                        <!-- Her skal mer generert kode inn-->
-                        </tbody>
-                    </table>
-                    <p>Totalt: <strong>NOK ${skylderMegSum}</strong></p>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3 col-xs-3">Sum</th>
+                                <th class="col-sm-8 col-xs-8">Beskrivelse</th>
+                                <th class="col-sm-1 col-xs-1">Motatt</th>
+                            </tr>
+                            </thead>
+                            <tbody id="radPlus${oppgjorNr}">
+                            <!-- Her skal mer generert kode inn-->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderMegSum}</strong></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </script>
 
-<script id="rad-template" type="text/x-custom-template">
+<script id="rad-template-duSkylder" type="text/x-custom-template">
+    <tr>
+        <td>${delSum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox-wrap" >
+                <span></span>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script id="rad-template-deSkylder" type="text/x-custom-template">
     <tr>
         <td>${delSum}</td>
         <td>${beskrivelse}</td>

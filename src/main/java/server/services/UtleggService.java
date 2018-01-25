@@ -30,10 +30,10 @@ public class UtleggService {
      * @return ArrayList med Oppgjør. Inneholder to arrays av Utleggsbetaler for utlegg brukeren skylder og andre skylder brukeren
      */
     @GET
-    @Path("/oppgjor/{brukerId}")
+    @Path("/oppgjor/{brukerId}/{betalt}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId) {
-        return UtleggController.getMineOppgjor(brukerId);
+    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId, int betalt) {
+        return UtleggController.getMineOppgjor(brukerId, betalt);
     }
 
 
@@ -66,7 +66,7 @@ public class UtleggService {
         return UtleggController.getUtleggsbetalere(utleggId);
     }*/
     @POST
-    @Path("nyttutlegg")
+    @Path("/nyttutlegg")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean nyttutlegg(Utlegg utlegg){
         return UtleggController.lagNyttUtlegg(utlegg);

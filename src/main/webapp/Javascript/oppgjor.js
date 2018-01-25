@@ -1,7 +1,30 @@
+//Additional JavaScript
+/** Testet with:
+ *  - IE 5.5, 7.0, 8.0, 9.0 (preview)
+ *  - Firefox 3.6.3, 3.6.8
+ *  - Safari 5.0
+ *  - Chrome 5.0
+ *  - Opera 10.10, 10.60
+ */
+var JavaScript = {
+    load: function(src, callback) {
+        var script = document.createElement('script'),
+            loaded;
+        script.setAttribute('src', src);
+        if (callback) {
+            script.onreadystatechange = script.onload = function() {
+                if (!loaded) {
+                    callback();
+                }
+                loaded = true;
+            };
+        }
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+};
+
+
 $(document).ready(function () {
-    /**
-     * Legger lytter på knappen som lager utlegg og registrerer om nytt utlegg skal opprettes.
-     */
     $("#lagUtlegg").on('click', function () {
         lagNyttUtlegg();
     });
@@ -13,73 +36,67 @@ $(document).ready(function () {
     });
 
     //Kjør JavaScript
-    init();
 
+
+    JavaScript.load("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", function () {
+        init();
+    })
+    /*
+    var script = document.createElement('script');
+    script.src = "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js";
+    script.async = true;
+    document.head.appendChild(script);
+    */
+    console.log("testbruk: "+testBrukerId);
 });
 
 //Globale variabler
-var testBrukerId = 1;
-var alleOppgjor = [];
+var bruker = JSON.parse(localStorage.getItem("bruker"));
+var testBrukerId = bruker.brukerId;
+var liveOppgjor = [];
+var feridgeOppgjor = [];
 var delSum = 0;
 
 function init() {
-    lastInnOppgjor(testBrukerId);
+    lastInnOppgjor(testBrukerId,1);
     setTimeout(function () {
         lastinn();
     },500);
 
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
-function oppdaterBetalere() {
-    $("#betalere").text("");
-    $('.medlemCheck').each(function () {
-        var sum = $("#sum").val();
-        var pluss = 0;
-        if ($("#vereMedPaaUtlegg").is(":checked")){
-            pluss = 1;
-        }
-        delSum = sum/($('#personer input:checked').length+pluss);
-        if ($(this).is(":checked")){
-            console.log($(this).attr('value'));
-            $("#betalere").append('<br> '+$(this).attr('value') +' Sum: '+ delSum);
-        }
-    })
-}
 
-/**
- * Funksjonen beregner oppgjøret som er opprettetog deler på antall som skal være med på det.
- */
-function utregnOppgjorSum() {
 
-    var sum = 0;
-    var totalSum = 0;
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        for (var j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
-            sum = sum - alleOppgjor[i].utleggJegSkylder[j].delSum;
-        }
-        alleOppgjor[i].skylderSum = sum;
-        totalSum = sum;
-        sum = 0;
-        for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
-            sum = sum + alleOppgjor[i].utleggDenneSkylderMeg[j].delSum;
-        }
-        alleOppgjor[i].skylderMegSum = sum;
-        totalSum = totalSum + sum;
-        if (totalSum > 0) {
-            alleOppgjor[i].posNeg = "Pos";
-        }
-        else {
-            alleOppgjor[i].posNeg = "Neg";
-        }
-        alleOppgjor[i].totalSum = totalSum;
+/////////////////////////////////////////////////////
+              // On-Event-funksjoner //
+/////////////////////////////////////////////////////
+
+//Historikk
+$(document).on("click", "#historikk", function(event){
+    lastInnOppgjor(testBrukerId,0);
+});
+
+function displayHistorikk(oppgjorArray) {
+    /*
+    // Compile the markup as a named template
+    $.template( "oppgjorTemplate", $("#test-oppgjor"));
+
+    $.template("rad-template", $("#rad-template"));
+    */
+
+    var startOppgjorNr = liveOppgjor.length;
+    console.log("Inne i displayHistorikk");
+
+    //Append compiled markup
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        $.tmpl( "oppgjorTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
+        console.log(oppgjorArray[i].utleggJegSkylder);
+        $.tmpl( "rad-template", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+        console.log(oppgjorArray[i].utleggDenneSkylderMeg);
+        $.tmpl( "rad-template", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
     }
-
-    displayOppgjor();
 }
 
-/**
- * Metoden under lager checkbokser og sjekker om de er avkrysset.
- */
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
     var utleggId = $(this).attr('data-utleggId');
@@ -96,33 +113,76 @@ $(document).on("click", ".checkboxes", function(event){
 });
 
 //Når denne klikkes skal alle inni merkes som betalt i databasen
+
 $(document).on("click", ".hovedCheckbox", function(event){
-    console.log("BUTTON FIRES TWICE!");
-    console.log(alleOppgjor);
     var klikketKnapp = $(this);
     var knappNavn = $(this).attr('id');
     var oppgjorNr = knappNavn.match(/\d+/g);
-    console.log("oppgjorNr: "+oppgjorNr);
 
     if ($(this).is(':checked')) {
-        lagUtleggsbetalerListe(oppgjorNr, function () {
+        lagUtleggsbetalerListe(liveOppgjor, oppgjorNr, function () {
             klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
         });
         //Oppgjoret gjemmes når metoden over er over
     }
 });
 
-//Legger alle som skal har lagt ut for en vare i en liste
-function lagUtleggsbetalerListe(oppgjorNr, callback) {
-    console.log("OPPGJØRNR: "+oppgjorNr);
-    console.log(alleOppgjor);
+
+//////////////////////////////////////////////////////////////
+        // Funksjoner som behandler data clientside //
+//////////////////////////////////////////////////////////////
+
+function oppdaterBetalere() {
+    $("#betalere").text("");
+    $('.medlemCheck').each(function () {
+        var sum = $("#sum").val();
+        var pluss = 0;
+        if ($("#vereMedPaaUtlegg").is(":checked")){
+            pluss = 1;
+        }
+        delSum = sum/($('#personer input:checked').length+pluss);
+        if ($(this).is(":checked")){
+            $("#betalere").append('<br> '+$(this).attr('value') +' Sum: '+ delSum);
+        }
+    })
+}
+
+function utregnOppgjorSum(oppgjorArray) {
+
+    var sum = 0;
+    var totalSum = 0;
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        for (var j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
+            sum = sum - oppgjorArray[i].utleggJegSkylder[j].delSum;
+        }
+        oppgjorArray[i].skylderSum = sum;
+        totalSum = sum;
+        sum = 0;
+        for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
+            sum = sum + oppgjorArray[i].utleggDenneSkylderMeg[j].delSum;
+        }
+        oppgjorArray[i].skylderMegSum = sum;
+        totalSum = totalSum + sum;
+        if (totalSum > 0) {
+            oppgjorArray[i].posNeg = "Pos";
+        }
+        else {
+            oppgjorArray[i].posNeg = "Neg";
+        }
+        oppgjorArray[i].totalSum = totalSum;
+    }
+
+    displayOppgjor(oppgjorArray);
+}
+
+function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
     var utleggsbetalere = [];
     var i;
     var gammeltObjekt;
     var utleggsbetalerObjekt;
 
-    for (i = 0; i < alleOppgjor[oppgjorNr].utleggJegSkylder.length; i++) {
-        gammeltObjekt = alleOppgjor[oppgjorNr].utleggJegSkylder[i];
+    for (i = 0; i < oppgjorArray[oppgjorNr].utleggJegSkylder.length; i++) {
+        gammeltObjekt = oppgjorArray[oppgjorNr].utleggJegSkylder[i];
 
         utleggsbetalerObjekt = {
             utleggId: gammeltObjekt.utleggId,
@@ -132,13 +192,10 @@ function lagUtleggsbetalerListe(oppgjorNr, callback) {
 
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
-    console.log("utleggDenneSkylderMeg");
-    console.log(alleOppgjor[oppgjorNr].utleggDenneSkylderMeg);
-    for (i = 0; i < alleOppgjor[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
 
-        gammeltObjekt = alleOppgjor[oppgjorNr].utleggDenneSkylderMeg[i];
-        console.log("GammeltObjekt");
-        console.log(gammeltObjekt);
+    for (i = 0; i < oppgjorArray[oppgjorNr].utleggDenneSkylderMeg.length; i++) {
+
+        gammeltObjekt = oppgjorArray[oppgjorNr].utleggDenneSkylderMeg[i];
 
         utleggsbetalerObjekt = {
             utleggId: gammeltObjekt.utleggId,
@@ -148,46 +205,29 @@ function lagUtleggsbetalerListe(oppgjorNr, callback) {
 
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
-    console.log(utleggsbetalere);
     return checkOppgjorSum(utleggsbetalere, callback);
 }
 
-
-
-function displayOppgjor() {
-
-    // Compile the markup as a named template
-    $.template( "oppgjorTemplate", $("#test-oppgjor"));
-
-    $.template("rad-template", $("#rad-template"));
-
-    //Append compiled markup
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        $.tmpl( "oppgjorTemplate", alleOppgjor[i]).appendTo($("#panelGruppe"));
-
-        $.tmpl( "rad-template", alleOppgjor[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
-        console.log(alleOppgjor[i].utleggDenneSkylderMeg);
-        $.tmpl( "rad-template", alleOppgjor[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
-    }
-}
-
 //Legg til indekser på rader og oppgjør så de er raskere å finne senere
-function leggInnRadNr(callback) {
-    for (var i = 0; i < alleOppgjor.length; i++) {
-        alleOppgjor[i].oppgjorNr = i;
+function leggInnRadNr(callback, oppgjorArray) {
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        oppgjorArray[i].oppgjorNr = i;
         var j;
-        for (j = 0; j < alleOppgjor[i].utleggJegSkylder.length; j++) {
-            console.log("utleggId: "+alleOppgjor[i].utleggJegSkylder[j].utleggId);
-            alleOppgjor[i].utleggJegSkylder[j].radNr = j;
+        for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
+            oppgjorArray[i].utleggJegSkylder[j].radNr = j;
         }
 
-        for (j = 0; j < alleOppgjor[i].utleggDenneSkylderMeg.length; j++) {
-            alleOppgjor[i].utleggDenneSkylderMeg[j].radNr = j;
+        for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
+            oppgjorArray[i].utleggDenneSkylderMeg[j].radNr = j;
         }
     }
-    callback();
+    callback(oppgjorArray);
 }
 
+
+//////////////////////////////////////////////////////
+                // AJAX-kode //
+//////////////////////////////////////////////////////
 //Når en rad krysses av i klienten skal den markeres som betalt i databasen
 function checkMotattRad(utleggId, skyldigBrukerId, next) {
     $.ajax({
@@ -204,21 +244,27 @@ function checkMotattRad(utleggId, skyldigBrukerId, next) {
     });
 }
 
-//Laster inn oppgjør fra server
-
-function lastInnOppgjor(brukerId) {
+function lastInnOppgjor(brukerId, betalt) {
     $.ajax({
         url: "server/utlegg/oppgjor/"+ brukerId,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
-            alleOppgjor = result;
+            var valgtOppgjorArray = []
+            if (betalt === 1) {
+                liveOppgjor = result;
+                valgtOppgjorArray = liveOppgjor;
+            }
+            else {
+                feridgeOppgjor = result;
+                valgtOppgjorArray = feridgeOppgjor;
+            }
             if (!result){
                 alert("Noe rart har skjedd i lastInnOppgjor");
             }else{
                 console.log(result);
-                leggInnRadNr(utregnOppgjorSum);
+                leggInnRadNr(utregnOppgjorSum, valgtOppgjorArray);
             }
         },
         error: function () {
@@ -227,7 +273,6 @@ function lastInnOppgjor(brukerId) {
     })
 }
 
-//Henter utleggsbetaler
 function checkOppgjorSum(utleggsbetalere, next) {
     $.ajax({
         url: 'server/utlegg/utleggsbetaler',
@@ -246,7 +291,7 @@ function checkOppgjorSum(utleggsbetalere, next) {
     });
 }
 
-//lager nytt utlegg med sum og en utleggsbeskrivelse samt utleggerid og hvem som skal betale det
+
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = $("#utleggBeskrivelse").val();
@@ -281,7 +326,8 @@ function lagNyttUtlegg() {
         dataType: 'json',
         success: function (result) {
             var data =JSON.parse(result);
-            if (data){
+            if (data){ //Returnerer vel true
+                location.reload(true);
                 alert(" :D");
             }else{
                 alert("D:");
@@ -291,6 +337,37 @@ function lagNyttUtlegg() {
             alert("RIPinpeace");
         }
     })
+}
+
+
+/////////////////////////////////////////////////////////
+        // Kode for å legge inn dynamisk HTML //
+/////////////////////////////////////////////////////////
+
+function displayOppgjor(oppgjorArray) {
+    if (oppgjorArray === liveOppgjor) {
+        // Compile the markup as a named template
+        $.template( "oppgjorTemplate", $("#test-oppgjor"));
+
+        $.template("rad-template-deSkylder", $("#rad-template-deSkylder"));
+        $.template("rad-template-duSkylder", $("#rad-template-duSkylder"))
+
+        //Append compiled markup
+        for (var i = 0; i < oppgjorArray.length; i++) {
+            console.log("i = "+i);
+            console.log("oppgjorArray.length: "+oppgjorArray.length);
+            $.tmpl( "oppgjorTemplate", oppgjorArray[i]).appendTo($("#panelGruppe"));
+
+            $.tmpl( "rad-template-duSkylder", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+            console.log(oppgjorArray[i].utleggDenneSkylderMeg);
+            $.tmpl( "rad-template-deSkylder", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
+        }
+        console.log("Ferdig med loop i displayOppgjor");
+    }
+    else {
+        displayHistorikk(oppgjorArray);
+    }
+
 }
 
 function lastinn() {
