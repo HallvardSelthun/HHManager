@@ -10,7 +10,7 @@ var brukerId = bruker.brukerId;
 var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
-var boxesChecked = [];
+var boxesChecked = new Array(2);
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -40,8 +40,13 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.utleggKnapp', function(){
-        checkChecked($(this).attr('id'));
-    })
+        checkChecked("liste" + $(this).attr('id').slice(6));
+        lagUtleggVarer();
+    });
+    $(document).on('click', '.sendUtlegg', function(){
+        checkChecked("medbetalere");
+        sendUtlegg();
+    });
 });
 
 /**
@@ -214,22 +219,18 @@ function gethhData() {
  * @returns {boolean}
  */
 function checkChecked(formname) {
-    formname = "liste" + formname.slice(6);
-
+    console.log(formname);
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
             boxesChecked.push($(this).attr("id"));
         }
-        //$("#utleggmodal").modal('show');
     });
 
     if (boxesChecked == false) {
         alert('Du må krysse av minst en vare');
         return false;
     }
-
     console.log(boxesChecked);
-    lagUtleggVarer();
 }
 
 function lagUtleggVarer() {
@@ -243,8 +244,13 @@ function lagUtleggVarer() {
     }
     for(var j = 0; j < medlemmer.length; j++){
         medlemNavn = medlemmer[j].navn;
-        $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input title="toggle all" type="checkbox" class="all pull-right"></label>');
+        medlemId = medlemmer[j].brukerId;
+        $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
     }
+}
+
+function sendUtlegg() {
+
 }
 
 /**
