@@ -19,7 +19,7 @@ $(document).ready(function () {
         var email = $("#email").val();
         var password = $("#password").val();
         var password2= $("#password2").val();
-        if (fornavn == "" || email == "" || password == "") {
+        if (fornavn == "" || email == "" || password == "" || password2 == "") {
             alert("Du må fylle ut alle feltene")
             return;
         }
@@ -27,7 +27,7 @@ $(document).ready(function () {
             alert("Passordene er ikke like, vennligst skriv inn riktig!");
             return;
         }
-        if(passord.length<6){
+        if(password.length<6){
             alert('Velg et passord med minst 7 bokstaver!');
             return;
         }
