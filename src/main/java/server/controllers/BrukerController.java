@@ -10,6 +10,7 @@ import server.util.Encryption;
 import server.util.RandomGenerator;
 
 import java.sql.*;
+import java.util.Objects;
 
 /**
  * Her ligger logikken til restklassen Bruker. Den kobler opp mot database-poolen ved hjelp av Connection pool.
@@ -90,7 +91,7 @@ public class BrukerController {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     String res = rs.getString("epost");
-                    if (res != (epost)) {
+                    if (!Objects.equals(res, epost)) {
                         return false;
                     }
                 }
@@ -114,7 +115,7 @@ public class BrukerController {
      * @return brukerdata hvis ok: epost, navn, id, favoritthusholdning, gjøremal
      */
     public static Bruker loginOk(Bruker bruker) {
-        String query = "SELECT hash, favorittHusholdning, navn, brukerId FROM bruker WHERE epost = ?";
+        String query = "SELECT hash, favorittHusholdning, navn, brukerId, salt FROM bruker WHERE epost = ?";
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, bruker.getEpost());

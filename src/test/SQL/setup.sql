@@ -32,15 +32,16 @@ INSERT INTO `husholdning` (`husholdningId`, `navn`) VALUES
 -- Dataark for tabell `bruker`
 --
 
-INSERT INTO `bruker` (`brukerId`, `favorittHusholdning`, `hash`, `navn`, `epost`) VALUES
-(1, 1, 'f17a90d2d95839d3df484b99411d265f', 'Brage', 'bragehs@hotmail.com'),
-(2, 1, '207023ccb44feb4d7dadca005ce29a64', 'Karol', 'debikkarol@gmail.com'),
-(3, 2, '62c8ad0a15d9d1ca38d5dee762a16e01', 'Truls', 'trulsmatias@gmail.com'),
-(4, NULL, 'e1faa913c211ad7285b299df2d054257', 'Toni', 'tonivuc@gmail.com'),
-(5, 1, 'bad803b9f5196821f8ca62059a953621', 'Hallvard2', 'hallvsa@stud.ntnu.no'),
-(6, 1, '5c913be9b7d3732443786aeebbad0818', 'Kimia', 'kimia.abtahi@gmail.com'),
-(7, 1, 'b208c80e4037ebe5017cbba02dcca6d7', 'Britt', 'nora@gmail.com'),
-(8, 1, 'a6008231fa64ff879ecb286a657b6a99', 'Charlotte', 'charlotte.groder@gmail.com');
+INSERT INTO `bruker` (`brukerId`, `favorittHusholdning`, `hash`, `navn`, `epost`, `salt`) VALUES
+(1, 1, 'f17a90d2d95839d3df484b99411d265f', 'Brage', 'bragehs@hotmail.com', NULL ),
+(2, 1, '207023ccb44feb4d7dadca005ce29a64', 'Karol', 'debikkarol@gmail.com', NULL ),
+(3, 2, '62c8ad0a15d9d1ca38d5dee762a16e01', 'Truls', 'trulsmatias@gmail.com', NULL ),
+(4, NULL, 'e1faa913c211ad7285b299df2d054257', 'Toni', 'tonivuc@gmail.com', NULL ),
+(5, 1, 'bad803b9f5196821f8ca62059a953621', 'Hallvard2', 'hallvsa@stud.ntnu.no', NULL ),
+(6, 1, '5c913be9b7d3732443786aeebbad0818', 'Kimia', 'kimia.abtahi@gmail.com', NULL ),
+(7, 1, 'b208c80e4037ebe5017cbba02dcca6d7', 'Britt', 'nora@gmail.com', NULL ),
+(8, 1, 'a6008231fa64ff879ecb286a657b6a99', 'Charlotte', 'charlotte.groder@gmail.com', NULL ),
+(79, 1, 'BI/FT4he0uo2fYrHgA/ESQ==', 'truls3', 'trulsmt@stud.ntnu.no', 'hMyGazWOII40+/+elYNU7g==');
 
 --
 -- Dataark for tabell `hhmedlem`

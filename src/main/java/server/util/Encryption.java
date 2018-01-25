@@ -69,8 +69,9 @@ public class Encryption {
         Base64.Encoder enc = Base64.getEncoder();
         String[] out = new String[2];
 
-        out[0] = (enc.encodeToString(salt));
-        out[1] = (enc.encodeToString(hash));
+
+        out[0] = (enc.encodeToString(hash));
+        out[1] = (enc.encodeToString(salt));
         return out;
     }
 

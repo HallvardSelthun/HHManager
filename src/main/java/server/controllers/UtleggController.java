@@ -50,7 +50,7 @@ public class UtleggController {
     public static boolean setMotatt(int brukerId, int utleggId) {
         System.out.println("brukerId/skyldigBrukerId: "+brukerId+" utleggId: "+utleggId);
         String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
-                + brukerId + " AND utleggsbetaler.utleggId =  " + utleggId;
+                + brukerId + " AND utleggsbetaler.utleggId = " + utleggId;
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement updateStatment = connection.prepareStatement(getQuery);
