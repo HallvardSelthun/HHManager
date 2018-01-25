@@ -25,9 +25,9 @@ $(document).ready(function () {
     $("#commentBtn").on("click", function () {
         postInnlegg();
     });
-    $(".skrivNyttInnlegg").on("click", function () {
+    /*$(".skrivNyttInnlegg").on("click", function () {
         skrivNyttInnlegg();
-    });
+    });*/
 });
 
 /**
