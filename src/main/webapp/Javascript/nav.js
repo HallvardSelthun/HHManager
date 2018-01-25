@@ -28,6 +28,10 @@ $(document).ready(function () {
         window.location = "forside.html";
     });
 
+    $(document).on('click', '.varslerknapp', function () {
+        window.location = "gjoremaal.html";
+    });
+
     $('body').on('click', 'a#bildenav', function () {
         window.location = "forside.html"
     });
@@ -125,13 +129,12 @@ $(document).ready(function () {
     }, 150);
 });
 
-function utgaatteGjoremaal() {
-    var liste = bruker.gjøremål;
-    var today = new Date();
-    for (var f, le = varseler.length; f < le; f++) {
-        console.log(varseler[f].beskrivelse);
-        $("#varselliste").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
-            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0">Du har ett gjøremål som du brude ha gjort <br>' + varseler[f].beskrivelse + '</div>' +
+function utgaatteGjoremaal(liste) {
+    for (var f = 0, le = liste.length; f < le; f++) {
+        console.log(":D");
+        console.log(liste[f].beskrivelse);
+        $("#listeVarsel").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
+            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Du har ett gjøremål som du burde ha gjort: <br><p class="beskrivelse" style="font-size: 15px;">'+liste[f].beskrivelse+'</div>' +
             '</li>')
     }
 }
@@ -186,13 +189,14 @@ function henteVarsel() {
     $.getJSON("server/gjoremalservice/" + bruker.brukerId + "/varsler", function (data) {
         var brukervarsler = data;
         console.log(brukervarsler);
-        varseler = brukervarsler.gjøremål;
-        varselListe = brukervarsler.gjøremål.length;
+        varseler = brukervarsler.gjoremal;
+        varselListe = brukervarsler.gjoremal.length;
+        console.log(varseler);
         console.log(varselListe);
         $("#antallVarsler").text(varselListe);
         $("#ant").text(varselListe);
         setTimeout(function () {
-            utgaatteGjoremaal();
+            utgaatteGjoremaal(varseler);
         }, 300);
 
     });
