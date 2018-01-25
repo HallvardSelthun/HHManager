@@ -10,7 +10,8 @@ var brukerId = bruker.brukerId;
 var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
-var boxesChecked = new Array(2);
+var boxesChecked = [];
+var antVarerChecked;
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -44,7 +45,6 @@ $(document).ready(function () {
         lagUtleggVarer();
     });
     $(document).on('click', '.sendUtlegg', function(){
-        checkChecked("medbetalere");
         sendUtlegg();
     });
 });
@@ -219,7 +219,7 @@ function gethhData() {
  * @returns {boolean}
  */
 function checkChecked(formname) {
-    console.log(formname);
+    //console.log(formname);
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
             boxesChecked.push($(this).attr("id"));
@@ -247,10 +247,66 @@ function lagUtleggVarer() {
         medlemId = medlemmer[j].brukerId;
         $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
     }
+    antVarerChecked = boxesChecked.length;
+    console.log("ANTALL VARER CHECKED: " + antVarerChecked);
 }
 
 function sendUtlegg() {
+    //console.log("MEDBETALERID: " + boxesChecked.slice(antVarerChecked));
+    //console.log($("#sum").val());
 
+
+    var sum = $("#sum").val();
+    var beskrivelse = "Kjøpt: ";//kan ikke bruke det
+    var vareNavn;
+    for(var i = 0; i < boxesChecked.length; i++){
+        vareNavn = boxesChecked[i];
+        beskrivelse += vareNavn + ", ";
+    }
+
+
+
+    if(sum == "" || beskrivelse == ""){
+        alert("pls gi en sum og beskrivelse :)");
+        return;
+    }
+    var utleggerId = bruker.brukerId;
+    var utleggsbetalere = [];
+    //delSum = sum/$('#personer input:checked').length;
+    $('#medbetalere input:checked').each(function () {
+        utleggsbetaler = {
+            skyldigBrukerId: $(this).attr('id'),
+            //delSum: delSum
+        };
+        utleggsbetalere.push(utleggsbetaler)
+    });
+
+    utlegg = {
+        utleggerId: utleggerId,
+        sum: sum,
+        beskrivelse: beskrivelse,
+        utleggsbetalere: utleggsbetalere
+    };
+
+    $.ajax({
+        url: "server/utlegg/nyttutlegg",
+        type: 'POST',
+        data: JSON.stringify(utlegg),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data =JSON.parse(result);
+            if (data){ //Returnerer vel true
+                location.reload(true);
+                alert(" :D");
+            }else{
+                alert("D:");
+            }
+        },
+        error: function () {
+            alert("RIPinpeace");
+        }
+    })
 }
 
 /**
