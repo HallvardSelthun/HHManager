@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--link rel="stylesheet" type="text/css" href="CSS/forside.css"-->
+    <!-- <link rel="stylesheet" type="text/css" href="CSS/forside.css"-->
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -21,101 +21,102 @@
         <div class="col-md-8 vl">
             <div class="row">
                 <div class="col-md-2"></div>
-                <div class="col-md-8" style="padding: 0px">
+                <div class="col-md-8">
                     <div class="container-fluid">
                         <div class="row">
                             <!--KOMMENTARFELT-->
                             <div class="container-fluid form-group container-kommentarfelt">
-                                <div class="container-fluid" style="padding: 0px">
+                                <div class="container-fluid">
                                     <h2 id="nyhet"></h2>
-                                    <div id="skrivNyttInnlegg">
-                                        <textarea class="form-control" rows="5" id="comment" style="resize: none"></textarea>
-                                        <p align="right">
-                                            <button type="button" class="btn" id="commentBtn">Send</button>
-                                        </p>
-                                    </div>
+                                    <!--<button class="skrivNyttInnlegg" for="comment" onclick="skrivNyttInnlegg">Nytt innlegg</button>-->
+                                    <div class="skrivNyttInnlegg">
+                                    <textarea class="form-control" rows="5" id="comment" style="resize:none"></textarea>
+                                    <p align="right">
+                                        <button type="button" class="btn" id="commentBtn">Send</button>
+                                    </p>
                                 </div>
                             </div>
-                            <!--KOMMENTAR MED AVATAR-->
-                            <div class="container-fluid container-nyhetsoppdatering">
-                                <div class="row media">
-                                    <div class="col-md-10">
-                                        <div class="container-fluid" id="nyhetsdiv" style="padding: 0px">
-                                            <ul id="innleggsliste" style="padding: 0px; list-style: none"></ul>
-                                        </div>
+                        </div>
+                        <!--KOMMENTAR MED AVATAR-->
+                        <div class="container-fluid container-nyhetsoppdatering">
+                            <div class="row media">
+                                <div class="col-md-10">
+                                    <div class="container-fluid" id="nyhetsdiv" style="padding: 0px">
+                                        <ul id="innleggsliste" style="padding: 0px; list-style: none"></ul>
                                     </div>
-                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="container-list">
+                    <br>
+                    <div id="accordion" role="tablist">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 id="tekst" data-toggle="collapse" data-target="#collapseOne" role="button"
+                                    aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    <span class="glyphicon glyphicon-user"></span> Medlemmer
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne"
+                                 data-parent="#accordion">
+                                <div class="panel-body">
+                                    <ul class="list-group" id="medlemsliste">
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2"></div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="container-list">
-                        <br>
-                        <div id="accordion" role="tablist">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 id="tekst" data-toggle="collapse" data-target="#collapseOne" role="button"
-                                        aria-expanded="true"
-                                        aria-controls="collapseOne">
-                                        <span class="glyphicon glyphicon-user"></span> Medlemmer
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne"
-                                     data-parent="#accordion">
-                                    <div class="panel-body">
-                                        <ul class="list-group" id="medlemsliste">
-                                        </ul>
-                                    </div>
+                <div class="container-list">
+                    <br>
+                    <div id="accordion2" role="tablist">
+                        <div class="panel panel-default collapse in">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
+                                    aria-expanded="true"
+                                    aria-controls="collapseTwo">
+                                    <span class="glyphicon glyphicon-pushpin"></span>Gjøremål
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                                 data-parent="#accordion">
+                                <div class="panel-body">
+                                    <ul class="list-group" id="gjøremålForside">
+                                    </ul>
+                                    <button id="refreshGForside" type="button" class="glyphicon glyphicon-refresh pull-right"></button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container-list">
-                        <br>
-                        <div id="accordion2" role="tablist">
-                            <div class="panel panel-default collapse in">
-                                <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
-                                        aria-expanded="true"
-                                        aria-controls="collapseTwo">
-                                        <span class="glyphicon glyphicon-pushpin"></span> Gjøremål
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
-                                     data-parent="#accordion">
-                                    <div class="panel-body">
-                                        <ul class="list-group" id="gjøremålForside">
-                                        </ul>
-                                    </div>
-                                </div>
+                </div>
+                <div class="container-list">
+                    <br>
+                    <div id="accordion3" role="tablist">
+                        <div class="panel panel-default collapse in">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
+                                    aria-expanded="true"
+                                    aria-controls="collapseTwo">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                </h4>
                             </div>
-                        </div>
-                    </div>
-                    <div class="container-list">
-                        <br>
-                        <div id="accordion3" role="tablist">
-                            <div class="panel panel-default collapse in">
-                                <div class="panel-heading" role="tab" id="headingThree">
-                                    <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
-                                        aria-expanded="true"
-                                        aria-controls="collapseTwo">
-                                        <span class="glyphicon glyphicon-shopping-cart"></span> Handleliste
-                                    </h4>
-                                </div>
-                                <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
-                                     data-parent="#accordion">
-                                    <div class="panel-body">
-                                        <ul class="list-group" id="handlelisteForside">
+                            <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                                 data-parent="#accordion">
+                                <div class="panel-body">
+                                    <ul class="list-group" id="handlelisteForside">
 
-                                        </ul>
-                                    </div>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +125,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <div id="modaldiv"></div>
 </body>
