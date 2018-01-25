@@ -190,6 +190,7 @@ function henteVarsel() {
         varselListe = brukervarsler.gjoremal.length;
         $("#antallVarsler").text(varselListe);
         $("#ant").text(varselListe);
+        $("#antVarsler").text(varselListe);
         setTimeout(function () {
             utgaatteGjoremaal(varseler);
         }, 300);
