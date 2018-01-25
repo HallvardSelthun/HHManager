@@ -11,7 +11,7 @@ var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
 var boxesChecked = [];
-var antVarerChecked;
+//var antVarerChecked;
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -230,7 +230,7 @@ function checkChecked(formname) {
         alert('Du må krysse av minst en vare');
         return false;
     }
-    console.log(boxesChecked);
+    //console.log(boxesChecked);
 }
 
 function lagUtleggVarer() {
@@ -239,7 +239,7 @@ function lagUtleggVarer() {
     var medlemNavn = "";
     for(var i = 0; i < boxesChecked.length; i++){
         vareNavn = boxesChecked[i];
-        console.log(vareNavn);
+        //console.log(vareNavn);
         $("#valgteVarer").append('<li class="list-group-item">' + vareNavn + '</li>');
     }
     for(var j = 0; j < medlemmer.length; j++){
@@ -247,22 +247,18 @@ function lagUtleggVarer() {
         medlemId = medlemmer[j].brukerId;
         $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
     }
-    antVarerChecked = boxesChecked.length;
-    console.log("ANTALL VARER CHECKED: " + antVarerChecked);
+    //antVarerChecked = boxesChecked.length;
 }
 
 function sendUtlegg() {
-    //console.log("MEDBETALERID: " + boxesChecked.slice(antVarerChecked));
-    //console.log($("#sum").val());
-
-
     var sum = $("#sum").val();
-    var beskrivelse = "Kjøpt: ";//kan ikke bruke det
+    var beskrivelse = "Kjøpt: ";
     var vareNavn;
     for(var i = 0; i < boxesChecked.length; i++){
         vareNavn = boxesChecked[i];
         beskrivelse += vareNavn + ", ";
     }
+    beskrivelse = beskrivelse.replace(-1, ".");
 
 
 
