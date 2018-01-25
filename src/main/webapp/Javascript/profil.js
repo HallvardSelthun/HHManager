@@ -242,6 +242,11 @@ $(document).on('click', '.glyphicon', function () {
     }
 });
 
+$(document).on('click', '#nymedlem', function () {
+    var epost = $("#medlemepost").val();
+
+})
+
 $(document).on('click', '.removeMedlem', function () {
     var husId = $(this).attr('value');
     var brukerSId = $(this).attr('value2');
@@ -271,7 +276,7 @@ function hentliste() {
             'type="button" value="'+husholdningId+'">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
             '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
-            '<button class="btn  btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>'+
+            '<button data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>'+
             '<div id="list1" class="list-group"></div></div></div>');
 
 

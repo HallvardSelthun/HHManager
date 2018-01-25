@@ -8,7 +8,7 @@ import javax.mail.internet.*;
 import server.controllers.*;
 
 /**
- * Denne klassen kobles opp mot Googles mail servere og sender mail til en bruker
+ * Denne klassen kobles opp mot Googles mail servere og sender mail til en eller flere brukere.
  */
 public class Mail {
     private static final String avsender = "officialHouseHoldManager";
@@ -18,7 +18,11 @@ public class Mail {
     private static String regards = "\n\nTakk for at du bruker HouseHoldManager." + "\n\nVennlig hilsen,"
             + "\nHouseHoldManagers utviklingsteam <3";
 
-
+    /**
+     * Sender mail til brukere som allerede er registrert i systemet
+     * @param eposter ArrayList med epostadressene til brukerne
+     * @param hushold String navnet til husholdningen
+     */
     public static void sendAllerede(ArrayList<String> eposter, String hushold) {
         StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen " + hushold +
@@ -26,6 +30,11 @@ public class Mail {
         sendTilFlere(eposter, s);
     }
 
+    /**
+     * Sender mail til brukere som ikke er registrert i systemet fra før.
+     * @param eposter ArrayList med epostadressene til brukerne
+     * @param hushold String navnet til husholdningen.
+     */
     public static void sendUreg(ArrayList<String> eposter, String hushold) {
         StringBuilder msg = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen" + hushold +

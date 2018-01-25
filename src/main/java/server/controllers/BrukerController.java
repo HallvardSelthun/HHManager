@@ -57,6 +57,11 @@ public class BrukerController {
         return GenereltController.getInt("brukerId", TABELLNAVN, "epost", epost);
     }
 
+    /**
+     * Sender nytt tilfeldig generert passord på mail, refererer til metode i Mail-klasse
+     * @param epost String epostadressen til brukeren som skal få tilsendt mail.
+     * @return true dersom mailen ble sendt, false dersom noe gikk galt undder sending.
+     */
     public static boolean sendGlemtPassordMail(String epost) {
         System.out.println(epost);
         int brukerId = getBrukerId(epost);
