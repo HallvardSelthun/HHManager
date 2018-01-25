@@ -228,7 +228,7 @@ function checkOppgjorSum(utleggsbetalere, next) {
         dataType: 'json',
         success: function (result) {
             suksess = result;
-            alert("suksess ny greie: "+suksess)
+            alert("suksess ny greie: "+suksess);
             next();
         },
         error: function () {

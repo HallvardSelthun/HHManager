@@ -25,9 +25,9 @@ public class VareTest {
     }
 
     @Test
-    public void getOgSetDatoKjøpt() throws Exception {
-        vare.setDatoKjøpt(new Date(112, 05,04));
-        assertEquals("2012-06-04",vare.getDatoKjøpt().toString());
+    public void getOgSetDatoKjopt() throws Exception {
+        vare.setDatoKjopt(new Date(112, 05,04));
+        assertEquals("2012-06-04",vare.getDatoKjopt().toString());
     }
 
 
@@ -39,9 +39,9 @@ public class VareTest {
 
 
     @Test
-    public void getOgSetKjøperId() throws Exception {
-        vare.setKjøperId(1);
-        assertEquals(1, vare.getKjøperId());
+    public void getOgSetKjoperId() throws Exception {
+        vare.setKjoperId(1);
+        assertEquals(1, vare.getKjoperId());
     }
 
     @Test
@@ -58,9 +58,9 @@ public class VareTest {
 
 
     @Test
-    public void isOgSetKjøpt() throws Exception {
-        vare.setKjøpt(false);
-        assertFalse(vare.isKjøpt());
+    public void isOgSetKjopt() throws Exception {
+        vare.setKjopt(false);
+        assertFalse(vare.isKjopt());
     }
 
 }

@@ -30,10 +30,10 @@ public class BrukerTest {
     }
 
     @Test
-    public void addOgGetGjøremål() throws Exception {
-        Gjøremål gjøremål = new Gjøremål();
-        bruker.addGjøremål(gjøremål);
-        assertEquals(gjøremål, bruker.getGjøremål().get(0));
+    public void addOgGetGjoremal() throws Exception {
+        Gjoremal gjoremal = new Gjoremal();
+        bruker.addGjoremal(gjoremal);
+        assertEquals(gjoremal, bruker.getGjoremal().get(0));
     }
 
     @Test

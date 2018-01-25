@@ -23,12 +23,12 @@ import java.sql.DriverManager;
         HusholdningControllerTest.class,
         UtleggControllerTest.class,
         BrukerTest.class,
-        GjøremålTest.class,
+        GjoremalTest.class,
         HandlelisteTest.class,
         HHMedlemTest.class,
         HusholdningTest.class,
         NyhetsinnleggTest.class,
-        OppgjørTest.class,
+        OppgjorTest.class,
         VareTest.class,
         MailTest.class
 })

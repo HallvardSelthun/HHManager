@@ -8,7 +8,7 @@ import org.junit.Test;
  *
  * Created by Hallvard on 17.01.2018.
  */
-public class OppgjørTest {
+public class OppgjorTest {
     @Before
     public void setUp() throws Exception {
 
