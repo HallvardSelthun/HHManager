@@ -42,12 +42,6 @@ $(document).ready(function () {
         init();
     })
     */
-    /*
-    var script = document.createElement('script');
-    script.src = "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js";
-    script.async = true;
-    document.head.appendChild(script);
-    */
     console.log("testbruk: "+testBrukerId);
 });
 
@@ -59,7 +53,7 @@ var ferdigeOppgjor = [];
 var delSum = 0;
 
 function init() {
-    lastInnOppgjor(testBrukerId,1);
+    lastInnOppgjor(testBrukerId,0);
     setTimeout(function () {
         lastinn();
     },500);
@@ -74,7 +68,7 @@ function init() {
 
 //Historikk
 $(document).on("click", "#historikk", function(event){
-    lastInnOppgjor(testBrukerId,0);
+    lastInnOppgjor(testBrukerId,1);
 
 });
 
