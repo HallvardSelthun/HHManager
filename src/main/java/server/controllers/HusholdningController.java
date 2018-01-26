@@ -20,24 +20,7 @@ public class HusholdningController {
     public static String getNavn(int id) {
         return GenereltController.getString("navn", TABELLNAVN, id);
     }
-    /**
-     * IKKE FERDIG.
-     *
-     * @param rName Den tilfeldige stringen som skal søkes etter
-     * @return id til string
-     */
-    private static int getId(String rName) {
-        String sqlsetning = "select husholdningId from husholdning where navn=" + rName;
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getInt("husholdningId");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
+
     public static ArrayList<Husholdning> getAlleHusholdninger () {
         String selectAll = "select * from husholdning";
         String selectHandlelister = "SELECT * FROM husholdning " +
@@ -209,8 +192,7 @@ public class HusholdningController {
     public static int ny(Husholdning husholdning) {
         String navnHus = husholdning.getNavn();
         ArrayList<String> nyeMedlemmerEpost = new ArrayList<>();
-        for (Bruker bruker :
-                husholdning.getMedlemmer()) {
+        for (Bruker bruker : husholdning.getMedlemmer()) {
             nyeMedlemmerEpost.add(bruker.getEpost());
         }
         String adminId = husholdning.getAdminId();

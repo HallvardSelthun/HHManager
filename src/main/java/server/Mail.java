@@ -43,6 +43,7 @@ public class Mail {
      * @param msg     String med innholdet i eposten.
      */
     private static void sendTilFlere(ArrayList<String> eposter, StringBuilder msg) {
+        if (eposter.size() < 1) return;
         for (String epost :
                 eposter) {
             epost.trim().toLowerCase();
@@ -75,7 +76,8 @@ public class Mail {
             Transport.send(message);
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+
         }
     }
 

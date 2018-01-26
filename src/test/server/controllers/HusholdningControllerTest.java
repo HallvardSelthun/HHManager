@@ -1,12 +1,16 @@
 package server.controllers;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
+import server.restklasser.*;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 public class HusholdningControllerTest {
     @Test
     public void getNavn() throws Exception {
-        Assert.assertEquals("Scrumgruppa", HusholdningController.getNavn(1));
+        assertEquals("Scrumgruppa", HusholdningController.getNavn(1));
     }
 /*
     @Test
@@ -16,22 +20,22 @@ public class HusholdningControllerTest {
 
     */
  /**
-     * Denne tester en autoincremnt-verdi. Greit å bruke underveis, men skal ikke brukes ellers
+     * Denne tester en autoincremnt-verdi. Dette går nå greit siden den testes opp mot h2
      */
-    /*@Test
+    @Test
     public void ny() throws Exception {
         Husholdning husholdning = new Husholdning();
         husholdning.setNavn("ueurururwedcd");
         Bruker bruker1 = new Bruker();
         Bruker bruker2 = new Bruker();
-        bruker1.setEpost("ryryryr@mail.com");
+        bruker1.setEpost("ikkemedISystemet@testmail.com");
         bruker2.setEpost("ppppp@mail.com");
         ArrayList<Bruker> medlemmer = new ArrayList<>();
         medlemmer.add(bruker1);
         medlemmer.add(bruker2);
         husholdning.setMedlemmer(medlemmer);
-        assertEquals(34, HusholdningController.ny(husholdning));
-    }*/
+        assertEquals(3, HusholdningController.ny(husholdning));
+    }
 /*
     @Test
     public void slettSisteTegn() throws Exception {
