@@ -234,8 +234,7 @@ public class BrukerController {
         }
     }
 
-    public static void setNyttNavn(int brukerId, String navn){
-        GenereltController.update(TABELLNAVN, "navn", navn, brukerId); }
+    public static void setNyttNavn(int brukerId, String navn){ GenereltController.update(TABELLNAVN, "navn", navn, brukerId); }
 
     public static boolean setProfilbilde(int brukerId, String profilbilde){
        return GenereltController.update(TABELLNAVN, "profilbilde", profilbilde, brukerId); }
