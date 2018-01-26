@@ -94,8 +94,8 @@
     margin-left: 100px;
     margin-top: 52px;
 }
-.medlemCheck{
-    align-content: left;
-    text-align: left;
-}
 
+.skalAlignes {
+    text-align: left;
+    margin-left:30px;
+}

@@ -25,6 +25,7 @@ var JavaScript = {
 
 
 $(document).ready(function () {
+
     $("#lagUtlegg").on('click', function () {
         lagNyttUtlegg();
     });
@@ -42,6 +43,14 @@ $(document).ready(function () {
         init();
     })
     */
+
+    console.log(localStorage.getItem("postUtleggSuccess"));
+    if(localStorage.getItem("postUtleggSuccess") == "sant") {
+        console.log("ALRIGHT")
+        $("#utleggSuccess").fadeIn(200);
+        $("#utleggSuccess").delay(2500).fadeOut(400);
+        localStorage.setItem("postUtleggSuccess", false)
+    }
     console.log("Bruker logget inn: "+minBrukerId);
 });
 
@@ -419,9 +428,10 @@ function lagNyttUtlegg() {
         dataType: 'json',
         success: function (result) {
             var data =JSON.parse(result);
+
             if (data){ //Returnerer vel true
+                localStorage.setItem("postUtleggSuccess", "sant");
                 location.reload(true);
-                alert(" :D");
             }else{
                 alert("D:");
             }
@@ -469,7 +479,7 @@ function lastInnBrukere() {
                 var navn = husholdninger[j].medlemmer[k].navn;
                 var id = husholdninger[j].medlemmer[k].brukerId;
                 if (id != bruker.brukerId){
-                    $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox">'+
+                    $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox skalAlignes" >'+
                         '<input id="'+id+'" type="checkbox" role="button" value="'+navn+'" class="medlemCheck">'+
                         navn +'</label></div></li>');
                 }
