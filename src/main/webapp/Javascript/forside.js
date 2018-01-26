@@ -89,7 +89,7 @@ function setupPage() {
      */
     for (var k = 0, lengt = handleliste.varer.length; k < lengt; k++) {
         var vare = handleliste.varer[k];
-        var varenavn = vare.varenavn;
+        var varenavn = he.encode(vare.varenavn);
         var checked = vare.kjøpt;
         var string = "";
         if (checked) {
@@ -98,7 +98,7 @@ function setupPage() {
         $("#handlelisteForside").append('<label class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right" ' + string + '> </label>');
     }
     setTimeout(function () {
-        $("#tekst3").append(handleliste.tittel);
+        $("#tekst3").append(he.encode(handleliste.tittel));
     }, 150);
 
 }
@@ -171,7 +171,7 @@ function postInnlegg() {
 function innleggToHtml(nyhetsinnlegg) {
     var fofatterId = nyhetsinnlegg.forfatterId;
     var forfatter = "pls";
-    var tekst = nyhetsinnlegg.tekst;
+    var tekst = he.encode(nyhetsinnlegg.tekst); //XSS prevention
     var options = {
         weekday: 'long',
         year: '2-digit',
