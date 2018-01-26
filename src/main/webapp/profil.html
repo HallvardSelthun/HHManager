@@ -4,9 +4,7 @@
     <title>Profil</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--
         <link rel="stylesheet" type="text/css" href="CSS/profil.css">
-    -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="web-res/jquery-3.3.1.min.js"></script>
@@ -234,19 +232,22 @@
                     <input id="nynavnHusstand" type="text" class="form-control" name="textfield"
                            placeholder="Skriv navn her">
                 </div>
+                <br>
                 <div class="nymedlemmer">
-                    <p>Legg til medlemmer ved epost:</p>
+                    <p>Legg til medlemmer ved epost (du trenger ikke å skrive inn din egen, den blir automatisk registrert):</p>
                     <input id="nynavnMedlem2" type="text" class="form-control" name="textfield"
                            placeholder="Skriv epost her">
                 </div>
-
+                <br>
                 <div class="knapp">
                     <p><strong>NB!</strong> Du må trykke legg til medlem før du kan lagre</p>
                     <button id="leggTilMedlemKnapp2" type="button">Legg til medlem</button>
                 </div>
 
-                <div class="alert alert-success alert-dismissable fade in" id="fade">
-                    <a href="#" id="alertbox" class="close">&times;</a>
+                <div class="alert alert-danger" id="fadedanger">
+                    <strong>Tom epostadresse!</strong> Vennligst skriv inn epostadresse til en bruker.
+                </div>
+                <div class="alert alert-success" id="fade">
                     <strong>Suksess!</strong> Medlem registrert i husholdning
                 </div>
 

@@ -30,9 +30,16 @@ $(document).ready(function () {
     /*$(".skrivNyttInnlegg").on("click", function () {
         skrivNyttInnlegg();
     });*/
+    $('body').on("click", "#sendtilhandelknapp", function () {
+        window.location = "handlelister.html"
+    });
+    $('body').on("click", "#sendtilgjoreknapp", function () {
+       window.location = "gjoremaal.html"
+    });
     $("body").on("click", "#refreshGForside", function () {
         oppdaterGjoremal();
     });
+
 });
 
 /**

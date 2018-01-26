@@ -2,7 +2,9 @@
     width: 100%;  /* i'm assuming full width */
     height: 80px; /* change it to desired width */
 }
-
+.alert {
+    display: none;
+}
 .logo {
     /*display: inline-block;*/
     float: right;
