@@ -142,8 +142,11 @@ $(document).on('click', '.nyVareKnapp', function() {
     var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
     var temp = "#"+listeId;
 
-    leggTilVare(listeId, input);
-
+    if(input == ""){
+        alert("Du må skrive noe");
+    }else {
+        leggTilVare(listeId, input);
+    }
 });
 function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();

@@ -89,9 +89,9 @@
                     <div class="labels container-fluid">
                         <div class="row">
                             <div class="col-sm-6 col-xs-6"></div>
-                            <div class="col-sm-6 col-xs-6 pull-right" style="text-align: right; padding: 0px;">
+                            <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
                                 <label class="col-sm-6 col-xs-6"></label>
-                                <label class="skyldertittel col-sm-3 col-xs-3" style="padding: 0px">Balanse</label>
+                                <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
                                 <label class="betalt col-sm-3 col-xs-3"></label>
                             </div>
                         </div>
@@ -126,9 +126,9 @@
                             <div class="labels container-fluid">
                                 <div class="row">
                                     <div class="col-sm-6 col-xs-6"></div>
-                                    <div class="col-sm-6 col-xs-6 pull-right" style="text-align: right; padding: 0px;">
+                                    <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
                                         <label class="col-sm-6 col-xs-6"></label>
-                                        <label class="skyldertittel col-sm-3 col-xs-3" style="padding: 0px">Balanse</label>
+                                        <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
                                         <label class="betalt col-sm-3 col-xs-3">Motatt</label>
                                     </div>
                                 </div>
@@ -162,9 +162,9 @@
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-sm-6 col-xs-6 pull-right" style="text-align: right; padding: 0px">
-                <label class="skylderTekst col-sm-6 col-xs-6" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-sm-3 col-xs-3" style="text-align: right; padding: 0px">${totalSum} kr</label>
+            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
                 <div class="col-sm-3 col-xs-3"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
                         class="placeholderSpan"></span>{{/if}}
                 </div>
@@ -225,9 +225,9 @@
                 <a id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-sm-6 col-xs-6 pull-right" style="text-align: right; padding: 0px">
-                <label class="skylderTekst col-sm-6 col-xs-6" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-sm-3 col-xs-3" style="text-align: right; padding: 0px">${totalSum} kr</label>
+            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
                 <div class="col-sm-3 col-xs-3"> <span
                         class="placeholderSpan"></span>
                 </div>
