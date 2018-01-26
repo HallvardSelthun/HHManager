@@ -117,11 +117,11 @@
                         <div class="row panel-group" id="panelGruppe">
                             <div class="labels container-fluid">
                                 <div class="row">
-                                    <div class="col-sm-6"></div>
-                                    <div class="col-sm-6 pull-right" style="text-align: right; padding: 0px;">
-                                        <label class="col-md-4"></label>
-                                        <label class="skyldertittel col-md-4" style="padding: 0px">Balanse</label>
-                                        <label class="betalt col-md-4">Motatt</label>
+                                    <div class="col-sm-6 col-xs-6"></div>
+                                    <div class="col-sm-6 col-xs-6 pull-right" style="text-align: right; padding: 0px;">
+                                        <label class="col-sm-6 col-xs-6"></label>
+                                        <label class="skyldertittel col-sm-3 col-xs-3" style="padding: 0px">Balanse</label>
+                                        <label class="betalt col-sm-3 col-xs-3">Motatt</label>
                                     </div>
                                 </div>
                             </div>
@@ -148,15 +148,15 @@
     <!--Viktig ^^^ -->
     <div class="container-fluid panel panel-default">
         <div class="row panel-heading clearfix">
-            <h3  class="panel-title pull-left col-md-6" style="margin-top: 5px; ">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
                 <!--Viktig -->
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-sm-6 pull-right" style="text-align: right; padding: 0px">
-                <label class="skylderTekst col-sm-4" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-sm-4" style="text-align: right; padding: 0px">${totalSum} kr</label>
-                <div class="col-md-4"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
+            <div class="titteldiv col-sm-6 col-xs-6 pull-right" style="text-align: right; padding: 0px">
+                <label class="skylderTekst col-sm-6 col-xs-6" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3" style="text-align: right; padding: 0px">${totalSum} kr</label>
+                <div class="col-sm-3 col-xs-3"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
                         class="placeholderSpan"></span>{{/if}}
                 </div>
             </div>
@@ -170,9 +170,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="col-md-3">Sum</th>
-                                <th class="col-md-8">Beskrivelse</th>
-                                <th class="col-md-1">Betalt</th>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1">Betalt</th>
                             </tr>
                             </thead>
                             <tbody id="radMinus${oppgjorNr}">
@@ -188,9 +188,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="col-md-3">Sum</th>
-                                <th class="col-md-8">Beskrivelse</th>
-                                <th class="col-md-1">Motatt</th>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1">Motatt</th>
                             </tr>
                             </thead>
                             <tbody id="radPlus${oppgjorNr}">
