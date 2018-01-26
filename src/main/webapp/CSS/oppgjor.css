@@ -74,6 +74,10 @@
     /*margin-right:10px;*/
 }
 
+.alert {
+    display: none;
+}
+
 .placeholderSpan {
     margin-right:10px;
 }

@@ -42,22 +42,21 @@ $(document).ready(function () {
         init();
     })
     */
-    console.log("testbruk: "+testBrukerId);
+    console.log("Bruker logget inn: "+minBrukerId);
 });
 
 //Globale variabler
 var bruker = JSON.parse(localStorage.getItem("bruker"));
-var testBrukerId = bruker.brukerId;
+var minBrukerId = bruker.brukerId;
 var liveOppgjor = [];
 var ferdigeOppgjor = [];
 var delSum = 0;
 
 function init() {
-    lastInnOppgjor(testBrukerId,0); //0 er ubetalt, 1 er betalt
+    lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betalt
     setTimeout(function () {
-        lastinn();
-    },500);
-
+        lastInnBrukere();
+    },300);
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
 
@@ -68,8 +67,7 @@ function init() {
 
 //Historikk
 $(document).on("click", "#historikk", function(event){
-    lastInnOppgjor(testBrukerId,1);
-
+    lastInnOppgjor(minBrukerId,1);
 });
 
 function displayHistorikk(oppgjorArray) {
@@ -161,6 +159,10 @@ function tellAntallUtleggsbetalere(oppgjorArray) {
     }
 }
 
+/**
+ * Test
+ * @param oppgjorArray
+ */
 function utregnOppgjorSum(oppgjorArray) {
 
     var sum = 0;
@@ -171,14 +173,14 @@ function utregnOppgjorSum(oppgjorArray) {
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             sum = sum - oppgjorArray[i].utleggJegSkylder[j].delSum;
         }
-        oppgjorArray[i].skylderSum = sum;
+        oppgjorArray[i].skylderSum = Math.round(sum);
         totalSum = sum;
         sum = 0;
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             sum = sum + oppgjorArray[i].utleggDenneSkylderMeg[j].delSum;
         }
 
-        oppgjorArray[i].skylderMegSum = sum;
+        oppgjorArray[i].skylderMegSum = Math.round(sum);
         totalSum = totalSum + sum;
         if (totalSum > 0) {
             oppgjorArray[i].posNeg = "Pos";
@@ -186,7 +188,7 @@ function utregnOppgjorSum(oppgjorArray) {
         else {
             oppgjorArray[i].posNeg = "Neg";
         }
-        oppgjorArray[i].totalSum = totalSum;
+        oppgjorArray[i].totalSum = Math.round(totalSum);
     }
 
     displayOppgjor(oppgjorArray);
@@ -225,17 +227,25 @@ function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
     return checkOppgjorSum(utleggsbetalere, callback);
 }
 
-//Legg til indekser på rader og oppgjør så de er raskere å finne senere
+
+/**
+ * Legg til indekser på rader og oppgjør så de er raskere å finne senere
+ * Gjør også avrunding av delSummer inne i utleggsbetalerobjektene
+ * @param callback funksjon som kjøres etter at denne er ferdig. Vanligvis {@link #utregnOppgjorSum utregnOppgjorSum()}.
+ * @param oppgjorArray enten liveArray eller ferdigArray
+ */
 function leggInnRadNr(callback, oppgjorArray) {
     for (var i = 0; i < oppgjorArray.length; i++) {
         oppgjorArray[i].oppgjorNr = i;
         var j;
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             oppgjorArray[i].utleggJegSkylder[j].radNr = j;
+            oppgjorArray[i].utleggJegSkylder[j].delSum = Math.round(oppgjorArray[i].utleggJegSkylder[j].delSum);
         }
 
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             oppgjorArray[i].utleggDenneSkylderMeg[j].radNr = j;
+            oppgjorArray[i].utleggDenneSkylderMeg[j].delSum = Math.round(oppgjorArray[i].utleggDenneSkylderMeg[j].delSum);
         }
     }
     callback(oppgjorArray);
@@ -310,7 +320,39 @@ function checkOppgjorSum(utleggsbetalere, next) {
         }
     });
 }
+/*
+$("#sum").val().change(function() {
+    console.log("Changed");
+    if ($("#sum").val() <= 0) {
+        $("#sumAlert").show();
+    }
+    else {
+        $("#sumAlert").fadeOut();
+    }
+});
 
+
+jQuery('#sum').on('input', function() {
+    console.log("KEK")
+});
+
+*/
+
+$(function() {
+    var content = $('#sum').val();
+
+    $('#sum').keyup(function() {
+        if ($('#sum').val() != content) {
+            content = $('#sum').val();
+            if (content <= 0) {
+                $("#sumAlert").fadeIn(200)
+            }
+            else {
+                $("#sumAlert").fadeOut(200);
+            }
+        }
+    });
+});
 
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
@@ -386,10 +428,9 @@ function displayOppgjor(oppgjorArray) {
 
 }
 
-function lastinn() {
+function lastInnBrukere() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
-    console.log(husholdninger);
     //$.template( "medlemmerListe", $("#listeMedlemPls"));
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){

@@ -22,6 +22,7 @@
 
 <!-- Modals under -->
 
+<!-- Modal for å lage oppgjør -->
 <div id="oppgjørmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -33,6 +34,9 @@
                 <div class="suminput">
                     <p>Sum:</p>
                     <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
+                    <div class="alert alert-danger" id="sumAlert">
+                        <strong>Feil input</strong> Sum må være større enn 0.
+                    </div>
                     <input id="vereMedPaaUtlegg" type="checkbox"> Vere med på utlegg selv
                 </div>
                 <br>
@@ -111,6 +115,9 @@
     <div id="right" class="col-sm-2 col-lg-3"></div>
     </div>
 </div>
+
+<!-- MALER -->
+
 <!-- HTML-mal for nytt oppgjør -->
 
 <!--Viktig -->
