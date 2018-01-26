@@ -20,7 +20,7 @@ var leggtilMedlemIHusId;
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
-        console.log("profil: "+data)
+        console.log(data);
     });
 }
 
@@ -270,9 +270,22 @@ function hentliste() {
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
+        var admin = 0;
+        var adminLeggTil = "";
+        var adminSlett = "";
         var string ="glyphicon-star-empty";
         if (mineHusholdninger[k].husholdningId == minBruker.favHusholdning){
             string = "glyphicon-star";
+        }
+        for(var z = 0, x = mineHusholdninger[k].medlemmer.length; z<x; z++){
+            if (mineHusholdninger[k].medlemmer[z].brukerId == minBruker.brukerId){
+                admin = mineHusholdninger[k].medlemmer[z].admin;
+            }
+        }
+        if (admin == 1){
+            adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
+            adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
+                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">slett</button>';
         }
         console.log(husholdnavn);
 
@@ -288,8 +301,7 @@ function hentliste() {
             '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" ' +
             'type="button" value="'+husholdningId+'">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
             ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
-            '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +
-            '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>'+
+            '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
             '<div id="list1" class="list-group"></div></div></div>');
 
 
@@ -298,8 +310,7 @@ function hentliste() {
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
             console.log(medlemnavn);
 
-            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
-                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">slett</button></li>');
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+'</li>');
 
         }
     }

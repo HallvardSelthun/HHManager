@@ -12,6 +12,16 @@ public class Bruker {
     private String nyttpassord;
     private String epost;
     private int favHusholdning;
+    private int admin;
+
+    public int getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
     private HHMedlem[] HHMedlemmer;
     private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
     private double balanse;
