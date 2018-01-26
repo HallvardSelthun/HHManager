@@ -236,10 +236,23 @@ public class BrukerController {
 
     public static void setNyttNavn(int brukerId, String navn){ GenereltController.update(TABELLNAVN, "navn", navn, brukerId); }
 
-    public static boolean setProfilbilde(int brukerId, String profilbilde){
-       return GenereltController.update(TABELLNAVN, "profilbilde", profilbilde, brukerId); }
-
     private double getBalanse(int brukerId) {
         return 0;
+    }
+
+    public static boolean setProfilbilde(Bruker bruker){
+        String link = bruker.getProfilbilde();
+        int id = bruker.getBrukerId();
+        String setLink = "UPDATE bruker SET profilbilde = ? WHERE brukerId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(setLink);
+            ps.setString(1,link);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e ){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -27,7 +27,7 @@ function getHusholdninger() {
 
 $(document).ready(function () {
 
-    $('#submit').click(function(){
+    $('#submitProfilbilde').click(function(){
         var photo = $('#profilbilde').val();
         $('#photo').append('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">')
     });
@@ -441,6 +441,39 @@ function leggTilMedlem(epost, husId) {
 function resizeImg(img, height, width) {
     img.height = height;
     img.width = width;
+}
+
+$(document).on('click', '#submitProfilbilde', function () {
+    var link = $('#profilbilde').val();
+    setProfilbilde(link);
+});
+
+function setProfilbilde(link) {
+    var id = minBruker.brukerId;
+    var bruker = {
+        brukerId: id,
+        profilbilde: link
+    };
+    console.log(bruker);
+    $.ajax({
+        url: "server/BrukerService/setProfilbilde",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if(data){
+                alert("nice nice");
+            }else{
+                alert("yikes");
+            }
+        },
+        error: function () {
+            alert("feil feil feil feil");
+        }
+    });
+    //window.location = "profil.html";
 }
 
 

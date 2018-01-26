@@ -23,6 +23,14 @@ public class Bruker {
         this.admin = admin;
     }
 
+    public String getProfilbilde() {
+        return profilbilde;
+    }
+
+    public void setProfilbilde(String profilbilde) {
+        this.profilbilde = profilbilde;
+    }
+
     private HHMedlem[] HHMedlemmer;
     private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
     private double balanse;
@@ -96,8 +104,4 @@ public class Bruker {
     public void setFavHusholdning(int favHusholdning) {
         this.favHusholdning = favHusholdning;
     }
-
-    public String getProfilbilde() { return profilbilde; }
-
-    public void setProfilbilde(String profilbilde) { this.profilbilde = profilbilde; }
 }

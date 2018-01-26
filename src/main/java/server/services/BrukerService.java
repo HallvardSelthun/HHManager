@@ -40,19 +40,19 @@ public class BrukerService {
         return BrukerController.loginOk(bruker);
     }
 
-    @POST
-    @Path("/profilbilde")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public boolean setProfilbilde(Bruker bruker){
-        return BrukerController.setProfilbilde(bruker.getBrukerId(), bruker.getProfilbilde());
-    }
-
 
     @DELETE
     @Path("/fjernBrukerFraHusholdning")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean slettFraHusholdning(Bruker bruker){
         return BrukerController.slettFraHusholdning(bruker.getBrukerId(), bruker.getFavHusholdning());
+    }
+
+    @PUT
+    @Path("/setProfilbilde")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setProfilbilde(Bruker bruker){
+        return BrukerController.setProfilbilde(bruker);
     }
 
 
