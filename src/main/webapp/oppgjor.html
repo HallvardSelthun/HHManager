@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Household Manager</title>
+    <title>Oppgjør</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="CSS/oppgjor.css">
+    <!--link rel="stylesheet" type="text/css" href="CSS/oppgjor.css"-->
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -113,10 +113,12 @@
                         <div class="row panel-group" id="panelGruppe">
                             <div class="labels container-fluid">
                                 <div class="row">
-                                    <label class="col-sm-6"></label>
-                                    <label class="col-sm-2"></label>
-                                    <label class="skyldertittel col-md-2">Balanse</label>
-                                    <label class="betalt">Motatt</label>
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-6 pull-right" style="text-align: right; padding: 0px;">
+                                        <label class="col-md-4"></label>
+                                        <label class="skyldertittel col-md-4" style="padding: 0px">Balanse</label>
+                                        <label class="betalt col-md-4">Motatt</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -139,17 +141,18 @@
 <!--Viktig -->
 <script id="test-oppgjor" type="text/x-custom-template">
     <!--Viktig ^^^ -->
-    <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-            <h3  class="panel-title pull-left col-sm-6" style="padding-top: 7.5px;">
+    <div class="container-fluid panel panel-default">
+        <div class="row panel-heading clearfix" style="padding-right: 0px">
+            <h3  class="panel-title pull-left col-md-6" style="margin-top: 5px; padding-left: 0px">
                 <!--Viktig -->
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv">
-                <label class="skylderTekst col-sm-2">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-sm-2" >${totalSum} kr</label>
-                {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox col-sm-2" id="hovCheckNr${oppgjorNr}">{{else}}<span class="placeholderSpan"> </span>{{/if}}
+            <div class="titteldiv col-md-6" style="text-align: left; padding: 0px">
+                <label class="skylderTekst col-md-4" style="padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-md-4" style="padding: 0px">${totalSum} kr</label>
+                {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox col-md-4" id="hovCheckNr${oppgjorNr}">{{else}}<span class="placeholderSpan">
+            </span>{{/if}}
 
             </div>
         </div>
@@ -162,9 +165,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="col-sm-3 col-xs-3">Sum</th>
-                                <th class="col-sm-8 col-xs-8">Beskrivelse</th>
-                                <th class="col-sm-1 col-xs-1">Betalt</th>
+                                <th class="col-md-3">Sum</th>
+                                <th class="col-md-8">Beskrivelse</th>
+                                <th class="col-md-1">Betalt</th>
                             </tr>
                             </thead>
                             <tbody id="radMinus${oppgjorNr}">
@@ -180,9 +183,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="col-sm-3 col-xs-3">Sum</th>
-                                <th class="col-sm-8 col-xs-8">Beskrivelse</th>
-                                <th class="col-sm-1 col-xs-1">Motatt</th>
+                                <th class="col-md-3">Sum</th>
+                                <th class="col-md-8">Beskrivelse</th>
+                                <th class="col-md-1">Motatt</th>
                             </tr>
                             </thead>
                             <tbody id="radPlus${oppgjorNr}">

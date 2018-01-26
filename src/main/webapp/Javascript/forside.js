@@ -19,6 +19,7 @@ var handleliste;
  * andre medlemmer av husholdningen ser det.
  */
 $(document).ready(function () {
+    $('body').on('contextmenu', 'img', function(e){ return false; });
     husholdningId = bruker.favHusholdning;
     getHandleliste();
     gethhData();
