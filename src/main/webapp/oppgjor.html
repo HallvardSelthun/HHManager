@@ -105,8 +105,8 @@
 <!-- Hovedstruktur for siden -->
 <div id = "container" class="container-fluid">
     <div class = "row">
-        <div id="left" class="col-md-3"></div>
-        <div id="center" class="col-md-6">
+        <div id="left" class="col-sm-2 col-md-3"></div>
+        <div id="center" class="col-sm-8 col-md-6">
             <div class="container-fluid">
                 <div class="row">
                     <h1 class="tittel">Mine oppgjør</h1>
@@ -119,8 +119,8 @@
                         <div class="row panel-group" id="panelGruppe">
                             <div class="labels container-fluid">
                                 <div class="row">
-                                    <div class="col-md-6"></div>
-                                    <div class="col-md-6 pull-right" style="text-align: right; padding: 0px;">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6 pull-right" style="text-align: right; padding: 0px;">
                                         <label class="col-md-4"></label>
                                         <label class="skyldertittel col-md-4" style="padding: 0px">Balanse</label>
                                         <label class="betalt col-md-4">Motatt</label>
@@ -153,7 +153,7 @@
                 Forespør penger
             </button>
         </div>
-    <div id="right" class="col-md-3"></div>
+    <div id="right" class="col-sm-2 col-md-3"></div>
     </div>
 </div>
 
@@ -171,9 +171,9 @@
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-md-6 pull-right" style="text-align: right; padding: 0px">
-                <label class="skylderTekst col-md-4" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-md-4" style="text-align: right; padding: 0px">${totalSum} kr</label>
+            <div class="titteldiv col-sm-6 pull-right" style="text-align: right; padding: 0px">
+                <label class="skylderTekst col-sm-4" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-4" style="text-align: right; padding: 0px">${totalSum} kr</label>
                 <div class="col-md-4"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
                         class="placeholderSpan"></span>{{/if}}
                 </div>
