@@ -260,7 +260,6 @@ function oppdaterGjoremal() {
                 } else {
                     alert("feil!");
                 }
-                window.location = "forside.html";
             },
             error: function () {
                 alert("serverfeil :/");
@@ -274,5 +273,6 @@ function oppdaterGjoremal() {
         }
         bruker.gjoremal = minegjoremal;
         localStorage.setItem("bruker", JSON.stringify(bruker));
+        window.location = "forside.html"
     }, 200)
 }
