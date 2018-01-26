@@ -163,6 +163,7 @@ function postInnlegg() {
 function innleggToHtml(nyhetsinnlegg) {
     var fofatterId = nyhetsinnlegg.forfatterId;
     var forfatter = "pls";
+    var bilde = "web-res/avatar.png";
     var tekst = he.encode(nyhetsinnlegg.tekst); //XSS prevention
 
     var nyDate = new Date(nyhetsinnlegg.dato).toISOString().slice(0,10);
@@ -170,9 +171,12 @@ function innleggToHtml(nyhetsinnlegg) {
     for (var j = 0, length = medlemmer.length; j < length; j++) {
         if (medlemmer[j].brukerId == fofatterId) {
             forfatter = medlemmer[j].navn;
+            if (medlemmer[j].profilbilde!=null){
+                bilde = medlemmer[j].profilbilde;
+            }
         }
     }
-    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
+    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="'+bilde+'" class="media-object" style="width:45px"></div><div' +
         ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i> ' + nyDate + '</i></small></h4><p>' + tekst + '</p></div></li>');
 
     setTimeout(function () {
