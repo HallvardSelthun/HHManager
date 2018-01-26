@@ -27,7 +27,7 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
-    $('#photo').html('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">');
+    $('#photo').html('<img style="width:100%; height:100%; top: 50px; position: relative;" src="' + photo + '">');
 
     $('#submitProfilbilde').click(function(){
         if($('#profilbilde').val()==""){
@@ -35,6 +35,8 @@ $(document).ready(function () {
         }
         photo = $('#profilbilde').val();
         $('#photo').html('<img style="width:100%; height:100%; top: 50px; position: relative;" src="' + photo + '">')
+        minBruker.profilbilde = photo;
+        localStorage.setItem("bruker", JSON.stringify(minBruker));
     });
 
     //onload="resizeImg(this,140, 120)"
