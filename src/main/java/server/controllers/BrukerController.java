@@ -41,7 +41,7 @@ public class BrukerController {
      * @return String url til brukerens profilbilde.
      */
 
-    public static String getBilde(int brukerid) {return GenereltController.getString("profilbilde", TABELLNAVN, brukerid);}
+    public static String getProfilbilde(int brukerid) {return GenereltController.getString("profilbilde", TABELLNAVN, brukerid);}
 
     /**
      * Henter epost-adressen til en bruker gitt brukerens id.
@@ -235,8 +235,10 @@ public class BrukerController {
     }
 
     public static void setNyttNavn(int brukerId, String navn){
-        GenereltController.update(TABELLNAVN, "navn", navn, brukerId);
-    }
+        GenereltController.update(TABELLNAVN, "navn", navn, brukerId); }
+
+    public static boolean setProfilbilde(int brukerId, String profilbilde){
+       return GenereltController.update(TABELLNAVN, "profilbilde", profilbilde, brukerId); }
 
     private double getBalanse(int brukerId) {
         return 0;

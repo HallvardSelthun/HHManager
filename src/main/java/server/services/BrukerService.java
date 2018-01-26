@@ -1,11 +1,9 @@
 package server.services;
 //import server.controllers.BrukerController;
-import com.fasterxml.jackson.databind.deser.std.MapEntryDeserializer;
 import server.controllers.BrukerController;
-import server.restklasser.*;
+import server.restklasser.Bruker;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -41,6 +39,14 @@ public class BrukerService {
         //må ha en plass der en finne ut om d e rett
         return BrukerController.loginOk(bruker);
     }
+
+    @POST
+    @Path("/profilbilde")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setProfilbilde(Bruker bruker){
+        return BrukerController.setProfilbilde(bruker.getBrukerId(), bruker.getProfilbilde());
+    }
+
 
     @DELETE
     @Path("/fjernBrukerFraHusholdning")
