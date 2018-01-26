@@ -36,11 +36,12 @@ $(document).ready(function () {
     });
 
     //Kjør JavaScript
-
-
+    init();
+    /*
     JavaScript.load("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", function () {
         init();
     })
+    */
     /*
     var script = document.createElement('script');
     script.src = "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js";
