@@ -28,8 +28,7 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
-
-    if(photo.length > 1) {
+    if(!(!photo || 0 === photo.length)) {
         console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px; position: relative;" src="' + photo + '">');
     }
@@ -230,11 +229,16 @@ $(document).ready(function () {
         var medlem = {
             epost: $("#nynavnMedlem2").val()
         };
-        $("#nynavnMedlem2").val('');
-        navnIHuset2.push(medlem);
-        console.log(navnIHuset2);
-        $("#fade").show();
-        console.log("funker");
+        var epostmed = $("#nynavnMedlem2").val();
+        if(epostmed.length !== 0) {
+            $("#nynavnMedlem2").val('');
+            navnIHuset2.push(medlem);
+            $("#fade").show();
+            $("#fadedanger").hide();
+        } else {
+            $("#fadedanger").show();
+            $("#fade").hide();
+        }
     });
 
     /**
@@ -323,10 +327,6 @@ $(document).on('click', '.glyphicon', function () {
     }
 });
 
-$(document).on('click', '#nymedlem', function () {
-    var epost = $("#medlemepost").val();
-
-});
 
 $(document).on('click', '.removeMedlem', function () {
     var husId = $(this).attr('value');

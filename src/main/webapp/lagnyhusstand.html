@@ -12,19 +12,22 @@
                     <input id="navnHusstand" type="text" class="form-control" name="textfield"
                            placeholder="Skriv navn her">
                 </div>
+                <br>
                 <div class="medlemmer">
-                    <p>Legg til medlemmer ved epost:</p>
+                    <p>Legg til medlemmer ved epost (du trenger ikke å skrive inn din egen, den blir automatisk registrert):</p>
                     <input id="navnMedlem" type="text" class="form-control" name="textfield"
                            placeholder="Skriv epost her">
                 </div>
-
+                <br>
                 <div class="knapp">
                     <p><strong>NB!</strong> Du må trykke legg til medlem før du kan lagre</p>
                     <button id="leggTilMedlemKnapp" type="button">Legg til medlem</button>
                 </div>
 
-                <div class="alert alert-success alert-dismissable fade in" id="fade">
-                    <a href="#" id="alertbox" class="close">&times;</a>
+                <div class="alert alert-danger" id="fadenav3">
+                    <strong>Tom epostadresse!</strong> Vennligst skriv inn epostadresse til en bruker.
+                </div>
+                <div class="alert alert-success" id="fadenav">
                     <strong>Suksess!</strong> Medlem registrert i husholdning
                 </div>
 
