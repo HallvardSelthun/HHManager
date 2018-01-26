@@ -180,6 +180,7 @@ function innleggToHtml(nyhetsinnlegg) {
         hour: '2-digit',
         minute: '2-digit'
     };
+    var nyDate = new Date(nyhetsinnlegg.dato).toISOString().slice(0,10);
     var date = new Date(nyhetsinnlegg.dato).toLocaleDateString("en-US", options);
     for (var j = 0, length = medlemmer.length; j < length; j++) {
         if (medlemmer[j].brukerId == fofatterId) {
@@ -187,7 +188,7 @@ function innleggToHtml(nyhetsinnlegg) {
         }
     }
     $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
-        ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i>' + date + '</i></small></h4><p>' + tekst + '</p></div></li>');
+        ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i> ' + nyDate + '</i></small></h4><p>' + tekst + '</p></div></li>');
 
     setTimeout(function () {
 
