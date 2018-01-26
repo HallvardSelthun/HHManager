@@ -24,7 +24,15 @@ function getHusholdninger() {
     });
 }
 
+
 $(document).ready(function () {
+
+    $('#submit').click(function(){
+        var photo = $('#profilbilde').val();
+        $('#photo').append('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">')
+    });
+
+    //onload="resizeImg(this,140, 120)"
     //gethhData();
 
     getHusholdninger();
@@ -429,3 +437,11 @@ function leggTilMedlem(epost, husId) {
     });
     //window.location = "profil.html";
 }
+
+function resizeImg(img, height, width) {
+    img.height = height;
+    img.width = width;
+}
+
+
+

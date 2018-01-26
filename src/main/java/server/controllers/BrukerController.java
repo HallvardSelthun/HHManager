@@ -32,9 +32,16 @@ public class BrukerController {
      * @return String navnet til brukeren.
      */
 
-    public static String getNavn(int brukerid) {
-        return GenereltController.getString("navn", TABELLNAVN, brukerid);
-    }
+    public static String getNavn(int brukerid) { return GenereltController.getString("navn", TABELLNAVN, brukerid); }
+
+    /**
+     * Henter profilbilde på bruker gitt brukerens id.
+     *
+     * @param brukerid int id som identifiserer en bruker.
+     * @return String url til brukerens profilbilde.
+     */
+
+    public static String getBilde(int brukerid) {return GenereltController.getString("profilbilde", TABELLNAVN, brukerid);}
 
     /**
      * Henter epost-adressen til en bruker gitt brukerens id.

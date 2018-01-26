@@ -148,20 +148,33 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <a class="container-fluid" href="https://some.addres"><img class="img-fluid"
+                                        <div id="photo"></div>
+                                        <!--<img class="img-fluid" id="photo"
+                                             style="max-width: 250px; max-height: 250px; height: auto"
+                                             src=""
+                                             width="100%"
+                                             border="0"
+                                             align="center">-->
+                                        <!--<a class="container-fluid" href="https://some.addres"><img class="img-fluid"
                                                                                                    style="max-width: 250px; max-height: 250px; height: auto"
                                                                                                    src="web-res/profileicon.png"
                                                                                                    width="100%"
                                                                                                    border="0"
-                                                                                                   align="center"></a>
+                                                                                                   align="center"></a>-->
                                     </div>
-                                    <div class="col-md-8">
+                                        <div class="col-md-8">
                                         <h1 id="navnpåpers"></h1>
                                         <h4 id="mail"></h4>
+                                        <p>Profilbilde:</p>
+                                        <form>
+                                        <input type="text" id="profilbilde">
+                                        <button type="button" id="submit">Last opp</button>
+                                            </form>
                                     </div>
                                 </div>
                                 <div class="container-fluid">
                                     <div class="row">
+                                        <br>
                                         <div class="col-md-4" style="padding: 5px">
                                             <button id="navnknapp" type="button" class="btn btn-primary btn-block"
                                                     data-toggle="modal" data-target="#navnmodal">Endre
