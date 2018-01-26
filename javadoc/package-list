@@ -1,0 +1,6 @@
+server
+server.controllers
+server.database
+server.restklasser
+server.services
+server.util
