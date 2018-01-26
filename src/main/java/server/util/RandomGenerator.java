@@ -20,8 +20,8 @@ public class RandomGenerator {
         final String store = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         final String sma = store.toLowerCase();
         final String tall = "0123456789";
-        final String sym = "!\"#$%&/()=?§'+´`";
-        final String alfabet = store + sma + tall + sym;
+        //final String sym = "!\"#$%&/()=?§'+´`";
+        final String alfabet = store + sma + tall; //+ sym;
 
         StringBuilder buf = new StringBuilder();
         Random r = new Random();
