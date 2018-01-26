@@ -322,7 +322,7 @@ function sendUtlegg() {
  * Lar alle handlelister bli synlige i nettleser.
  */
 function setupPage() {
-    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjøpt, kjøperId, datokjøpt;
+    var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjopt, kjøperId, datokjøpt;
 
     for (var i = 0; i < alleHandlelister.length; i++) {
         if (alleHandlelister[i].gjemt == 0) {
@@ -381,10 +381,10 @@ function setupPage() {
                 vareId = varer[j].vareId;
                 vareHandlelisteId = varer[j].handlelisteId;
                 varenavn = varer[j].varenavn;
-                kjøpt = varer[j].kjøpt;
+                kjopt = varer[j].kjopt;
                 kjøperId = varer[j].kjøperId;
                 //datokjøpt = new Date(varer[j].datokjøpt);
-                $("#liste" + handlelisteId).append('<label for="' + varenavn + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" title="toggle' +
+                $("#liste" + handlelisteId).append('<label for="' + kjopt + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" title="toggle' +
                     ' all" type="checkbox" class="all pull-right"></label>');
             }
         }
