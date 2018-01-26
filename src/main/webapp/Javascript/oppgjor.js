@@ -135,7 +135,7 @@ $(document).on("click", ".hovedCheckbox", function(event){
 
     if ($(this).is(':checked')) {
         lagUtleggsbetalerListe(liveOppgjor, oppgjorNr, function () {
-            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+            klikketKnapp.parent().parent().parent().parent().fadeOut(500); //Fjern raden
         });
         //Oppgjoret gjemmes når metoden over er over
     }
