@@ -82,6 +82,8 @@ public class HandlelisteService {
         return null;
     }
 
+
+
     /**
      * Henter handleliste fra database gitt handlelisteId.
      * @param handlelisteId
@@ -107,7 +109,9 @@ public class HandlelisteService {
         return HandlelisteController.getHandlelister(husholdningId, brukerId);
     }
 
-    //Returnerer ID til varen som ble lagt inn
+    /**
+     *     Returnerer ID til varen som ble lagt inn
+     */
     @POST
     @Path("/nyVare")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -115,9 +119,11 @@ public class HandlelisteService {
         return HandlelisteController.leggInnVare(vare);
     }
 
+
     /**
      * Henter sist brukte handleliste fra database og viser det på forsiden.
-     * @param bruker
+     * @param brukerId BrukerId'en som sendes inn
+     * @param husholdningId Husholdningen som vises på forsiden
      * @return
      */
     @GET
@@ -125,5 +131,15 @@ public class HandlelisteService {
     @Produces(MediaType.APPLICATION_JSON)
     public Handleliste hentForsideListe(@PathParam("husholdningId") int husholdningId, @PathParam("brukerId") int brukerId){
         return HandlelisteController.getForsideListe(husholdningId, brukerId);
+    }
+    /**
+     * Setter varer med rett Id som kjøpt
+     *
+     */
+    @PUT
+    @Path("/kjoptVarer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean settKjopt(ArrayList<Vare> varer){
+        return HandlelisteController.setKjopt(varer);
     }
 }
