@@ -34,7 +34,7 @@ $(document).ready(function () {
             return;
         }
         photo = $('#profilbilde').val();
-        $('#photo').html('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">')
+        $('#photo').html('<img style="width:100%; height:100%; top: 50px; position: relative;" src="' + photo + '">')
     });
 
     //onload="resizeImg(this,140, 120)"
