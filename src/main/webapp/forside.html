@@ -30,7 +30,7 @@
                                     <h2 id="nyhet"></h2>
                                     <!--<button class="skrivNyttInnlegg" for="comment" onclick="skrivNyttInnlegg">Nytt innlegg</button>-->
                                     <div class="skrivNyttInnlegg">
-                                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                                        <textarea class="form-control" rows="5" id="comment" placeholder="Skriv et innlegg" onfocus="this.placeholder=''" onblur="this.placeholder='Skriv et innlegg'"></textarea>
                                         <p align="right">
                                             <button type="button" class="btn" id="commentBtn">Send</button>
                                         </p>
@@ -113,14 +113,18 @@
                                         aria-controls="collapseTwo">
                                         <span class="glyphicon glyphicon-shopping-cart"></span> Handleliste:
                                     </h4>
+                                    <span class="glyphicon glyphicon-share-alt" id="sendtilside"></span>
                                 </div>
                                 <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
                                      data-parent="#accordion">
                                     <div class="panel-body">
                                         <ul class="list-group" id="handlelisteForside">
                                         </ul>
+
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
