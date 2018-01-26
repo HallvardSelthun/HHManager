@@ -255,7 +255,13 @@ function leggInnRadNr(callback, oppgjorArray) {
 //////////////////////////////////////////////////////
                 // AJAX-kode //
 //////////////////////////////////////////////////////
-//Når en rad krysses av i klienten skal den markeres som betalt i databasen
+//
+/**
+ * Når en rad krysses av i klienten skal den markeres som betalt i databasen
+ * @param utleggId Brukes sammen med skyldigBrukerId for å identifisere raden
+ * @param skyldigBrukerId Brukes sammen med utleggId for å identifisere raden
+ * @param next Callback-funkjon
+ */
 function checkMotattRad(utleggId, skyldigBrukerId, next) {
     $.ajax({
         url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
@@ -271,6 +277,11 @@ function checkMotattRad(utleggId, skyldigBrukerId, next) {
     });
 }
 
+/**
+ * Hent inn alle oppgjørene til en viss bruker fra serveren
+ * @param brukerId Brukerens unike ID
+ * @param betalt Om utlegget er betalt eller ikke. 1 = betalt, 0 = ikke betalt.
+ */
 function lastInnOppgjor(brukerId, betalt) {
     $.ajax({
         url: "server/utlegg/oppgjor/"+ brukerId+"/"+betalt,
@@ -303,6 +314,12 @@ function lastInnOppgjor(brukerId, betalt) {
     })
 }
 
+/**
+ * Merk et helt oppgjør som gjort i databasen. Dvs. at alle utleggsbetalere i oppgjøret
+ * blir markert som betalt.
+ * @param utleggsbetalere En array av utleggsbetaler-objekt
+ * @param next Callback-funksjon
+ */
 function checkOppgjorSum(utleggsbetalere, next) {
     $.ajax({
         url: 'server/utlegg/utleggsbetaler',
@@ -320,49 +337,63 @@ function checkOppgjorSum(utleggsbetalere, next) {
         }
     });
 }
-/*
-$("#sum").val().change(function() {
-    console.log("Changed");
-    if ($("#sum").val() <= 0) {
-        $("#sumAlert").show();
-    }
-    else {
-        $("#sumAlert").fadeOut();
-    }
-});
 
-
-jQuery('#sum').on('input', function() {
-    console.log("KEK")
-});
-
-*/
-
+/**
+ * Funksjonen følger med på om sum-inputen endres og viser en warning hvis
+ * input er mindre enn 0.
+ */
 $(function() {
-    var content = $('#sum').val();
-
-    $('#sum').keyup(function() {
-        if ($('#sum').val() != content) {
-            content = $('#sum').val();
-            if (content <= 0) {
-                $("#sumAlert").fadeIn(200)
-            }
-            else {
-                $("#sumAlert").fadeOut(200);
-            }
+    var inputId = "#sum";
+    var alertId = "#sumAlert";
+    var content = $(inputId).val();
+    $(inputId).keyup(function() {
+        if ($(inputId).val() != content) {
+            content = $(inputId).val();
+            if (content <= 0) {$(alertId).fadeIn(200)}
+            else {$(alertId).fadeOut(200);}
         }
     });
 });
 
+/**
+ * Funksjon som sjekker om beskrivelse er satt
+ */
+$(function() {
+    var inputId = "#utleggBeskrivelse";
+    var alertId = "#beskrivelseAlert";
+    var content = $(inputId).val();
+    $(inputId).keyup(function() {
+        console.log("Inne i tekstfelt"+$(inputId).val());
+        if ($(inputId).val() == '') {
+            $(alertId).fadeIn(200);
+            console.log("FadeIn");
+        }
+        else {
+            console.log("FadeOut");
+            $(alertId).fadeOut(200);
+        }
+    })
+});
+
+/**
+ * Funksjon som tar inn input fra lag nytt utlegg-modal og sender til databasen
+ */
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = $("#utleggBeskrivelse").val();
-    if(sum == "" || beskrivelse == ""){
-        alert("pls gi en sum og beskrivelse :)");
-        return;
-    }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
+    if(sum == "" || beskrivelse == ""){
+        $('#sumbeskrivelseAlert').fadeIn(200);
+        $('#sumbeskrivelseAlert').delay(2500).fadeOut(400);
+        return;
+    }
+    if ($('#personer input:checked').length < 1) {
+        $('#checkboxAlert').fadeIn(200);
+        $('#checkboxAlert').delay(2500).fadeOut(400);
+        return;
+    }
+
     //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
