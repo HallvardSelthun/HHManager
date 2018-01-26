@@ -6,6 +6,7 @@
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var navn = bruker.navn;
+var epost = bruker.epost;
 var husholdninger;
 var varseler;
 
