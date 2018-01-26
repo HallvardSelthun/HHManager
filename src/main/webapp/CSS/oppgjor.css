@@ -1,6 +1,6 @@
-.balanse{
+/*.balanse{
     /* width: 550px; */
-    height: auto;
+    /*height: auto;
     margin-right: 20px;
     margin-left: 10px;
     margin-top: 20px;
@@ -14,7 +14,7 @@
     /* width: 600px;
     margin-bottom: 100px;
     */
-    margin-right: 5px;
+   /* margin-right: 5px;
     margin-left: 5px;
 }
 
@@ -26,10 +26,10 @@
     text-align: right;
 }
 
-
+*/
 #historikk {
-    color: blue;
-    margin-top: 50px;
+    color: blue;}
+    /*margin-top: 50px;
     margin-left: 10px;
 }
 #historikkMain{
@@ -50,28 +50,28 @@
     text-align: right ;
     margin-right: 5px;
 }
-
+*/
 .totalSumPos {
     color: #32CD32;
-    margin-right: 45px;
+    /*margin-right: 45px;*/
 }
 
 .totalSumNeg {
     color: #CD3232;
-    margin-right: 45px;
+    /*margin-right: 45px;*/
 }
-
+/*
 .skyldertittel {
     margin-right: 30px  ;
 }
 
 .checkbox-wrap {
     text-align: center;
-    /*margin-left: 10px;*/
+    /*margin-left: 10px;*//*
 }
 
 .skylderTekst {
-    /*margin-right:10px;*/
+    /*margin-right:10px;*//*
 }
 
 .alert {
@@ -87,11 +87,11 @@
     padding-right: 10px;
 }
 
-.krev-penger{
+.krev-penger{*/
     /*width: 550px;
     height: 900px;
     margin-right: 200px;*/
-    margin-left: 100px;
+    /*margin-left: 100px;
     margin-top: 52px;
 }
 .medlemCheck{
@@ -99,3 +99,9 @@
     text-align: left;
 }
 
+*/
+
+.skalAlignes {
+    text-align: left;
+    margin-left:30px;
+}
