@@ -80,10 +80,10 @@ $(document).on("click", "#historikk", function(event){
 function displayHistorikk(oppgjorArray) {
 
     //TODO: Fikse skikkelige templates til historie
-    $.template( "oppgjorTemplateHistorikk", $("#test-oppgjor"));
+    $.template( "oppgjorTemplateHistorikk", $("#historikk-template"));
 
-    $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder"));
-    $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder"));
+    $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder-historikk"));
+    $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder-historikk"));
 
     var startOppgjorNr = liveOppgjor.length;
     console.log("Inne i displayHistorikk");
@@ -92,9 +92,9 @@ function displayHistorikk(oppgjorArray) {
     for (var i = 0; i < oppgjorArray.length; i++) {
         $.tmpl( "oppgjorTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
         //console.log(oppgjorArray[i].utleggJegSkylder);
-        $.tmpl( "rad-template-duSkylder", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
+        $.tmpl( "rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinus"+i+""));
         //console.log(oppgjorArray[i].utleggDenneSkylderMeg);
-        $.tmpl( "rad-template-deSkylder", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
+        $.tmpl( "rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlus"+i+""));
     }
 }
 

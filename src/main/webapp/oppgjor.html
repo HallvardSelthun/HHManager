@@ -117,15 +117,15 @@
     <!--Viktig ^^^ -->
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
-            <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
+            <h3  class="panel-title pull-left col-sm-6" style="padding-top: 7.5px;">
                 <!--Viktig -->
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
             <div class="titteldiv">
-                <label class="skylderTekst">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg}">${totalSum} kr</label>
-                {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox" id="hovCheckNr${oppgjorNr}">{{else}}<span class="placeholderSpan"> </span>{{/if}}
+                <label class="skylderTekst col-sm-2">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-2" >${totalSum} kr</label>
+                {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox col-sm-2" id="hovCheckNr${oppgjorNr}">{{else}}<span class="placeholderSpan"> </span>{{/if}}
 
             </div>
         </div>
@@ -173,6 +173,8 @@
     </div>
 </script>
 
+
+
 <script id="rad-template-duSkylder" type="text/x-custom-template">
     <tr>
         <td>${delSum}</td>
@@ -215,7 +217,7 @@
         <td>${beskrivelse}</td>
         <td>
             <div class="checkbox-wrap" >
-                <input type="checkbox" id="checkbox${radNr}" class="checkboxes" data-utleggId="${utleggId}" data-skyldigBrukerId="${skyldigBrukerId}">
+                <span></span>
             </div>
         </td>
     </tr>
