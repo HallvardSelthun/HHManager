@@ -42,9 +42,9 @@ $(document).ready(function () {
 function setupPage() {
     console.log(husholdning);
     var husNavn = he.encode(husholdning.navn);
-    var nyhetsinnlegg = he.encode(husholdning.nyhetsinnlegg);
+    var nyhetsinnlegg = husholdning.nyhetsinnlegg;
     medlemmer = husholdning.medlemmer;
-    var handlelister = he.encode(husholdning.handlelister);
+    var handlelister = husholdning.handlelister;
     localStorage.setItem("husholdningId", husholdningId);
 
     /**

@@ -100,8 +100,8 @@ $(document).ready(function () {
      */
     $("#lagreendringer").on('click', function () {
         var brukerId = minBruker.brukerId;
-        var endrepassord1 = $("#nyttpassord").val();
-        var endrepassord2 = $("#bekreftnytt").val();
+        var endrepassord1 = he.encode($("#nyttpassord").val());
+        var endrepassord2 = he.encode($("#bekreftnytt").val());
         if (endrepassord1 == "" || endrepassord2 == "") {
             alert("PLIS SKRIV IN NOKE...")
             return;
@@ -144,7 +144,7 @@ $(document).ready(function () {
      */
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
-        var nyttNavn = $("#nyttnavn").val();
+        var nyttNavn = he.encode($("#nyttnavn").val());
         console.log(nyttNavn);
         var bruker = {
             brukerId: brukerId,
@@ -185,8 +185,8 @@ $(document).ready(function () {
      */
     $("#lagre").on('click', function () {
         var brukerId = minBruker.brukerId;
-        var nyepost1 = $("#nyepost").val();
-        var nyepost2 = $("#nyepost2").val();
+        var nyepost1 = he.encode($("#nyepost").val());
+        var nyepost2 = he.encode($("#nyepost2").val());
         if (nyepost1 == "" || nyepost2 == "") {
             alert("PLIS SKRIV IN NOKE...")
             return;
@@ -243,7 +243,7 @@ $(document).ready(function () {
 
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp2", function () {
-        var navnHus = $("#nynavnHusstand").val();
+        var navnHus = he.encode($("#nynavnHusstand").val());
 
         navnIHuset2.push(
             {
@@ -324,7 +324,7 @@ $(document).on('click', '.glyphicon', function () {
 });
 
 $(document).on('click', '#nymedlem', function () {
-    var epost = $("#medlemepost").val();
+    var epost = he.encode($("#medlemepost").val());
 
 });
 
@@ -335,7 +335,7 @@ $(document).on('click', '.removeMedlem', function () {
 });
 
 $(document).on('click', '#nymedlem', function () {
-   var epost = $("#medlemepost").val();
+   var epost = he.encode($("#medlemepost").val());
    leggTilMedlem(epost, leggtilMedlemIHusId);
 });
 
@@ -516,7 +516,7 @@ function resizeImg(img, height, width) {
 }
 
 $(document).on('click', '#submitProfilbilde', function () {
-    var link = $('#profilbilde').val();
+    var link = he.encode($('#profilbilde').val());
     setProfilbilde(link);
 });
 

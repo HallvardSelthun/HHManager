@@ -51,7 +51,7 @@ $(document).ready(function () {
  * varer i en tabell, samt spør og sjekker om handleliste skal være offentlig eller ikke.
  */
 function leggTilNyHandleliste() {
-    var handlelisteNavn = $("#handlelisteNavn").val();
+    var handlelisteNavn = he.encode($("#handlelisteNavn").val());
     var varer = [];
     var offentlig = 0;
     var isChecked = $('#offentligKnapp').is(':checked');
@@ -72,7 +72,7 @@ function leggTilNyHandleliste() {
         return;
     }
     /**
-     * Kall til handleliste i server fo å legge til handlelisteobjektet som er definert over.
+     * Kall til handleliste i server for å legge til handlelisteobjektet som er definert over.
      */
     $.ajax({
         url: "server/handleliste",
@@ -108,8 +108,7 @@ $(document).on('click', '.nyVareKnapp', function() {
 
 });
 function leggTilVare(hlId, navn) {
-    var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
-
+    var nyGjenstandNavn = he.encode($(".leggTilNyGjenstand:focus").val());
     var vare = {
         varenavn: navn,
         handlelisteId: hlId
@@ -147,8 +146,6 @@ function leggTilVare(hlId, navn) {
             }
         });
     },200);
-
-
 }
 
 /**

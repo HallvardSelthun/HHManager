@@ -96,8 +96,8 @@ $(document).ready(function () {
 
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp", function () {
-        var navnHus = $("#navnHusstand").val();
-        var medlemHus = $("#navnMedlem").val();
+        var navnHus = he.encode($("#navnHusstand").val());
+        var medlemHus = he.encode($("#navnMedlem").val());
 
         navnIHuset.push(
             {

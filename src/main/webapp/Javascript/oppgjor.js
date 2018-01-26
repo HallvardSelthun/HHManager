@@ -66,10 +66,9 @@ var ferdigeOppgjor = [];
 var delSum = 0;
 
 function init() {
-    lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betalt
-    setTimeout(function () {
+    lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betaltx
         lastInnBrukere();
-    },300);
+
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
 
@@ -372,8 +371,8 @@ $(function() {
  * Funksjon som sjekker om beskrivelse er satt
  */
 $(function() {
-    var inputId = "#utleggBeskrivelse";
-    var alertId = "#beskrivelseAlert";
+    var inputId = he.encode("#utleggBeskrivelse");
+    var alertId = he.encode("#beskrivelseAlert");
     var content = $(inputId).val();
     $(inputId).keyup(function() {
         console.log("Inne i tekstfelt"+$(inputId).val());
@@ -393,7 +392,7 @@ $(function() {
  */
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
-    var beskrivelse = $("#utleggBeskrivelse").val();
+    var beskrivelse = he.encode($("#utleggBeskrivelse").val());
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
     if(sum == "" || beskrivelse == ""){
@@ -470,7 +469,6 @@ function displayOppgjor(oppgjorArray) {
     else {
         displayHistorikk(oppgjorArray);
     }
-
 }
 
 function lastInnBrukere() {
@@ -480,7 +478,7 @@ function lastInnBrukere() {
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
-                var navn = he.encode(husholdninger[j].medlemmer[k].navn);
+                var navn = husholdninger[j].medlemmer[k].navn;
                 var id = husholdninger[j].medlemmer[k].brukerId;
                 if (id != bruker.brukerId){
                     $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox skalAlignes" >'+
