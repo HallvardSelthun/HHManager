@@ -80,7 +80,7 @@ public class StatistikkController {
      */
     public static ArrayList<List<String>> getVarekjopstatistikk(int husholdningId){
         ArrayList<List<String>> varestatistikk = new ArrayList<>();
-        String query = "SELECT COUNT(vareId) antallVarer, bruker.navn FROM vare LEFT JOIN handleliste ON vare.handlelisteId = handleliste.handlelisteId LEFT JOIN bruker ON kjøperId = brukerId WHERE husholdningId = "+husholdningId+" AND kjøpt=1 AND vare.datoKjøpt>DATE_ADD(NOW(), INTERVAL -1 MONTH)  GROUP BY kjøperId;";
+        String query = "SELECT COUNT(vareId) antallVarer, bruker.navn FROM vare LEFT JOIN handleliste ON vare.handlelisteId = handleliste.handlelisteId LEFT JOIN bruker ON kjøperId = brukerId WHERE husholdningId = "+husholdningId+" AND kjopt=1 AND vare.datoKjøpt>DATE_ADD(NOW(), INTERVAL -1 MONTH)  GROUP BY kjøperId;";
         try(Connection con = ConnectionPool.getConnection()){
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
