@@ -153,9 +153,9 @@
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-md-6 pull-right" style="text-align: right; padding: 0px">
-                <label class="skylderTekst col-md-4" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-md-4" style="text-align: right; padding: 0px">${totalSum} kr</label>
+            <div class="titteldiv col-sm-6 pull-right" style="text-align: right; padding: 0px">
+                <label class="skylderTekst col-sm-4" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-4" style="text-align: right; padding: 0px">${totalSum} kr</label>
                 <div class="col-md-4"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
                         class="placeholderSpan"></span>{{/if}}
                 </div>
