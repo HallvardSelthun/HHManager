@@ -124,4 +124,11 @@ public class HusholdningsService {
     public boolean regNyttMedlem(Bruker bruker){
         return HusholdningController.regNyttMedlem(bruker);
     }
+
+    @PUT
+    @Path("/setAdmin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setAdmin(Bruker bruker){
+        return HusholdningController.setMedlemAdmin(bruker);
+    }
 }

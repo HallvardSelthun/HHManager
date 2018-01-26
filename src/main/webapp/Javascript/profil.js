@@ -365,7 +365,7 @@ function hentliste() {
         if (admin == 1){
             adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
             adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
-                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">slett</button>';
+                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
         }
         console.log(husholdnavn);
 
@@ -388,10 +388,14 @@ function hentliste() {
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            var giAdmin = "";
+            if (mineHusholdninger[k].medlemmer[p].admin == 0){
+                giAdmin = '<button style="padding: 2px 6px; margin-right: 3px;" class="btn  btn-primary pull-right giAdmin"' +
+                    'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Admin</button>'
+            }
             console.log(medlemnavn);
 
-            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+'</li>');
-
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
         }
     }
 
@@ -545,8 +549,39 @@ function setProfilbilde(link) {
             alert("feil feil feil feil");
         }
     });
-    //window.location = "profil.html";
 }
 
+$(document).on('click', '.giAdmin', function () {
+    bId = $(this).attr('value2');
+    hId = $(this).attr('value');
+    setAdmin(bId, hId);
+    $(this).hide();
+});
+
+function setAdmin(bId, hId) {
+
+    var bruker = {
+        brukerId: bId,
+        favHusholdning: hId
+    };
+    $.ajax({
+        url: "server/hhservice/setAdmin",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if(data){
+                alert("nice nice");
+            }else{
+                alert("yikes");
+            }
+        },
+        error: function () {
+            alert("feil feil feil");
+        }
+    });
+}
 
 
