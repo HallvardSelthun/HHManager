@@ -40,9 +40,12 @@
                     <input id="vereMedPaaUtlegg" type="checkbox"> Vere med på utlegg selv
                 </div>
                 <br>
-                <div class="beskrivelse-input">
+                <div class="beskrivelse-input" id="oppgjorBeskrivelse">
                     <p>Beskrivelse:</p>
                     <input id="utleggBeskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
+                </div>
+                <div class="alert alert-danger" id="beskrivelseAlert">
+                    <strong>Feil input</strong> Sum må være større enn 0.
                 </div>
                 <br>
                 <div class="btn-group">
@@ -180,7 +183,6 @@
         </div>
     </div>
 </script>
-
 
 
 <script id="rad-template-duSkylder" type="text/x-custom-template">
