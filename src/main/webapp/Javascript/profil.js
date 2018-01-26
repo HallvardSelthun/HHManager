@@ -27,7 +27,7 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
-    $('#photo').html('<img style="width:100%; height:100%; top: 50px; position: relative;" src="' + photo + '">');
+    $('#photo').html('<img style="width:120px; height:120px; top: 30px; position: relative;" src="' + photo + '">');
 
     $('#submitProfilbilde').click(function(){
         if($('#profilbilde').val()==""){
