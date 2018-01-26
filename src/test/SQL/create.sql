@@ -84,7 +84,7 @@ CREATE TABLE `vare` (
   `handlelisteId` int(11) NOT NULL,
   `kjøperId` int(11) DEFAULT NULL,
   `vareNavn` text,
-  `kjøpt` tinyint(1) DEFAULT NULL,
+  `kjopt` tinyint(1) DEFAULT NULL,
   `datoKjøpt` date DEFAULT NULL,
   PRIMARY KEY (`vareId`,`handlelisteId`),
   CONSTRAINT `vare___fk_2` FOREIGN KEY (`kjøperId`) REFERENCES `hhmedlem` (`brukerId`),
