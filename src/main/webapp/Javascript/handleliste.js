@@ -165,8 +165,6 @@ function slettHandleliste(sletteId) {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            alert("Det gikk bra!");
-
             if (data) {
                 window.location = "handlelister.html";
             } else {

@@ -121,14 +121,6 @@ function gethhData() {
     });
 }
 
-/**
- * Funksjonen henter brukerdata fra serviceklassen Brukerservice
- */
-function getBrukerData() {
-    $.getJSON("server/BrukerService/" + epost + "/brukerData", function (data) {
-        //bruker = data;
-    });
-}
 
 /**
  * Funksjonen brukes til å poste et innlegg og lar bruker skrive et innlegg til gruppa. Det skal
@@ -172,22 +164,16 @@ function innleggToHtml(nyhetsinnlegg) {
     var fofatterId = nyhetsinnlegg.forfatterId;
     var forfatter = "pls";
     var tekst = he.encode(nyhetsinnlegg.tekst); //XSS prevention
-    var options = {
-        weekday: 'long',
-        year: '2-digit',
-        month: 'short',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-    };
-    var date = new Date(nyhetsinnlegg.dato).toLocaleDateString("en-US", options);
+
+    var nyDate = new Date(nyhetsinnlegg.dato).toISOString().slice(0,10);
+
     for (var j = 0, length = medlemmer.length; j < length; j++) {
         if (medlemmer[j].brukerId == fofatterId) {
             forfatter = medlemmer[j].navn;
         }
     }
     $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="web-res/avatar.png" class="media-object" style="width:45px"></div><div' +
-        ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i>' + date + '</i></small></h4><p>' + tekst + '</p></div></li>');
+        ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i> ' + nyDate + '</i></small></h4><p>' + tekst + '</p></div></li>');
 
     setTimeout(function () {
 

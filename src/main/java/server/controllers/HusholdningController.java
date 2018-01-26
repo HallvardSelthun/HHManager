@@ -429,7 +429,7 @@ public class HusholdningController {
                 huset.addHandleliste(handleliste);
                 handlelisteId = rs.getInt("handlelisteId");
 
-                String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
+                String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
 
                 s = con.createStatement();
                 rs = s.executeQuery(hentVarer);
@@ -437,7 +437,7 @@ public class HusholdningController {
                     Vare vare = new Vare();
                     vare.setHandlelisteId(handlelisteId);
                     vare.setVarenavn(rs.getString("vareNavn"));
-                    int i = rs.getInt("kjøpt");
+                    int i = rs.getInt("kjopt");
                     if (i == 1) {
                         vare.setKjopt(true);
                     } else {
@@ -461,7 +461,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn, bruker.brukerId FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -470,6 +470,7 @@ public class HusholdningController {
                 Bruker nyMedlem = new Bruker();
                 nyMedlem.setNavn(medlemRS.getString("navn"));
                 nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
+                nyMedlem.setAdmin(medlemRS.getInt("admin"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {

@@ -47,7 +47,7 @@ public class HandlelisteController {
             handleliste.setHusholdningId(handlelisteId);
             handleliste.setTittel(rs.getString("navn"));
             handleliste.setHusholdningId(husholdningId);
-            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
+            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
 
             s = con.createStatement();
             rs = s.executeQuery(hentVarer);
@@ -55,7 +55,7 @@ public class HandlelisteController {
                 Vare vare = new Vare();
                 vare.setHandlelisteId(handlelisteId);
                 vare.setVarenavn(rs.getString("vareNavn"));
-                int i = rs.getInt("kjøpt");
+                int i = rs.getInt("kjopt");
                 if (i == 1) {
                     vare.setKjopt(true);
                 } else {
@@ -167,7 +167,7 @@ public class HandlelisteController {
                 nyVare.setVareId(varerResultset.getInt("vareId"));
                 nyVare.setKjoperId(varerResultset.getInt("kjøperId"));
                 nyVare.setVarenavn(varerResultset.getString("vareNavn"));
-                nyVare.setKjopt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
+                nyVare.setKjopt((varerResultset.getInt("kjopt"))==1); //Hvis resultatet == 1, får man true
                 nyVare.setDatoKjopt(varerResultset.getDate("datoKjøpt"));
                 nyVare.setHandlelisteId(varerResultset.getInt("handlelisteId"));
                 varer.add(nyVare);
