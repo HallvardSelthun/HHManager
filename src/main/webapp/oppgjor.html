@@ -35,7 +35,7 @@
                     <p>Sum:</p>
                     <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
                     <div class="alert alert-danger" id="sumAlert">
-                        <strong>Feil input</strong> Sum må være større enn 0.
+                        <strong>Feil sum</strong> Sum må være større enn 0.
                     </div>
                     <input id="vereMedPaaUtlegg" type="checkbox"> Vere med på utlegg selv
                 </div>
@@ -45,7 +45,7 @@
                     <input id="utleggBeskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
                 </div>
                 <div class="alert alert-danger" id="beskrivelseAlert">
-                    <strong>Feil input</strong> Sum må være større enn 0.
+                    <strong>Manglende beskrivelse.</strong> Skriv inn hva utlegget er for
                 </div>
                 <br>
                 <div class="btn-group">
@@ -57,6 +57,12 @@
                     <br>
                     <br>
                     <p id="betalere"></p>
+                </div>
+                <div class="alert alert-danger" id="sumbeskrivelseAlert">
+                    <strong>Feil input</strong> Sum og beskrivelse må være riktige.
+                </div>
+                <div class="alert alert-danger" id="checkboxAlert">
+                    <strong>Ingen betalere valgt.</strong> Du må velge et medlem som skal betale.
                 </div>
                 <br>
                 <br>

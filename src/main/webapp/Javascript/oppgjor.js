@@ -383,6 +383,17 @@ function lagNyttUtlegg() {
     var beskrivelse = $("#utleggBeskrivelse").val();
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
+    if(sum == "" || beskrivelse == ""){
+        $('#sumbeskrivelseAlert').fadeIn(200);
+        $('#sumbeskrivelseAlert').delay(2500).fadeOut(400);
+        return;
+    }
+    if ($('#personer input:checked').length < 1) {
+        $('#checkboxAlert').fadeIn(200);
+        $('#checkboxAlert').delay(2500).fadeOut(400);
+        return;
+    }
+
     //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
