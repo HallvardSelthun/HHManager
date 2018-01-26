@@ -4,16 +4,12 @@
     <title>Profil</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="CSS/profil.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="web-res/jquery-3.3.1.min.js"></script>
-
     <script src="web-res/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
-
     <script src="Javascript/nav.js"></script>
-
     <script src="Javascript/profil.js"></script>
 </head>
 <body>
@@ -150,18 +146,6 @@
                                         <div id="photo">
                                             <img style="width:120px; height:120px; top: 30px; position: relative;" src="http://kiwilandingpad.com/wp-content/uploads/2014/05/avatar-placeholder.png">
                                         </div>
-                                        <!--<img class="img-fluid" id="photo"
-                                             style="max-width: 250px; max-height: 250px; height: auto"
-                                             src=""
-                                             width="100%"
-                                             border="0"
-                                             align="center">-->
-                                        <!--<a class="container-fluid" href="https://some.addres"><img class="img-fluid"
-                                                                                                   style="max-width: 250px; max-height: 250px; height: auto"
-                                                                                                   src="web-res/profileicon.png"
-                                                                                                   width="100%"
-                                                                                                   border="0"
-                                                                                                   align="center"></a>-->
                                     </div>
                                         <div class="col-md-8">
                                         <h1 id="navnpåpers"></h1>
@@ -232,22 +216,19 @@
                     <input id="nynavnHusstand" type="text" class="form-control" name="textfield"
                            placeholder="Skriv navn her">
                 </div>
-                <br>
                 <div class="nymedlemmer">
-                    <p>Legg til medlemmer ved epost (du trenger ikke å skrive inn din egen, den blir automatisk registrert):</p>
+                    <p>Legg til medlemmer ved epost:</p>
                     <input id="nynavnMedlem2" type="text" class="form-control" name="textfield"
                            placeholder="Skriv epost her">
                 </div>
-                <br>
+
                 <div class="knapp">
                     <p><strong>NB!</strong> Du må trykke legg til medlem før du kan lagre</p>
                     <button id="leggTilMedlemKnapp2" type="button">Legg til medlem</button>
                 </div>
 
-                <div class="alert alert-danger" id="fadedanger">
-                    <strong>Tom epostadresse!</strong> Vennligst skriv inn epostadresse til en bruker.
-                </div>
-                <div class="alert alert-success" id="fade">
+                <div class="alert alert-success alert-dismissable fade in" id="fade">
+                    <a href="#" id="alertbox" class="close">&times;</a>
                     <strong>Suksess!</strong> Medlem registrert i husholdning
                 </div>
 
