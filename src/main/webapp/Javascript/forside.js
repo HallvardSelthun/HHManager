@@ -211,6 +211,9 @@ function innleggToHtml(nyhetsinnlegg) {
         document.getElementById("skrivNyttInnlegg").style.display = "none";
     }
 }*/
+/**
+ * Oppdaterer gjøremål dersom bruker krysser av en avkrysningsboks.
+ */
 
 function oppdaterGjoremal() {
     var ffListe = [];

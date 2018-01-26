@@ -83,45 +83,51 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Historikk</h4>
             </div>
-                <div id="historikkMain">
-                    <div class="panel-group" id="panelGruppeHistorikk">
-                        <div class="labels">
-                            <label class="skyldertittel">Balanse </label>
-                            <label class="betalt">Betalt</label>
-                        </div>
+            <div id="historikkMain">
+                <div class="panel-group" id="panelGruppeHistorikk">
+                    <div class="labels">
+                        <label class="skyldertittel">Balanse </label>
+                        <label class="betalt">Betalt</label>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+            </div>
             </div>
         </div>
     </div>
 </div>
 
-
 <!-- Hovedstruktur for siden -->
-<div id = "container">
+<div id = "container" class="container-fluid">
     <div class = "row">
-        <div id="left" class="col-sm-2 col-lg-3"></div>
-        <div id="center" class="col-sm-8 col-lg-6">
-            <h1 class="tittel">Mine oppgjør</h1>
-            <!-- Under her legges det inn dynamisk HTML -->
-            <div class="panel-group" id="panelGruppe">
-                <div class="labels">
-                    <label class="skyldertittel">Balanse </label>
-                    <label class="betalt">Motatt</label>
+        <div id="left" class="col-md-3"></div>
+        <div id="center" class="col-md-6">
+            <div class="container-fluid">
+                <div class="row">
+                    <h1 class="tittel">Mine oppgjør</h1>
+                    <div class="container-fluid">
+                        <!-- Under her legges det inn dynamisk HTML -->
+                        <div class="row panel-group" id="panelGruppe">
+                            <div class="labels container-fluid">
+                                <div class="row">
+                                    <label class="col-sm-6"></label>
+                                    <label class="col-sm-2"></label>
+                                    <label class="skyldertittel col-md-2">Balanse</label>
+                                    <label class="betalt">Motatt</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <b><a id="historikk" href="#" target="_blank" data-toggle="modal" data-target="#visHistorikk">Vis historikk</a></b>
+                        <button id="forespør" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#oppgjørmodal">Forespør penger</button>
+                    </div>
                 </div>
             </div>
-            <b><a id="historikk" href="#" target="_blank" data-toggle="modal" data-target="#visHistorikk">Vis historikk</a></b>
-
-            <button id="forespør" type="button" class="btn btn-primary pull-right" data-toggle="modal"
-                    data-target="#oppgjørmodal">
-                Forespør
-                penger
-            </button>
         </div>
-    <div id="right" class="col-sm-2 col-lg-3"></div>
+    <div id="right" class="col-md-3"></div>
     </div>
 </div>
 

@@ -1,11 +1,9 @@
 package server.services;
 //import server.controllers.BrukerController;
-import com.fasterxml.jackson.databind.deser.std.MapEntryDeserializer;
 import server.controllers.BrukerController;
-import server.restklasser.*;
+import server.restklasser.Bruker;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -42,11 +40,19 @@ public class BrukerService {
         return BrukerController.loginOk(bruker);
     }
 
+
     @DELETE
     @Path("/fjernBrukerFraHusholdning")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean slettFraHusholdning(Bruker bruker){
         return BrukerController.slettFraHusholdning(bruker.getBrukerId(), bruker.getFavHusholdning());
+    }
+
+    @PUT
+    @Path("/setProfilbilde")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setProfilbilde(Bruker bruker){
+        return BrukerController.setProfilbilde(bruker);
     }
 
 

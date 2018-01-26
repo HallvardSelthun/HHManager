@@ -478,3 +478,11 @@ function lastInnBrukere() {
     }
 }
 
+function displayDiv() {
+    var x = document.getElementsByClassName("invisibleDiv");
+    if ($(".invisibleDiv").css("display") === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
