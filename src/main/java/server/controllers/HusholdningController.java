@@ -370,7 +370,7 @@ public class HusholdningController {
             }*/
             String hentHus = "SELECT * FROM husholdning WHERE husholdningId = " + fav;
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = " + fav;
-            String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
+            String hentAlleMedlemmer = "SELECT navn, bruker.brukerId, profilbilde FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + fav + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
@@ -398,6 +398,7 @@ public class HusholdningController {
                 Bruker bruker = new Bruker();
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
+                bruker.setProfilbilde(rs.getString("profilbilde"));
                 huset.addMedlem(bruker);
             }
             Handleliste handleliste = new Handleliste();
@@ -443,7 +444,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin, profilbilde FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -453,6 +454,7 @@ public class HusholdningController {
                 nyMedlem.setNavn(medlemRS.getString("navn"));
                 nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
                 nyMedlem.setAdmin(medlemRS.getInt("admin"));
+                nyMedlem.setProfilbilde(medlemRS.getString("profilbilde"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {

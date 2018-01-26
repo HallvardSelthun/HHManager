@@ -36,6 +36,10 @@ $(document).ready(function () {
         oppdaterBetalere();
     });
 
+    $(".invisibleDiv").on("click", function () {
+        displayDiv();
+    });
+
     //Kjør JavaScript
     init();
     /*

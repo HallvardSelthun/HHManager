@@ -20,21 +20,22 @@ public class HusholdningControllerTest {
 
     */
  /**
-     * Denne tester en autoincremnt-verdi. Dette går nå greit siden den testes opp mot h2
+     * Denne tester en autoincremnt-verdi. Dette går greit når det testes opp mot h2
      */
     @Test
     public void ny() throws Exception {
         Husholdning husholdning = new Husholdning();
-        husholdning.setNavn("ueurururwedcd");
+        husholdning.setNavn("bvbvbyryryetetet");
         Bruker bruker1 = new Bruker();
         Bruker bruker2 = new Bruker();
-        bruker1.setEpost("ikkemedISystemet@testmail.com");
-        bruker2.setEpost("ppppp@mail.com");
+        bruker1.setEpost("ingrid.stuland.evensen@gmail.com");
+        bruker2.setEpost("trulsmt@stud.ntnu.no");
         ArrayList<Bruker> medlemmer = new ArrayList<>();
         medlemmer.add(bruker1);
         medlemmer.add(bruker2);
         husholdning.setMedlemmer(medlemmer);
         assertEquals(3, HusholdningController.ny(husholdning));
+        assertEquals(4, HusholdningController.ny(husholdning));
     }
 /*
     @Test

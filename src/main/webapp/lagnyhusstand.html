@@ -1,19 +1,21 @@
 <link rel="stylesheet" type="text/css" href="CSS/lagnyhusstand.css">
-<div id="myModal" class= "modal fade">
+<div id="myModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"> <span class="glyphicon glyphicon-home"></span> Lag ny husstand</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-home"></span> Lag ny husstand</h4>
             </div>
             <div class="modal-body">
                 <div class="husstand">
                     <p>Navn på husstanden:</p>
-                    <input id="navnHusstand" type="text" class="form-control" name="textfield" placeholder="Skriv navn her">
+                    <input id="navnHusstand" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv navn her">
                 </div>
                 <div class="medlemmer">
                     <p>Legg til medlemmer ved epost:</p>
-                    <input id="navnMedlem" type="text" class="form-control" name="textfield" placeholder="Skriv epost her">
+                    <input id="navnMedlem" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv epost her">
                 </div>
 
                 <div class="knapp">
@@ -22,13 +24,14 @@
                 </div>
 
                 <div class="alert alert-success alert-dismissable fade in" id="fade">
-                    <a href="#" id="alertbox" class="close" >&times;</a>
+                    <a href="#" id="alertbox" class="close">&times;</a>
                     <strong>Suksess!</strong> Medlem registrert i husholdning
                 </div>
 
-            <div class="modal-footer">
-                <button type="button" id= "lukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                <button id="lagreHusKnapp" type="button" class="btn btn-primary">Lagre husstand</button>
+                <div class="modal-footer">
+                    <button type="button" id="lukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button id="lagreHusKnapp" type="button" class="btn btn-primary">Lagre husstand</button>
+                </div>
             </div>
         </div>
     </div>
