@@ -480,7 +480,7 @@ function lastInnBrukere() {
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
-                var navn = husholdninger[j].medlemmer[k].navn;
+                var navn = he.encode(husholdninger[j].medlemmer[k].navn);
                 var id = husholdninger[j].medlemmer[k].brukerId;
                 if (id != bruker.brukerId){
                     $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox skalAlignes" >'+

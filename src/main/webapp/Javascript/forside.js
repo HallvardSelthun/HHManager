@@ -41,10 +41,10 @@ $(document).ready(function () {
  */
 function setupPage() {
     console.log(husholdning);
-    var husNavn = husholdning.navn;
-    var nyhetsinnlegg = husholdning.nyhetsinnlegg;
+    var husNavn = he.encode(husholdning.navn);
+    var nyhetsinnlegg = he.encode(husholdning.nyhetsinnlegg);
     medlemmer = husholdning.medlemmer;
-    var handlelister = husholdning.handlelister;
+    var handlelister = he.encode(husholdning.handlelister);
     localStorage.setItem("husholdningId", husholdningId);
 
     /**
@@ -222,7 +222,7 @@ function innleggToHtml(nyhetsinnlegg) {
 
 function oppdaterGjoremal() {
     var ffListe = [];
-    var minegjoremal = bruker.gjoremal;
+    var minegjoremal = he.encode(bruker.gjoremal);
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
         var gjoremal = minegjoremal[i];
         var gjoremalId = minegjoremal[i].gjoremalId;
