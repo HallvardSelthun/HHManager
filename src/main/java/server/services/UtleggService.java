@@ -32,7 +32,7 @@ public class UtleggService {
     @GET
     @Path("/oppgjor/{brukerId}/{betalt}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId, int betalt) {
+    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId, @PathParam("betalt") int betalt) {
         return UtleggController.getMineOppgjor(brukerId, betalt);
     }
 
