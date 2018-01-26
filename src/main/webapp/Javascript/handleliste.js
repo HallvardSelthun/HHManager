@@ -259,6 +259,10 @@ function lagUtleggVarer() {
     //antVarerChecked = boxesChecked.length;
 }
 
+/**
+ * Sender utlegg til de personene som blir sjekket av
+ */
+
 function sendUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = "Kjøpt: ";
@@ -396,10 +400,6 @@ function setupPage() {
         }
     }
 }
-
-/**
- *
- */
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
     if ($(".invisibleDiv").css("display") === "none") {
