@@ -9,8 +9,12 @@ import java.util.ArrayList;
  *
  * Created by BrageHalse on 10.01.2018.
  */
+
 public class Handleliste {
 
+    /**
+     * Definerer variabler
+     */
     private String tittel;
     private int handlelisteId;
     private int husholdningId;
@@ -32,6 +36,7 @@ public class Handleliste {
         //tom konstruktør
     }
 
+    //Konstruktør
     public Handleliste(int handlelisteId, int husholdningId, Date frist, boolean offentlig, String navn, int skaperId) {
         this.handlelisteId = handlelisteId;
         setHusholdningId(husholdningId);
@@ -41,6 +46,10 @@ public class Handleliste {
         setSkaperId(skaperId);
     }
 
+    /**
+     * Metoder for handlelisteId, husholdningsId, hente vare osv.
+     * @param handlelisteId
+     */
     public Handleliste(int handlelisteId) {
         this.handlelisteId = handlelisteId;
     }
@@ -49,10 +58,7 @@ public class Handleliste {
         this.varer = varer;
     }
 
-    public int getHandlelisteId(){
-        return handlelisteId;
-
-    }
+    public int getHandlelisteId(){ return handlelisteId; }
 
     public int getHusholdningId(){
         return husholdningId;
@@ -73,7 +79,6 @@ public class Handleliste {
     public void addVarer(Vare vare){
         varer.add(vare);
     }
-
 
     public void setSkaperId(int skaperId) {
         this.skaperId = skaperId;

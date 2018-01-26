@@ -6,7 +6,7 @@ var bruker;
 var utforerId = minBruker.brukerId;
 var minegjoremal = minBruker.gjoremal;
 var fellesgjoremal;
-var husholdningId = localStorage.getItem("husholdningId")
+var husholdningId = localStorage.getItem("husholdningId");
 var varselListe;
 var husholdning;
 var id;
@@ -166,14 +166,10 @@ $(document).ready(function () {
                 success: function (result) {
                     var data = JSON.parse(result); // gjør string til json-objekt
                     if (data) {
-                        console.log("Gjøremål som slettes:");
-                        console.log(gjoremal)
-                        alert("Det gikk bra!");
-
                     } else {
                         alert("feil!");
                     }
-                    //window.location = "gjoremaal.html";
+
                 },
                 error: function () {
                     alert("serverfeil :/");
@@ -187,8 +183,10 @@ $(document).ready(function () {
             }
             minBruker.gjoremal = minegjoremal;
             localStorage.setItem("bruker", JSON.stringify(minBruker));
+            window.location = "gjoremaal.html";
 
         }, 200)
+
     });
 
     /**
@@ -229,11 +227,9 @@ $(document).ready(function () {
                 console.log("Data: " + data);
                 if (data) {
                     window.location = "gjoremaal.html";
-                    alert("Det gikk bra!");
                 } else {
                     alert("feil!");
                 }
-                window.location = "gjoremaal.html";
             },
             error: function () {
                 alert("serverfeil :/");
@@ -286,7 +282,6 @@ $(document).ready(function () {
                     minBruker.gjoremal.push(gjoremal2);
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";
-                    alert("Det gikk bra!");
                 } else {
                     alert("feil!");
                 }

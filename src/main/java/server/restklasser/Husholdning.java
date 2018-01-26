@@ -7,6 +7,9 @@ import java.util.ArrayList;
  * Created by BrageHalse on 10.01.2018.
  */
 public class Husholdning {
+    /**
+     * Definerer variabler
+     */
     private int husholdningId;
     private String navn;
     private ArrayList<Handleliste> handlelister = new ArrayList<>();
@@ -14,6 +17,11 @@ public class Husholdning {
     private ArrayList<Nyhetsinnlegg> nyhetsinnlegg = new ArrayList<>();
     private ArrayList<Bruker> medlemmer = new ArrayList<>();
     private String adminId;
+
+    /**
+     * Metoder til variablene
+     * @return
+     */
 
     public String getAdminId() {
         return adminId;

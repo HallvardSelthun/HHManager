@@ -37,11 +37,11 @@ INSERT INTO handleliste (husholdningsId, frist, offentlig, navn, skaperId) VALUE
 
 
 -- varer:
-INSERT INTO vare  (handlelisteId, kjøperID, vareNavn, kjøpt, datoKjøpt) VALUES (1,1,'mat',1,'2017-01-02');
-INSERT INTO vare  (handlelisteId, kjøperID, vareNavn, kjøpt, datoKjøpt) VALUES (1,1,'kule ting',1,'2017-01-02');
-INSERT INTO vare  (handlelisteId, vareNavn, kjøpt) VALUES (1, 'mat',0);
-INSERT INTO vare  (handlelisteId, vareNavn, kjøpt) VALUES (1, 'mindre kule ting',0);
-INSERT INTO vare  (handlelisteId, vareNavn, kjøpt) VALUES (1, 'superkule ting',0);
+INSERT INTO vare  (handlelisteId, kjøperID, vareNavn, kjopt, datoKjøpt) VALUES (1,1,'mat',1,'2017-01-02');
+INSERT INTO vare  (handlelisteId, kjøperID, vareNavn, kjopt, datoKjøpt) VALUES (1,1,'kule ting',1,'2017-01-02');
+INSERT INTO vare  (handlelisteId, vareNavn, kjopt) VALUES (1, 'mat',0);
+INSERT INTO vare  (handlelisteId, vareNavn, kjopt) VALUES (1, 'mindre kule ting',0);
+INSERT INTO vare  (handlelisteId, vareNavn, kjopt) VALUES (1, 'superkule ting',0);
 
 -- utlegg:
 INSERT INTO utlegg (utleggerId, sum, beskrivelse)VALUES (1, 200, 'varer');

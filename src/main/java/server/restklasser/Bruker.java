@@ -3,17 +3,34 @@ package server.restklasser;
 import java.util.ArrayList;
 
 public class Bruker {
-
+    /**
+     * Definerer variabler
+     */
     private int brukerId;
     private String navn;
     private String passord;
     private String nyttpassord;
     private String epost;
     private int favHusholdning;
+    private int admin;
+
+    public int getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
     private HHMedlem[] HHMedlemmer;
     private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
     private double balanse;
 
+    /**
+     * Metoder for å hente medlem, navn, gjøremål, id og passord, epost, balanse og favoritthusholdning
+     * samt for å endre hver av de.
+     * @return
+     */
     public HHMedlem[] getHHMedlemmer() {
         return HHMedlemmer;
     }

@@ -194,7 +194,7 @@ INSERT INTO `utleggsbetaler` (`utleggId`, `skyldigBrukerId`, `betalt`, `delSum`)
 -- Dataark for tabell `vare`
 --
 
-INSERT INTO `vare` (`vareId`, `handlelisteId`, `kjøperId`, `vareNavn`, `kjøpt`, `datoKjøpt`) VALUES
+INSERT INTO `vare` (`vareId`, `handlelisteId`, `kjøperId`, `vareNavn`, `kjopt`, `datoKjøpt`) VALUES
 (1, 2, 8, 'mat', 1, '2018-01-02'),
 (2, 2, 8, 'kule ting', 1, '2018-01-02'),
 (3, 2, NULL, 'mat', 0, NULL),

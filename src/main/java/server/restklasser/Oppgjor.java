@@ -14,8 +14,8 @@ public class Oppgjor {
     int brukerId; //BrukerIden til en av personene du har oppgjør med
     String navn; //Navnet som hører til brukerId, så slipper vi en tur til til databasen
 
+    //Tom konstruktør
     public Oppgjor() {
-
     }
 
     public Oppgjor(ArrayList<Utleggsbetaler> utleggJegSkylder, ArrayList<Utleggsbetaler> utleggDenneSkylderMeg) {
@@ -26,7 +26,7 @@ public class Oppgjor {
     //I JavaScript kan man
     //objekt.utleggJegSkylder, gå gjennom arrayet. Årdner seg.
 
-
+    //Ulike get og set metoder
     public ArrayList<Utleggsbetaler> getUtleggJegSkylder() {
         return utleggJegSkylder;
     }

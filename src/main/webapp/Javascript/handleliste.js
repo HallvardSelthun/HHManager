@@ -1,5 +1,6 @@
 /**
- * Created by Karol on 14.01.2018.
+ * Created by Karol on
+ * 14.01.2018.
  */
 /**
  * Definerer variabler
@@ -11,6 +12,7 @@ var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
 var boxesChecked = [];
+//var antVarerChecked;
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -18,6 +20,7 @@ var boxesChecked = [];
  */
 $(document).ready(function () {
     getHandlelisterData();
+    gethhData();
     setTimeout(setupPage,1000);
 
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
@@ -30,18 +33,17 @@ $(document).ready(function () {
         endrePublic();
     });
 
-
-    /*$("#leggTilNyGjenstandKnapp").on("click", function () {
-        leggTilNyGjenstand();
-    });
-    */
     $(document).on('click','.slettHandlelisteKnapp', function () {
         slettHandleliste($(this).attr('value'))
     });
 
     $(document).on('click', '.utleggKnapp', function(){
-        checkChecked($(this).attr('id'));
-    })
+        checkChecked("liste" + $(this).attr('id').slice(6));
+        lagUtleggVarer();
+    });
+    $(document).on('click', '.sendUtlegg', function(){
+        sendUtlegg();
+    });
 });
 
 /**
@@ -96,14 +98,24 @@ function leggTilNyHandleliste() {
  * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
  * til i riktig handleliste med en handlelisteId.
  */
-function leggTilVare() {
+
+$(document).on('click', '.nyVareKnapp', function() {
+    var listeId = $(this).attr('value');
+    var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
+    var temp = "#"+listeId;
+
+    leggTilVare(listeId, input);
+
+});
+function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
-    var handlelisteId = $(".leggTilNyGjenstand:focus").attr("id");
 
     var vare = {
-        varenavn: nyGjenstandNavn,
-        handlelisteId: handlelisteId
+        varenavn: navn,
+        handlelisteId: hlId
     };
+    console.log(vare);
+
 
     if (nyGjenstandNavn == "") {
         alert("Skriv navnet til gjenstanden!");
@@ -113,26 +125,30 @@ function leggTilVare() {
     /**
      * Sender et ajax-kall til handleliste i server der varen lagres.
      */
-    $.ajax({
-        url: "server/handleliste/" + handlelisteId + "/" + brukerId,
-        type: 'POST',
-        data: JSON.stringify(vare),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (result) {
-            var data = JSON.parse(result);
-            alert("Det gikk bra!");
+    setTimeout(function(){
+        $.ajax({
+            url: "server/handleliste/nyVare",
+            type: 'POST',
+            data: JSON.stringify(vare),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
+                var data = JSON.parse(result);
+                window.location = "handlelister.html";
 
-            if (data) {
-                //window.location = "handlelister.html";
-            } else {
-                alert("feil!");
+                if (data) {
+
+                } else {
+                    alert("feil!");
+                }
+            },
+            error: function () {
+                alert("serverfeil :/")
             }
-        },
-        error: function () {
-            alert("serverfeil :/")
-        }
-    })
+        });
+    },200);
+
+
 }
 
 /**
@@ -149,8 +165,6 @@ function slettHandleliste(sletteId) {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            alert("Det gikk bra!");
-
             if (data) {
                 window.location = "handlelister.html";
             } else {
@@ -165,9 +179,7 @@ function slettHandleliste(sletteId) {
 
 function endreNavn(){}
 
-function checkEllerUncheck(){
-
-}
+function checkEllerUncheck(){}
 
 /**
  * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
@@ -204,27 +216,102 @@ function getHandlelisterData() {
     });
 }
 
+function gethhData() {
+    $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
+        husholdning = data;
+    });
+}
+
 /**
  *
  * @param formname lar deg huke av handlelister du er ferdige med.
  * @returns {boolean}
  */
 function checkChecked(formname) {
-    formname = "liste" + formname.slice(6);
-
+    //console.log(formname);
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
             boxesChecked.push($(this).attr("id"));
         }
-        //$("#utleggmodal").modal('show');
     });
 
     if (boxesChecked == false) {
         alert('Du må krysse av minst en vare');
         return false;
     }
+    //console.log(boxesChecked);
+}
 
-    console.log(boxesChecked);
+function lagUtleggVarer() {
+    var vareNavn = "";
+    var medlemmer = husholdning.medlemmer;
+    var medlemNavn = "";
+    for(var i = 0; i < boxesChecked.length; i++){
+        vareNavn = boxesChecked[i];
+        //console.log(vareNavn);
+        $("#valgteVarer").append('<li class="list-group-item">' + vareNavn + '</li>');
+    }
+    for(var j = 0; j < medlemmer.length; j++){
+        medlemNavn = medlemmer[j].navn;
+        medlemId = medlemmer[j].brukerId;
+        $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
+    }
+    //antVarerChecked = boxesChecked.length;
+}
+
+function sendUtlegg() {
+    var sum = $("#sum").val();
+    var beskrivelse = "Kjøpt: ";
+    var vareNavn;
+    for(var i = 0; i < boxesChecked.length; i++){
+        vareNavn = boxesChecked[i];
+        beskrivelse += vareNavn + ", ";
+    }
+    beskrivelse = beskrivelse.replace(-1, ".");
+
+
+
+    if(sum == "" || beskrivelse == ""){
+        alert("pls gi en sum og beskrivelse :)");
+        return;
+    }
+    var utleggerId = bruker.brukerId;
+    var utleggsbetalere = [];
+    //delSum = sum/$('#personer input:checked').length;
+    $('#medbetalere input:checked').each(function () {
+        utleggsbetaler = {
+            skyldigBrukerId: $(this).attr('id'),
+            //delSum: delSum
+        };
+        utleggsbetalere.push(utleggsbetaler)
+    });
+
+    utlegg = {
+        utleggerId: utleggerId,
+        sum: sum,
+        beskrivelse: beskrivelse,
+        utleggsbetalere: utleggsbetalere
+    };
+
+    $.ajax({
+        url: "server/utlegg/nyttutlegg",
+        type: 'POST',
+        data: JSON.stringify(utlegg),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data =JSON.parse(result);
+            if (data){ //Returnerer vel true
+                location.reload(true);
+                alert(" :D");
+            }else{
+                alert("D:");
+            }
+        },
+        error: function () {
+            alert("RIPinpeace");
+        }
+    })
 }
 
 /**
@@ -256,21 +343,21 @@ function setupPage() {
                 '           <div class="container-fluid">' +
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
-                '                       <form class="row">' +
+                '                       ' +
                 '                           <div class="input-group container-fluid">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
-            '                                   <div class="input-group-btn" onclick="leggTilVare()">' +
-            '                                       <button id="' + handlelisteId + '" class="btn btn-default" type="submit">' +
-            '                                           <i class="glyphicon glyphicon-plus"></i>' +
-            '                                       </button>' +
-            '                                   </div>' +
+                '                                   <div class="input-group-btn">' +
+                '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +
+                '                                           <i class="glyphicon glyphicon-plus"></i>' +
+                '                                       </button>' +
+                '                                   </div>' +
                 '                           </div>' +
-                '                       </form>' +
+                '                      ' +
                 '                       <div class="row">' +
                 '                           <div class="container-fluid">' +
-                    '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
+                '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
                 ' data-target="#utleggmodal" style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
-                    '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left" style="margin-top: 10px">Kjøpt uten' +
+                '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left" style="margin-top: 10px">Kjøpt uten' +
                 ' utlegg</button>' +
                 '                           <!-- Rounded switch -->' +
                 '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
@@ -308,7 +395,6 @@ function setupPage() {
             $("#valgteVarer").append('<label for="' + boxesChecked[i] + '" class="list-group-item" name="vare"> ' + boxesChecked[i] + '</label>');
         }
     }
-
 }
 
 /**

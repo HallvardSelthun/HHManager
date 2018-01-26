@@ -194,10 +194,10 @@ public class UtleggController {
      * @param connection Sendes videre fra moder-metoden getMineOppgjør()
      * @return ArrayList med Utleggsbetaler.
      */
-    private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection) {
+    private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection, int betalt) {
 
         //Gir alle utleggere som jeg skylder penger, samt beløpet jeg skylder mm.
-        String query = "SELECT * FROM utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" ORDER BY utleggerId"; //test med 2
+        String query = "SELECT * FROM utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" AND betalt = "+betalt+" ORDER BY utleggerId"; //test med 2
 
         try (PreparedStatement statement = connection.prepareStatement(query)){
             ResultSet resultset = statement.executeQuery();
@@ -252,8 +252,8 @@ public class UtleggController {
      * @param connection Sendes videre fra moder-metoden getMineOppgjør()
      * @return ArrayList med Utleggsbetaler.
      */
-    private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection) throws SQLException{
-        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE utleggerId = "+minBrukerId+"";
+    private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection, int betalt) throws SQLException{
+        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE utleggerId = "+minBrukerId+" AND betalt = "+betalt+"";
 
         Utleggsbetaler skylderMeg = new Utleggsbetaler();
 
@@ -294,13 +294,13 @@ public class UtleggController {
      * @param minBrukerId ID til brukeren som vi henter oppgjørene til
      * @return Array med alle pågående oppgjør
      */
-    public static ArrayList<Oppgjor> getMineOppgjor(int minBrukerId) {
+    public static ArrayList<Oppgjor> getMineOppgjor(int minBrukerId, int betalt) {
 
             ArrayList<Oppgjor> mineOppgjor = new ArrayList<Oppgjor>();
             try (Connection connection = ConnectionPool.getConnection()) {
 
-                mineOppgjor = getAlleOppgjorJegSkylder(minBrukerId, connection);
-                ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection);
+                mineOppgjor = getAlleOppgjorJegSkylder(minBrukerId, connection, betalt);
+                ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection, betalt);
                 return mineOppgjorNy;
 
             } catch (SQLException e) {
@@ -332,10 +332,10 @@ public class UtleggController {
                 ps.setDouble(3, utlegg.utleggsbetalere.get(i).getDelSum());
                 ps.execute();
             }
-            return true;
+            return true; //Burde kanskje sjekke litt bedre
         }catch (SQLException e){
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

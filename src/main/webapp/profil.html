@@ -19,6 +19,27 @@
     <script src="Javascript/profil.js"></script>
 </head>
 <body>
+<div id="leggtilmedlem" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-plus"></span> Legg til medlem </h4>
+            </div>
+            <div class="modal-body">
+                <div class="nymedlem">
+                    <p>Skriv inn epostadressen til det nye medlemmet</p>
+                    <input id="medlemepost" type="email" class="form-control" name="textfield"
+                           placeholder="Skriv epost her">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button type="button" id="nymedlem" class="btn btn-primary">Legg til nytt medlem</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="bekreftmodal">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -77,13 +98,13 @@
             <div class="modal-body">
                 <div class="nypassord">
                     <p>Nytt passord</p>
-                    <input id="nyttpassord" type="text" class="form-control" name="textfield"
+                    <input id="nyttpassord" type="password" class="form-control" name="textfield"
                            placeholder="Skriv nytt passord her">
                 </div>
                 <br>
                 <div class="bekreft">
                     <p>Bekreft nytt passord</p>
-                    <input id="bekreftnytt" type="text" class="form-control" name="textfield"
+                    <input id="bekreftnytt" type="password" class="form-control" name="textfield"
                            placeholder="Bekreft nytt passord her">
                 </div>
             </div>
@@ -105,7 +126,8 @@
             <div class="modal-body">
                 <div class="endrenavn">
                     <p>Navn:</p>
-                    <input id="nyttnavn" type="text" class="form-control" name="textfield" placeholder="Skriv navn her">
+                    <input id="nyttnavn" type="text" class="form-control" name="textfield"
+                           placeholder="Skriv navn her">
                 </div>
                 <div class="modal-footer">
                     <button id="button" type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
@@ -126,8 +148,12 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <a class="container-fluid" href="https://some.addres"><img class="img-fluid" style="max-width: 250px; max-height: 250px; height: auto"
-                                                                                                   src="web-res/profileicon.png" width="100%" border="0" align="center"></a>
+                                        <a class="container-fluid" href="https://some.addres"><img class="img-fluid"
+                                                                                                   style="max-width: 250px; max-height: 250px; height: auto"
+                                                                                                   src="web-res/profileicon.png"
+                                                                                                   width="100%"
+                                                                                                   border="0"
+                                                                                                   align="center"></a>
                                     </div>
                                     <div class="col-md-8">
                                         <h1 id="navnpåpers"></h1>
@@ -137,16 +163,22 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-md-4" style="padding: 5px">
-                                            <button id="navnknapp" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#navnmodal">Endre
-                                                navn</button>
+                                            <button id="navnknapp" type="button" class="btn btn-primary btn-block"
+                                                    data-toggle="modal" data-target="#navnmodal">Endre
+                                                navn
+                                            </button>
                                         </div>
                                         <div class="col-md-4" style="padding: 5px">
-                                            <button id="passord" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#passordmodal">Endre
-                                                passord</button>
+                                            <button id="passord" type="button" class="btn btn-primary btn-block"
+                                                    data-toggle="modal" data-target="#passordmodal">Endre
+                                                passord
+                                            </button>
                                         </div>
                                         <div class="col-md-4" style="padding: 5px">
-                                            <button id="epostknapp" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#epostmodal">Endre
-                                                epost</button>
+                                            <button id="epostknapp" type="button" class="btn btn-primary btn-block"
+                                                    data-toggle="modal" data-target="#epostmodal">Endre
+                                                epost
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -155,9 +187,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" align="center">
+            <div class="col-md-6">
                 <div class="container-fluid">
-                    <h2>Dine husstander </h2>
+                    <h2 align="center">Dine husstander </h2>
                     <div class="husinfo">
                         <div id="husstander" class="panel-group row"></div>
                         <div class="container-fluid"></div>
@@ -167,9 +199,10 @@
                                 data-target="#myModal">Ny husstand
                         </button>
                     </p>
+                </div>
             </div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>
 <!--<ul class="panel-group" id="accordion">

@@ -1,6 +1,7 @@
 package server.controllers;
 
 //import jdk.internal.org.objectweb.asm.Handle;
+//import jdk.internal.org.objectweb.asm.Handle;
 import server.database.ConnectionPool;
 import server.restklasser.Handleliste;
 import server.restklasser.Vare;
@@ -19,8 +20,54 @@ public class HandlelisteController {
         return GenereltController.getDate("frist","handleliste", handlelisteId);
     }
 
+    /**
+     * Gjemmer en handleliste, i stedet for å slette, for å ivareta statistikk
+     * @param handlelisteId id til listen som skal gjemmes
+     * @return en boolean om det gikk bra eller ikke
+     */
     public static boolean gjemHandleliste(int handlelisteId) {
         return GenereltController.gjemRad("handleliste",handlelisteId);
+    }
+
+    /**
+     * Henter en handleliste som skal vises på forsiden til en bruker
+     * @param husholdningId husholdningsId'en til husstanden som vises
+     * @param brukerId brukerId'en til brukeren som er logget inn
+     * @return handlelisten som skal vises
+     */
+    public static Handleliste getForsideListe(int husholdningId, int brukerId){
+        int handlelisteId;
+        String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + husholdningId + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
+        Handleliste handleliste = new Handleliste();
+        try (Connection con = ConnectionPool.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(hentHandleliste);
+            rs.next();
+            handlelisteId = rs.getInt("handlelisteId");
+            handleliste.setHusholdningId(handlelisteId);
+            handleliste.setTittel(rs.getString("navn"));
+            handleliste.setHusholdningId(husholdningId);
+            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
+
+            s = con.createStatement();
+            rs = s.executeQuery(hentVarer);
+            while (rs.next()){
+                Vare vare = new Vare();
+                vare.setHandlelisteId(handlelisteId);
+                vare.setVarenavn(rs.getString("vareNavn"));
+                int i = rs.getInt("kjopt");
+                if (i == 1) {
+                    vare.setKjopt(true);
+                } else {
+                    vare.setKjopt(false);
+                }
+                handleliste.addVarer(vare);
+            }
+            return handleliste;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -120,7 +167,7 @@ public class HandlelisteController {
                 nyVare.setVareId(varerResultset.getInt("vareId"));
                 nyVare.setKjoperId(varerResultset.getInt("kjøperId"));
                 nyVare.setVarenavn(varerResultset.getString("vareNavn"));
-                nyVare.setKjopt((varerResultset.getInt("kjøpt"))==1); //Hvis resultatet == 1, får man true
+                nyVare.setKjopt((varerResultset.getInt("kjopt"))==1); //Hvis resultatet == 1, får man true
                 nyVare.setDatoKjopt(varerResultset.getDate("datoKjøpt"));
                 nyVare.setHandlelisteId(varerResultset.getInt("handlelisteId"));
                 varer.add(nyVare);
@@ -196,36 +243,25 @@ public class HandlelisteController {
      */
     public static int leggInnVare(Vare vare) {
 
-        String INSERT_Vare =
-                "INSERT INTO vare (handlelisteId, vareNavn) VALUES (?, ?)";
-
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(INSERT_Vare, PreparedStatement.RETURN_GENERATED_KEYS);) {
+        String INSERT_Vare = "INSERT INTO vare (handlelisteId, vareNavn) VALUES (?, ?)";
+        String getId = "SELECT LAST_INSERT_ID()";
+        int vareId;
+        try (Connection connection = ConnectionPool.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(INSERT_Vare);
             
-            insertStatement.setInt(1, vare.getHandlelisteId());
-            insertStatement.setString(2, vare.getVarenavn());
-            
-
-            //Kjør insert-kall
-            try {
-                int primaryKey = -1;
-                if (insertStatement.executeUpdate() > 0) {
-                    ResultSet rs = insertStatement.getGeneratedKeys();
-                    while (rs.next()) {
-                        primaryKey = rs.getInt(1);
-                    }
-                }
-                return primaryKey;
+            ps.setInt(1, vare.getHandlelisteId());
+            ps.setString(2, vare.getVarenavn());
+            ps.executeUpdate();
+            ps=connection.prepareStatement(getId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            vareId=rs.getInt(1);
+            return vareId;
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return -1;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     /*

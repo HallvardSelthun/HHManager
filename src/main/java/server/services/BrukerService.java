@@ -27,8 +27,6 @@ public class BrukerService {
     public boolean registrerBruker(Bruker nyBruker){
         return BrukerController.registrerBruker(nyBruker);
     }
-
-
     /**
      * Sjekker om logindataene er riktige
      *

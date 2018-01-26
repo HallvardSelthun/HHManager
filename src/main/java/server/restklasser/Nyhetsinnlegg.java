@@ -7,16 +7,23 @@ import java.sql.Date;
  * Created by BrageHalse on 10.01.2018.
  */
 public class Nyhetsinnlegg {
+    /**
+     * Definerer variabler
+     */
     private int nyhetsinnleggId;
     private int forfatterId;
     private int husholdningId;
     private Date dato;
     private String tekst;
 
+    //Tom konstruktør
     public Nyhetsinnlegg (){
-
     }
 
+    /**
+     * Metoder til variablene, get og set-metoder
+     * @return
+     */
     public int getNyhetsinnleggId() {
         return nyhetsinnleggId;
     }

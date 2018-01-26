@@ -48,7 +48,6 @@ $(document).on('click', '.hhobjekt', function () {
                 $("#husholdningsNavn").text(hhNavn);
             }
         }
-
     }, 400);
 });
 
@@ -190,14 +189,18 @@ function nyhetsGraf(){
 
 }
 
+/**
+ * Henter statistikk over mest publiserte nyhetsinnlegg per medlem, fra StatistikkServide
+ */
 function getNyhetsstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
         innleggsListe = data;
         console.log(innleggsListe);
     });
 }
-/*
 
+/**
+ * Henter statistikk over hvem som har gjort flest gjøremål i husstanden, fra StatistikkService
  */
 function getGjoremalstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/gjoremal", function (data) {
@@ -205,6 +208,10 @@ function getGjoremalstatistikk(){
         console.log(statistikkListe);
     });
 }
+
+/**
+ * Henter statistikk over hvem som har kjøpt flest varer i en husholdning fra StatistikkService.
+ */
 function getVarekjopstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/varer", function (data) {
         vareListe = data;

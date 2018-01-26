@@ -6,13 +6,23 @@ import java.sql.Date;
  *
  * Created by BrageHalse on 10.01.2018.
  */
+
 public class Gjoremal {
+    /**
+     * Initierer variabler
+     */
     private int gjoremalId;
     private int husholdningId;
     private int hhBrukerId;
     private boolean fullfort;
     private String beskrivelse;
     private Date frist;
+
+    /**
+     * Metoder for å hente gjøremål-husholdningsid, sjekke om noe er fullført, tidsfrist med tanke på gjøremål
+     * og en beskrivelse.
+     * @return
+     */
 
     public int getGjoremalId(){
         return gjoremalId;

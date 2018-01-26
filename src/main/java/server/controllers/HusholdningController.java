@@ -372,7 +372,6 @@ public class HusholdningController {
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = " + fav;
             String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + fav + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
-
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
             while (rs.next()) {
@@ -404,30 +403,30 @@ public class HusholdningController {
             Handleliste handleliste = new Handleliste();
             s = con.createStatement();
             rs = s.executeQuery(hentHandleliste);
-            rs.next();
+            if(rs.next()) {
+                handleliste.setTittel(rs.getString("navn"));
+                handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
+                handleliste.setHusholdningId(fav);
+                handleliste.setOffentlig(true);
+                huset.addHandleliste(handleliste);
+                handlelisteId = rs.getInt("handlelisteId");
 
-            handleliste.setTittel(rs.getString("navn"));
-            handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
-            handleliste.setHusholdningId(fav);
-            handleliste.setOffentlig(true);
-            huset.addHandleliste(handleliste);
-            handlelisteId = rs.getInt("handlelisteId");
+                String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
 
-            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
-
-            s = con.createStatement();
-            rs = s.executeQuery(hentVarer);
-            while (rs.next()) {
-                Vare vare = new Vare();
-                vare.setHandlelisteId(handlelisteId);
-                vare.setVarenavn(rs.getString("vareNavn"));
-                int i = rs.getInt("kjøpt");
-                if (i == 1) {
-                    vare.setKjopt(true);
-                } else {
-                    vare.setKjopt(false);
+                s = con.createStatement();
+                rs = s.executeQuery(hentVarer);
+                while (rs.next()) {
+                    Vare vare = new Vare();
+                    vare.setHandlelisteId(handlelisteId);
+                    vare.setVarenavn(rs.getString("vareNavn"));
+                    int i = rs.getInt("kjopt");
+                    if (i == 1) {
+                        vare.setKjopt(true);
+                    } else {
+                        vare.setKjopt(false);
+                    }
+                    handleliste.addVarer(vare);
                 }
-                handleliste.addVarer(vare);
             }
 
         }catch (Exception e){
@@ -444,7 +443,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn, bruker.brukerId FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -453,6 +452,7 @@ public class HusholdningController {
                 Bruker nyMedlem = new Bruker();
                 nyMedlem.setNavn(medlemRS.getString("navn"));
                 nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
+                nyMedlem.setAdmin(medlemRS.getInt("admin"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {
@@ -534,4 +534,71 @@ public class HusholdningController {
         }
         return false;
     }
+
+    public static boolean slettMedlem (Bruker bruker){
+        int husId = bruker.getFavHusholdning();
+        int brukerid = bruker.getBrukerId();
+        String delete = "DELETE FROM hhmedlem WHERE brukerId = ? AND husholdningId = ?";
+        String favHusDel = "UPDATE bruker SET favorittHusholdning = null WHERE brukerId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(delete);
+            ps.setInt(1,brukerid);
+            ps.setInt(2,husId);
+            ps.executeUpdate();
+            ps = con.prepareStatement(favHusDel);
+            ps.setInt(1,brukerid);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean regNyttMedlem(Bruker bruker){
+        int husholdningId = bruker.getFavHusholdning();
+        int brukerId;
+        ArrayList<String> medlem = new ArrayList<>();
+        String epost = bruker.getEpost();
+        medlem.add(epost);
+        String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = ?";
+        String regNyttMedlem = "INSERT INTO hhmedlem (brukerId, husholdningId, admin) VALUES (?, ?, 0)";
+        String lagNyBruker = "INSERT INTO bruker (favorittHusholdning, epost) VALUES (?,?)";
+        String getNyBrukerId = "SELECT LAST_INSERT_ID()";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(getBrukerId);
+            ps.setString(1,epost);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                brukerId = rs.getInt("brukerId");
+                ps = con.prepareStatement(regNyttMedlem);
+                ps.setInt(1,brukerId);
+                ps.setInt(2,husholdningId);
+                ps.executeUpdate();
+                Mail.sendAllerede(medlem, Integer.toString(husholdningId));
+                return true;
+            }else{
+                ps = con.prepareStatement(lagNyBruker);
+                ps.setInt(1,husholdningId);
+                ps.setString(2,epost);
+                ps.executeUpdate();
+                ps = con.prepareStatement(getNyBrukerId);
+                rs = ps.executeQuery();
+                rs.next();
+                brukerId = rs.getInt(1);
+                ps = con.prepareStatement(regNyttMedlem);
+                ps.setInt(1, brukerId);
+                ps.setInt(2,husholdningId);
+                ps.executeUpdate();
+                Mail.sendUreg(medlem, Integer.toString(husholdningId));
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
+
+
