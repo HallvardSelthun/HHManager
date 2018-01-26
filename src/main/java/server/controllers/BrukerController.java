@@ -32,9 +32,16 @@ public class BrukerController {
      * @return String navnet til brukeren.
      */
 
-    public static String getNavn(int brukerid) {
-        return GenereltController.getString("navn", TABELLNAVN, brukerid);
-    }
+    public static String getNavn(int brukerid) { return GenereltController.getString("navn", TABELLNAVN, brukerid); }
+
+    /**
+     * Henter profilbilde på bruker gitt brukerens id.
+     *
+     * @param brukerid int id som identifiserer en bruker.
+     * @return String url til brukerens profilbilde.
+     */
+
+    public static String getProfilbilde(int brukerid) {return GenereltController.getString("profilbilde", TABELLNAVN, brukerid);}
 
     /**
      * Henter epost-adressen til en bruker gitt brukerens id.
@@ -131,7 +138,7 @@ public class BrukerController {
      * @return brukerdata hvis ok: epost, navn, id, favoritthusholdning, gjøremal
      */
     public static Bruker loginOk(Bruker bruker) {
-        String query = "SELECT hash, favorittHusholdning, navn, brukerId, salt FROM bruker WHERE epost = ?";
+        String query = "SELECT hash, favorittHusholdning, navn, brukerId, salt, profilbilde FROM bruker WHERE epost = ?";
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, bruker.getEpost());
@@ -142,6 +149,7 @@ public class BrukerController {
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 bruker.setFavHusholdning(rs.getInt("favorittHusholdning"));
+                bruker.setProfilbilde(rs.getString("profilbilde"));
                 String hentGjoremal = "SELECT * FROM gjoremal WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
                 PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
                 ResultSet rs2 = psGjoremal.executeQuery();
@@ -227,11 +235,26 @@ public class BrukerController {
         }
     }
 
-    public static void setNyttNavn(int brukerId, String navn){
-        GenereltController.update(TABELLNAVN, "navn", navn, brukerId);
-    }
+    public static void setNyttNavn(int brukerId, String navn){ GenereltController.update(TABELLNAVN, "navn", navn, brukerId); }
 
     private double getBalanse(int brukerId) {
         return 0;
     }
+
+    public static boolean setProfilbilde(Bruker bruker){
+        String link = bruker.getProfilbilde();
+        int id = bruker.getBrukerId();
+        String setLink = "UPDATE bruker SET profilbilde = ? WHERE brukerId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(setLink);
+            ps.setString(1,link);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e ){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

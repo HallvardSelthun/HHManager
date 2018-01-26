@@ -13,6 +13,7 @@ public class Bruker {
     private String epost;
     private int favHusholdning;
     private int admin;
+    private String profilbilde;
 
     public int getAdmin() {
         return admin;
@@ -22,6 +23,14 @@ public class Bruker {
         this.admin = admin;
     }
 
+    public String getProfilbilde() {
+        return profilbilde;
+    }
+
+    public void setProfilbilde(String profilbilde) {
+        this.profilbilde = profilbilde;
+    }
+
     private HHMedlem[] HHMedlemmer;
     private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
     private double balanse;
@@ -29,6 +38,7 @@ public class Bruker {
     /**
      * Metoder for å hente medlem, navn, gjøremål, id og passord, epost, balanse og favoritthusholdning
      * samt for å endre hver av de.
+     *
      * @return
      */
     public HHMedlem[] getHHMedlemmer() {
@@ -39,15 +49,19 @@ public class Bruker {
         this.HHMedlemmer = HHMedlemmer;
     }
 
-    public String getNavn(){return navn;}
+    public String getNavn() {
+        return navn;
+    }
 
-    public void setNavn(String nyttNavn){this.navn = nyttNavn;}
+    public void setNavn(String nyttNavn) {
+        this.navn = nyttNavn;
+    }
 
     public ArrayList<Gjoremal> getGjoremal() {
         return gjoremal;
     }
 
-    public void addGjoremal(Gjoremal gjoremal){
+    public void addGjoremal(Gjoremal gjoremal) {
         this.gjoremal.add(gjoremal);
     }
 
@@ -90,5 +104,4 @@ public class Bruker {
     public void setFavHusholdning(int favHusholdning) {
         this.favHusholdning = favHusholdning;
     }
-
 }

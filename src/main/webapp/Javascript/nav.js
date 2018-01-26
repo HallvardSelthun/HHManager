@@ -6,6 +6,7 @@
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var navn = bruker.navn;
+var epost = bruker.epost;
 var husholdninger;
 var varseler;
 
@@ -67,6 +68,10 @@ $(document).ready(function () {
     $('body').on('click', '#statistikkknapp', function () {
         window.location = "statistikk.html"
     });
+    $('body').on('click', '#kalenderknapp', function () {
+        window.location = "kalender.html"
+    });
+
     $('body').on('click', 'a#loggut', function () {
         localStorage.clear();
         window.location = "index.html"

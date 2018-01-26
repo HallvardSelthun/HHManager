@@ -35,6 +35,10 @@ $(document).ready(function () {
         oppdaterBetalere();
     });
 
+    $(".invisibleDiv").on("click", function () {
+        displayDiv();
+    });
+
     //Kjør JavaScript
     init();
     /*
@@ -42,22 +46,21 @@ $(document).ready(function () {
         init();
     })
     */
-    console.log("testbruk: "+testBrukerId);
+    console.log("Bruker logget inn: "+minBrukerId);
 });
 
 //Globale variabler
 var bruker = JSON.parse(localStorage.getItem("bruker"));
-var testBrukerId = bruker.brukerId;
+var minBrukerId = bruker.brukerId;
 var liveOppgjor = [];
 var ferdigeOppgjor = [];
 var delSum = 0;
 
 function init() {
-    lastInnOppgjor(testBrukerId,0); //0 er ubetalt, 1 er betalt
+    lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betalt
     setTimeout(function () {
-        lastinn();
-    },500);
-
+        lastInnBrukere();
+    },300);
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
 
@@ -68,8 +71,7 @@ function init() {
 
 //Historikk
 $(document).on("click", "#historikk", function(event){
-    lastInnOppgjor(testBrukerId,1);
-
+    lastInnOppgjor(minBrukerId,1);
 });
 
 function displayHistorikk(oppgjorArray) {
@@ -161,6 +163,10 @@ function tellAntallUtleggsbetalere(oppgjorArray) {
     }
 }
 
+/**
+ * Test
+ * @param oppgjorArray
+ */
 function utregnOppgjorSum(oppgjorArray) {
 
     var sum = 0;
@@ -171,14 +177,14 @@ function utregnOppgjorSum(oppgjorArray) {
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             sum = sum - oppgjorArray[i].utleggJegSkylder[j].delSum;
         }
-        oppgjorArray[i].skylderSum = sum;
+        oppgjorArray[i].skylderSum = Math.round(sum);
         totalSum = sum;
         sum = 0;
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             sum = sum + oppgjorArray[i].utleggDenneSkylderMeg[j].delSum;
         }
 
-        oppgjorArray[i].skylderMegSum = sum;
+        oppgjorArray[i].skylderMegSum = Math.round(sum);
         totalSum = totalSum + sum;
         if (totalSum > 0) {
             oppgjorArray[i].posNeg = "Pos";
@@ -186,7 +192,7 @@ function utregnOppgjorSum(oppgjorArray) {
         else {
             oppgjorArray[i].posNeg = "Neg";
         }
-        oppgjorArray[i].totalSum = totalSum;
+        oppgjorArray[i].totalSum = Math.round(totalSum);
     }
 
     displayOppgjor(oppgjorArray);
@@ -225,17 +231,25 @@ function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
     return checkOppgjorSum(utleggsbetalere, callback);
 }
 
-//Legg til indekser på rader og oppgjør så de er raskere å finne senere
+
+/**
+ * Legg til indekser på rader og oppgjør så de er raskere å finne senere
+ * Gjør også avrunding av delSummer inne i utleggsbetalerobjektene
+ * @param callback funksjon som kjøres etter at denne er ferdig. Vanligvis {@link #utregnOppgjorSum utregnOppgjorSum()}.
+ * @param oppgjorArray enten liveArray eller ferdigArray
+ */
 function leggInnRadNr(callback, oppgjorArray) {
     for (var i = 0; i < oppgjorArray.length; i++) {
         oppgjorArray[i].oppgjorNr = i;
         var j;
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             oppgjorArray[i].utleggJegSkylder[j].radNr = j;
+            oppgjorArray[i].utleggJegSkylder[j].delSum = Math.round(oppgjorArray[i].utleggJegSkylder[j].delSum);
         }
 
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             oppgjorArray[i].utleggDenneSkylderMeg[j].radNr = j;
+            oppgjorArray[i].utleggDenneSkylderMeg[j].delSum = Math.round(oppgjorArray[i].utleggDenneSkylderMeg[j].delSum);
         }
     }
     callback(oppgjorArray);
@@ -245,7 +259,13 @@ function leggInnRadNr(callback, oppgjorArray) {
 //////////////////////////////////////////////////////
                 // AJAX-kode //
 //////////////////////////////////////////////////////
-//Når en rad krysses av i klienten skal den markeres som betalt i databasen
+//
+/**
+ * Når en rad krysses av i klienten skal den markeres som betalt i databasen
+ * @param utleggId Brukes sammen med skyldigBrukerId for å identifisere raden
+ * @param skyldigBrukerId Brukes sammen med utleggId for å identifisere raden
+ * @param next Callback-funkjon
+ */
 function checkMotattRad(utleggId, skyldigBrukerId, next) {
     $.ajax({
         url: 'server/utlegg/'+skyldigBrukerId+'/'+utleggId+'',
@@ -261,6 +281,11 @@ function checkMotattRad(utleggId, skyldigBrukerId, next) {
     });
 }
 
+/**
+ * Hent inn alle oppgjørene til en viss bruker fra serveren
+ * @param brukerId Brukerens unike ID
+ * @param betalt Om utlegget er betalt eller ikke. 1 = betalt, 0 = ikke betalt.
+ */
 function lastInnOppgjor(brukerId, betalt) {
     $.ajax({
         url: "server/utlegg/oppgjor/"+ brukerId+"/"+betalt,
@@ -293,6 +318,12 @@ function lastInnOppgjor(brukerId, betalt) {
     })
 }
 
+/**
+ * Merk et helt oppgjør som gjort i databasen. Dvs. at alle utleggsbetalere i oppgjøret
+ * blir markert som betalt.
+ * @param utleggsbetalere En array av utleggsbetaler-objekt
+ * @param next Callback-funksjon
+ */
 function checkOppgjorSum(utleggsbetalere, next) {
     $.ajax({
         url: 'server/utlegg/utleggsbetaler',
@@ -311,16 +342,62 @@ function checkOppgjorSum(utleggsbetalere, next) {
     });
 }
 
+/**
+ * Funksjonen følger med på om sum-inputen endres og viser en warning hvis
+ * input er mindre enn 0.
+ */
+$(function() {
+    var inputId = "#sum";
+    var alertId = "#sumAlert";
+    var content = $(inputId).val();
+    $(inputId).keyup(function() {
+        if ($(inputId).val() != content) {
+            content = $(inputId).val();
+            if (content <= 0) {$(alertId).fadeIn(200)}
+            else {$(alertId).fadeOut(200);}
+        }
+    });
+});
 
+/**
+ * Funksjon som sjekker om beskrivelse er satt
+ */
+$(function() {
+    var inputId = "#utleggBeskrivelse";
+    var alertId = "#beskrivelseAlert";
+    var content = $(inputId).val();
+    $(inputId).keyup(function() {
+        console.log("Inne i tekstfelt"+$(inputId).val());
+        if ($(inputId).val() == '') {
+            $(alertId).fadeIn(200);
+            console.log("FadeIn");
+        }
+        else {
+            console.log("FadeOut");
+            $(alertId).fadeOut(200);
+        }
+    })
+});
+
+/**
+ * Funksjon som tar inn input fra lag nytt utlegg-modal og sender til databasen
+ */
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = $("#utleggBeskrivelse").val();
-    if(sum == "" || beskrivelse == ""){
-        alert("pls gi en sum og beskrivelse :)");
-        return;
-    }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
+    if(sum == "" || beskrivelse == ""){
+        $('#sumbeskrivelseAlert').fadeIn(200);
+        $('#sumbeskrivelseAlert').delay(2500).fadeOut(400);
+        return;
+    }
+    if ($('#personer input:checked').length < 1) {
+        $('#checkboxAlert').fadeIn(200);
+        $('#checkboxAlert').delay(2500).fadeOut(400);
+        return;
+    }
+
     //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
@@ -386,10 +463,9 @@ function displayOppgjor(oppgjorArray) {
 
 }
 
-function lastinn() {
+function lastInnBrukere() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
-    console.log(husholdninger);
     //$.template( "medlemmerListe", $("#listeMedlemPls"));
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
@@ -406,3 +482,11 @@ function lastinn() {
     }
 }
 
+function displayDiv() {
+    var x = document.getElementsByClassName("invisibleDiv");
+    if ($(".invisibleDiv").css("display") === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}

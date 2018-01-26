@@ -48,7 +48,6 @@ public class UtleggController {
     */
 
     public static boolean setMotatt(int brukerId, int utleggId) {
-        System.out.println("brukerId/skyldigBrukerId: "+brukerId+" utleggId: "+utleggId);
         String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
                 + brukerId + " AND utleggsbetaler.utleggId = " + utleggId;
 
@@ -56,11 +55,9 @@ public class UtleggController {
             PreparedStatement updateStatment = connection.prepareStatement(getQuery);
             int success = updateStatment.executeUpdate();
             if (success == 1) {
-                System.out.println("setMotatt returnerer true");
                 return true;
             }
             else {
-                System.out.println("Noe gikk galt i setMotatt");
                 return false;
             }
         } catch (SQLException e) {

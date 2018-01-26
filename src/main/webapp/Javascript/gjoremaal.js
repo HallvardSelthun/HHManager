@@ -12,7 +12,7 @@ var husholdning;
 var id;
 
 /**
- * Funksjonen henter husholdningsdata.
+ * Funksjonen henter husholdningsdata fra database.
  */
 
 function gethhData() {

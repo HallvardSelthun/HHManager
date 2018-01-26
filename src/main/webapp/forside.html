@@ -4,6 +4,7 @@
     <title>Household Manager</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    B
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="web-res/jquery-3.3.1.min.js"></script>
@@ -30,7 +31,7 @@
                                     <h2 id="nyhet"></h2>
                                     <!--<button class="skrivNyttInnlegg" for="comment" onclick="skrivNyttInnlegg">Nytt innlegg</button>-->
                                     <div class="skrivNyttInnlegg">
-                                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                                        <textarea class="form-control" rows="5" id="comment" placeholder="Skriv et innlegg" onfocus="this.placeholder=''" onblur="this.placeholder='Skriv et innlegg'"></textarea>
                                         <p align="right">
                                             <button type="button" class="btn" id="commentBtn">Send</button>
                                         </p>
@@ -97,7 +98,7 @@
                                     <div class="panel-body">
                                         <ul class="list-group" id="gjøremålForside">
                                         </ul>
-                                        <button id="refreshGForside" type="button" class="glyphicon glyphicon-refresh pull-right"></button>
+                                        <button id="refreshGForside" type="button" class="btn btn-primary pull-right">Oppdater liste</button>
                                     </div>
                                 </div>
                             </div>
@@ -113,14 +114,18 @@
                                         aria-controls="collapseTwo">
                                         <span class="glyphicon glyphicon-shopping-cart"></span> Handleliste:
                                     </h4>
+                                    <span class="glyphicon glyphicon-share-alt" id="sendtilside"></span>
                                 </div>
                                 <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
                                      data-parent="#accordion">
                                     <div class="panel-body">
                                         <ul class="list-group" id="handlelisteForside">
                                         </ul>
+
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
