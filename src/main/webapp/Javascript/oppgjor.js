@@ -53,7 +53,7 @@ var ferdigeOppgjor = [];
 var delSum = 0;
 
 function init() {
-    lastInnOppgjor(testBrukerId,0);
+    lastInnOppgjor(testBrukerId,0); //0 er ubetalt, 1 er betalt
     setTimeout(function () {
         lastinn();
     },500);
@@ -269,7 +269,7 @@ function lastInnOppgjor(brukerId, betalt) {
         dataType: 'json',
         success: function (result) {
             var valgtOppgjorArray = []
-            if (betalt === 1) {
+            if (betalt === 0) {
                 liveOppgjor = result;
                 valgtOppgjorArray = liveOppgjor;
                 tellAntallUtleggsbetalere(liveOppgjor);
