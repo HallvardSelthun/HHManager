@@ -164,7 +164,7 @@ public class HandlelisteController {
      */
     public static ArrayList<Vare> getVarer(int handlelisteId, Connection connection) {
 
-        final String getVarer = "SELECT * FROM vare WHERE handlelisteId = " + handlelisteId + "";
+        final String getVarer = "SELECT * FROM vare WHERE handlelisteId = " + handlelisteId + " AND kjopt = 0";
         ArrayList<Vare> varer = new ArrayList<Vare>();
 
         try (PreparedStatement getVarerStatement = connection.prepareStatement(getVarer)) {
@@ -283,8 +283,11 @@ public class HandlelisteController {
         try(Connection con = ConnectionPool.getConnection()){
             PreparedStatement ps;
             for (int i = 0; i < varer.size(); i++) {
-                String sqlSetning = "UPDATE vare SET kjopt = 1, kjøperId = "+ kjøperId+", datoKjøpt = "+date+" WHERE vareId = "+varer.get(i).getVareId();
+                String sqlSetning = "UPDATE vare SET kjopt = 1, kjøperId = ?, datoKjøpt = ? WHERE vareId = ?;";
                 ps = con.prepareStatement(sqlSetning);
+                ps.setInt(1, kjøperId);
+                ps.setDate(2,date);
+                ps.setInt(3,varer.get(i).getVareId());
                 int success =  ps.executeUpdate();
                 if(success!=1){
                     System.out.println("Fikk -1 på success");

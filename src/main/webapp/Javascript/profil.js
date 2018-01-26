@@ -28,8 +28,7 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
-
-    if(photo.length > 1) {
+    if(!(!photo || 0 === photo.length)) {
         console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px; position: relative;" src="' + photo + '">');
     }
