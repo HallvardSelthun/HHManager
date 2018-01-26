@@ -138,7 +138,7 @@ public class BrukerController {
      * @return brukerdata hvis ok: epost, navn, id, favoritthusholdning, gjøremal
      */
     public static Bruker loginOk(Bruker bruker) {
-        String query = "SELECT hash, favorittHusholdning, navn, brukerId, salt FROM bruker WHERE epost = ?";
+        String query = "SELECT hash, favorittHusholdning, navn, brukerId, salt, profilbilde FROM bruker WHERE epost = ?";
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, bruker.getEpost());
@@ -149,6 +149,7 @@ public class BrukerController {
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 bruker.setFavHusholdning(rs.getInt("favorittHusholdning"));
+                bruker.setProfilbilde(rs.getString("profilbilde"));
                 String hentGjoremal = "SELECT * FROM gjoremal WHERE utførerId = " + bruker.getBrukerId() + " AND fullført = 0";
                 PreparedStatement psGjoremal = con.prepareStatement(hentGjoremal);
                 ResultSet rs2 = psGjoremal.executeQuery();
@@ -255,4 +256,5 @@ public class BrukerController {
         }
         return false;
     }
+
 }

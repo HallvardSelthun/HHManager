@@ -13,6 +13,7 @@ var mineHusholdninger;
 var medlemmer;
 var hhId;
 var leggtilMedlemIHusId;
+var photo = minBruker.profilbilde;
 
 /**
  * Henter husholdningene som brukeren er medlem av
@@ -26,10 +27,14 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
+    $('#photo').html('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">');
 
     $('#submitProfilbilde').click(function(){
-        var photo = $('#profilbilde').val();
-        $('#photo').append('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">')
+        if($('#profilbilde').val()==""){
+            return;
+        }
+        photo = $('#profilbilde').val();
+        $('#photo').html('<img style="width:120px; height:130px; top: 25px; position: relative;" src="' + photo + '">')
     });
 
     //onload="resizeImg(this,140, 120)"
