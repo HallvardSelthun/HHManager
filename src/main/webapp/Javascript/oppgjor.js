@@ -18,93 +18,108 @@ $(document).ready(function () {
         $("#utleggSuccess").delay(2500).fadeOut(400);
         localStorage.setItem("postUtleggSuccess", false)
     }
-});
 
+    /////////////////////////////////////////////////////
+                // On-Event-funksjoner //
+    /////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////
-              // On-Event-funksjoner //
-/////////////////////////////////////////////////////
+    /**
+     * Knappen høret til lag utlegg-modalen
+     */
+    $("#lagUtlegg").on('click', function () {
+        console.log("LAG UTLEGG KLIKKET");
+        lagNyttUtlegg();
+    });
 
-/**
- * Knappen høret til lag utlegg-modalen
- */
-$("#lagUtlegg").on('click', function () {
-    lagNyttUtlegg();
-});
+    /**
+     * Knappen høret til lag utlegg-modalen
+     */
+    $(document).on('click', '.medlemCheck', function(){
+        oppdaterBetalere();
+    });
 
-/**
- * Knappen høret til lag utlegg-modalen
- */
-$(document).on('click', '.medlemCheck', function(){
-    oppdaterBetalere();
-});
+    /**
+     * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
+     */
+    $(document).on('click', '#vereMedPaaUtlegg', function () {
+        oppdaterBetalere();
+    });
 
-/**
- * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
- */
-$(document).on('click', '#vereMedPaaUtlegg', function () {
-    oppdaterBetalere();
-});
+    /**
+     * Mulig denne ikke skal brukes. Men det gjør at man kan klikke på hele accordions.
+     */
+    $(".invisibleDiv").on("click", function () {
+        displayDiv();
+    });
 
-/**
- * Mulig denne ikke skal brukes. Men det gjør at man kan klikke på hele accordions.
- */
-$(".invisibleDiv").on("click", function () {
-    displayDiv();
-});
+    /**
+     * Laster inn ferdige oppgjør fra databasen når historikk-knappen klikkes
+     */
+    $(document).on("click", "#historikk", function(event){
+        lastInnOppgjor(minBrukerId,1);
+    });
 
-/**
- * Laster inn ferdige oppgjør fra databasen når historikk-knappen klikkes
- */
-$(document).on("click", "#historikk", function(event){
-    lastInnOppgjor(minBrukerId,1);
-});
+    /**
+     * Funksjonen tar for seg checkboxene til radene inne i oppgjør.
+     */
+    $(document).on("click", ".checkboxes", function(event){
+        var valgtSvarKnapp = $(this).attr('id');
+        var utleggId = $(this).attr('data-utleggId');
+        var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
+        var substringed = valgtSvarKnapp.match(/\d+/g);
 
-/**
- * Funksjonen tar for seg checkboxene til radene inne i oppgjør.
- */
-$(document).on("click", ".checkboxes", function(event){
-    var valgtSvarKnapp = $(this).attr('id');
-    var utleggId = $(this).attr('data-utleggId');
-    var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
-    var substringed = valgtSvarKnapp.match(/\d+/g);
+        var oppgjorNrString = $(this).parent().parent().parent().parent().attr('id');
+        var oppgjorNr = oppgjorNrString.match(/\d+/g);
 
-    var oppgjorNrString = $(this).parent().parent().parent().parent().attr('id');
-    var oppgjorNr = oppgjorNrString.match(/\d+/g);
+        var klikketKnapp = $(this);
 
-    var klikketKnapp = $(this);
+        if ($(this).is(':checked')) {
+            var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
+                klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+                liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
+                if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
+                    $("#collapse"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
+                }
+            });
+        }
+    });
 
-    if ($(this).is(':checked')) {
-        var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
-            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
-            liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
-            if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
-                $("#collapse"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
-            }
-        });
-    }
-});
+    /**
+     * Når denne klikkes skal alle utleggsbetalere inni oppgjøret merkes som betalt i databasen
+     */
+    $(document).on("click", ".hovedCheckbox", function(event){
+        var klikketKnapp = $(this);
+        var knappNavn = $(this).attr('id');
+        var oppgjorNr = knappNavn.match(/\d+/g);
 
-/**
- * Når denne klikkes skal alle utleggsbetalere inni oppgjøret merkes som betalt i databasen
- */
-$(document).on("click", ".hovedCheckbox", function(event){
-    var klikketKnapp = $(this);
-    var knappNavn = $(this).attr('id');
-    var oppgjorNr = knappNavn.match(/\d+/g);
-
-    if ($(this).is(':checked')) {
-        lagUtleggsbetalerListe(liveOppgjor, oppgjorNr, function () {
-            klikketKnapp.parent().parent().parent().parent().fadeOut(500); //Fjern raden
-        });
-        //Oppgjoret gjemmes når metoden over er over
-    }
+        if ($(this).is(':checked')) {
+            lagUtleggsbetalerListe(liveOppgjor, oppgjorNr, function () {
+                klikketKnapp.parent().parent().parent().parent().fadeOut(500); //Fjern raden
+            });
+            //Oppgjoret gjemmes når metoden over er over
+        }
+    });
 });
 
 
 //////////////////////////////////////////////////////////////
         // Funksjoner som behandler data clientside //
 //////////////////////////////////////////////////////////////
+
+function filtrerForXSS(oppgjorArray) {
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        oppgjorArray[i].navn = he.encode(oppgjorArray[i].navn);
+        var j;
+        for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
+            oppgjorArray[i].utleggJegSkylder[j].navn = he.encode(oppgjorArray[i].utleggJegSkylder[j].navn);
+            oppgjorArray[i].utleggJegSkylder[j].beskrivelse = he.encode(oppgjorArray[i].utleggJegSkylder[j].beskrivelse);
+        }
+        for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
+            oppgjorArray[i].utleggDenneSkylderMeg[j].navn = he.encode(oppgjorArray[i].utleggDenneSkylderMeg[j].navn);
+            oppgjorArray[i].utleggDenneSkylderMeg[j].beskrivelse = he.encode(oppgjorArray[i].utleggDenneSkylderMeg[j].beskrivelse);
+        }
+    }
+}
 
 /**
  * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
@@ -199,7 +214,6 @@ function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
             betalt: true,
             skyldigBrukerId: gammeltObjekt.skyldigBrukerId
         };
-
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
 
@@ -212,7 +226,6 @@ function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
             betalt: true,
             skyldigBrukerId: gammeltObjekt.skyldigBrukerId
         };
-
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
     return checkOppgjorSum(utleggsbetalere, callback);
@@ -285,12 +298,14 @@ function lastInnOppgjor(brukerId, betalt) {
             if (betalt === 0) {
                 liveOppgjor = result;
                 valgtOppgjorArray = liveOppgjor;
+                filtrerForXSS(liveOppgjor);
                 tellAntallUtleggsbetalere(liveOppgjor);
             }
             else {
                 ferdigeOppgjor = result;
                 console.log("Ferdigeoppgjor");
                 console.log(ferdigeOppgjor);
+                filtrerForXSS(ferdigeOppgjor);
                 valgtOppgjorArray = ferdigeOppgjor;
             }
             if (!result){
@@ -387,7 +402,6 @@ function lagNyttUtlegg() {
         return;
     }
 
-    //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
