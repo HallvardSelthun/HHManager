@@ -40,6 +40,7 @@ $(document).ready(function () {
         oppdaterGjoremal();
     });
 
+
 });
 
 /**
@@ -97,13 +98,15 @@ function setupPage() {
      */
     for (var k = 0, lengt = handleliste.varer.length; k < lengt; k++) {
         var vare = handleliste.varer[k];
+        console.log(vare);
         var varenavn = he.encode(vare.varenavn);
+        var vareId = vare.vareId;
         var checked = vare.kjøpt;
         var string = "";
         if (checked) {
             string = "checked";
         }
-        $("#handlelisteForside").append('<label class="list-group-item "> ' + varenavn + '<input title="toggle all" type="checkbox" class="all pull-right" ' + string + '> </label>');
+        $("#handlelisteForside").append('<label class="list-group-item vareCheck" value="'+varenavn+'" value2="'+vareId+'"> ' + varenavn + '<input title="toggle all" type="checkbox" value="'+varenavn+'" value2="'+vareId+'" class="all pull-right" ' + string + ' > </label>');
     }
     setTimeout(function () {
         $("#tekst3").append(he.encode(handleliste.tittel));
@@ -128,6 +131,23 @@ function gethhData() {
         husholdning = data;
     });
 }
+
+$(document).on('click', '#sendUtlegg', function () {
+    sendUtlegg();
+});
+
+$(document).on('click', '#utleggForside', function () {
+    for(var j = 0; j < medlemmer.length; j++) {
+        medlemNavn = medlemmer[j].navn;
+        medlemId = medlemmer[j].brukerId;
+        if (medlemId != bruker.brukerId) {
+            $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
+        }
+    }
+});
+$(document).on('click', '#utenUtleggForside', function(){
+    setVarerKjopt();
+});
 
 
 /**
@@ -275,4 +295,105 @@ function oppdaterGjoremal() {
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html"
     }, 200)
+}
+
+$(document).on('click', '.vareCheck', function () {
+    if($('#handlelisteForside input:checked').length > 0){
+        $('#handlelisteForside input:checked').each(function () {
+            console.log($(this).attr('value'));
+            $("#valgteVarer").append('<label for="' + $(this).attr('value') + '" class="list-group-item" name="vare"> ' + $(this).attr('value') + '</label>');
+        });
+        $('.hiddenButton').show();
+    }else{
+        $('.hiddenButton').hide();
+    }
+});
+
+function sendUtlegg() {
+    var sum = $("#sum").val();
+    var beskrivelse = "Kjøpt: ";
+    var vareNavn;
+    $('#handlelisteForside input:checked').each(function () {
+        vareNavn = $(this).attr('value');
+        beskrivelse += vareNavn + ", ";
+    });
+    beskrivelse = beskrivelse.replace(-1, ".");
+
+    if(sum == "" || beskrivelse == ""){
+        alert("pls gi en sum og beskrivelse :)");
+        return;
+    }
+    var pluss = 0;
+    if ($("#vereMedPaaUtlegg").is(":checked")){
+        pluss = 1;
+    }
+    var utleggerId = bruker.brukerId;
+    var utleggsbetalere = [];
+    var delSum = sum/($('#medbetalere input:checked').length+1);
+    $('#medbetalere input:checked').each(function () {
+        utleggsbetaler = {
+            skyldigBrukerId: $(this).attr('id'),
+            delSum: delSum
+        };
+        utleggsbetalere.push(utleggsbetaler)
+    });
+    //var delSum = sum / (utleggsbetalere.length);
+
+    utlegg = {
+        utleggerId: utleggerId,
+        sum: sum,
+        beskrivelse: beskrivelse,
+        utleggsbetalere: utleggsbetalere
+    };
+
+    setVarerKjopt();
+
+    $.ajax({
+        url: "server/utlegg/nyttutlegg",
+        type: 'POST',
+        data: JSON.stringify(utlegg),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data =JSON.parse(result);
+            if (data){ //Returnerer vel true
+                location.reload(true);
+                alert(" :D");
+            }else{
+                alert("D:");
+            }
+        },
+        error: function () {
+            alert("RIPinpeace");
+        }
+    })
+}
+function setVarerKjopt() {
+    var liste=[];
+    $('#handlelisteForside input:checked').each(function () {
+        var id = $(this).attr('value2');
+        var vare ={
+            handlelisteId: handleliste.handlelisteId,
+            kjoperId: bruker.brukerId,
+            datoKjopt: new Date(Date.now()),
+            vareId: id
+        };
+        liste.push(vare);
+    });
+    $.ajax({
+        url: "server/handleliste/kjoptVarer",
+        type: 'PUT',
+        data: JSON.stringify(liste),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data=JSON.parse(result);
+            if(data){
+                window.location =" forside.html";
+            }else console.log("not ok")
+        },
+        error: function () {
+            alert("Noe gikk galt :(")
+        }
+    })
 }

@@ -121,7 +121,6 @@ $(document).ready(function () {
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (result) {
-                    var data = JSON.parse(result);
                     window.location = "profil.html";
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Passordet er endret");
@@ -350,6 +349,7 @@ function hentliste() {
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
         husholdningId = mineHusholdninger[k].husholdningId;
         var husholdnavn = mineHusholdninger[k].navn;
+        var medlemId;
         var admin = 0;
         var adminLeggTil = "";
         var adminSlett = "";
@@ -364,8 +364,7 @@ function hentliste() {
         }
         if (admin == 1){
             adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
-            adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
-                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
+
         }
         console.log(husholdnavn);
 
@@ -390,14 +389,22 @@ function hentliste() {
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            if(admin == 1){
+                adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
+                    'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
+            }
             var giAdmin = "";
-            if (mineHusholdninger[k].medlemmer[p].admin == 0){
+            var erAdmin = "";
+            if (mineHusholdninger[k].medlemmer[p].admin == 0 && admin ==1){
                 giAdmin = '<button style="padding: 2px 6px; margin-right: 3px;" class="btn  btn-primary pull-right giAdmin"' +
                     'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Admin</button>'
             }
+            if (mineHusholdninger[k].medlemmer[p].admin == 1){
+                erAdmin = ' <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Messaging-Crown-icon.png" height="14px" width="16px">';
+            }
             console.log(medlemnavn);
 
-            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + erAdmin + adminSlett+ giAdmin +'</li>');
         }
     }
 
@@ -486,6 +493,7 @@ function slettMedlem(bid, hid) {
             console.log(":/");
         }
     });
+    alert("wait");
     window.location = "profil.html";
 }
 

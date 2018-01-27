@@ -20,7 +20,7 @@ $(document).ready(function () {
         var password = $("#password").val();
         var password2= $("#password2").val();
         if (fornavn == "" || email == "" || password == "" || password2 == "") {
-            alert("Du må fylle ut alle feltene")
+            alert("Du må fylle ut alle feltene");
             return;
         }
         if (password!=password2){

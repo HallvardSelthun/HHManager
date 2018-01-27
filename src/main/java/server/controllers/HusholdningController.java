@@ -432,12 +432,13 @@ public class HusholdningController {
                 huset.addHandleliste(handleliste);
                 handlelisteId = rs.getInt("handlelisteId");
 
-                String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
+                String hentVarer = "SELECT vareId, vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
 
                 s = con.createStatement();
                 rs = s.executeQuery(hentVarer);
                 while (rs.next()) {
                     Vare vare = new Vare();
+                    vare.setVareId(rs.getInt("vareId"));
                     vare.setHandlelisteId(handlelisteId);
                     vare.setVarenavn(rs.getString("vareNavn"));
                     int i = rs.getInt("kjopt");
