@@ -5,18 +5,26 @@
  */
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
-var navn = bruker.navn;
-var epost = bruker.epost;
+var husholdningId = localStorage.getItem("husholdningId");
+console.log("rett under getItem");
+console.log(husholdningId);
+var navn;
+var epost;
 var husholdninger;
 var varseler;
 
 /**
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
- *
  */
 $(document).ready(function () {
+
+    navn = he.encode(bruker.navn);
+    epost = he.encode(bruker.epost);
+
     $(function () {
-        if(!bruker.favHusholdning || bruker.favHusholdning ==0){
+        console.log("Skriver ut husholdningId");
+        console.log(husholdningId);
+        if(!husholdningId || husholdningId ==0){
             console.log("ALT NAV");
             $("#navbar").load("altnav.html");
         } else{
@@ -24,15 +32,12 @@ $(document).ready(function () {
         }
         $("#modaldiv").load("lagnyhusstand.html");
     });
-    getHusholdninger();
 
-    setTimeout(function () {
-        henteVarsel();
-    }, 200);
-
-    setTimeout(function () {
-        $("#fadenav").hide()
-    }, 150);
+    if (!bruker) {
+        window.location = "index.html";
+        console.log("Redirecting")
+    }
+    getHusholdningerNav();
 
     /**
      * Når de ulike delene av navbar blir klikket på skal bruker sendes til de ulike html-sidene
@@ -41,11 +46,9 @@ $(document).ready(function () {
     $(document).on('click', '.hhknapp', function () {
         var nyhhId = ($(this).attr('id'));
         localStorage.setItem("husholdningId", nyhhId);
-        bruker.favHusholdning = nyhhId;
+        //bruker.favHusholdning = nyhhId; Dette er ikke logisk behaviour
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html";
-
-
     });
     $(document).on("click", "#toggleBtn", function () {
         console.log($(this).attr('aria-expanded'));
@@ -59,7 +62,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', 'a#bildenav', function () {
-        if(!bruker.favHusholdning || bruker.favHusholdning ==0){
+        if(!husholdningId || husholdningId ==0){
             window.location ="profil.html";
         }else{
             window.location = "forside.html"
@@ -121,8 +124,8 @@ $(document).ready(function () {
 
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp", function () {
-        var navnHus = $("#navnHusstand").val();
-        var medlemHus = $("#navnMedlem").val();
+        var navnHus = he.encode($("#navnHusstand").val());
+        var medlemHus = he.encode($("#navnMedlem").val());
 
         navnIHuset.push(
             {
@@ -186,14 +189,16 @@ function utgaatteGjoremaal(liste) {
 /**
  * henter husholsninger fra hhservice, gitt brukerid.
  */
-function getHusholdninger() {
+function getHusholdningerNav() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
+        henteVarsel();
+        $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
 
         setTimeout(function () {
             for (i = 0, l = husholdninger.length; i < l; i++) {
-                var navn = husholdninger[i].navn;
+                var navn = he.encode(husholdninger[i].navn);
                 var id = husholdninger[i].husholdningId;
                 $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
             }

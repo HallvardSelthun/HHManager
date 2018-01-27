@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <script src="Javascript/nav.js"></script>
     <script src="Javascript/oppgjor.js"></script>
+    <script src="web-res/he-1.1.1/he.js"></script>
 
 </head>
 <body>
@@ -38,7 +39,7 @@
                     <div class="alert alert-danger" id="sumAlert">
                         <strong>Feil sum</strong> Sum må være større enn 0.
                     </div>
-                    <input id="vereMedPaaUtlegg" type="checkbox"> Vere med på utlegg selv
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Være med på utlegg selv?
                 </div>
                 <br>
                 <div class="beskrivelse-input" id="oppgjorBeskrivelse">
@@ -90,8 +91,8 @@
                         <div class="row">
                             <div class="col-sm-6 col-xs-6"></div>
                             <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
-                                <label class="col-sm-6 col-xs-6"></label>
-                                <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
+                                <label class="col-sm-6 col-xs-5"></label>
+                                <label class="skyldertittel col-sm-3 col-xs-4 utenPadding">Balanse</label>
                                 <label class="betalt col-sm-3 col-xs-3"></label>
                             </div>
                         </div>
@@ -125,10 +126,10 @@
                         <div class="row panel-group" id="panelGruppe">
                             <div class="labels container-fluid">
                                 <div class="row">
-                                    <div class="col-sm-6 col-xs-6"></div>
-                                    <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
-                                        <label class="col-sm-6 col-xs-6"></label>
-                                        <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
+                                    <div class="col-sm-6 col-xs-5"></div>
+                                    <div class="col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
+                                        <label class="col-sm-6 col-xs-5"></label>
+                                        <label class="skyldertittel col-sm-3 col-xs-4 utenPadding">Balanse</label>
                                         <label class="betalt col-sm-3 col-xs-3">Motatt</label>
                                     </div>
                                 </div>
@@ -143,7 +144,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     <div id="right" class="col-sm-2 col-md-3"></div>
     </div>
 </div>
@@ -157,12 +157,12 @@
     <!--Viktig ^^^ -->
     <div class="container-fluid panel panel-default">
         <div class="row panel-heading clearfix">
-            <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-5" style="margin-top: 5px; ">
                 <!--Viktig -->
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+            <div class="titteldiv col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
                 <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
                 <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
                 <div class="col-sm-3 col-xs-3"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
@@ -216,7 +216,7 @@
 
 <!-- HTML-mal for historikk-oppgjør -->
 <!--Viktig -->
-<script id="test-oppgjor2" type="text/x-custom-template">
+<script id="historikk-oppgjor" type="text/x-custom-template">
     <!--Viktig ^^^ -->
     <div class="container-fluid panel panel-default">
         <div class="row panel-heading clearfix">

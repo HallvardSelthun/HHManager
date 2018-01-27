@@ -1,63 +1,3 @@
-//Additional JavaScript
-/** Testet with:
- *  - IE 5.5, 7.0, 8.0, 9.0 (preview)
- *  - Firefox 3.6.3, 3.6.8
- *  - Safari 5.0
- *  - Chrome 5.0
- *  - Opera 10.10, 10.60
- */
-var JavaScript = {
-    load: function(src, callback) {
-        var script = document.createElement('script'),
-            loaded;
-        script.setAttribute('src', src);
-        if (callback) {
-            script.onreadystatechange = script.onload = function() {
-                if (!loaded) {
-                    callback();
-                }
-                loaded = true;
-            };
-        }
-        document.getElementsByTagName('head')[0].appendChild(script);
-    }
-};
-
-
-$(document).ready(function () {
-
-    $("#lagUtlegg").on('click', function () {
-        lagNyttUtlegg();
-    });
-    $(document).on('click', '.medlemCheck', function(){
-        oppdaterBetalere();
-    });
-    $(document).on('click', '#vereMedPaaUtlegg', function () {
-        oppdaterBetalere();
-    });
-
-    $(".invisibleDiv").on("click", function () {
-        displayDiv();
-    });
-
-    //Kjør JavaScript
-    init();
-    /*
-    JavaScript.load("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", function () {
-        init();
-    })
-    */
-
-    console.log(localStorage.getItem("postUtleggSuccess"));
-    if(localStorage.getItem("postUtleggSuccess") == "sant") {
-        console.log("ALRIGHT")
-        $("#utleggSuccess").fadeIn(200);
-        $("#utleggSuccess").delay(2500).fadeOut(400);
-        localStorage.setItem("postUtleggSuccess", false)
-    }
-    console.log("Bruker logget inn: "+minBrukerId);
-});
-
 //Globale variabler
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var minBrukerId = bruker.brukerId;
@@ -65,80 +5,100 @@ var liveOppgjor = [];
 var ferdigeOppgjor = [];
 var delSum = 0;
 
-function init() {
+/**
+ * Kjører når HTML DOM er loaded
+ */
+$(document).ready(function () {
+    //Kjør JavaScript
     lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betalt
-    setTimeout(function () {
-        lastInnBrukere();
-    },300);
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
-}
 
-
-/////////////////////////////////////////////////////
-              // On-Event-funksjoner //
-/////////////////////////////////////////////////////
-
-//Historikk
-$(document).on("click", "#historikk", function(event){
-    lastInnOppgjor(minBrukerId,1);
-});
-
-function displayHistorikk(oppgjorArray) {
-
-    $.template( "oppgjorTemplate2", $("#test-oppgjor2"));
-    //$.template("oppgjorTemplateHistorikk", $("#historikk-template"));
-
-    $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder-historikk"));
-    $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder-historikk"));
-
-    var startOppgjorNr = liveOppgjor.length;
-    console.log("Inne i displayHistorikk");
-
-    //Append compiled markup
-    for (var i = 0; i < oppgjorArray.length; i++) {
-        $.tmpl("oppgjorTemplate2", oppgjorArray[i]).appendTo($("#historikkMain"));
-        //console.log(oppgjorArray[i].utleggJegSkylder);
-        $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
-        //console.log(oppgjorArray[i].utleggDenneSkylderMeg);
-        $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
+    if(localStorage.getItem("postUtleggSuccess") == "sant") {
+        $("#utleggSuccess").fadeIn(200);
+        $("#utleggSuccess").delay(2500).fadeOut(400);
+        localStorage.setItem("postUtleggSuccess", false)
     }
-}
 
-$(document).on("click", ".checkboxes", function(event){
-    var valgtSvarKnapp = $(this).attr('id');
-    var utleggId = $(this).attr('data-utleggId');
-    var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
-    var substringed = valgtSvarKnapp.match(/\d+/g);
+    /////////////////////////////////////////////////////
+                // On-Event-funksjoner //
+    /////////////////////////////////////////////////////
 
-    var oppgjorNrString = $(this).parent().parent().parent().parent().attr('id');
-    var oppgjorNr = oppgjorNrString.match(/\d+/g);
+    /**
+     * Knappen høret til lag utlegg-modalen
+     */
+    $("#lagUtlegg").on('click', function () {
+        console.log("LAG UTLEGG KLIKKET");
+        lagNyttUtlegg();
+    });
 
-    var klikketKnapp = $(this);
+    /**
+     * Knappen høret til lag utlegg-modalen
+     */
+    $(document).on('click', '.medlemCheck', function(){
+        oppdaterBetalere();
+    });
 
-    if ($(this).is(':checked')) {
-        var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
-            klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
-            liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
-            if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
-                $("#collapse"+oppgjorNr+"").parent().fadeOut(500);
-            }
-        });
-    }
-});
+    /**
+     * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
+     */
+    $(document).on('click', '#vereMedPaaUtlegg', function () {
+        oppdaterBetalere();
+    });
 
-//Når denne klikkes skal alle inni merkes som betalt i databasen
+    /**
+     * Mulig denne ikke skal brukes. Men det gjør at man kan klikke på hele accordions.
+     */
+    $(".invisibleDiv").on("click", function () {
+        displayDiv();
+    });
 
-$(document).on("click", ".hovedCheckbox", function(event){
-    var klikketKnapp = $(this);
-    var knappNavn = $(this).attr('id');
-    var oppgjorNr = knappNavn.match(/\d+/g);
+    /**
+     * Laster inn ferdige oppgjør fra databasen når historikk-knappen klikkes
+     */
+    $(document).on("click", "#historikk", function(event){
+        lastInnOppgjor(minBrukerId,1);
+    });
 
-    if ($(this).is(':checked')) {
-        lagUtleggsbetalerListe(liveOppgjor, oppgjorNr, function () {
-            klikketKnapp.parent().parent().parent().parent().fadeOut(500); //Fjern raden
-        });
-        //Oppgjoret gjemmes når metoden over er over
-    }
+    /**
+     * Funksjonen tar for seg checkboxene til radene inne i oppgjør.
+     */
+    $(document).on("click", ".checkboxes", function(event){
+        var valgtSvarKnapp = $(this).attr('id');
+        var utleggId = $(this).attr('data-utleggId');
+        var skyldigBrukerId = $(this).attr('data-skyldigBrukerId');
+        var substringed = valgtSvarKnapp.match(/\d+/g);
+
+        var oppgjorNrString = $(this).parent().parent().parent().parent().attr('id');
+        var oppgjorNr = oppgjorNrString.match(/\d+/g);
+
+        var klikketKnapp = $(this);
+
+        if ($(this).is(':checked')) {
+            var ok = checkMotattRad(utleggId,skyldigBrukerId, function () {
+                klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
+                liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
+                if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
+                    $("#collapse"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
+                }
+            });
+        }
+    });
+
+    /**
+     * Når denne klikkes skal alle utleggsbetalere inni oppgjøret merkes som betalt i databasen
+     */
+    $(document).on("click", ".hovedCheckbox", function(event){
+        var klikketKnapp = $(this);
+        var knappNavn = $(this).attr('id');
+        var oppgjorNr = knappNavn.match(/\d+/g);
+
+        if ($(this).is(':checked')) {
+            lagUtleggsbetalerListe(liveOppgjor, oppgjorNr, function () {
+                klikketKnapp.parent().parent().parent().parent().fadeOut(500); //Fjern raden
+            });
+            //Oppgjoret gjemmes når metoden over er over
+        }
+    });
 });
 
 
@@ -146,6 +106,24 @@ $(document).on("click", ".hovedCheckbox", function(event){
         // Funksjoner som behandler data clientside //
 //////////////////////////////////////////////////////////////
 
+function filtrerForXSS(oppgjorArray) {
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        oppgjorArray[i].navn = he.encode(oppgjorArray[i].navn);
+        var j;
+        for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
+            oppgjorArray[i].utleggJegSkylder[j].navn = he.encode(oppgjorArray[i].utleggJegSkylder[j].navn);
+            oppgjorArray[i].utleggJegSkylder[j].beskrivelse = he.encode(oppgjorArray[i].utleggJegSkylder[j].beskrivelse);
+        }
+        for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
+            oppgjorArray[i].utleggDenneSkylderMeg[j].navn = he.encode(oppgjorArray[i].utleggDenneSkylderMeg[j].navn);
+            oppgjorArray[i].utleggDenneSkylderMeg[j].beskrivelse = he.encode(oppgjorArray[i].utleggDenneSkylderMeg[j].beskrivelse);
+        }
+    }
+}
+
+/**
+ * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
+ */
 function oppdaterBetalere() {
     $("#betalere").text("");
     $('.medlemCheck').each(function () {
@@ -161,6 +139,11 @@ function oppdaterBetalere() {
     })
 }
 
+/**
+ * Brukes for å holde styr på om det er igjen noen rader inne i et oppgjør.
+ * Hvis alle radene i oppgjøret er fjernet skal oppgjøret fjernes.
+ * @param oppgjorArray Vanligvis liveArray. Array av Oppgjør.
+ */
 function tellAntallUtleggsbetalere(oppgjorArray) {
     var utleggsBetalerPerOppgjor = 0;
 
@@ -173,8 +156,8 @@ function tellAntallUtleggsbetalere(oppgjorArray) {
 }
 
 /**
- * Test
- * @param oppgjorArray
+ * Utregner summen som vises clientside og legger inn resultatet i oppgjorArrayet som ble lagt inn.
+ * @param oppgjorArray Et array med oppgjorArray.
  */
 function utregnOppgjorSum(oppgjorArray) {
 
@@ -207,6 +190,16 @@ function utregnOppgjorSum(oppgjorArray) {
     displayOppgjor(oppgjorArray);
 }
 
+/**
+ * Denne funksjonen brukes i forbindelse med å markere et helt oppgjør som fullført.
+ * Det tar inn liveOppgjør gjennom oppgjorArray-parameteren, samt oppgjorNr for å
+ * identifisere hvilket oppgjør det er snakk om. Så går man gjennom det relevante
+ * oppgjøret og legger alle utleggsbetalerne i en liste. Til sist kjøres checkOppgjørSum med
+ * listen som parameter.
+ * @param oppgjorArray liveOppgjør
+ * @param oppgjorNr indeksen til oppgjøret i den lokale oppgjørArrayen.
+ * @param callback Funksjon som kjøres når vi er ferdige.
+ */
 function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
     var utleggsbetalere = [];
     var i;
@@ -221,7 +214,6 @@ function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
             betalt: true,
             skyldigBrukerId: gammeltObjekt.skyldigBrukerId
         };
-
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
 
@@ -234,7 +226,6 @@ function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
             betalt: true,
             skyldigBrukerId: gammeltObjekt.skyldigBrukerId
         };
-
         utleggsbetalere.push(utleggsbetalerObjekt);
     }
     return checkOppgjorSum(utleggsbetalere, callback);
@@ -302,16 +293,19 @@ function lastInnOppgjor(brukerId, betalt) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
+            lastInnBrukere();
             var valgtOppgjorArray = []
             if (betalt === 0) {
                 liveOppgjor = result;
                 valgtOppgjorArray = liveOppgjor;
+                filtrerForXSS(liveOppgjor);
                 tellAntallUtleggsbetalere(liveOppgjor);
             }
             else {
                 ferdigeOppgjor = result;
                 console.log("Ferdigeoppgjor");
                 console.log(ferdigeOppgjor);
+                filtrerForXSS(ferdigeOppgjor);
                 valgtOppgjorArray = ferdigeOppgjor;
             }
             if (!result){
@@ -323,6 +317,7 @@ function lastInnOppgjor(brukerId, betalt) {
         },
         error: function () {
             alert("Serveren har det røft atm, prøv igjen senere :/");
+            lastInnBrukere();
         }
     })
 }
@@ -372,8 +367,8 @@ $(function() {
  * Funksjon som sjekker om beskrivelse er satt
  */
 $(function() {
-    var inputId = "#utleggBeskrivelse";
-    var alertId = "#beskrivelseAlert";
+    var inputId = he.encode("#utleggBeskrivelse");
+    var alertId = he.encode("#beskrivelseAlert");
     var content = $(inputId).val();
     $(inputId).keyup(function() {
         console.log("Inne i tekstfelt"+$(inputId).val());
@@ -393,7 +388,7 @@ $(function() {
  */
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
-    var beskrivelse = $("#utleggBeskrivelse").val();
+    var beskrivelse = he.encode($("#utleggBeskrivelse").val());
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
     if(sum == "" || beskrivelse == ""){
@@ -407,7 +402,6 @@ function lagNyttUtlegg() {
         return;
     }
 
-    //delSum = sum/$('#personer input:checked').length;
     $('#personer input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
@@ -451,6 +445,12 @@ function lagNyttUtlegg() {
         // Kode for å legge inn dynamisk HTML //
 /////////////////////////////////////////////////////////
 
+/**
+ * Ta et oppgjorArray og vis alle oppgjørene på siden.
+ * Avhengig av om det er et liveOppgjor eller ferdigOppgjor vil
+ * forskjellig kode kjøres.
+ * @param oppgjorArray
+ */
 function displayOppgjor(oppgjorArray) {
     if (oppgjorArray === liveOppgjor) {
         // Compile the markup as a named template
@@ -470,13 +470,43 @@ function displayOppgjor(oppgjorArray) {
     else {
         displayHistorikk(oppgjorArray);
     }
-
 }
 
+/**
+ * Metode som tar inn et array med oppgjørs-objekter og legger dem til i historikk-modalen
+ * @param oppgjorArray sender vanligvis inn objektet ferdigArray som inneholder ferdige oppgjør
+ */
+function displayHistorikk(oppgjorArray) {
+
+    $.template( "historikkTemplate", $("#historikk-oppgjor"));
+
+    $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder-historikk"));
+    $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder-historikk"));
+
+    var startOppgjorNr = liveOppgjor.length;
+
+    if (liveOppgjor.length <= 0) {
+        $("#ingenOppgjorAlert").show();
+    }
+    else {
+        $("#ingenOppgjorAlert").hide();
+    }
+
+    //Append compiled markup
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
+        $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
+        $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
+    }
+}
+
+/**
+ * Henter inn alle brukerne i favoritthusholdningen og legger dem til
+ * i dropdown-menyen inne i lag oppgjør-modalen.
+ */
 function lastInnBrukere() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
-    //$.template( "medlemmerListe", $("#listeMedlemPls"));
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
@@ -492,6 +522,7 @@ function lastInnBrukere() {
     }
 }
 
+//Skal visst gjære at man kan klikke på hele accordien for at den skal droppe ned
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
     if ($(".invisibleDiv").css("display") === "none") {

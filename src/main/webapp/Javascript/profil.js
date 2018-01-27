@@ -5,10 +5,8 @@
 /**
  * Definerer variabler
  */
-var minBruker = JSON.parse(localStorage.getItem("bruker"));
+var minBruker = bruker; //Definert i nav.js
 var brukerId = minBruker.brukerId;
-var epost = minBruker.epost;
-var husholdningId;
 var mineHusholdninger;
 var medlemmer;
 var hhId;
@@ -20,8 +18,10 @@ var navnIHuset2 = [];
  * Henter husholdningene som brukeren er medlem av
  */
 function getHusholdninger() {
+    console.log("Kjøres denne to ganger?")
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
+        hentliste();
         console.log(data);
     });
 }
@@ -32,7 +32,6 @@ $(document).ready(function () {
         console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     }
-
 
 
     $('#submitProfilbilde').click(function(){
@@ -49,9 +48,6 @@ $(document).ready(function () {
     //gethhData();
 
     getHusholdninger();
-    setTimeout(function () {
-        hentliste();
-    }, 1000);
 
     /**
      * Gjør det mulig å fjerne seg selv fra en husholdning.
@@ -326,6 +322,10 @@ $(document).on('click', '.glyphicon', function () {
     }
 });
 
+$(document).on('click', '#nymedlem', function () {
+    var epost = he.encode($("#medlemepost").val());
+
+});
 
 $(document).on('click', '.removeMedlem', function () {
     var husId = $(this).attr('value');
@@ -334,7 +334,7 @@ $(document).on('click', '.removeMedlem', function () {
 });
 
 $(document).on('click', '#nymedlem', function () {
-   var epost = $("#medlemepost").val();
+   var epost = he.encode($("#medlemepost").val());
    leggTilMedlem(epost, leggtilMedlemIHusId);
 });
 
@@ -346,8 +346,11 @@ $(document).on('click', '#opneLeggTilModal', function () {
  * Henter liste over husholdninger slik at en skal kunne sette favoritthusholdning på profilside.
  */
 function hentliste() {
+    console.log("lengde på minehusholdninger: "+mineHusholdninger.length)
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
+        console.log("Inne i loop")
         husholdningId = mineHusholdninger[k].husholdningId;
+        console.log(husholdningId);
         var husholdnavn = mineHusholdninger[k].navn;
         var medlemId;
         var admin = 0;
@@ -407,7 +410,6 @@ function hentliste() {
             $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + erAdmin + adminSlett+ giAdmin +'</li>');
         }
     }
-
 }
 
 /**
@@ -430,6 +432,9 @@ function settNyFav(id) {
         success: function () {
             console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
+            localStorage.setItem("husholdningId", nyId)
+            console.log("Interesting:");
+            console.log(minBruker);
             localStorage.setItem("bruker", JSON.stringify(minBruker));
         },
         error: function (data) {
@@ -530,7 +535,7 @@ function resizeImg(img, height, width) {
 }
 
 $(document).on('click', '#submitProfilbilde', function () {
-    var link = $('#profilbilde').val();
+    var link = he.encode($('#profilbilde').val());
     setProfilbilde(link);
 });
 

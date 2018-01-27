@@ -27,11 +27,21 @@ function gethhData() {
  * i tekstboksen fellesGjoremaal.
  */
 
+function hei(){
+    var variabel = "<script> alert('Hei en gang!') </script>";
+    alert(variabel);
+    var returned = he.encode(variabel);
+    alert(returned);
+    var engangtil = he.encode(returned);
+    alert(returned);
+}
+hei();
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
     console.log(id);
     $("#droppknapp").text($(this).text());
 });
+
 
 function hentMedlemmer() {
     var medlemmer = husholdning.medlemmer;
@@ -47,7 +57,7 @@ function hentMedlemmer() {
 
 function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
-        var fellesnavn = fellesgjoremal[i].beskrivelse;
+        var fellesnavn = he.encode(fellesgjoremal[i].beskrivelse);
         var frist = fellesgjoremal[i].frist;
         var gjoremalId = fellesgjoremal[i].gjoremalId;
 
@@ -75,7 +85,7 @@ function hentFellesGjoremalData() {
 function hentMinegjoremal() {
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
         var gjoremalId = minegjoremal[i].gjoremalId;
-        var beskrivelse = minegjoremal[i].beskrivelse;
+        var beskrivelse = he.encode(minegjoremal[i].beskrivelse);
         var frist = minegjoremal[i].frist;
         console.log(minegjoremal);
 
@@ -247,7 +257,7 @@ $(document).ready(function () {
      * Lagrer egne gjøremål på samme måte som felles gjøremål.
      */
     $("body").on("click", "#lagreMineGjoremal", function () {
-        var beskrivelse = $("#mineGjoremalInput").val();
+        var beskrivelse =$("#mineGjoremalInput").val();
         var frist = $("#minDato").val();
         var husholdningId = localStorage.getItem("husholdningId");
 

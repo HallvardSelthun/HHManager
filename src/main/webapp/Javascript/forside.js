@@ -20,7 +20,14 @@ var handleliste;
  */
 $(document).ready(function () {
     $('body').on('contextmenu', 'img', function(e){ return false; });
-    husholdningId = bruker.favHusholdning;
+    if (!husholdningId) {
+        husholdningId = bruker.favHusholdning;
+        console.log("husholdningId satt til favHusholdning")
+    }
+    else {
+        console.log("husholdningId ikke satt til favHusholdning")
+    }
+
     getHandleliste();
     gethhData();
     setTimeout(setupPage, 1000);
@@ -49,7 +56,7 @@ $(document).ready(function () {
  */
 function setupPage() {
     console.log(husholdning);
-    var husNavn = husholdning.navn;
+    var husNavn = he.encode(husholdning.navn);
     var nyhetsinnlegg = husholdning.nyhetsinnlegg;
     medlemmer = husholdning.medlemmer;
     var handlelister = husholdning.handlelister;

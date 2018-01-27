@@ -31,6 +31,7 @@ $(document).ready(function () {
                     alert("Feil epost eller passord!");
                     return;
                 }else if(innBruker.favHusholdning > 0){
+                    localStorage.setItem("husholdningId", innBruker.favHusholdning);
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
                     return;
