@@ -20,9 +20,8 @@ $(document).ready(function () {
     //Kjør JavaScript
     init();
 
-    console.log(localStorage.getItem("postUtleggSuccess"));
+
     if(localStorage.getItem("postUtleggSuccess") == "sant") {
-        console.log("ALRIGHT")
         $("#utleggSuccess").fadeIn(200);
         $("#utleggSuccess").delay(2500).fadeOut(400);
         localStorage.setItem("postUtleggSuccess", false)
@@ -39,7 +38,6 @@ var delSum = 0;
 
 function init() {
     lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betaltx
-
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
 
@@ -48,9 +46,10 @@ function init() {
               // On-Event-funksjoner //
 /////////////////////////////////////////////////////
 
-//Historikk
+/**
+ * Laster inn ferdige oppgjør fra databasen når historikk-knappen klikkes
+ */
 $(document).on("click", "#historikk", function(event){
-    console.log("Klikket");
     lastInnOppgjor(minBrukerId,1);
 });
 
@@ -74,19 +73,16 @@ function displayHistorikk(oppgjorArray) {
         $("#ingenOppgjorAlert").hide();
     }
 
-
     //Append compiled markup
     for (var i = 0; i < oppgjorArray.length; i++) {
         $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
-        //console.log(oppgjorArray[i].utleggJegSkylder);
         $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
-        //console.log(oppgjorArray[i].utleggDenneSkylderMeg);
         $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
     }
 }
 
 /**
- *
+ * Funksjonen tar for seg checkboxene til radene inne i oppgjør.
  */
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
@@ -104,14 +100,15 @@ $(document).on("click", ".checkboxes", function(event){
             klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
             liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
             if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
-                $("#collapse"+oppgjorNr+"").parent().fadeOut(500);
+                $("#collapse"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
             }
         });
     }
 });
 
-//Når denne klikkes skal alle inni merkes som betalt i databasen
-
+/**
+ * Når denne klikkes skal alle utleggsbetalere inni oppgjøret merkes som betalt i databasen
+ */
 $(document).on("click", ".hovedCheckbox", function(event){
     var klikketKnapp = $(this);
     var knappNavn = $(this).attr('id');
