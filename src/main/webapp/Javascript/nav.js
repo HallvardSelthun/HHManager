@@ -166,7 +166,11 @@ $(document).ready(function () {
         });
     });
     setTimeout(function () {
-        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
+        if( !navn){
+            $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span> Din Profil' );
+        }else {
+            $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
+        }
     }, 150);
 });
 
