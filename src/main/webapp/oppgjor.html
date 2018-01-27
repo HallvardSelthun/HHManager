@@ -86,16 +86,13 @@
                 <h4 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Historikk</h4>
             </div>
             <div class="container-fluid">
-                <div class="alert alert-warning" id="ingenOppgjorAlert">
-                    <strong>Tom historikk!</strong> Du har ingen fullførte oppgjør.
-                </div>
                 <div class="row panel-group" id="panelGruppe2">
                     <div class="labels container-fluid">
                         <div class="row">
                             <div class="col-sm-6 col-xs-6"></div>
                             <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
-                                <label class="col-sm-6 col-xs-6"></label>
-                                <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
+                                <label class="col-sm-6 col-xs-5"></label>
+                                <label class="skyldertittel col-sm-3 col-xs-4 utenPadding">Balanse</label>
                                 <label class="betalt col-sm-3 col-xs-3"></label>
                             </div>
                         </div>
@@ -129,10 +126,10 @@
                         <div class="row panel-group" id="panelGruppe">
                             <div class="labels container-fluid">
                                 <div class="row">
-                                    <div class="col-sm-6 col-xs-6"></div>
-                                    <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
-                                        <label class="col-sm-6 col-xs-6"></label>
-                                        <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
+                                    <div class="col-sm-6 col-xs-5"></div>
+                                    <div class="col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
+                                        <label class="col-sm-6 col-xs-5"></label>
+                                        <label class="skyldertittel col-sm-3 col-xs-4 utenPadding">Balanse</label>
                                         <label class="betalt col-sm-3 col-xs-3">Motatt</label>
                                     </div>
                                 </div>
@@ -160,12 +157,12 @@
     <!--Viktig ^^^ -->
     <div class="container-fluid panel panel-default">
         <div class="row panel-heading clearfix">
-            <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-5" style="margin-top: 5px; ">
                 <!--Viktig -->
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+            <div class="titteldiv col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
                 <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
                 <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
                 <div class="col-sm-3 col-xs-3"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
