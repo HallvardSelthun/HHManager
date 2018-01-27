@@ -1,3 +1,4 @@
+/*
 .glyphicon-plus-sign {
     font-size: 30px;
 }
@@ -9,11 +10,11 @@
     margin-top: 20px;
 }
 
-/*.panel-title {
+!*.panel-title {
     text-align: left;
-}*/
+}*!
 
-/*#navnknapp {
+!*#navnknapp {
     margin-top: 10px;
     margin-left: 89px;
 }
@@ -22,7 +23,7 @@
     margin-top: 10px;
     margin-right: 3px;
 }
-*/
+*!
 #accordion {
     margin-right: 10px;
 }
@@ -35,10 +36,10 @@
     margin-left: 89px;
 }
 
-/*#passord {
+!*#passord {
     margin-top: 10px;
     margin-left: 100px;
-}*/
+}*!
 
 .husinfo {
     width: 300px;
@@ -52,5 +53,9 @@
 .glyphicon-star-empty {
     font-size: 95%;
     color: #32CD32;
+}*/
+
+.alert {
+    display: none;
 }
 

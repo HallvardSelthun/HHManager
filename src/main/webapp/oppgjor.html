@@ -84,14 +84,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Historikk</h4>
             </div>
-            <div id="historikkMain">
-                <div class="panel-group" id="panelGruppeHistorikk">
-                    <div class="labels">
-                        <label class="skyldertittel">Balanse </label>
-                        <label class="betalt">Betalt</label>
+            <div class="container-fluid">
+                <div class="row panel-group" id="panelGruppe2">
+                    <div class="labels container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-6"></div>
+                            <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                                <label class="col-sm-6 col-xs-6"></label>
+                                <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
+                                <label class="betalt col-sm-3 col-xs-3"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="historikkMain">
+                        <!-- Her legges det inn dynamisk HTML -->
                     </div>
                 </div>
-            </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
             </div>
@@ -103,8 +112,8 @@
 <!-- Hovedstruktur for siden -->
 <div id = "container" class="container-fluid">
     <div class = "row">
-        <div id="left" class="col-md-3"></div>
-        <div id="center" class="col-md-6">
+        <div id="left" class="col-sm-2 col-md-3"></div>
+        <div id="center" class="col-sm-8 col-md-6">
             <div class="container-fluid">
                 <div class="row">
                     <h1 class="tittel">Mine oppgjør</h1>
@@ -113,18 +122,18 @@
                         <strong>Success!</strong> Oppgjør lagt inn.
                     </div>
                     <div class="container-fluid">
-                        <!-- Under her legges det inn dynamisk HTML -->
                         <div class="row panel-group" id="panelGruppe">
                             <div class="labels container-fluid">
                                 <div class="row">
-                                    <div class="col-md-6"></div>
-                                    <div class="col-md-6 pull-right" style="text-align: right; padding: 0px;">
-                                        <label class="col-md-4"></label>
-                                        <label class="skyldertittel col-md-4" style="padding: 0px">Balanse</label>
-                                        <label class="betalt col-md-4">Motatt</label>
+                                    <div class="col-sm-6 col-xs-6"></div>
+                                    <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                                        <label class="col-sm-6 col-xs-6"></label>
+                                        <label class="skyldertittel col-sm-3 col-xs-3 utenPadding">Balanse</label>
+                                        <label class="betalt col-sm-3 col-xs-3">Motatt</label>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Her legges det inn dynamisk HTML -->
                         </div>
 
                     </div>
@@ -135,7 +144,7 @@
                 </div>
             </div>
         </div>
-    <div id="right" class="col-md-3"></div>
+    <div id="right" class="col-sm-2 col-md-3"></div>
     </div>
 </div>
 
@@ -148,15 +157,15 @@
     <!--Viktig ^^^ -->
     <div class="container-fluid panel panel-default">
         <div class="row panel-heading clearfix">
-            <h3  class="panel-title pull-left col-md-6" style="margin-top: 5px; ">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
                 <!--Viktig -->
                 <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
-            <div class="titteldiv col-md-6 pull-right" style="text-align: right; padding: 0px">
-                <label class="skylderTekst col-md-4" style="text-align: left; padding: 0px">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
-                <label class="totalSum${posNeg} col-md-4" style="text-align: right; padding: 0px">${totalSum} kr</label>
-                <div class="col-md-4"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
+            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
+                <div class="col-sm-3 col-xs-3"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
                         class="placeholderSpan"></span>{{/if}}
                 </div>
             </div>
@@ -170,9 +179,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="col-md-3">Sum</th>
-                                <th class="col-md-8">Beskrivelse</th>
-                                <th class="col-md-1">Betalt</th>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1">Betalt</th>
                             </tr>
                             </thead>
                             <tbody id="radMinus${oppgjorNr}">
@@ -188,9 +197,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="col-md-3">Sum</th>
-                                <th class="col-md-8">Beskrivelse</th>
-                                <th class="col-md-1">Motatt</th>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1">Motatt</th>
                             </tr>
                             </thead>
                             <tbody id="radPlus${oppgjorNr}">
@@ -204,6 +213,70 @@
         </div>
     </div>
 </script>
+
+<!-- HTML-mal for historikk-oppgjør -->
+<!--Viktig -->
+<script id="test-oppgjor2" type="text/x-custom-template">
+    <!--Viktig ^^^ -->
+    <div class="container-fluid panel panel-default">
+        <div class="row panel-heading clearfix">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
+                <!--Viktig -->
+                <a id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}"> ${navn} </a>
+                <!--Viktig ^^^ -->
+            </h3>
+            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
+                <div class="col-sm-3 col-xs-3"> <span
+                        class="placeholderSpan"></span>
+                </div>
+            </div>
+        </div>
+        <div id="collapseHisto${oppgjorNr}" class="collapse">
+            <div class="panel-body">
+                <div class="balanse">
+                    <!-- Hadde vært nice å få til litt dynamisk HTML her -->
+                    <div class="duSkylder">
+                        <h4>Du skylder ${navn}:</h4>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="radMinus${oppgjorNr}">
+                            <!-- Her skal dynamisk kode inn -->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderSum}</strong></p>
+                        <br>
+                    </div>
+                    <div class="skylderDeg">
+                        <h4>${navn} skylder deg:</h4>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="radPlus${oppgjorNr}">
+                            <!-- Her skal mer generert kode inn-->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderMegSum}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
 
 
 <script id="rad-template-duSkylder" type="text/x-custom-template">

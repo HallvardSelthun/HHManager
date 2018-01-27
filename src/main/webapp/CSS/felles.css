@@ -2,7 +2,9 @@
     width: 100%;  /* i'm assuming full width */
     height: 80px; /* change it to desired width */
 }
-
+.alert {
+    display: none;
+}
 .logo {
     /*display: inline-block;*/
     float: right;
@@ -61,6 +63,9 @@ img{
 .vl{
     border-right: 1px solid #DDD;
 }
+.rl{
+    border-left: 1px solid;
+}
 /*body{
     margin-top:80px;
 }*/
@@ -71,7 +76,7 @@ img{
     top: 0;
     width: 100%;
     height: 80px;
-    overflow-y: scroll !important;
+    /*overflow-y: scroll !important;*/
     max-height: 500px;
 }
 
@@ -195,4 +200,8 @@ label {
 }
 .navbar-default .dropdown-menu.notify-drop .notify-drop-footer a:hover {
     color: #333;
+}
+
+.utenPadding{
+    padding: 0px;
 }

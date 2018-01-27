@@ -642,6 +642,22 @@ public class HusholdningController {
         }
         return false;
     }
+
+    public static boolean setMedlemAdmin(Bruker bruker){
+        int brukerId = bruker.getBrukerId();
+        int husId = bruker.getFavHusholdning();
+        String setAdmin = "UPDATE hhmedlem SET admin = 1 WHERE brukerId = ? AND husholdningId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(setAdmin);
+            ps.setInt(1,brukerId);
+            ps.setInt(2,husId);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 
 

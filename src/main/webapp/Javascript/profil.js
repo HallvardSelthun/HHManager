@@ -28,10 +28,9 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
-
-    if(photo.length > 1) {
+    if(!(!photo || 0 === photo.length)) {
         console.log("'" + photo + "'");
-        $('#photo').html('<img style="width:120px; height:120px; top: 30px; position: relative;" src="' + photo + '">');
+        $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     }
 
 
@@ -41,7 +40,7 @@ $(document).ready(function () {
             return;
         }
         photo = $('#profilbilde').val();
-        $('#photo').html('<img style="width: 120px; height:125px; top: 30px; position: relative;" src="' + photo + '">')
+        $('#photo').html('<img style="width: 120px; height:125px; top: 30px;" src="' + photo + '">')
         minBruker.profilbilde = photo;
         localStorage.setItem("bruker", JSON.stringify(minBruker));
     });
@@ -230,11 +229,16 @@ $(document).ready(function () {
         var medlem = {
             epost: $("#nynavnMedlem2").val()
         };
-        $("#nynavnMedlem2").val('');
-        navnIHuset2.push(medlem);
-        console.log(navnIHuset2);
-        $("#fade").show();
-        console.log("funker");
+        var epostmed = $("#nynavnMedlem2").val();
+        if(epostmed.length !== 0) {
+            $("#nynavnMedlem2").val('');
+            navnIHuset2.push(medlem);
+            $("#fade").show();
+            $("#fadedanger").hide();
+        } else {
+            $("#fadedanger").show();
+            $("#fade").hide();
+        }
     });
 
     /**
@@ -323,10 +327,6 @@ $(document).on('click', '.glyphicon', function () {
     }
 });
 
-$(document).on('click', '#nymedlem', function () {
-    var epost = $("#medlemepost").val();
-
-});
 
 $(document).on('click', '.removeMedlem', function () {
     var husId = $(this).attr('value');
@@ -365,33 +365,39 @@ function hentliste() {
         if (admin == 1){
             adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
             adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
-                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">slett</button>';
+                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
         }
         console.log(husholdnavn);
 
 
         // Ny design, med knapper
-        $("#husstander").append('<div  class="panel panel-default container-fluid"><div class="panel-heading clearfix row" ' +
-            'data-toggle="collapse" data-parent="#husstander"' +
-            ' data-target="#' + husholdningId + '" onclick="displayDiv()">' +
-            '<h4 class= "col-md-9 panel-title">' + husholdnavn + '</h4>' +
-                '<div class="stjerneogforlat pull-right">' +
-            '<span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em;' +
-            ' color: orange" role="button" class="glyphicon '+string+'"></span>' + " " +
-            '<button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" ' +
-            'type="button" value="'+husholdningId+'">Forlat</button></div></div>' + '<div id="' + husholdningId + '"' +
-            ' class="panel-collapse collapse invisibleDiv row"><div class="panel-body container-fluid">' +
-            '<ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
-            '<div id="list1" class="list-group"></div></div></div>');
+        $("#husstander").append('<div  class="panel panel-default container-fluid">' +
+            '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#' + husholdningId + '" onclick="displayDiv()">' +
+            '       <h4 class= "col-md-9 panel-title" style="display: inline">' + husholdnavn + '</h4>' +
+            '       <div class="stjerneogforlat pull-right">' +
+            '           <span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange; margin: 6px" role="button" class="glyphicon '+string+'"></span>' + " " +
+            '           <button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button" value="'+husholdningId+'">Forlat</button>' +
+            '       </div>' +
+            '   </div>' +
+            '<div id="' + husholdningId + '" class="panel-collapse collapse invisibleDiv row">' +
+            '   <div class="panel-body container-fluid">' +
+            '       <ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
+            '       <div id="list1" class="list-group"></div>' +
+            '   </div>' +
+            '</div>');
 
 
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            var giAdmin = "";
+            if (mineHusholdninger[k].medlemmer[p].admin == 0){
+                giAdmin = '<button style="padding: 2px 6px; margin-right: 3px;" class="btn  btn-primary pull-right giAdmin"' +
+                    'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Admin</button>'
+            }
             console.log(medlemnavn);
 
-            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+'</li>');
-
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
         }
     }
 
@@ -545,8 +551,39 @@ function setProfilbilde(link) {
             alert("feil feil feil feil");
         }
     });
-    //window.location = "profil.html";
 }
 
+$(document).on('click', '.giAdmin', function () {
+    bId = $(this).attr('value2');
+    hId = $(this).attr('value');
+    setAdmin(bId, hId);
+    $(this).hide();
+});
+
+function setAdmin(bId, hId) {
+
+    var bruker = {
+        brukerId: bId,
+        favHusholdning: hId
+    };
+    $.ajax({
+        url: "server/hhservice/setAdmin",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if(data){
+                alert("nice nice");
+            }else{
+                alert("yikes");
+            }
+        },
+        error: function () {
+            alert("feil feil feil");
+        }
+    });
+}
 
 

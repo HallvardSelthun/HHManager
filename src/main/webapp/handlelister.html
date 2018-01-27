@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="CSS/handlelister.css">
     <script src="Javascript/handleliste.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
-
 </head>
 <body>
 <div id="navbar"></div>
@@ -34,6 +33,7 @@
                 <div class="medlemmer">
                     <h4>Legg til medbetalere</h4>
                     <ul id="medbetalere" class="list-group"></ul>
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Være med på utlegg selv
                 </div>
                 <div class="sum">
                     <h4>Sum</h4>
@@ -64,27 +64,7 @@
                                 <input id="offentligKnapp" type="checkbox" name="offKnapp">
                                 <span class="slider round"></span>
                             </label>
-
-                        <!-- Tatt bort sammen med fristen
-                        <h5>Navn</h5>
-
-                        -->
-
                         <input id="handlelisteNavn" class="form-control" name="handlelisteNavn" placeholder="Handleliste navn" type="text">
-
-                        <!-- Tatt bort foreløpig
-
-                        <br>
-                        <h5>Frist</h5>
-                        <div class="input-group date" id="handlelisteFristDato">
-                            <input class="form-control" type="text" placeholder="ÅÅÅÅ-MM-DD">
-                            <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                        </div>
-
-                        -->
-
                     </div>
                 </div>
             </div>
@@ -97,7 +77,6 @@
 </div>
 
 <div class="container-fluid">
-    <!-- Accordion with checkboxes-->
     <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">

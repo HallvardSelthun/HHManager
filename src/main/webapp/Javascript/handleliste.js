@@ -12,7 +12,8 @@ var husholdningId = localStorage.getItem("husholdningId");
 var husholdning;
 var alleHandlelister;
 var boxesChecked = [];
-//var antVarerChecked;
+var boxesChecked2 = [];
+var listeid;
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -38,14 +39,52 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.utleggKnapp', function(){
+        listeid = $(this).attr('id').slice(6);
         checkChecked("liste" + $(this).attr('id').slice(6));
         lagUtleggVarer();
     });
     $(document).on('click', '.sendUtlegg', function(){
         sendUtlegg();
     });
+
+    $(document).on('click', '.utenUtleggKnapp', function(){
+        var listeId=$(this).attr('value');
+        checkChecked(("liste"+listeId));
+        setVarerKjopt(listeId);
+    });
 });
 
+/**
+ * Sender inn varer til server for å markere de som kjopt
+ */
+function setVarerKjopt(listeId) {
+    var liste=[];
+    for(var i = 0; i < boxesChecked2.length; i++){
+        var vare ={
+            handlelisteId: listeId,
+            kjoperId: bruker.brukerId,
+            datoKjopt: new Date(Date.now()),
+            vareId: boxesChecked2[i]
+        };
+        liste.push(vare);
+    }
+    $.ajax({
+        url: "server/handleliste/kjoptVarer",
+        type: 'PUT',
+        data: JSON.stringify(liste),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data=JSON.parse(result)
+            if(data){
+                window.location =" handlelister.html"
+            }else console.log("not ok")
+        },
+        error: function () {
+            alert("Noe gikk galt :(")
+        }
+    })
+}
 /**
  * Funksjon for å legge til ny handleliste i systemet. Lagrer navnet på handlelisten og legger antall
  * varer i en tabell, samt spør og sjekker om handleliste skal være offentlig eller ikke.
@@ -104,8 +143,11 @@ $(document).on('click', '.nyVareKnapp', function() {
     var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
     var temp = "#"+listeId;
 
-    leggTilVare(listeId, input);
-
+    if(input == ""){
+        alert("Du må skrive noe");
+    }else {
+        leggTilVare(listeId, input);
+    }
 });
 function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
@@ -232,6 +274,8 @@ function checkChecked(formname) {
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
             boxesChecked.push($(this).attr("id"));
+            boxesChecked2.push($(this).attr("value2"));
+
         }
     });
 
@@ -251,10 +295,12 @@ function lagUtleggVarer() {
         //console.log(vareNavn);
         $("#valgteVarer").append('<li class="list-group-item">' + vareNavn + '</li>');
     }
-    for(var j = 0; j < medlemmer.length; j++){
+    for(var j = 0; j < medlemmer.length; j++) {
         medlemNavn = medlemmer[j].navn;
         medlemId = medlemmer[j].brukerId;
-        $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
+        if (medlemId != bruker.brukerId) {
+            $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
+        }
     }
     //antVarerChecked = boxesChecked.length;
 }
@@ -273,19 +319,21 @@ function sendUtlegg() {
     }
     beskrivelse = beskrivelse.replace(-1, ".");
 
-
-
     if(sum == "" || beskrivelse == ""){
         alert("pls gi en sum og beskrivelse :)");
         return;
     }
+    var pluss = 0;
+    if ($("#vereMedPaaUtlegg").is(":checked")){
+        pluss = 1;
+    }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
-    //delSum = sum/$('#personer input:checked').length;
+    var delSum = sum/($('#medbetalere input:checked').length+1);
     $('#medbetalere input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
-            //delSum: delSum
+            delSum: delSum
         };
         utleggsbetalere.push(utleggsbetaler)
     });
@@ -296,6 +344,8 @@ function sendUtlegg() {
         beskrivelse: beskrivelse,
         utleggsbetalere: utleggsbetalere
     };
+
+    setVarerKjopt(listeid);
 
     $.ajax({
         url: "server/utlegg/nyttutlegg",
@@ -348,7 +398,7 @@ function setupPage() {
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
                 '                       ' +
-                '                           <div class="input-group container-fluid">' +
+                '                           <div class="input-group container-fluid utenPadding">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
                 '                                   <div class="input-group-btn">' +
                 '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +
@@ -361,7 +411,7 @@ function setupPage() {
                 '                           <div class="container-fluid">' +
                 '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
                 ' data-target="#utleggmodal" style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
-                '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left" style="margin-top: 10px">Kjøpt uten' +
+                '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left utenUtleggKnapp" style="margin-top: 10px" value ="'+handlelisteId+'" >Kjøpt uten' +
                 ' utlegg</button>' +
                 '                           <!-- Rounded switch -->' +
                 '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
@@ -384,7 +434,7 @@ function setupPage() {
                 kjopt = varer[j].kjopt;
                 kjøperId = varer[j].kjøperId;
                 //datokjøpt = new Date(varer[j].datokjøpt);
-                $("#liste" + handlelisteId).append('<label for="' + kjopt + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" title="toggle' +
+                $("#liste" + handlelisteId).append('<label for="' + kjopt + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" value2="'+vareId+'" title="toggle' +
                     ' all" type="checkbox" class="all pull-right"></label>');
             }
         }

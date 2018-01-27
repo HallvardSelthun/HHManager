@@ -8,8 +8,7 @@
     <script src="web-res/jquery-3.3.1.min.js"></script>
     <script src="web-res/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/glemtpassord.css">
-    <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon" />
-    <!--script src="Javascript/nav.js"></script-->
+    <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <script src="Javascript/glemtpassord.js"></script>
 
 </head>
@@ -17,16 +16,22 @@
 
 <div id="all" class="container glemtpassord">
     <div class="col-8">
-            <a href="#"><img class="logo img-fluid img-thumbnail" src="web-res/storlogo.png" alt="Logo"></a>
-            <h2>Glemt passord</h2>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
-            </div>
-
-            <button id="sendNyttPassordKnapp" class="btn btn-lg btn-primary btn-block" >Send nytt passord</button>
+        <a href="#"><img class="logo img-fluid img-thumbnail" src="web-res/storlogo.png" alt="Logo"></a>
+        <h2>Glemt passord</h2>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+        </div>
+        <div class="alert alert-success" id="sendt">
+            <strong>Suksess!</strong> Epost med nytt passord er sendt.
+        </div>
+        <div class="alert alert-danger" id="feil">
+            <strong>Feil!</strong> Noe gikk galt under sending. Sjekk at epost-adressen er riktig, og prøv igjen.
+        </div>
+        <button id="sendNyttPassordKnapp" class="btn btn-lg btn-primary btn-block">Send nytt passord</button>
+        <button id="tilbake" class="btn btn-lg btn-primary btn-block"> Tilbake til logg inn</button>
     </div>
 </div>
-<div id = "modaldiv"></div>
+<div id="modaldiv"></div>
 </body>
 </html>
