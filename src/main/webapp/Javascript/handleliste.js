@@ -14,7 +14,6 @@ var alleHandlelister;
 var boxesChecked = [];
 var boxesChecked2 = [];
 var listeid;
-//var antVarerChecked;
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -324,13 +323,17 @@ function sendUtlegg() {
         alert("pls gi en sum og beskrivelse :)");
         return;
     }
+    var pluss = 0;
+    if ($("#vereMedPaaUtlegg").is(":checked")){
+        pluss = 1;
+    }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
-    //delSum = sum/$('#personer input:checked').length;
+    var delSum = sum/($('#medbetalere input:checked').length+1);
     $('#medbetalere input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
-            //delSum: delSum
+            delSum: delSum
         };
         utleggsbetalere.push(utleggsbetaler)
     });

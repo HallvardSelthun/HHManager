@@ -51,7 +51,7 @@ public class HandlelisteController {
             handleliste.setHusholdningId(handlelisteId);
             handleliste.setTittel(rs.getString("navn"));
             handleliste.setHusholdningId(husholdningId);
-            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
+            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId + " AND kjopt = 0";
 
             s = con.createStatement();
             rs = s.executeQuery(hentVarer);
