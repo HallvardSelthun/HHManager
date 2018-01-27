@@ -23,7 +23,7 @@ var knappid;
 $(document).ready(function () {
     getHandlelisterData();
     gethhData();
-    setTimeout(setupPage,1000);
+    //setTimeout(setupPage,1000);
 
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
         leggTilNyHandleliste();
@@ -274,6 +274,7 @@ function endrePublic(){
 function getHandlelisterData() {
     $.getJSON("server/handleliste/" + husholdningId + "/" + brukerId, function (data) {
         alleHandlelister = data;
+        setupPage();
     });
 }
 
