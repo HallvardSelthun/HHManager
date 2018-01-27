@@ -5,11 +5,11 @@
  */
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
-var handlelisteId = localStorage.getItem("handlelisteId");
+var husholdningId = localStorage.getItem("husholdningId");
 console.log("rett under getItem");
-console.log(handlelisteId);
-var navn = he.encode(bruker.navn);
-var epost = he.encode(bruker.epost);
+console.log(husholdningId);
+var navn;
+var epost;
 var husholdninger;
 var varseler;
 
@@ -17,10 +17,14 @@ var varseler;
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
  */
 $(document).ready(function () {
-    console.log("HANDLELISTEID inne i nav.js");
-    console.log(handlelisteId)
+
+    navn = he.encode(bruker.navn);
+    epost = he.encode(bruker.epost);
+
     $(function () {
-        if(!handlelisteId || handlelisteId ==0){
+        console.log("Skriver ut husholdningId");
+        console.log(husholdningId);
+        if(!husholdningId || husholdningId ==0){
             console.log("ALT NAV");
             $("#navbar").load("altnav.html");
         } else{
@@ -28,15 +32,12 @@ $(document).ready(function () {
         }
         $("#modaldiv").load("lagnyhusstand.html");
     });
-    getHusholdninger();
 
-    setTimeout(function () {
-        henteVarsel();
-    }, 200);
-
-    setTimeout(function () {
-        $("#fadenav").hide()
-    }, 150);
+    if (!bruker) {
+        window.location = "index.html";
+        console.log("Redirecting")
+    }
+    getHusholdningerNav();
 
     /**
      * Når de ulike delene av navbar blir klikket på skal bruker sendes til de ulike html-sidene
@@ -48,8 +49,6 @@ $(document).ready(function () {
         //bruker.favHusholdning = nyhhId; Dette er ikke logisk behaviour
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html";
-
-
     });
     $(document).on("click", "#toggleBtn", function () {
         console.log($(this).attr('aria-expanded'));
@@ -186,8 +185,10 @@ function utgaatteGjoremaal(liste) {
 /**
  * henter husholsninger fra hhservice, gitt brukerid.
  */
-function getHusholdninger() {
+function getHusholdningerNav() {
     $.getJSON("server/hhservice/husholdning/" + bruker.brukerId, function (data) {
+        henteVarsel();
+        $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
 

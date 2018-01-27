@@ -236,7 +236,7 @@ function innleggToHtml(nyhetsinnlegg) {
 
 function oppdaterGjoremal() {
     var ffListe = [];
-    var minegjoremal = he.encode(bruker.gjoremal);
+    var minegjoremal = bruker.gjoremal;
     for (var i = 0, len = minegjoremal.length; i < len; i++) {
         var gjoremal = minegjoremal[i];
         var gjoremalId = minegjoremal[i].gjoremalId;

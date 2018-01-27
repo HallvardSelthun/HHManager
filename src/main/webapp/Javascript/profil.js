@@ -5,12 +5,8 @@
 /**
  * Definerer variabler
  */
-var minBruker = JSON.parse(localStorage.getItem("bruker"));
+var minBruker = bruker; //Definert i nav.js
 var brukerId = minBruker.brukerId;
-var epost = minBruker.epost;
-var husholdningId = localStorage.getItem("husholdningId");
-console.log("HUSHOLDNINGID:")
-console.log(husholdningId);
 var mineHusholdninger;
 var medlemmer;
 var hhId;
@@ -36,7 +32,6 @@ $(document).ready(function () {
         console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     }
-
 
 
     $('#submitProfilbilde').click(function(){
@@ -408,8 +403,6 @@ function hentliste() {
             $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
         }
     }
-    console.log("Loop ferdig")
-    localStorage.setItem("husholdningId", husholdningId);
 }
 
 /**
