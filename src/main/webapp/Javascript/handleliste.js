@@ -13,6 +13,7 @@ var husholdning;
 var alleHandlelister;
 var boxesChecked = [];
 var boxesChecked2 = [];
+var listeid;
 //var antVarerChecked;
 
 /**
@@ -39,6 +40,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.utleggKnapp', function(){
+        listeid = $(this).attr('id').slice(6);
         checkChecked("liste" + $(this).attr('id').slice(6));
         lagUtleggVarer();
     });
@@ -47,7 +49,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.utenUtleggKnapp', function(){
-        var listeId=$(this).attr('value')
+        var listeId=$(this).attr('value');
         checkChecked(("liste"+listeId));
         setVarerKjopt(listeId);
     });
@@ -318,8 +320,6 @@ function sendUtlegg() {
     }
     beskrivelse = beskrivelse.replace(-1, ".");
 
-
-
     if(sum == "" || beskrivelse == ""){
         alert("pls gi en sum og beskrivelse :)");
         return;
@@ -334,6 +334,7 @@ function sendUtlegg() {
         };
         utleggsbetalere.push(utleggsbetaler)
     });
+    var delSum = sum / (utleggsbetalere.length);
 
     utlegg = {
         utleggerId: utleggerId,
@@ -341,6 +342,8 @@ function sendUtlegg() {
         beskrivelse: beskrivelse,
         utleggsbetalere: utleggsbetalere
     };
+
+    setVarerKjopt(listeid);
 
     $.ajax({
         url: "server/utlegg/nyttutlegg",
@@ -393,7 +396,7 @@ function setupPage() {
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
                 '                       ' +
-                '                           <div class="input-group container-fluid">' +
+                '                           <div class="input-group container-fluid utenPadding">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
                 '                                   <div class="input-group-btn">' +
                 '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +
