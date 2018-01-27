@@ -12,3 +12,9 @@ div {
 #all{
     width: 60%;
 }
+#sendNyttPassordKnapp {
+    margin-bottom: 0px;
+}
+.alert {
+    display: none;
+}
