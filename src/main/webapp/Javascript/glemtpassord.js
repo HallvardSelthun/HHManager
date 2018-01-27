@@ -1,8 +1,13 @@
 /**
  * Gjelder dersom passord er glemt. Ved klikk på knappen send nytt passord, sendes et kall til
  * brukerservice som inneholder metoder for å få nytt passord tilsendt på mail.
+ * Ved klikk på tilbake-knappen vil navigere tilbake til innloggingssiden.
  */
 $(document).ready(function () {
+    $("#tilbake").on("click", function () {
+        window.location = "index.html"
+    });
+
     $("#sendNyttPassordKnapp").on("click", function () {
         var epost = $("#email").val();
         $.ajax({
@@ -14,9 +19,11 @@ $(document).ready(function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 if(data) {
-                    alert("Epost skal være sendt!")
+                    $("#sendt").fadeIn();
+                    $("#feil").hide();
                 }else {
-                    alert("Epost ble ikke sendt. Vennligst sjekk om du har skrevet inn riktig epostadresse")
+                    $("#sendt").hide();
+                    $("#feil").fadeIn();
                 }
             }
         });

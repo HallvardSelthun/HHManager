@@ -51,7 +51,7 @@ public class HandlelisteController {
             handleliste.setHusholdningId(handlelisteId);
             handleliste.setTittel(rs.getString("navn"));
             handleliste.setHusholdningId(husholdningId);
-            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
+            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId + " AND kjopt = 0";
 
             s = con.createStatement();
             rs = s.executeQuery(hentVarer);
@@ -278,14 +278,14 @@ public class HandlelisteController {
      */
 
     public static boolean setKjopt(ArrayList<Vare> varer){
-        int kjøperId= varer.get(0).getKjoperId();
+        int kjoperId= varer.get(0).getKjoperId();
         Date date = varer.get(0).getDatoKjopt();
         try(Connection con = ConnectionPool.getConnection()){
             PreparedStatement ps;
             for (int i = 0; i < varer.size(); i++) {
                 String sqlSetning = "UPDATE vare SET kjopt = 1, kjøperId = ?, datoKjøpt = ? WHERE vareId = ?;";
                 ps = con.prepareStatement(sqlSetning);
-                ps.setInt(1, kjøperId);
+                ps.setInt(1, kjoperId);
                 ps.setDate(2,date);
                 ps.setInt(3,varer.get(i).getVareId());
                 int success =  ps.executeUpdate();

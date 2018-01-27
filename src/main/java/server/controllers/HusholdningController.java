@@ -4,6 +4,8 @@ import server.Mail;
 //import com.mysql.cj.jdbc.util.ResultSetUtil;
 import server.database.ConnectionPool;
 import server.restklasser.*;
+import server.util.Encryption;
+import server.util.RandomGenerator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -197,13 +199,15 @@ public class HusholdningController {
         }
         String adminId = husholdning.getAdminId();
         StringBuilder selectAllerBrukereSB = new StringBuilder("SELECT epost from bruker WHERE epost in (");
-        StringBuilder insertNyeBrukereSB = new StringBuilder("insert into bruker (epost) values ");
+        StringBuilder insertNyeBrukereSB = new StringBuilder("insert into bruker (epost, hash, salt) values ");
         StringBuilder selectIdBrukereSB = new StringBuilder("select brukerId from bruker where epost in (");
         String insertHus = "insert into " + TABELLNAVN + " (navn) values (?)";
         StringBuilder insertBrukereIHusSB = new StringBuilder("insert into hhmedlem (brukerId, husholdningId) values ");
 
         int husId;
         ArrayList<Integer> idBrukereAL = new ArrayList<>();
+
+        ArrayList<Bruker> ikkeBrukerObjArrayList = null;
 
         try (Connection connection = ConnectionPool.getConnection()) {
             ArrayList<String> ikkeBrukerAl = new ArrayList<>();
@@ -229,16 +233,31 @@ public class HusholdningController {
                 ikkeBrukerAl.removeAll(alleredeBrukereAL);
                 prepSelectAllerBrukere.close();
 
-                // setter inn alle brukere som ikke finnes
+                // setter inn alle brukere som ikke finnes og gir dem generert passord
                 if (ikkeBrukerAl.size() > 0) {
+                    ikkeBrukerObjArrayList = new ArrayList<>();
                     for (int i = 0; i < ikkeBrukerAl.size(); i++) {
-                        insertNyeBrukereSB.append("(?), ");
+                        Bruker bruker = new Bruker();
+                        bruker.setEpost(ikkeBrukerAl.get(i));
+                        String passord = RandomGenerator.stringulns(8);
+                        String[] encrypted = Encryption.instance.passEncoding(passord);
+                        bruker.setPassord(passord);
+                        bruker.setHash(encrypted[0]);
+                        bruker.setSalt(encrypted[1]);
+                        ikkeBrukerObjArrayList.add(bruker);
+                    }
+                    for (int i = 0; i < ikkeBrukerObjArrayList.size(); i++) {
+                        insertNyeBrukereSB.append("(?, ?, ?), ");
                     }
                     slettSisteTegn(insertNyeBrukereSB, 2);
 
                     PreparedStatement prepInsertNyeBrukere = connection.prepareStatement(insertNyeBrukereSB.toString());
-                    for (int i = 0; i < ikkeBrukerAl.size(); i++) {
-                        prepInsertNyeBrukere.setString(i + 1, ikkeBrukerAl.get(i));
+                    int k = 0;
+                    for (Bruker bruker : ikkeBrukerObjArrayList) {
+                        prepInsertNyeBrukere.setString(k + 1, bruker.getEpost());
+                        prepInsertNyeBrukere.setString(k + 2, bruker.getHash());
+                        prepInsertNyeBrukere.setString(k + 3, bruker.getSalt());
+                        k += 3;
                     }
                     prepInsertNyeBrukere.executeUpdate();
                     prepInsertNyeBrukere.close();
@@ -294,7 +313,8 @@ public class HusholdningController {
             prepAdmin.executeUpdate();
             prepAdmin.close();
 
-            Mail.sendUreg(ikkeBrukerAl,navnHus);
+            // sender mail om utført arbeid
+            Mail.sendUreg(ikkeBrukerObjArrayList,navnHus);
             Mail.sendAllerede(alleredeBrukereAL, navnHus);
             return husId;
         } catch (Exception e) {
@@ -558,14 +578,16 @@ public class HusholdningController {
     }
 
     public static boolean regNyttMedlem(Bruker bruker){
+        // dette er ikke nødvendigvis favoritthusholdningen til brukeren, bare den husholdningen som brukeren skal legges ti i.
+        // dette blir favoritthusholdningen hvis brukeren er ny.
         int husholdningId = bruker.getFavHusholdning();
         int brukerId;
-        ArrayList<String> medlem = new ArrayList<>();
+        ArrayList<String> medlemer = new ArrayList<>();
         String epost = bruker.getEpost();
-        medlem.add(epost);
+        medlemer.add(epost);
         String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = ?";
         String regNyttMedlem = "INSERT INTO hhmedlem (brukerId, husholdningId, admin) VALUES (?, ?, 0)";
-        String lagNyBruker = "INSERT INTO bruker (favorittHusholdning, epost) VALUES (?,?)";
+        String lagNyBruker = "INSERT INTO bruker (favorittHusholdning, epost, hash, salt) VALUES (?, ?, ?, ?)";
         String getNyBrukerId = "SELECT LAST_INSERT_ID()";
 
         try(Connection con = ConnectionPool.getConnection()){
@@ -578,12 +600,29 @@ public class HusholdningController {
                 ps.setInt(1,brukerId);
                 ps.setInt(2,husholdningId);
                 ps.executeUpdate();
-                Mail.sendAllerede(medlem, Integer.toString(husholdningId));
+                Mail.sendAllerede(medlemer, Integer.toString(husholdningId));
                 return true;
             }else{
+                if (bruker.getPassord() == null) {
+                    String passord = RandomGenerator.stringulns(8);
+                    String[] encrypted = Encryption.instance.passEncoding(passord);
+                    bruker.setHash(encrypted[0]);
+                    bruker.setSalt(encrypted[1]);
+                    bruker.setPassord(passord);
+                }
+                // gjør det samme to ganger for å unngå nullpointerexception
+                else if (bruker.getPassord().equals("")){
+                    String passord = RandomGenerator.stringulns(8);
+                    String[] encrypted = Encryption.instance.passEncoding(passord);
+                    bruker.setHash(encrypted[0]);
+                    bruker.setSalt(encrypted[1]);
+                    bruker.setPassord(passord);
+                }
                 ps = con.prepareStatement(lagNyBruker);
                 ps.setInt(1,husholdningId);
-                ps.setString(2,epost);
+                ps.setString(2, epost);
+                ps.setString(3, bruker.getHash());
+                ps.setString(4, bruker.getSalt());
                 ps.executeUpdate();
                 ps = con.prepareStatement(getNyBrukerId);
                 rs = ps.executeQuery();
@@ -593,7 +632,9 @@ public class HusholdningController {
                 ps.setInt(1, brukerId);
                 ps.setInt(2,husholdningId);
                 ps.executeUpdate();
-                Mail.sendUreg(medlem, Integer.toString(husholdningId));
+                ArrayList<Bruker> brukerArrayList = new ArrayList<>();
+                brukerArrayList.add(bruker);
+                Mail.sendUreg(brukerArrayList, Integer.toString(husholdningId));
                 return true;
             }
         }catch (SQLException e){

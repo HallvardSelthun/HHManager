@@ -9,11 +9,12 @@ public class Bruker {
     private int brukerId;
     private String navn;
     private String passord;
-    private String nyttpassord;
     private String epost;
     private int favHusholdning;
     private int admin;
     private String profilbilde;
+    private String hash;
+    private String salt;
 
     public int getAdmin() {
         return admin;
@@ -103,5 +104,21 @@ public class Bruker {
 
     public void setFavHusholdning(int favHusholdning) {
         this.favHusholdning = favHusholdning;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

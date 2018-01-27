@@ -34,11 +34,19 @@
                 <div class="medlemmer">
                     <h4>Legg til medbetalere</h4>
                     <ul id="medbetalere" class="list-group"></ul>
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Være med på utlegg selv
                 </div>
                 <div class="sum">
                     <h4>Sum</h4>
                     <input id="sum" type="number" placeholder="Skriv inn summen for varene">
+                    <div class="alert alert-danger" id ="sumAlert">
+                        <strong>Feil input</strong> Sum må være fyllt inn, og over 0.
+                    </div>
+                    <div class="alert alert-danger" id ="medlemAlert">
+                        <strong>Feil input</strong> Du må legge til medbetalere av handleturen din.
+                    </div>
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>

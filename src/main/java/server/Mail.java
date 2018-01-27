@@ -6,6 +6,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import server.controllers.*;
+import server.restklasser.Bruker;
 
 /**
  * Denne klassen kobles opp mot Googles mail servere og sender mail til en eller flere brukere.
@@ -24,6 +25,7 @@ public class Mail {
      * @param hushold String navnet til husholdningen
      */
     public static void sendAllerede(ArrayList<String> eposter, String hushold) {
+        if (eposter == null || eposter.size() < 1) return;
         StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen " + hushold +
                 "\nKlikk lenken for å kommme til HHManagers forside: http://localhost:8080/server");
@@ -32,17 +34,31 @@ public class Mail {
 
     /**
      * Sender mail til brukere som ikke er registrert i systemet fra før.
-     * @param eposter ArrayList med epostadressene til brukerne
+     * @param brukere ArrayList av brukerne
      * @param hushold String navnet til husholdningen.
      */
-    public static void sendUreg(ArrayList<String> eposter, String hushold) {
-        StringBuilder msg = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
-                "\n\nDu har blitt lagt til i husholdningen" + hushold +
-                "\nFølg lenken for å kommme til HHManagers registreringsside, " +
-                "slik at du kan lage en bruker på systemet." +
-                "\nNB: Husk å bruke samme epost som denne." +
-                "\nhttp://localhost:8080/server/lagbruker.html");
-        sendTilFlere(eposter, msg);
+    public static void sendUreg(ArrayList<Bruker> brukere, String hushold) {
+        if (brukere == null || brukere.size() < 1) return;
+        for (Bruker bruker : brukere) {
+            String msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
+                    "\n\nDu har blitt lagt til i husholdningen" + hushold + "\nBrukernavn: " + bruker.getEpost() +
+                    "\nPassord: " + bruker.getPassord() +
+                    "\n\nFølg lenken for å logge inn: http://localhost:8080/HHManager";
+            sendTilEn(bruker.getEpost(), msg);
+        }
+    }
+
+    public static boolean sendGlemtPassord(String email, int brukerId) {
+        String msg;
+        if (brukerId < 1){
+            msg = "Hei!" +
+                    "\nDu er ikke registrert i vårt system, vennligst registrer deg på: http://localhost:8080/server/lagbruker.html" + regards;
+        } else {
+            String pw = BrukerController.nyttTilfeldigPass(brukerId);
+            msg = "Velkommen til HouseHoldManger, systemet som gir deg en enklere hverdag." +
+                    "\n\nHer er ditt nye genererte passord: " + pw + regards;
+        }
+        return sendTilEn(email, msg);
     }
 
     /**
@@ -93,9 +109,9 @@ public class Mail {
     /**
      * Denne metoden genererer et nytt passord og sender det til emailen til en bruker fra selskapets email.
      * @param email er email-adressen til brukeren
-     * @param brukerId er int som indentifiserer en bruker.
+     * @param msg det som skal stå i mailen
      **/
-    public static boolean sendGlemtPassord(String email, int brukerId) {
+    private static boolean sendTilEn(String email, String msg) {
         String out = email.trim().toLowerCase();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -115,15 +131,6 @@ public class Mail {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(out));
             message.setSubject(glemtsub);
-            String msg;
-            if (brukerId < 1){
-                msg = "Hei!" +
-                        "\nDu er ikke registrert i vårt system, vennligst registrer deg på: http://localhost:8080/server/lagbruker.html" + regards;
-            } else {
-                String pw = BrukerController.nyttTilfeldigPass(brukerId);
-                msg = "Velkommen til HouseHoldManger, systemet som gir deg en enklere hverdag." +
-                        "\n\nHer er ditt nye genererte passord: " + pw + regards;
-            }
             message.setText(msg);
             Transport.send(message);
             return true;

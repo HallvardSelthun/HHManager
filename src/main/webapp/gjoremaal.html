@@ -22,7 +22,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><span class="glyphicon glyphicon-pushpin"></span> Legg til gjoremal</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-pushpin"></span> Legg til gjøremål</h4>
             </div>
             <div class="modal-body">
                 <div class="gjoremal">
@@ -35,7 +35,12 @@
                     <br>
                     <p>Hold pilen over dato-feltet og trykk pil ned for å få opp kalender.</p>
                 </div>
-
+                <div class="alert alert-danger" id="feil">
+                    <strong>Feil!</strong> Vennligst skriv inn beskrivelse på gjøremål.
+                </div>
+                <div class="alert alert-danger" id="datafeil">
+                    <strong>Serverfeil!</strong> Vennligst prøv på nytt, eller restart serveren.
+                </div>
                 <div class="modal-footer">
                     <button type="button" id="minLukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
                     <button id="lagreMineGjoremal" type="button" class="btn btn-primary">Lagre</button>
@@ -71,7 +76,13 @@
                     <p>Frist:</p>
                     <input id="dato" type="date" class="form-control" name="textfield">
                 </div>
-
+                <br>
+                <div class="alert alert-danger" id="feil2">
+                    <strong>Feil!</strong> Vennligst skriv inn beskrivelse på gjøremål.
+                </div>
+                <div class="alert alert-danger" id="datafeilfelles">
+                    <strong>Feil!</strong> Vennligst prøv igjen, eller restart serveren.
+                </div>
                 <div class="modal-footer">
                     <button type="button" id="lukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
                     <button id="lagreGjoremal" type="button" class="btn btn-primary">Lagre</button>

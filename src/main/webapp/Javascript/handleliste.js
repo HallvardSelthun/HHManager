@@ -14,7 +14,7 @@ var alleHandlelister;
 var boxesChecked = [];
 var boxesChecked2 = [];
 var listeid;
-//var antVarerChecked;
+var knappid;
 
 /**
  * Kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -35,24 +35,40 @@ $(document).ready(function () {
         endrePublic();
     });
 
-    $(document).on('click','.slettHandlelisteKnapp', function () {
-        slettHandleliste($(this).attr('value'))
-    });
+});
 
-    $(document).on('click', '.utleggKnapp', function(){
-        listeid = $(this).attr('id').slice(6);
-        checkChecked("liste" + $(this).attr('id').slice(6));
-        lagUtleggVarer();
-    });
-    $(document).on('click', '.sendUtlegg', function(){
-        sendUtlegg();
-    });
 
-    $(document).on('click', '.utenUtleggKnapp', function(){
-        var listeId=$(this).attr('value');
-        checkChecked(("liste"+listeId));
+$(document).on('click','.slettHandlelisteKnapp', function () {
+    slettHandleliste($(this).attr('value'))
+});
+
+$(document).on('click', '.utleggKnapp', function(){
+    listeid = $(this).attr('id').slice(6);
+    knappid = $(this).attr('id')
+    checkChecked("liste" + $(this).attr('id').slice(6));
+    if (boxesChecked == false) {
+        $('#velgVareAlert').fadeIn(200);
+        return false;
+    }else{
+        $('#velgVareAlert').fadeOut(200);
+        $('#utleggmodal').modal('show');
+    }
+    lagUtleggVarer();
+});
+$(document).on('click', '.sendUtlegg', function(){
+    sendUtlegg();
+});
+
+$(document).on('click', '.utenUtleggKnapp', function(){
+    var listeId=$(this).attr('value');
+    checkChecked(("liste"+listeId));
+    if (boxesChecked == false) {
+        $('#velgVareAlert').fadeIn(200);
+        return false;
+    }else{
+        $('#velgVareAlert').fadeOut(200)
         setVarerKjopt(listeId);
-    });
+    }
 });
 
 /**
@@ -153,6 +169,7 @@ $(document).on('click', '.nyVareKnapp', function() {
 
 function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
+
     var vare = {
         varenavn: navn,
         handlelisteId: hlId
@@ -266,7 +283,6 @@ function gethhData() {
  * @returns {boolean}
  */
 function checkChecked(formname) {
-    //console.log(formname);
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
             boxesChecked.push($(this).attr("id"));
@@ -275,10 +291,7 @@ function checkChecked(formname) {
         }
     });
 
-    if (boxesChecked == false) {
-        alert('Du må krysse av minst en vare');
-        return false;
-    }
+
 }
 
 function lagUtleggVarer() {
@@ -312,21 +325,34 @@ function sendUtlegg() {
     }
     beskrivelse = beskrivelse.replace(-1, ".");
 
-    if(sum == "" || beskrivelse == ""){
-        alert("pls gi en sum og beskrivelse :)");
+    if(sum == "" ||  sum <=0){
+        $("#sumAlert").fadeIn(200);
         return;
+    }else{
+        $("#sumAlert").fadeOut(200);
+
+    }
+
+    if(($('#medbetalere input:checked').length ==0)){
+        $("#medlemAlert").fadeIn(200);
+        return;
+    }else{
+        $("#medlemAlert").fadeOut(200);
+    }
+    var pluss = 0;
+    if ($("#vereMedPaaUtlegg").is(":checked")){
+        pluss = 1;
     }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
-    //delSum = sum/$('#personer input:checked').length;
+    var delSum = sum/($('#medbetalere input:checked').length+1);
     $('#medbetalere input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
-            //delSum: delSum
+            delSum: delSum
         };
         utleggsbetalere.push(utleggsbetaler)
     });
-    var delSum = sum / (utleggsbetalere.length);
 
     utlegg = {
         utleggerId: utleggerId,
@@ -400,9 +426,9 @@ function setupPage() {
                 '                       <div class="row">' +
                 '                           <div class="container-fluid">' +
                 '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
-                ' data-target="#utleggmodal" style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
+                '  style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
                 '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left utenUtleggKnapp" style="margin-top: 10px" value ="'+handlelisteId+'" >Kjøpt uten' +
-                ' utlegg</button>' +
+                '                             utlegg</button>' +
                 '                           <!-- Rounded switch -->' +
                 '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
                 '                               <label class="switch pull-right" style="alignment: right">' +
@@ -410,6 +436,9 @@ function setupPage() {
                 '                                   <span class="slider round"></span>' +
                 '                               </label>' +
                 '                        </div>' +
+                '                       <div class="alert alert-danger" id ="velgVareAlert">'+
+                '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
+                '                      </div> '+
                 '                   </div>' +
                 '               </div>' +
                 '           </div>' +

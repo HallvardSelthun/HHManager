@@ -35,7 +35,19 @@ public class HusholdningControllerTest {
         medlemmer.add(bruker2);
         husholdning.setMedlemmer(medlemmer);
         assertEquals(3, HusholdningController.ny(husholdning));
-        assertEquals(4, HusholdningController.ny(husholdning));
+        //assertEquals(4, HusholdningController.ny(husholdning));
+    }
+
+    @Test
+    public void regNyttMedlem() throws Exception {
+        Bruker ny = new Bruker();
+        Bruker gammel = new Bruker();
+        ny.setEpost("nynyEpost@nyMail.no");
+        ny.setFavHusholdning(1);
+        gammel.setEpost("trulsmatias@gmail.com");
+        gammel.setFavHusholdning(1);
+        assertTrue(HusholdningController.regNyttMedlem(ny));
+        //assertTrue(HusholdningController.regNyttMedlem(gammel));
     }
 /*
     @Test

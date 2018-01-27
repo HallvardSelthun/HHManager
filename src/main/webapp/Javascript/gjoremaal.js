@@ -101,6 +101,9 @@ $(document).ready(function () {
         hentMedlemmer();
     }, 300);
 
+    /**
+     * Sender hvilke gjøremål som er krysset av til database og oppdaterer listen av gjøremål.
+     */
     $("body").on("click", "#refresh2", function () {
         for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
             var gjoremal = fellesgjoremal[i];
@@ -212,7 +215,7 @@ $(document).ready(function () {
             husholdningId: husholdningId
         };
         if (beskrivelse == "") {
-            alert("Skriv inn noe");
+            $("#feil2").fadeIn();
             return;
         }
         /**
@@ -231,16 +234,12 @@ $(document).ready(function () {
                 if (data) {
                     window.location = "gjoremaal.html";
                 } else {
-                    alert("feil!");
+                    $("#datafeilfelles").fadeIn();
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(gjoremal)
+                $("#datafeilfelles").fadeIn();
             }
-        });
-        $("#button").on('click', function () {
-            alert("Du har valgt å avbryte")
         });
     });
 
@@ -260,7 +259,7 @@ $(document).ready(function () {
         };
 
         if (beskrivelse == "") {
-            alert("Skriv inn noe");
+            $("#feil").fadeIn();
             return;
         }
         $.ajax({
@@ -279,22 +278,19 @@ $(document).ready(function () {
                         hhBrukerId: minBruker.brukerId,
                         fullfort: false,
                         beskrivelse: beskrivelse,
-                        frist: frist,
+                        frist: frist
                     };
                     console.log("Gjoremal2" + gjoremal2);
                     minBruker.gjoremal.push(gjoremal2);
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";
                 } else {
-                    alert("feil!");
+                   $("#datafeil").fadeIn();
                 }
             },
             error: function () {
-                alert("serverfeil :/");
+                $("#datafeil").fadeIn();
             }
-        });
-        $("#button").on('click', function () {
-            alert("Du har valgt å avbryte")
         });
     });
 });
