@@ -28,8 +28,7 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
-
-    if(photo.length > 1) {
+    if(!(!photo || 0 === photo.length)) {
         console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px; position: relative;" src="' + photo + '">');
     }
@@ -100,8 +99,8 @@ $(document).ready(function () {
      */
     $("#lagreendringer").on('click', function () {
         var brukerId = minBruker.brukerId;
-        var endrepassord1 = he.encode($("#nyttpassord").val());
-        var endrepassord2 = he.encode($("#bekreftnytt").val());
+        var endrepassord1 = $("#nyttpassord").val();
+        var endrepassord2 = $("#bekreftnytt").val();
         if (endrepassord1 == "" || endrepassord2 == "") {
             alert("PLIS SKRIV IN NOKE...")
             return;
@@ -144,7 +143,7 @@ $(document).ready(function () {
      */
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
-        var nyttNavn = he.encode($("#nyttnavn").val());
+        var nyttNavn = $("#nyttnavn").val();
         console.log(nyttNavn);
         var bruker = {
             brukerId: brukerId,
@@ -185,8 +184,8 @@ $(document).ready(function () {
      */
     $("#lagre").on('click', function () {
         var brukerId = minBruker.brukerId;
-        var nyepost1 = he.encode($("#nyepost").val());
-        var nyepost2 = he.encode($("#nyepost2").val());
+        var nyepost1 = $("#nyepost").val();
+        var nyepost2 = $("#nyepost2").val();
         if (nyepost1 == "" || nyepost2 == "") {
             alert("PLIS SKRIV IN NOKE...")
             return;
@@ -230,11 +229,16 @@ $(document).ready(function () {
         var medlem = {
             epost: $("#nynavnMedlem2").val()
         };
-        $("#nynavnMedlem2").val('');
-        navnIHuset2.push(medlem);
-        console.log(navnIHuset2);
-        $("#fade").show();
-        console.log("funker");
+        var epostmed = $("#nynavnMedlem2").val();
+        if(epostmed.length !== 0) {
+            $("#nynavnMedlem2").val('');
+            navnIHuset2.push(medlem);
+            $("#fade").show();
+            $("#fadedanger").hide();
+        } else {
+            $("#fadedanger").show();
+            $("#fade").hide();
+        }
     });
 
     /**
@@ -243,7 +247,7 @@ $(document).ready(function () {
 
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp2", function () {
-        var navnHus = he.encode($("#nynavnHusstand").val());
+        var navnHus = $("#nynavnHusstand").val();
 
         navnIHuset2.push(
             {
@@ -365,7 +369,7 @@ function hentliste() {
         if (admin == 1){
             adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
             adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
-                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">slett</button>';
+                'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
         }
         console.log(husholdnavn);
 
@@ -388,10 +392,14 @@ function hentliste() {
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            var giAdmin = "";
+            if (mineHusholdninger[k].medlemmer[p].admin == 0){
+                giAdmin = '<button style="padding: 2px 6px; margin-right: 3px;" class="btn  btn-primary pull-right giAdmin"' +
+                    'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Admin</button>'
+            }
             console.log(medlemnavn);
 
-            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+'</li>');
-
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
         }
     }
 
@@ -545,8 +553,39 @@ function setProfilbilde(link) {
             alert("feil feil feil feil");
         }
     });
-    //window.location = "profil.html";
 }
 
+$(document).on('click', '.giAdmin', function () {
+    bId = $(this).attr('value2');
+    hId = $(this).attr('value');
+    setAdmin(bId, hId);
+    $(this).hide();
+});
+
+function setAdmin(bId, hId) {
+
+    var bruker = {
+        brukerId: bId,
+        favHusholdning: hId
+    };
+    $.ajax({
+        url: "server/hhservice/setAdmin",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if(data){
+                alert("nice nice");
+            }else{
+                alert("yikes");
+            }
+        },
+        error: function () {
+            alert("feil feil feil");
+        }
+    });
+}
 
 

@@ -8,6 +8,7 @@ import server.database.ConnectionPool;
 import server.restklasser.Bruker;
 import server.restklasser.Gjoremal;
 import server.util.Encryption;
+import server.util.RandomGenerator;
 
 import java.security.SecureRandom;
 import java.sql.*;
@@ -195,26 +196,31 @@ public class BrukerController {
      * @return det nye passordet
      */
     public static String nyttTilfeldigPass(int brukerId) {
-        if (PASSWORD_LENGTH < 1) {
-            return "The length of the password generated must be positive";
-        }
-        StringBuilder sb = new StringBuilder(PASSWORD_LENGTH);
-        for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            int c = RANDOM.nextInt(62);   // generates a random int from zero to 62
-            if (c <= 9) {
-                sb.append(String.valueOf(c));   // adds the number to the StringBuilder
-            } else if (c < 36) {
-                sb.append((char) ('a' + c - 10));   // adds the lower case letter of the number to the StringBuilder
-            } else {
-                sb.append((char) ('A' + c - 36));   // adds the upper case letter of the number to the StringBuilder
-            }
-        }
-        setNyttPassord(brukerId, sb.toString());
-        return sb.toString();
-    }
-        /*String passord = RandomGenerator.stringulns(8);
+        String passord = RandomGenerator.stringulns(PASSWORD_LENGTH);
         setNyttPassord(brukerId, passord);
-        return passord;*/
+        return passord;
+    }
+
+    /**
+     * Skal bare brukes hvis man ikke har brukerId. Bruk ellers den andre metoden med samme navn.
+     * Lagrer et nytt tilfeldig passord til brukeren med gitt epost
+     * @param epost til brukeren som skal ha nytt passord
+     * @return det nye tilfeldige passordet
+     */
+    public static String nyttTilfeldigPass(String epost) {
+        String passord = RandomGenerator.stringulns(PASSWORD_LENGTH);
+        String[] hashOgSalt = Encryption.instance.passEncoding(passord);
+        String sqlSetning = "update " + TABELLNAVN + " set hash=?, salt=? where " + "epost=" + epost;
+        try(Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSetning)) {
+            preparedStatement.setString(1, hashOgSalt[0]);
+            preparedStatement.setString(2, hashOgSalt[1]);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return passord;
+    }
 
 
     /**

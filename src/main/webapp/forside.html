@@ -4,7 +4,6 @@
     <title>Household Manager</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    B
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="web-res/jquery-3.3.1.min.js"></script>
@@ -29,7 +28,6 @@
                             <div class="container-fluid form-group container-kommentarfelt">
                                 <div class="container-fluid">
                                     <h2 id="nyhet"></h2>
-                                    <!--<button class="skrivNyttInnlegg" for="comment" onclick="skrivNyttInnlegg">Nytt innlegg</button>-->
                                     <div class="skrivNyttInnlegg">
                                         <textarea class="form-control" rows="5" id="comment" placeholder="Skriv et innlegg" onfocus="this.placeholder=''" onblur="this.placeholder='Skriv et innlegg'"></textarea>
                                         <p align="right">
@@ -44,7 +42,7 @@
                                     <div class="col-md-10">
                                         <div class="container-fluid" id="nyhetsdiv">
                                             <div class="wrapper">
-                                                <ul class="innleggsliste" style="padding: 0px; list-style: none"></ul>
+                                                <ul class="innleggsliste utenPadding" style="list-style: none"></ul>
                                                 <button id="next">Show More</button>
                                             </div>
                                         </div>
@@ -90,7 +88,13 @@
                                     <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
                                         aria-expanded="true"
                                         aria-controls="collapseTwo">
-                                        <span class="glyphicon glyphicon-pushpin"></span> Mine gjøremål
+                                        <div>
+                                        <span class="glyphicon glyphicon-pushpin"></span>
+                                        <button type="button" id="sendtilgjoreknapp" class="btn btn-light pull-right">
+                                            <span class="glyphicon glyphicon-share-alt pull-right" id="sendtilgjore"></span>
+                                        </button>
+                                        Mine gjøremål
+                                        </div>
                                     </h4>
                                 </div>
                                 <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
@@ -112,9 +116,12 @@
                                     <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
                                         aria-expanded="true"
                                         aria-controls="collapseTwo">
-                                        <span class="glyphicon glyphicon-shopping-cart"></span> Handleliste:
+                                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                                        <button id="sendtilhandelknapp" class="btn btn-light pull-right">
+                                            <span class="glyphicon glyphicon-share-alt pull-right" id="sendtilhandel"></span>
+                                        </button>
+                                        Handleliste:
                                     </h4>
-                                    <span class="glyphicon glyphicon-share-alt" id="sendtilside"></span>
                                 </div>
                                 <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
                                      data-parent="#accordion">

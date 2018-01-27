@@ -2,6 +2,15 @@
     display: none;
 }
 
+.tittel {
+    text-align: center;
+    margin:-2px;
+}
+
+.skalAlignes {
+    text-align: left;
+    margin-left:30px;
+}
 
 /*.balanse{
     /* width: 550px; */
@@ -42,10 +51,7 @@
 }
 
 
-.tittel {
-    text-align: center;
-    margin:-2px;
-}
+
 
 .dropdown-menu-item {
     text-align: center;
@@ -104,7 +110,4 @@
 
 */
 
-.skalAlignes {
-    text-align: left;
-    margin-left:30px;
-}
+

@@ -30,9 +30,16 @@ $(document).ready(function () {
     /*$(".skrivNyttInnlegg").on("click", function () {
         skrivNyttInnlegg();
     });*/
+    $('body').on("click", "#sendtilhandelknapp", function () {
+        window.location = "handlelister.html"
+    });
+    $('body').on("click", "#sendtilgjoreknapp", function () {
+       window.location = "gjoremaal.html"
+    });
     $("body").on("click", "#refreshGForside", function () {
         oppdaterGjoremal();
     });
+
 });
 
 /**
@@ -253,7 +260,6 @@ function oppdaterGjoremal() {
                 } else {
                     alert("feil!");
                 }
-                window.location = "forside.html";
             },
             error: function () {
                 alert("serverfeil :/");
@@ -267,5 +273,6 @@ function oppdaterGjoremal() {
         }
         bruker.gjoremal = minegjoremal;
         localStorage.setItem("bruker", JSON.stringify(bruker));
+        window.location = "forside.html"
     }, 200)
 }

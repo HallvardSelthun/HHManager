@@ -26,7 +26,7 @@ $(document).ready(function () {
     }, 200);
 
     setTimeout(function () {
-        $("#fade").hide()
+        $("#fadenav").hide()
     }, 150);
 
     /**
@@ -82,17 +82,27 @@ $(document).ready(function () {
         var medlem = {
             epost: $("#navnMedlem").val()
         };
-        $("#navnMedlem").val('');
-        navnIHuset.push(medlem);
-        console.log(navnIHuset);
-        $("#fade").show();
-        console.log("funker");
+        var epostmedlem = $("#navnMedlem").val();
+        if(epostmedlem.length !== 0){
+            navnIHuset.push(medlem);
+            console.log(navnIHuset);
+            $("#fadenav").show();
+            $("#fadenav3").hide();
+        } else {
+            $("#fadenav3").show();
+            $("#fadenav").hide();
+        }
     });
 
-    $('body').on('click', "a#alertbox", function () {
-        $("#fade").hide();
+  /*  $('body').on('click', "#alertbox", function () {
+        $("#fadenav").hide();
         console.log("hide");
     });
+
+    $('body').on('click', "#alertbox", function () {
+        $("#fadenav3").hide();
+        console.log("hide");
+    });*/
 
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp", function () {
