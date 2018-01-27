@@ -153,15 +153,16 @@ function leggTilNyHandleliste() {
  * Knapp som kjører nyVare()
  */
 $(document).on('click', '.nyVareKnapp', function () {
-    nyVare();
+    var that = $(this);
+    nyVare(that);
 });
 /**
  * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
  * til i riktig handleliste med en handlelisteId.
  */
-function nyVare() {
-    var listeId = $(this).attr('value');
-    var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
+function nyVare(that) {
+    var listeId = that.attr('value');
+    var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
 
     if(input == ""){

@@ -79,6 +79,10 @@ $(document).ready(function () {
                 }
             },
             error: function () {
+                BootstrapDialog.show({
+                    title: 'Serverfeil!',
+                    message: 'forespursel gikk ikke igjennom pga. serverfeil.'
+                });
                 alert("serverfeil :/")
             }
         })
