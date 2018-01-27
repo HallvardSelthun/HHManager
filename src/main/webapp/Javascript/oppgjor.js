@@ -1,29 +1,6 @@
-//Additional JavaScript
-/** Testet with:
- *  - IE 5.5, 7.0, 8.0, 9.0 (preview)
- *  - Firefox 3.6.3, 3.6.8
- *  - Safari 5.0
- *  - Chrome 5.0
- *  - Opera 10.10, 10.60
+/**
+ * Kjører når HTML DOM er loaded
  */
-var JavaScript = {
-    load: function(src, callback) {
-        var script = document.createElement('script'),
-            loaded;
-        script.setAttribute('src', src);
-        if (callback) {
-            script.onreadystatechange = script.onload = function() {
-                if (!loaded) {
-                    callback();
-                }
-                loaded = true;
-            };
-        }
-        document.getElementsByTagName('head')[0].appendChild(script);
-    }
-};
-
-
 $(document).ready(function () {
 
     $("#lagUtlegg").on('click', function () {
@@ -42,11 +19,6 @@ $(document).ready(function () {
 
     //Kjør JavaScript
     init();
-    /*
-    JavaScript.load("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", function () {
-        init();
-    })
-    */
 
     console.log(localStorage.getItem("postUtleggSuccess"));
     if(localStorage.getItem("postUtleggSuccess") == "sant") {
@@ -67,7 +39,6 @@ var delSum = 0;
 
 function init() {
     lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betaltx
-        lastInnBrukere();
 
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
 }
@@ -79,23 +50,34 @@ function init() {
 
 //Historikk
 $(document).on("click", "#historikk", function(event){
+    console.log("Klikket");
     lastInnOppgjor(minBrukerId,1);
 });
 
+/**
+ * Metode som tar inn et array med oppgjørs-objekter og legger dem til i historikk-modalen
+ * @param oppgjorArray sender vanligvis inn objektet ferdigArray som inneholder ferdige oppgjør
+ */
 function displayHistorikk(oppgjorArray) {
 
-    $.template( "oppgjorTemplate2", $("#test-oppgjor2"));
-    //$.template("oppgjorTemplateHistorikk", $("#historikk-template"));
+    $.template( "historikkTemplate", $("#historikk-oppgjor"));
 
     $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder-historikk"));
     $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder-historikk"));
 
     var startOppgjorNr = liveOppgjor.length;
-    console.log("Inne i displayHistorikk");
+
+    if (liveOppgjor.length <= 0) {
+        $("#ingenOppgjorAlert").show();
+    }
+    else {
+        $("#ingenOppgjorAlert").hide();
+    }
+
 
     //Append compiled markup
     for (var i = 0; i < oppgjorArray.length; i++) {
-        $.tmpl("oppgjorTemplate2", oppgjorArray[i]).appendTo($("#historikkMain"));
+        $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
         //console.log(oppgjorArray[i].utleggJegSkylder);
         $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
         //console.log(oppgjorArray[i].utleggDenneSkylderMeg);
@@ -103,6 +85,9 @@ function displayHistorikk(oppgjorArray) {
     }
 }
 
+/**
+ *
+ */
 $(document).on("click", ".checkboxes", function(event){
     var valgtSvarKnapp = $(this).attr('id');
     var utleggId = $(this).attr('data-utleggId');
@@ -301,6 +286,7 @@ function lastInnOppgjor(brukerId, betalt) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
+            lastInnBrukere();
             var valgtOppgjorArray = []
             if (betalt === 0) {
                 liveOppgjor = result;
@@ -322,6 +308,7 @@ function lastInnOppgjor(brukerId, betalt) {
         },
         error: function () {
             alert("Serveren har det røft atm, prøv igjen senere :/");
+            lastInnBrukere();
         }
     })
 }
@@ -474,7 +461,6 @@ function displayOppgjor(oppgjorArray) {
 function lastInnBrukere() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
-    //$.template( "medlemmerListe", $("#listeMedlemPls"));
     for(var j = 0, lengt = husholdninger.length; j<lengt; j++){
         if (husholdninger[j].husholdningId==husId){
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){

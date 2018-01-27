@@ -306,7 +306,6 @@ function lagUtleggVarer() {
 /**
  * Sender utlegg til de personene som blir sjekket av
  */
-
 function sendUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = "Kjøpt: ";
