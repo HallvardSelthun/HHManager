@@ -35,38 +35,40 @@ $(document).ready(function () {
         endrePublic();
     });
 
-    $(document).on('click','.slettHandlelisteKnapp', function () {
-        slettHandleliste($(this).attr('value'))
-    });
+});
 
-    $(document).on('click', '.utleggKnapp', function(){
-        listeid = $(this).attr('id').slice(6);
-        knappid = $(this).attr('id')
-        checkChecked("liste" + $(this).attr('id').slice(6));
-        if (boxesChecked == false) {
-            $('#velgVareAlert').fadeIn(200);
-            return false;
-        }else{
-            $('#velgVareAlert').fadeOut(200);
-            $('#utleggmodal').modal('show');
-        }
-        lagUtleggVarer();
-    });
-    $(document).on('click', '.sendUtlegg', function(){
-        sendUtlegg();
-    });
 
-    $(document).on('click', '.utenUtleggKnapp', function(){
-        var listeId=$(this).attr('value');
-        checkChecked(("liste"+listeId));
-        if (boxesChecked == false) {
-            $('#velgVareAlert').fadeIn(200);
-            return false;
-        }else{
-            $('#velgVareAlert').fadeOut(200)
-            setVarerKjopt(listeId);
-        }
-    });
+$(document).on('click','.slettHandlelisteKnapp', function () {
+    slettHandleliste($(this).attr('value'))
+});
+
+$(document).on('click', '.utleggKnapp', function(){
+    listeid = $(this).attr('id').slice(6);
+    knappid = $(this).attr('id')
+    checkChecked("liste" + $(this).attr('id').slice(6));
+    if (boxesChecked == false) {
+        $('#velgVareAlert').fadeIn(200);
+        return false;
+    }else{
+        $('#velgVareAlert').fadeOut(200);
+        $('#utleggmodal').modal('show');
+    }
+    lagUtleggVarer();
+});
+$(document).on('click', '.sendUtlegg', function(){
+    sendUtlegg();
+});
+
+$(document).on('click', '.utenUtleggKnapp', function(){
+    var listeId=$(this).attr('value');
+    checkChecked(("liste"+listeId));
+    if (boxesChecked == false) {
+        $('#velgVareAlert').fadeIn(200);
+        return false;
+    }else{
+        $('#velgVareAlert').fadeOut(200)
+        setVarerKjopt(listeId);
+    }
 });
 
 /**

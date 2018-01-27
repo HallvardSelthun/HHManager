@@ -314,7 +314,7 @@ $(document).ready(function () {
  * Bruker kan sette favoritthusholdning
  */
 $(document).on('click', '.glyphicon', function () {
-    event.stopPropagation();
+    //event.stopPropagation();
     if ($(this).hasClass('glyphicon-star-empty')){
         $(".glyphicon-star").each(function () {
             $(this).removeClass('glyphicon-star');

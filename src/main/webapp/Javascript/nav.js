@@ -16,7 +16,12 @@ var varseler;
  */
 $(document).ready(function () {
     $(function () {
-        $("#navbar").load("nav.html");
+        if(!bruker.favHusholdning || bruker.favHusholdning ==0){
+            console.log("ALT NAV");
+            $("#navbar").load("altnav.html");
+        } else{
+            $("#navbar").load("nav.html");
+        }
         $("#modaldiv").load("lagnyhusstand.html");
     });
     getHusholdninger();
@@ -54,7 +59,11 @@ $(document).ready(function () {
     });
 
     $('body').on('click', 'a#bildenav', function () {
-        window.location = "forside.html"
+        if(!bruker.favHusholdning || bruker.favHusholdning ==0){
+            window.location ="profil.html";
+        }else{
+            window.location = "forside.html"
+        }
     });
     $('body').on('click', 'a#gjoremaalsknapp', function () {
         window.location = "gjoremaal.html"
