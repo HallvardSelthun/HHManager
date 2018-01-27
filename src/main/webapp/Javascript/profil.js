@@ -8,7 +8,9 @@
 var minBruker = JSON.parse(localStorage.getItem("bruker"));
 var brukerId = minBruker.brukerId;
 var epost = minBruker.epost;
-var husholdningId;
+var husholdningId = localStorage.getItem("husholdningId");
+console.log("HUSHOLDNINGID:")
+console.log(husholdningId);
 var mineHusholdninger;
 var medlemmer;
 var hhId;
@@ -20,8 +22,10 @@ var navnIHuset2 = [];
  * Henter husholdningene som brukeren er medlem av
  */
 function getHusholdninger() {
+    console.log("Kjøres denne to ganger?")
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
+        hentliste();
         console.log(data);
     });
 }
@@ -49,9 +53,6 @@ $(document).ready(function () {
     //gethhData();
 
     getHusholdninger();
-    setTimeout(function () {
-        hentliste();
-    }, 1000);
 
     /**
      * Gjør det mulig å fjerne seg selv fra en husholdning.
@@ -351,8 +352,11 @@ $(document).on('click', '#opneLeggTilModal', function () {
  * Henter liste over husholdninger slik at en skal kunne sette favoritthusholdning på profilside.
  */
 function hentliste() {
+    console.log("lengde på minehusholdninger: "+mineHusholdninger.length)
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
+        console.log("Inne i loop")
         husholdningId = mineHusholdninger[k].husholdningId;
+        console.log(husholdningId);
         var husholdnavn = mineHusholdninger[k].navn;
         var admin = 0;
         var adminLeggTil = "";
@@ -404,7 +408,8 @@ function hentliste() {
             $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
         }
     }
-
+    console.log("Loop ferdig")
+    localStorage.setItem("husholdningId", husholdningId);
 }
 
 /**
@@ -427,6 +432,9 @@ function settNyFav(id) {
         success: function () {
             console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
+            localStorage.setItem("husholdningId", nyId)
+            console.log("Interesting:");
+            console.log(minBruker);
             localStorage.setItem("bruker", JSON.stringify(minBruker));
         },
         error: function (data) {

@@ -5,18 +5,22 @@
  */
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
-var navn = bruker.navn;
-var epost = bruker.epost;
+var handlelisteId = localStorage.getItem("handlelisteId");
+console.log("rett under getItem");
+console.log(handlelisteId);
+var navn = he.encode(bruker.navn);
+var epost = he.encode(bruker.epost);
 var husholdninger;
 var varseler;
 
 /**
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
- *
  */
 $(document).ready(function () {
+    console.log("HANDLELISTEID inne i nav.js");
+    console.log(handlelisteId)
     $(function () {
-        if(!bruker.favHusholdning || bruker.favHusholdning ==0){
+        if(!handlelisteId || handlelisteId ==0){
             console.log("ALT NAV");
             $("#navbar").load("altnav.html");
         } else{
@@ -41,7 +45,7 @@ $(document).ready(function () {
     $(document).on('click', '.hhknapp', function () {
         var nyhhId = ($(this).attr('id'));
         localStorage.setItem("husholdningId", nyhhId);
-        bruker.favHusholdning = nyhhId;
+        //bruker.favHusholdning = nyhhId; Dette er ikke logisk behaviour
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html";
 
@@ -59,7 +63,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', 'a#bildenav', function () {
-        if(!bruker.favHusholdning || bruker.favHusholdning ==0){
+        if(!husholdningId || husholdningId ==0){
             window.location ="profil.html";
         }else{
             window.location = "forside.html"
@@ -189,7 +193,7 @@ function getHusholdninger() {
 
         setTimeout(function () {
             for (i = 0, l = husholdninger.length; i < l; i++) {
-                var navn = husholdninger[i].navn;
+                var navn = he.encode(husholdninger[i].navn);
                 var id = husholdninger[i].husholdningId;
                 $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
             }

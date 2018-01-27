@@ -20,7 +20,14 @@ var handleliste;
  */
 $(document).ready(function () {
     $('body').on('contextmenu', 'img', function(e){ return false; });
-    husholdningId = bruker.favHusholdning;
+    if (!husholdningId) {
+        husholdningId = bruker.favHusholdning;
+        console.log("husholdningId satt til favHusholdning")
+    }
+    else {
+        console.log("husholdningId ikke satt til favHusholdning")
+    }
+
     getHandleliste();
     gethhData();
     setTimeout(setupPage, 1000);
