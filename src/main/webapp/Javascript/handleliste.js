@@ -151,7 +151,7 @@ $(document).on('click', '.nyVareKnapp', function() {
     }
 });
 function leggTilVare(hlId, navn) {
-    var nyGjenstandNavn = he.encode($(".leggTilNyGjenstand:focus").val());
+    var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
     var vare = {
         varenavn: navn,
         handlelisteId: hlId

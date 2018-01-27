@@ -1,34 +1,3 @@
-/**
- * Kjører når HTML DOM er loaded
- */
-$(document).ready(function () {
-
-    $("#lagUtlegg").on('click', function () {
-        lagNyttUtlegg();
-    });
-    $(document).on('click', '.medlemCheck', function(){
-        oppdaterBetalere();
-    });
-    $(document).on('click', '#vereMedPaaUtlegg', function () {
-        oppdaterBetalere();
-    });
-
-    $(".invisibleDiv").on("click", function () {
-        displayDiv();
-    });
-
-    //Kjør JavaScript
-    init();
-
-
-    if(localStorage.getItem("postUtleggSuccess") == "sant") {
-        $("#utleggSuccess").fadeIn(200);
-        $("#utleggSuccess").delay(2500).fadeOut(400);
-        localStorage.setItem("postUtleggSuccess", false)
-    }
-    console.log("Bruker logget inn: "+minBrukerId);
-});
-
 //Globale variabler
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var minBrukerId = bruker.brukerId;
@@ -36,15 +5,53 @@ var liveOppgjor = [];
 var ferdigeOppgjor = [];
 var delSum = 0;
 
-function init() {
-    lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betaltx
+/**
+ * Kjører når HTML DOM er loaded
+ */
+$(document).ready(function () {
+    //Kjør JavaScript
+    lastInnOppgjor(minBrukerId,0); //0 er ubetalt, 1 er betalt
     //Resten av funksjonene ligger i callbacks for å sørge for riktig rekkefølge.
-}
+
+    if(localStorage.getItem("postUtleggSuccess") == "sant") {
+        $("#utleggSuccess").fadeIn(200);
+        $("#utleggSuccess").delay(2500).fadeOut(400);
+        localStorage.setItem("postUtleggSuccess", false)
+    }
+});
 
 
 /////////////////////////////////////////////////////
               // On-Event-funksjoner //
 /////////////////////////////////////////////////////
+
+/**
+ * Knappen høret til lag utlegg-modalen
+ */
+$("#lagUtlegg").on('click', function () {
+    lagNyttUtlegg();
+});
+
+/**
+ * Knappen høret til lag utlegg-modalen
+ */
+$(document).on('click', '.medlemCheck', function(){
+    oppdaterBetalere();
+});
+
+/**
+ * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
+ */
+$(document).on('click', '#vereMedPaaUtlegg', function () {
+    oppdaterBetalere();
+});
+
+/**
+ * Mulig denne ikke skal brukes. Men det gjør at man kan klikke på hele accordions.
+ */
+$(".invisibleDiv").on("click", function () {
+    displayDiv();
+});
 
 /**
  * Laster inn ferdige oppgjør fra databasen når historikk-knappen klikkes
@@ -100,7 +107,7 @@ $(document).on("click", ".hovedCheckbox", function(event){
 //////////////////////////////////////////////////////////////
 
 /**
- *
+ * Oppdaterer hvem som er med på utlegget clientside og hvor mye de skylder
  */
 function oppdaterBetalere() {
     $("#betalere").text("");
@@ -117,6 +124,11 @@ function oppdaterBetalere() {
     })
 }
 
+/**
+ * Brukes for å holde styr på om det er igjen noen rader inne i et oppgjør.
+ * Hvis alle radene i oppgjøret er fjernet skal oppgjøret fjernes.
+ * @param oppgjorArray Vanligvis liveArray. Array av Oppgjør.
+ */
 function tellAntallUtleggsbetalere(oppgjorArray) {
     var utleggsBetalerPerOppgjor = 0;
 
@@ -129,8 +141,8 @@ function tellAntallUtleggsbetalere(oppgjorArray) {
 }
 
 /**
- * Test
- * @param oppgjorArray
+ * Utregner summen som vises clientside og legger inn resultatet i oppgjorArrayet som ble lagt inn.
+ * @param oppgjorArray Et array med oppgjorArray.
  */
 function utregnOppgjorSum(oppgjorArray) {
 
