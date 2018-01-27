@@ -42,6 +42,12 @@ $(document).ready(function () {
 
 
     });
+    $(document).on("click", "#toggleBtn", function () {
+        console.log($(this).attr('aria-expanded'));
+        if(this === false) {
+            $("body").css("padding-top", "300px");
+        }
+    });
 
     $(document).on('click', '.varslerknapp', function () {
         window.location = "gjoremaal.html";

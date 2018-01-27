@@ -64,7 +64,7 @@ img{
     border-right: 1px solid #DDD;
 }
 .rl{
-    border-left: 1px solid #DDD;
+    border-left: 1px solid;
 }
 /*body{
     margin-top:80px;
