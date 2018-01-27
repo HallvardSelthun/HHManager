@@ -17,15 +17,14 @@ $(document).ready(function(){
         vareGraf();
 
         husholdninger= JSON.parse(localStorage.getItem("husholdninger"));
-        console.log("husholdningId: "+husholdningId)
+        console.log("husholdningId: "+husholdningId);
         for(var i = 0; i<husholdninger.length;i++){
             var hhId = husholdninger[i].husholdningId;
             var hhNavn =husholdninger[i].navn;
-            //console.log(hhNavn);
             if (hhId == husholdningId){
                 $("#husholdningsNavn").text(hhNavn);
             }
-            $("#hhstatliste").append('<li role="button" class ="hhobjekt" id = "hhobjekt'+hhId+'" value="'+hhId+'">'+hhNavn+'</li>');
+            $("#hhstatliste").append('<li role="button" style="text-align: center;" class ="hhobjekt" id = "hhobjekt'+hhId+'" value="'+hhId+'"><a href="#">'+hhNavn+'</a></li>');
         }
     }, 400);
 });
@@ -43,7 +42,6 @@ $(document).on('click', '.hhobjekt', function () {
         for(var i = 0; i<husholdninger.length;i++) {
             var hhId = husholdninger[i].husholdningId;
             var hhNavn = husholdninger[i].navn;
-            //console.log(hhNavn);
             if (hhId == husholdningId) {
                 $("#husholdningsNavn").text(hhNavn);
             }
@@ -75,11 +73,6 @@ function vareGraf(){
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Medlem');
         data.addColumn('number', 'Antall varer');
-        for(var j = 0; j<newArray.length;j++)
-        {
-            console.log(newArray[j]);
-
-        }
         data.addRows(
             newArray
         );
@@ -119,11 +112,6 @@ function gjøremålsGraf(){
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Medlem');
         data.addColumn('number', 'Antall gjøremål');
-        for(var j = 0; j<newArray.length;j++)
-        {
-            console.log(newArray[j]);
-
-        }
         data.addRows(
             newArray
         );
@@ -165,11 +153,6 @@ function nyhetsGraf(){
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Medlem');
         data.addColumn('number', 'Antall innlegg');
-        for(var j = 0; j<newArray.length;j++)
-        {
-            console.log(newArray[j]);
-
-        }
         data.addRows(
             newArray
         );
@@ -195,7 +178,6 @@ function nyhetsGraf(){
 function getNyhetsstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/nyheter", function (data) {
         innleggsListe = data;
-        console.log(innleggsListe);
     });
 }
 
@@ -205,7 +187,6 @@ function getNyhetsstatistikk(){
 function getGjoremalstatistikk(){
     $.getJSON("server/StatistikkService/" + husholdningId + "/gjoremal", function (data) {
         statistikkListe = data;
-        console.log(statistikkListe);
     });
 }
 
