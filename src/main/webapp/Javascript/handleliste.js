@@ -17,7 +17,7 @@ var listeid;
 //var antVarerChecked;
 
 /**
- * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
+ * Kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
  * og slett handleliste og kaller samtidig på funksjonen leggTilNyHandleliste().
  */
 $(document).ready(function () {
@@ -150,6 +150,7 @@ $(document).on('click', '.nyVareKnapp', function() {
         leggTilVare(listeId, input);
     }
 });
+
 function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
     var vare = {
@@ -217,9 +218,6 @@ function slettHandleliste(sletteId) {
     })
 }
 
-function endreNavn(){}
-
-function checkEllerUncheck(){}
 
 /**
  * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
@@ -281,7 +279,6 @@ function checkChecked(formname) {
         alert('Du må krysse av minst en vare');
         return false;
     }
-    //console.log(boxesChecked);
 }
 
 function lagUtleggVarer() {
@@ -289,12 +286,11 @@ function lagUtleggVarer() {
     var medlemmer = husholdning.medlemmer;
     var medlemNavn = "";
     for(var i = 0; i < boxesChecked.length; i++){
-        vareNavn = boxesChecked[i];
-        //console.log(vareNavn);
+        vareNavn = he.encode(boxesChecked[i]);
         $("#valgteVarer").append('<li class="list-group-item">' + vareNavn + '</li>');
     }
     for(var j = 0; j < medlemmer.length; j++) {
-        medlemNavn = medlemmer[j].navn;
+        medlemNavn = he.encode(medlemmer[j].navn);
         medlemId = medlemmer[j].brukerId;
         if (medlemId != bruker.brukerId) {
             $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
@@ -370,7 +366,7 @@ function setupPage() {
 
     for (var i = 0; i < alleHandlelister.length; i++) {
         if (alleHandlelister[i].gjemt == 0) {
-            tittel = alleHandlelister[i].tittel;
+            tittel = he.encode(alleHandlelister[i].tittel);
             handlelisteId = alleHandlelister[i].handlelisteId;
             husholdningId = alleHandlelister[i].husholdningId;
             skaperId = alleHandlelister[i].skaperId;
@@ -424,10 +420,9 @@ function setupPage() {
             for (var j = 0; j < varer.length; j++) {
                 vareId = varer[j].vareId;
                 vareHandlelisteId = varer[j].handlelisteId;
-                varenavn = varer[j].varenavn;
+                varenavn = he.encode(varer[j].varenavn);
                 kjopt = varer[j].kjopt;
                 kjøperId = varer[j].kjøperId;
-                //datokjøpt = new Date(varer[j].datokjøpt);
                 $("#liste" + handlelisteId).append('<label for="' + kjopt + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" value2="'+vareId+'" title="toggle' +
                     ' all" type="checkbox" class="all pull-right"></label>');
             }
