@@ -334,7 +334,6 @@ function sendUtlegg() {
         };
         utleggsbetalere.push(utleggsbetaler)
     });
-    var delSum = sum / (utleggsbetalere.length);
 
     utlegg = {
         utleggerId: utleggerId,
