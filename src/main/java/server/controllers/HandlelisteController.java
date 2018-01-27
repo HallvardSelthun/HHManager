@@ -301,4 +301,25 @@ public class HandlelisteController {
         }
         return false;
     }
+
+    public static boolean endreOffentlig(Handleliste handleliste){
+        int handlelisteId = handleliste.getHandlelisteId();
+        int husholdningId = handleliste.getHusholdningId();
+        int status = 0;
+        if (handleliste.isOffentlig()){
+            status = 1;
+        }
+        String endre = "UPDATE handleliste SET offentlig = ? WHERE handlelisteId = ? AND husholdningId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(endre);
+            ps.setInt(1,status);
+            ps.setInt(2,handlelisteId);
+            ps.setInt(3,husholdningId);
+            ps.executeUpdate();
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
