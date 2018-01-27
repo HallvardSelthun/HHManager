@@ -14,6 +14,7 @@ var alleHandlelister;
 var boxesChecked = [];
 var boxesChecked2 = [];
 var listeid;
+var knappid;
 
 /**
  * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
@@ -40,7 +41,15 @@ $(document).ready(function () {
 
     $(document).on('click', '.utleggKnapp', function(){
         listeid = $(this).attr('id').slice(6);
+        knappid = $(this).attr('id')
         checkChecked("liste" + $(this).attr('id').slice(6));
+        if (boxesChecked == false) {
+            $('#velgVareAlert').fadeIn(200);
+            return false;
+        }else{
+            $('#velgVareAlert').fadeOut(200);
+            $('#utleggmodal').modal('show');
+        }
         lagUtleggVarer();
     });
     $(document).on('click', '.sendUtlegg', function(){
@@ -50,7 +59,13 @@ $(document).ready(function () {
     $(document).on('click', '.utenUtleggKnapp', function(){
         var listeId=$(this).attr('value');
         checkChecked(("liste"+listeId));
-        setVarerKjopt(listeId);
+        if (boxesChecked == false) {
+            $('#velgVareAlert').fadeIn(200);
+            return false;
+        }else{
+            $('#velgVareAlert').fadeOut(200)
+            setVarerKjopt(listeId);
+        }
     });
 });
 
@@ -270,7 +285,6 @@ function gethhData() {
  * @returns {boolean}
  */
 function checkChecked(formname) {
-    //console.log(formname);
     $('#' + formname + ' input[type="checkbox"]').each(function() {
         if ($(this).is(":checked")) {
             boxesChecked.push($(this).attr("id"));
@@ -279,11 +293,7 @@ function checkChecked(formname) {
         }
     });
 
-    if (boxesChecked == false) {
-        alert('Du må krysse av minst en vare');
-        return false;
-    }
-    //console.log(boxesChecked);
+
 }
 
 function lagUtleggVarer() {
@@ -319,9 +329,19 @@ function sendUtlegg() {
     }
     beskrivelse = beskrivelse.replace(-1, ".");
 
-    if(sum == "" || beskrivelse == ""){
-        alert("pls gi en sum og beskrivelse :)");
+    if(sum == "" ||  sum <=0){
+        $("#sumAlert").fadeIn(200);
         return;
+    }else{
+        $("#sumAlert").fadeOut(200);
+
+    }
+
+    if(($('#medbetalere input:checked').length ==0)){
+        $("#medlemAlert").fadeIn(200);
+        return;
+    }else{
+        $("#medlemAlert").fadeOut(200);
     }
     var pluss = 0;
     if ($("#vereMedPaaUtlegg").is(":checked")){
@@ -410,9 +430,9 @@ function setupPage() {
                 '                       <div class="row">' +
                 '                           <div class="container-fluid">' +
                 '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
-                ' data-target="#utleggmodal" style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
+                '  style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
                 '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left utenUtleggKnapp" style="margin-top: 10px" value ="'+handlelisteId+'" >Kjøpt uten' +
-                ' utlegg</button>' +
+                '                             utlegg</button>' +
                 '                           <!-- Rounded switch -->' +
                 '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
                 '                               <label class="switch pull-right" style="alignment: right">' +
@@ -420,6 +440,9 @@ function setupPage() {
                 '                                   <span class="slider round"></span>' +
                 '                               </label>' +
                 '                        </div>' +
+                '                       <div class="alert alert-danger" id ="velgVareAlert">'+
+                '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
+                '                      </div> '+
                 '                   </div>' +
                 '               </div>' +
                 '           </div>' +
