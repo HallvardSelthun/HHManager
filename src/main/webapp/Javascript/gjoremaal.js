@@ -40,7 +40,9 @@ function hei(){
         message: 'forespursel gikk ikke igjennom pga. serverfeil.'
     });*/
 }
-hei();
+
+
+//hei();
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
     console.log(id);
