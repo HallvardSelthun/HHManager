@@ -54,34 +54,6 @@ $(document).on("click", "#historikk", function(event){
 });
 
 /**
- * Metode som tar inn et array med oppgjørs-objekter og legger dem til i historikk-modalen
- * @param oppgjorArray sender vanligvis inn objektet ferdigArray som inneholder ferdige oppgjør
- */
-function displayHistorikk(oppgjorArray) {
-
-    $.template( "historikkTemplate", $("#historikk-oppgjor"));
-
-    $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder-historikk"));
-    $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder-historikk"));
-
-    var startOppgjorNr = liveOppgjor.length;
-
-    if (liveOppgjor.length <= 0) {
-        $("#ingenOppgjorAlert").show();
-    }
-    else {
-        $("#ingenOppgjorAlert").hide();
-    }
-
-    //Append compiled markup
-    for (var i = 0; i < oppgjorArray.length; i++) {
-        $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
-        $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
-        $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
-    }
-}
-
-/**
  * Funksjonen tar for seg checkboxene til radene inne i oppgjør.
  */
 $(document).on("click", ".checkboxes", function(event){
@@ -127,6 +99,9 @@ $(document).on("click", ".hovedCheckbox", function(event){
         // Funksjoner som behandler data clientside //
 //////////////////////////////////////////////////////////////
 
+/**
+ *
+ */
 function oppdaterBetalere() {
     $("#betalere").text("");
     $('.medlemCheck').each(function () {
@@ -188,6 +163,16 @@ function utregnOppgjorSum(oppgjorArray) {
     displayOppgjor(oppgjorArray);
 }
 
+/**
+ * Denne funksjonen brukes i forbindelse med å markere et helt oppgjør som fullført.
+ * Det tar inn liveOppgjør gjennom oppgjorArray-parameteren, samt oppgjorNr for å
+ * identifisere hvilket oppgjør det er snakk om. Så går man gjennom det relevante
+ * oppgjøret og legger alle utleggsbetalerne i en liste. Til sist kjøres checkOppgjørSum med
+ * listen som parameter.
+ * @param oppgjorArray liveOppgjør
+ * @param oppgjorNr indeksen til oppgjøret i den lokale oppgjørArrayen.
+ * @param callback Funksjon som kjøres når vi er ferdige.
+ */
 function lagUtleggsbetalerListe(oppgjorArray, oppgjorNr, callback) {
     var utleggsbetalere = [];
     var i;
@@ -434,6 +419,12 @@ function lagNyttUtlegg() {
         // Kode for å legge inn dynamisk HTML //
 /////////////////////////////////////////////////////////
 
+/**
+ * Ta et oppgjorArray og vis alle oppgjørene på siden.
+ * Avhengig av om det er et liveOppgjor eller ferdigOppgjor vil
+ * forskjellig kode kjøres.
+ * @param oppgjorArray
+ */
 function displayOppgjor(oppgjorArray) {
     if (oppgjorArray === liveOppgjor) {
         // Compile the markup as a named template
@@ -455,6 +446,38 @@ function displayOppgjor(oppgjorArray) {
     }
 }
 
+/**
+ * Metode som tar inn et array med oppgjørs-objekter og legger dem til i historikk-modalen
+ * @param oppgjorArray sender vanligvis inn objektet ferdigArray som inneholder ferdige oppgjør
+ */
+function displayHistorikk(oppgjorArray) {
+
+    $.template( "historikkTemplate", $("#historikk-oppgjor"));
+
+    $.template("rad-template-deSkylder-historikk", $("#rad-template-deSkylder-historikk"));
+    $.template("rad-template-duSkylder-historikk", $("#rad-template-duSkylder-historikk"));
+
+    var startOppgjorNr = liveOppgjor.length;
+
+    if (liveOppgjor.length <= 0) {
+        $("#ingenOppgjorAlert").show();
+    }
+    else {
+        $("#ingenOppgjorAlert").hide();
+    }
+
+    //Append compiled markup
+    for (var i = 0; i < oppgjorArray.length; i++) {
+        $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
+        $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
+        $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
+    }
+}
+
+/**
+ * Henter inn alle brukerne i favoritthusholdningen og legger dem til
+ * i dropdown-menyen inne i lag oppgjør-modalen.
+ */
 function lastInnBrukere() {
     var husholdninger = JSON.parse(localStorage.getItem("husholdninger"));
     var husId = localStorage.getItem("husholdningId");
@@ -473,6 +496,7 @@ function lastInnBrukere() {
     }
 }
 
+//Skal visst gjære at man kan klikke på hele accordien for at den skal droppe ned
 function displayDiv() {
     var x = document.getElementsByClassName("invisibleDiv");
     if ($(".invisibleDiv").css("display") === "none") {
