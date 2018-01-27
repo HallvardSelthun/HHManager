@@ -17,7 +17,7 @@ var listeid;
 var knappid;
 
 /**
- * kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
+ * Kaller på funksjonen getHandlelisterData. Legger til lytter på knappen legg til ny handleliste
  * og slett handleliste og kaller samtidig på funksjonen leggTilNyHandleliste().
  */
 $(document).ready(function () {
@@ -107,7 +107,7 @@ function setVarerKjopt(listeId) {
  * varer i en tabell, samt spør og sjekker om handleliste skal være offentlig eller ikke.
  */
 function leggTilNyHandleliste() {
-    var handlelisteNavn = $("#handlelisteNavn").val();
+    var handlelisteNavn = he.encode($("#handlelisteNavn").val());
     var varer = [];
     var offentlig = 0;
     var isChecked = $('#offentligKnapp').is(':checked');
@@ -128,7 +128,7 @@ function leggTilNyHandleliste() {
         return;
     }
     /**
-     * Kall til handleliste i server fo å legge til handlelisteobjektet som er definert over.
+     * Kall til handleliste i server for å legge til handlelisteobjektet som er definert over.
      */
     $.ajax({
         url: "server/handleliste",
@@ -151,13 +151,15 @@ function leggTilNyHandleliste() {
 }
 
 /**
- * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
- * til i riktig handleliste med en handlelisteId.
+ * Knapp som kjører nyVare()
  */
-
 $(document).on('click', '.nyVareKnapp', function () {
     nyVare();
 });
+/**
+ * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
+ * til i riktig handleliste med en handlelisteId.
+ */
 function nyVare() {
     var listeId = $(this).attr('value');
     var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
@@ -170,6 +172,7 @@ function nyVare() {
         leggTilVare(listeId, input);
     }
 }
+
 function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
 
@@ -210,8 +213,6 @@ function leggTilVare(hlId, navn) {
             }
         });
     },200);
-
-
 }
 
 /**
@@ -304,12 +305,11 @@ function lagUtleggVarer() {
     var medlemmer = husholdning.medlemmer;
     var medlemNavn = "";
     for(var i = 0; i < boxesChecked.length; i++){
-        vareNavn = boxesChecked[i];
-        //console.log(vareNavn);
+        vareNavn = he.encode(boxesChecked[i]);
         $("#valgteVarer").append('<li class="list-group-item">' + vareNavn + '</li>');
     }
     for(var j = 0; j < medlemmer.length; j++) {
-        medlemNavn = medlemmer[j].navn;
+        medlemNavn = he.encode(medlemmer[j].navn);
         medlemId = medlemmer[j].brukerId;
         if (medlemId != bruker.brukerId) {
             $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
@@ -320,7 +320,6 @@ function lagUtleggVarer() {
 /**
  * Sender utlegg til de personene som blir sjekket av
  */
-
 function sendUtlegg() {
     var sum = $("#sum").val();
     var beskrivelse = "Kjøpt: ";
@@ -398,7 +397,7 @@ function setupPage() {
 
     for (var i = 0; i < alleHandlelister.length; i++) {
         if (alleHandlelister[i].gjemt == 0) {
-            tittel = alleHandlelister[i].tittel;
+            tittel = he.encode(alleHandlelister[i].tittel);
             handlelisteId = alleHandlelister[i].handlelisteId;
             husholdningId = alleHandlelister[i].husholdningId;
             skaperId = alleHandlelister[i].skaperId;
@@ -445,9 +444,6 @@ function setupPage() {
                 '                       <div class="alert alert-danger" id ="velgVareAlert">'+
                 '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
                 '                      </div> '+
-                '                       <div class="alert alert-danger" id ="tomVareAlert">'+
-                '                           <strong>Feil input</strong> Du må skrive inn noe.'+
-                '                      </div> '+
                 '                   </div>' +
                 '               </div>' +
                 '           </div>' +
@@ -458,10 +454,9 @@ function setupPage() {
             for (var j = 0; j < varer.length; j++) {
                 vareId = varer[j].vareId;
                 vareHandlelisteId = varer[j].handlelisteId;
-                varenavn = varer[j].varenavn;
+                varenavn = he.encode(varer[j].varenavn);
                 kjopt = varer[j].kjopt;
                 kjøperId = varer[j].kjøperId;
-                //datokjøpt = new Date(varer[j].datokjøpt);
                 $("#liste" + handlelisteId).append('<label for="' + kjopt + '" class="list-group-item" name="vare"> ' + varenavn + '<input id="' + varenavn + '" value2="'+vareId+'" title="toggle' +
                     ' all" type="checkbox" class="all pull-right"></label>');
             }
