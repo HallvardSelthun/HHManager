@@ -155,17 +155,21 @@ function leggTilNyHandleliste() {
  * til i riktig handleliste med en handlelisteId.
  */
 
-$(document).on('click', '.nyVareKnapp', function() {
+$(document).on('click', '.nyVareKnapp', function () {
+    nyVare();
+});
+function nyVare() {
     var listeId = $(this).attr('value');
     var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
     var temp = "#"+listeId;
 
     if(input == ""){
-        alert("Du må skrive noe");
+        $("#tomVareAlert").fadeIn(200);
     }else {
+        $("#tomVareAlert").fadeOut(200);
         leggTilVare(listeId, input);
     }
-});
+}
 function leggTilVare(hlId, navn) {
     var nyGjenstandNavn = $(".leggTilNyGjenstand:focus").val();
 
@@ -236,9 +240,6 @@ function slettHandleliste(sletteId) {
     })
 }
 
-function endreNavn(){}
-
-function checkEllerUncheck(){}
 
 /**
  * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
@@ -314,7 +315,6 @@ function lagUtleggVarer() {
             $("#medbetalere").append('<label class="list-group-item">' + medlemNavn + '<input id="' + medlemId + '" title="toggle all" type="checkbox" class="all pull-right"></label>');
         }
     }
-    //antVarerChecked = boxesChecked.length;
 }
 
 /**
@@ -444,6 +444,9 @@ function setupPage() {
                 '                        </div>' +
                 '                       <div class="alert alert-danger" id ="velgVareAlert">'+
                 '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
+                '                      </div> '+
+                '                       <div class="alert alert-danger" id ="tomVareAlert">'+
+                '                           <strong>Feil input</strong> Du må skrive inn noe.'+
                 '                      </div> '+
                 '                   </div>' +
                 '               </div>' +

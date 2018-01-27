@@ -22,14 +22,12 @@ var navnIHuset2 = [];
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
-        console.log(data);
     });
 }
 
 
 $(document).ready(function () {
     if(!(!photo || 0 === photo.length)) {
-        console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     }
 
@@ -87,8 +85,6 @@ $(document).ready(function () {
             }
         })
     });
-
-    console.log(minBruker);
 
     $("#navnpåpers").text(minBruker.navn);
     $("#mail").text(minBruker.epost);
@@ -367,7 +363,6 @@ function hentliste() {
             adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
                 'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
         }
-        console.log(husholdnavn);
 
 
         // Ny design, med knapper
@@ -395,7 +390,6 @@ function hentliste() {
                 giAdmin = '<button style="padding: 2px 6px; margin-right: 3px;" class="btn  btn-primary pull-right giAdmin"' +
                     'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Admin</button>'
             }
-            console.log(medlemnavn);
 
             $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + adminSlett+ giAdmin +'</li>');
         }
@@ -421,7 +415,6 @@ function settNyFav(id) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
             localStorage.setItem("bruker", JSON.stringify(minBruker));
         },
@@ -464,7 +457,6 @@ function slettMedlem(bid, hid) {
         brukerId: idSlett,
         favHusholdning: husIdSlett
     };
-    console.log(bruker);
     $.ajax({
         url: "server/hhservice/slettMedlem",
         type: 'DELETE',
@@ -472,7 +464,6 @@ function slettMedlem(bid, hid) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            console.log("kkk");
             /*for(var m = 0, n = hus.medlemmer.length; m<n; m++) {
                 if (hus.medlemmer[m].brukerId == idSlett) {
                     hus.medlemmer.splice(m, 1);
@@ -532,7 +523,6 @@ function setProfilbilde(link) {
         brukerId: id,
         profilbilde: link
     };
-    console.log(bruker);
     $.ajax({
         url: "server/BrukerService/setProfilbilde",
         type: 'PUT',
