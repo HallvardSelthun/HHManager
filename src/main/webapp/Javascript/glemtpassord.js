@@ -19,11 +19,11 @@ $(document).ready(function () {
             success: function (result) {
                 var data = JSON.parse(result);
                 if(data) {
-                    $("#sendt").show();
+                    $("#sendt").fadeIn();
                     $("#feil").hide();
                 }else {
                     $("#sendt").hide();
-                    $("#feil").show();
+                    $("#feil").fadeIn();
                 }
             }
         });
