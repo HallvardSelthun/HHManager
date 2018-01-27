@@ -23,7 +23,6 @@ var knappid;
 $(document).ready(function () {
     getHandlelisterData();
     gethhData();
-    //setTimeout(setupPage,1000);
 
     $("#leggTilNyHandlelisteKnapp").on("click", function () {
         leggTilNyHandleliste();
@@ -191,6 +190,7 @@ function leggTilVare(hlId, navn) {
     /**
      * Sender et ajax-kall til handleliste i server der varen lagres.
      */
+    console.log("Før ajax")
     setTimeout(function(){
         $.ajax({
             url: "server/handleliste/nyVare",
@@ -199,8 +199,11 @@ function leggTilVare(hlId, navn) {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
+                console.log("TESTER DETTE");
+                console.log(result);
                 var data = JSON.parse(result);
-                window.location = "handlelister.html";
+                console.log("window.location = \"handlelister.html\" er kommentert ut");
+                //window.location = "handlelister.html";
 
                 if (data) {
 
