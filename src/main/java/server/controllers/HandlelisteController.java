@@ -51,12 +51,13 @@ public class HandlelisteController {
             handleliste.setHusholdningId(handlelisteId);
             handleliste.setTittel(rs.getString("navn"));
             handleliste.setHusholdningId(husholdningId);
-            String hentVarer = "SELECT vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId + " AND kjopt = 0";
+            String hentVarer = "SELECT vareNavn, kjopt, vareId FROM vare WHERE handlelisteId = " + handlelisteId + " AND kjopt = 0";
 
             s = con.createStatement();
             rs = s.executeQuery(hentVarer);
             while (rs.next()) {
                 Vare vare = new Vare();
+                vare.setVareId(rs.getInt("vareId"));
                 vare.setHandlelisteId(handlelisteId);
                 vare.setVarenavn(rs.getString("vareNavn"));
                 int i = rs.getInt("kjopt");

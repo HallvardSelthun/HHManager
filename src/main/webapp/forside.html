@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="CSS/forside.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="web-res/jquery-3.3.1.min.js"></script>
     <script src="web-res/bootstrap.min.js"></script>
@@ -31,7 +32,7 @@
                                     <div class="skrivNyttInnlegg">
                                         <textarea class="form-control" rows="5" id="comment" placeholder="Skriv et innlegg" onfocus="this.placeholder=''" onblur="this.placeholder='Skriv et innlegg'"></textarea>
                                         <p align="right">
-                                            <button type="button" class="btn btn-default" id="commentBtn">Send</button>
+                                            <button type="button" class="btn btn-primary" id="commentBtn">Send</button>
                                         </p>
                                     </div>
                                 </div>
@@ -43,7 +44,7 @@
                                         <div class="container-fluid" id="nyhetsdiv">
                                             <div class="wrapper">
                                                 <ul class="innleggsliste utenPadding" style="list-style: none"></ul>
-                                                <button id="next" class="btn btn-default">Show More</button>
+                                                <button id="next" class="btn btn-primary">Show More</button>
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +129,9 @@
                                     <div class="panel-body">
                                         <ul class="list-group" id="handlelisteForside">
                                         </ul>
-
+                                        <button id="utleggForside" type="button" class="btn btn-primary pull-right hiddenButton utleggKnapp" data-toggle="modal"
+                                        data-target="#utleggmodal" >Lag utlegg</button>
+                                        <button id="utenUtleggForside" type="button" class="btn btn-primary pull-right hiddenButton utenUtleggKnapp" value ="'+handlelisteId+'" >Kjøpt uten utlegg</button>
                                     </div>
 
                                 </div>
@@ -142,5 +145,36 @@
     </div>
 </div>
 <div id="modaldiv"></div>
+<div id="utleggmodal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div id="lagUtlegg">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Lag utlegg</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h4>Valgte elementer</h4>
+                    <ul id="valgteVarer" class="list-group"></ul>
+                </div>
+                <div class="medlemmer">
+                    <h4>Legg til medbetalere</h4>
+                    <ul id="medbetalere" class="list-group"></ul>
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Være med på utlegg selv
+                </div>
+                <div class="sum">
+                    <h4>Sum</h4>
+                    <input id="sum" type="number" placeholder="Skriv inn summen for varene">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                <button id="sendUtlegg" type="button" class="btn btn-primary sendUtlegg">Send utlegg</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
