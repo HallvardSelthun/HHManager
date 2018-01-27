@@ -63,6 +63,9 @@ img{
 .vl{
     border-right: 1px solid #DDD;
 }
+.rl{
+    border-left: 1px solid #DDD;
+}
 /*body{
     margin-top:80px;
 }*/
