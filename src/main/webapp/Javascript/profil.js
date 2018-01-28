@@ -22,11 +22,7 @@ function getHusholdninger() {
         mineHusholdninger = data;
         console.log(minBruker.favHusholdning);
         if(!minBruker.favHusholdning && mineHusholdninger.length>0){
-            settNyFav(mineHusholdninger[0].husholdningId);
-            setTimeout(function(){
-                window.location="profil.html"
-
-            },200);
+            settNyFav(mineHusholdninger[0].husholdningId, true);
         }
         hentliste();
         console.log(data);
@@ -52,9 +48,6 @@ $(document).ready(function () {
         minBruker.profilbilde = photo;
         localStorage.setItem("bruker", JSON.stringify(minBruker));
     });
-
-    //onload="resizeImg(this,140, 120)"
-    //gethhData();
 
     getHusholdninger();
 
@@ -175,9 +168,6 @@ $(document).ready(function () {
         });
     });
 
-    function endre() {
-    }
-
     /**
      * Bruker kan endre epost ved å trykke endre epost. Kriterier som at tekstfeltet ikke kan være tomt, samt at
      * epostene må være like må være oppfylt.
@@ -220,9 +210,6 @@ $(document).ready(function () {
             alert("Du har valgt å avbryte")
         });
     });
-
-    function lagre() {
-    }
 
     // til lagNyHusstandModalen
     $('body').on('click', '#leggTilMedlemKnapp2', function () {
@@ -286,25 +273,11 @@ $(document).ready(function () {
             }
         });
     });
-   /* setTimeout(function () {
-        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
-    }, 150);*/
 });
-    /*$("#nyHusProfil").on("click", function () {
-        $("#modaldiv").load("lagnyhusstand.html");
-    });*/
 
     $(document).on('click', '.removeButton', function () {
         hhId = ($(this).attr('value'))
     });
-
-/*
-
-    var script = document.createElement('script');
-    script.src = "Javascript/nav.js";
-    script.async = true;
-    document.head.appendChild(script);
-*/
 
 
 
@@ -321,7 +294,7 @@ $(document).on('click', '.glyphicon', function () {
         $(this).removeClass('glyphicon-star-empty');
         $(this).addClass('glyphicon-star');
         var id = $(this).attr('value');
-        settNyFav(id);
+        settNyFav(id, false);
     }
 });
 
@@ -414,7 +387,7 @@ function hentliste() {
  * Setter ny favoritthusholdning; den som skal vises på forsiden.
  * @param id: Bruker id som parameter for å sette ny husholdning
  */
-function settNyFav(id) {
+function settNyFav(id, byttSide) {
     var nyId = parseInt(id);
     var bruker= {
         brukerId: brukerId,
@@ -433,6 +406,10 @@ function settNyFav(id) {
             localStorage.setItem("husholdningId", nyId)
             localStorage.setItem("bruker", JSON.stringify(minBruker));
             $('#errorModal').modal('show');
+            if (byttSide) {
+                window.location="profil.html";
+            }
+
         },
         error: function (data) {
             $('#errorModal').modal('show');
