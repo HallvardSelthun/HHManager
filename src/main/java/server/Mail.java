@@ -41,7 +41,7 @@ public class Mail {
         if (brukere == null || brukere.size() < 1) return;
         for (Bruker bruker : brukere) {
             String msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
-                    "\n\nDu har blitt lagt til i husholdningen" + hushold + "\nBrukernavn: " + bruker.getEpost() +
+                    "\n\nDu har blitt lagt til i husholdningen " + hushold + "\nBrukernavn: " + bruker.getEpost() +
                     "\nPassord: " + bruker.getPassord() +
                     "\n\nFølg lenken for å logge inn: http://localhost:8080/HHManager";
             sendTilEn(bruker.getEpost(), msg);
