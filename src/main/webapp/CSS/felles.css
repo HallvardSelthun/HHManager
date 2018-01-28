@@ -209,6 +209,6 @@ label {
 .model-backdrop{
     z-index: 0;
 }
-.modal-header{
+#errorModal{
     background-color: red;
 }

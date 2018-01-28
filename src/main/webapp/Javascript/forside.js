@@ -289,8 +289,7 @@ function oppdaterGjoremal() {
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(gjoremal)
+                $('#errorModal').modal('show');
             }
         });
     }
@@ -371,7 +370,7 @@ function sendUtlegg() {
             }
         },
         error: function () {
-            alert("RIPinpeace");
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -400,7 +399,7 @@ function setVarerKjopt() {
             }else console.log("not ok")
         },
         error: function () {
-            alert("Noe gikk galt :(")
+            $('#errorModal').modal('show');
         }
     })
 }

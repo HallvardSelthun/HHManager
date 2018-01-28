@@ -470,7 +470,7 @@ function slettMedlem(bid, hid) {
             }*/
         },
         error: function () {
-            console.log(":/");
+            $('#errorModal').modal('show');
         }
     });
     alert("wait");
@@ -498,8 +498,7 @@ function leggTilMedlem(epost, husId) {
             }
         },
         error: function () {
-            alert("noe gikk galt!");
-        }
+            $('#errorModal').modal('show');        }
     });
     //window.location = "profil.html";
 }
@@ -535,8 +534,7 @@ function setProfilbilde(link) {
             }
         },
         error: function () {
-            alert("feil feil feil feil");
-        }
+            $('#errorModal').modal('show');        }
     });
 }
 
@@ -568,7 +566,7 @@ function setAdmin(bId, hId) {
             }
         },
         error: function () {
-            alert("feil feil feil");
+            $('#errorModal').modal('show');
         }
     });
 }

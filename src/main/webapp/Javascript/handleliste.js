@@ -97,7 +97,7 @@ function setVarerKjopt(listeId) {
             }else console.log("not ok")
         },
         error: function () {
-            alert("Noe gikk galt :(")
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -144,7 +144,7 @@ function leggTilNyHandleliste() {
             }
         },
         error: function () {
-            alert("serverfeil :/")
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -218,7 +218,7 @@ function leggTilVare(hlId, navn) {
                 }
             },
             error: function () {
-                alert("serverfeil :/")
+                $('#errorModal').modal('show');
             }
         });
     },200);
@@ -245,7 +245,7 @@ function slettHandleliste(sletteId) {
             }
         },
         error: function () {
-            alert("serverfeil :/")
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -369,7 +369,7 @@ function sendUtlegg() {
             }
         },
         error: function () {
-            alert("RIPinpeace");
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -502,7 +502,7 @@ function endreOffentlig(handleId, status) {
             }
         },
         error: function () {
-            alert("serverfeil :/")
+            $('#errorModal').modal('show');
         }
     });
 }

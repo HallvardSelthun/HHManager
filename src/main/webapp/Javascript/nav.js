@@ -153,8 +153,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(husObj)
+                $('#errorModal').modal('show');
             }
         });
     });
