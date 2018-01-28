@@ -219,7 +219,7 @@ function innleggToHtml(nyhetsinnlegg) {
             }
         }
     }
-    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="'+bilde+'" class="media-object" style="width:45px"></div><div' +
+    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="'+bilde+'" class="media-object" style="width:60px"><br></div><div' +
         ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i> ' + nyDate + '</i></small></h4><p>' + tekst + '</p></div></li>');
 
     setTimeout(function () {
