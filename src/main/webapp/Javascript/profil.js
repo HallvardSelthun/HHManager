@@ -368,6 +368,8 @@ function hentliste() {
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            var medlemEpost = mineHusholdninger[k].medlemmer[p].epost;
+            if (!medlemnavn) medlemnavn=medlemEpost;
             if(admin == 1){
                 adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
                     'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
