@@ -388,7 +388,7 @@ $(function() {
  */
 function lagNyttUtlegg() {
     var sum = $("#sum").val();
-    var beskrivelse = he.encode($("#utleggBeskrivelse").val());
+    var beskrivelse = $("#utleggBeskrivelse").val();
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
     if(sum == "" || beskrivelse == ""){

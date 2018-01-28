@@ -167,7 +167,7 @@ $(document).ready(function () {
 function utgaatteGjoremaal(liste) {
     for (var f = 0, le = liste.length; f < le; f++) {
         $("#listeVarsel").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
-            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Fristen har gått ut for: <br><p class="beskrivelse" style="font-size: 15px;">' + liste[f].beskrivelse + '</div>' +
+            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Fristen har gått ut for: <br><p class="beskrivelse" style="font-size: 15px;">' + he.encode(liste[f].beskrivelse) + '</div>' +
             '</li>')
     }
 }
