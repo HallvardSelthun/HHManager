@@ -172,14 +172,14 @@ function utregnOppgjorSum(oppgjorArray) {
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             sum = sum - oppgjorArray[i].utleggJegSkylder[j].delSum;
         }
-        oppgjorArray[i].skylderSum = Math.round(sum);
+        oppgjorArray[i].skylderSum = Math.round(sum*100)/100;
         totalSum = sum;
         sum = 0;
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             sum = sum + oppgjorArray[i].utleggDenneSkylderMeg[j].delSum;
         }
 
-        oppgjorArray[i].skylderMegSum = Math.round(sum);
+        oppgjorArray[i].skylderMegSum = Math.round(sum*100)/100;
         totalSum = totalSum + sum;
         if (totalSum > 0) {
             oppgjorArray[i].posNeg = "Pos";
@@ -187,7 +187,7 @@ function utregnOppgjorSum(oppgjorArray) {
         else {
             oppgjorArray[i].posNeg = "Neg";
         }
-        oppgjorArray[i].totalSum = Math.round(totalSum);
+        oppgjorArray[i].totalSum = Math.round(totalSum*100)/100;
     }
 
     displayOppgjor(oppgjorArray);
@@ -247,12 +247,12 @@ function leggInnRadNr(callback, oppgjorArray) {
         var j;
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             oppgjorArray[i].utleggJegSkylder[j].radNr = j;
-            oppgjorArray[i].utleggJegSkylder[j].delSum = Math.round(oppgjorArray[i].utleggJegSkylder[j].delSum);
+            oppgjorArray[i].utleggJegSkylder[j].delSum = Math.round(oppgjorArray[i].utleggJegSkylder[j].delSum*100)/100;
         }
 
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             oppgjorArray[i].utleggDenneSkylderMeg[j].radNr = j;
-            oppgjorArray[i].utleggDenneSkylderMeg[j].delSum = Math.round(oppgjorArray[i].utleggDenneSkylderMeg[j].delSum);
+            oppgjorArray[i].utleggDenneSkylderMeg[j].delSum = Math.round(oppgjorArray[i].utleggDenneSkylderMeg[j].delSum*100)/100;
         }
     }
     callback(oppgjorArray);
