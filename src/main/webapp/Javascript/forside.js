@@ -330,7 +330,7 @@ function sendUtlegg() {
     beskrivelse = beskrivelse.replace(-1, ".");
 
     if (sum == "" || beskrivelse == "") {
-        alert("pls gi en sum og beskrivelse :)");
+        ($("#sendUtleggAlert").fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }
     var pluss = 0;

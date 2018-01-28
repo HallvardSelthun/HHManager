@@ -123,7 +123,7 @@ function leggTilNyHandleliste() {
     if (handlelisteNavn == "") {
         $('#leggTilHandlelisteError').fadeIn(200);
         setTimeout(function () {
-            $('#leggTilHandlelisteError').fadeIn(200);
+            ($('#leggTilHandlelisteError').fadeIn(200)).delay(500).fadeOut(400);
         }, 3000);
         return;
     }
@@ -317,7 +317,7 @@ function sendUtlegg() {
     beskrivelse = beskrivelse.replace(-1, ".");
 
     if(sum == "" ||  sum <=0){
-        $("#sumAlert").fadeIn(200);
+        ($("#sumAlert").fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }else{
         $("#sumAlert").fadeOut(200);

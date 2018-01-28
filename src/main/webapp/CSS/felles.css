@@ -42,6 +42,7 @@
 body{
     margin-top: 80px;
     padding-top: initial;
+    margin-bottom: 10px;
     -webkit-transition-timing-function: ease;
     -o-transition-timing-function: ease;
     transition-timing-function: ease;

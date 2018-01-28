@@ -203,7 +203,7 @@ $(document).ready(function () {
             husholdningId: husholdningId
         };
         if (beskrivelse == "") {
-            $("#feil2").fadeIn();
+            ($("#feil2").fadeIn(200)).delay(2500).fadeOut(2500);
             return;
         }
 
