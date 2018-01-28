@@ -21,18 +21,19 @@
     margin-right: 200px;
     margin-left: 100px;
     margin-top: 52px;
+}*/
+
+.wrapper{
+   zoom: 120%;
 }
-!*.container-nyhetsoppdatering{
-    margin-right: 200px;
-    margin-left: 100px;
-    margin-top: 30px;
-}
-.container-kommentarfelt{
+
+/*.container-kommentarfelt{
     margin-right: 200px;
     margin-left: 100px;
     margin-top: 30px;
     margin-bot:20px;
-}*!
+}
+
 
 .glyphicon-plus-sign{
     font-size: 25px;

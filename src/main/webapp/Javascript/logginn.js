@@ -11,7 +11,10 @@ $(document).ready(function () {
         var brukerEpost = $("#email").val();
         var passord = $("#password").val();
         if (brukerEpost == "" || passord == "") {
-            alert("Du må fylle ut alle feltene");
+            $('#epostPassordTom').fadeIn(200);
+            setTimeout(function () {
+                $('#epostPassordTom').fadeOut(200);
+            }, 3000);
             return;
         }
         var bruker = {
@@ -28,16 +31,16 @@ $(document).ready(function () {
                 var innBruker = (result);
                 console.log(innBruker);
                 if (innBruker == null) {
-                    alert("Feil epost eller passord!");
+                    $('#epostPassordAlert').fadeIn(200);
+                        return false;
                     return;
                 }else if(innBruker.favHusholdning > 0){
+                    $('#epostPassordAlert').fadeOut(200);
                     localStorage.setItem("husholdningId", innBruker.favHusholdning);
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
                     return;
                 }
-                localStorage.setItem("bruker", JSON.stringify(innBruker));
-                window.location = "profil.html";
             },
             error: function () {
                 alert("serverfeil kall 2 :/")

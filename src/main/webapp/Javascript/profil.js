@@ -75,8 +75,6 @@ $(document).ready(function () {
                 console.log(data);
                 if(data) {
                     window.location = "profil.html";
-                } else {
-                    alert("feil");
                 }
             },
             error: function () {
@@ -96,12 +94,11 @@ $(document).ready(function () {
         var brukerId = minBruker.brukerId;
         var endrepassord1 = $("#nyttpassord").val();
         var endrepassord2 = $("#bekreftnytt").val();
-        if (endrepassord1 == "" || endrepassord2 == "") {
-            alert("PLIS SKRIV IN NOKE...")
-            return;
-        }
-        else if(endrepassord1.length<7){
-            alert("Vennligst velg et passord med flere enn 7 tegn");
+        if(endrepassord1.length<7){
+            $('#feilNyttPassord').fadeIn(200);
+            setTimeout(function () {
+                $('#feilNyttPassord').fadeOut();
+            }, 3000);
             return;
         }
         else if (endrepassord1 == endrepassord2) {
@@ -116,20 +113,23 @@ $(document).ready(function () {
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (result) {
-                    window.location = "profil.html";
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
-                    alert("Passordet er endret");
+                    $('#successPassord').fadeIn(200);
+                    setTimeout(function () {
+                        $('#successPassord').fadeOut(200);
+                        window.location = "profil.html";
+                    }, 3000);
                 },
                 error: function () {
                     $('#errorModal').modal('show');
                 }
             })
         } else {
-            alert("Passordet må være likt i begge feltene.")
+            $('#uliktPassord').fadeIn(200);
+            setTimeout(function () {
+                $('#uliktPassord').fadeOut(200);
+            }, 3000);
         }
-        $("#lukk").on('click', function () {
-            alert("Du har valgt å avbryte")
-        });
     });
 
     /**
@@ -143,7 +143,10 @@ $(document).ready(function () {
             navn: nyttNavn
         };
         if (nyttNavn == "") {
-            alert("PLIS SKRIV IN NOKE...")
+            $('#feilNyttNavn').fadeIn(200);
+            setTimeout(function () {
+                $('#feilNyttNavn').fadeOut(200)
+            },3000);
             return;
         }
         $.ajax({
@@ -163,9 +166,6 @@ $(document).ready(function () {
                 $('#errorModal').modal('show');
             }
         });
-        $("#button").on('click', function () {
-            alert("Du har valgt å avbryte")
-        });
     });
 
     /**
@@ -177,7 +177,10 @@ $(document).ready(function () {
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
         if (nyepost1 == "" || nyepost2 == "") {
-            alert("Inputene må ha verdi")
+            $('#feilNyEpost').fadeIn(200);
+            setTimeout(function () {
+                $('#feilNyEpost').fadeOut(200);
+            }, 3000);
             return;
         }
         if (nyepost1 == nyepost2) {
@@ -194,21 +197,19 @@ $(document).ready(function () {
                 success: function (result) {
                     $("#epost").text(nyepost1);
                     minBruker.epost = nyepost1;
-                    var data = JSON.parse(result);
-                    window.location = "profil.html";
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
-                    alert("Eposten er endret");
+                    window.location = "profil.html";
                 },
                 error: function () {
                     $('#errorModal').modal('show');
                 }
             });
         } else {
-            alert("Epostene du skrev inn var ikke like.")
+            $('#ulikNyEpost').fadeIn(200);
+            setTimeout(function () {
+                $('#ulikNyEpost').fadeOut(200);
+            },3000);
         }
-        $("#lukkvindu").on('click', function () {
-            alert("Du har valgt å avbryte")
-        });
     });
 
     // til lagNyHusstandModalen
@@ -247,7 +248,10 @@ $(document).ready(function () {
             adminId: bruker.brukerId
         };
         if (navnHus === "") {
-            alert("Skriv inn noe");
+            $('#feilHusInput').fadeIn(200);
+            setTimeout(function () {
+                $('#feilHusInput').fadeOut(200);
+            },3000);
             return;
         }
         $.ajax({
@@ -258,14 +262,17 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                if (data) {
+                if (data>0) {
                     if (bruker.favHusholdning === 0) {
                         bruker.favHusholdning = 0;
                         localStorage.setItem("bruker", JSON.stringify(bruker));
                         navnIHuset2 = 0;
                     }
                 } else {
-                    alert("feil!");
+                    $('#nyHusError').fadeIn(200);
+                    setTimeout(function () {
+                        $('#nyHusError').fadeOut(200);
+                    }, 3000);
                 }
             },
             error: function () {
@@ -461,7 +468,6 @@ function slettMedlem(bid, hid) {
             $('#errorModal').modal('show');
         }
     });
-    alert("wait");
     window.location = "profil.html";
 }
 
@@ -479,15 +485,21 @@ function leggTilMedlem(epost, husId) {
         success: function (data) {
             var result = JSON.parse(data);
             if(result){
-                window.location ="profil.html";
+                $('#regNyttMedlemS').fadeIn(200);
+                setTimeout(function () {
+                    $('#regNyttMedlemS').fadeOut(200);
+                }, 3000);
             }else{
-                console.log(": (");
+                $('#regNyttMedlemE').fadeIn(200);
+                setTimeout(function () {
+                    $('#regNyttMedlemE').fadeOut(200);
+                }, 3000);
             }
         },
         error: function () {
             $('#errorModal').modal('show');        }
     });
-    //window.location = "profil.html";
+    window.location = "profil.html";
 }
 
 function resizeImg(img, height, width) {
@@ -514,8 +526,6 @@ function setProfilbilde(link) {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            if(data){
-            }
         },
         error: function () {
             $('#errorModal').modal('show');        }
@@ -543,11 +553,6 @@ function setAdmin(bId, hId) {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            if(data){
-                alert("nice nice");
-            }else{
-                alert("yikes");
-            }
         },
         error: function () {
             $('#errorModal').modal('show');

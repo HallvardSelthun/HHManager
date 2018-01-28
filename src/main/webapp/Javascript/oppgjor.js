@@ -4,6 +4,7 @@ var minBrukerId = bruker.brukerId;
 var liveOppgjor = [];
 var ferdigeOppgjor = [];
 var delSum = 0;
+var alleredeLastetInnHistorikk = false;
 
 /**
  * Kjører når HTML DOM er loaded
@@ -56,7 +57,9 @@ $(document).ready(function () {
      * Laster inn ferdige oppgjør fra databasen når historikk-knappen klikkes
      */
     $(document).on("click", "#historikk", function(event){
-        lastInnOppgjor(minBrukerId,1);
+        if (!alleredeLastetInnHistorikk) {
+            lastInnOppgjor(minBrukerId,1);
+        }
     });
 
     /**
@@ -499,6 +502,7 @@ function displayHistorikk(oppgjorArray) {
         console.log("Skal ha lagt inn radminushisto");
         $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
     }
+    alleredeLastetInnHistorikk = true;
 }
 
 /**

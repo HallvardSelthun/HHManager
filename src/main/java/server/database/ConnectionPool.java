@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 public final class ConnectionPool {
 
-    //Magisk black box som gjør alt for oss
     private static final BasicDataSource dataSource = new BasicDataSource();
 
     //Attributter for tilkobling til databsen

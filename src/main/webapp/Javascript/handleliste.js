@@ -123,7 +123,10 @@ function leggTilNyHandleliste() {
     };
 
     if (handlelisteNavn == "") {
-        alert("Skriv navnet til handlelisten!");
+        $('#leggTilHandlelisteError').fadeIn(200);
+        setTimeout(function () {
+            $('#leggTilHandlelisteError').fadeIn(200);;
+        }, 3000);
         return;
     }
     /**
@@ -137,10 +140,13 @@ function leggTilNyHandleliste() {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            if (data) {
+            if (data>0) {
                 window.location = "handlelister.html";
             } else {
-                alert("feil!");
+                $('#leggTilHandleliste-1').fadeIn(200);
+                setTimeout(function () {
+                    $('#leggTilHandleliste-1').fadeOut(200);
+                }, 3000);
             }
         },
         error: function () {
@@ -174,11 +180,12 @@ function nyVare(that) {
     var listeId = that.attr('value');
     var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
+    console.log(input);
 
-    if(input == ""){
-        $("#tomVareAlert").fadeIn(200);
+    if(input == ""|| !input ||input.trim().length<1){
+        $("#nyVareAlert").fadeIn(200);
     }else {
-        $("#tomVareAlert").fadeOut(200);
+        $("#nyVareAlert").fadeOut(200);
         leggTilVare(listeId, input);
     }
 }
@@ -191,7 +198,6 @@ function leggTilVare(hlId, navn) {
         handlelisteId: hlId
     };
     console.log(vare);
-
 
     if (nyGjenstandNavn == "") {
         alert("Skriv navnet til gjenstanden!");
@@ -436,6 +442,9 @@ function setupPage() {
                 '                        </div>' +
                 '                       <div class="alert alert-danger" id ="velgVareAlert">'+
                 '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
+                '                      </div> '+
+                '                       <div class="alert alert-danger" id ="nyVareAlert">'+
+                '                           <strong>Feil input</strong> Inputfeltet kan ikke være tomt.'+
                 '                      </div> '+
                 '                   </div>' +
                 '               </div>' +

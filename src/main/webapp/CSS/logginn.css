@@ -24,3 +24,6 @@ div {
 .container{
     margin-bottom: 0;
 }
+.alert{
+    display: none;
+}
