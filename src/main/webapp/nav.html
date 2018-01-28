@@ -58,3 +58,68 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDiscount">Launch modal</button>
+
+<!--Modal: modalDiscount-->
+<div class="modal fade right" id="modalDiscount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="false">
+    <div class="modal-dialog modal-side modal-bottom-right modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading">Discount offer: <strong>10% off</strong></p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-3">
+                        <p></p>
+                        <p class="text-center"><i class="fa fa-gift fa-4x"></i></p>
+                    </div>
+
+                    <div class="col-9">
+                        <p>Sharing is caring. Therefore, from time to time we like to give our visitors small gifts.
+                            Today is one of those days.</p>
+                        <p><strong>Copy the following code and use it at the checkout. It's valid for <u>one day</u>.</strong></p>
+                        <h2><span class="badge">v52gs1</span></h2>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <a href="https://mdbootstrap.com/product/material-design-for-bootstrap-pro/" class="btn btn-primary-modal">Get it now <i class="fa fa-diamond ml-1"></i></a>
+                <a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">No, thanks</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalDiscount-->
+
+
+
+<div class="modal fade" id="errorModal" data-backdrop="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Serverfeil!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Forespursel ble ikke registrert på grunn av serverfeil.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

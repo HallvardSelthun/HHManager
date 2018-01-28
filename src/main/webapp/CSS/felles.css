@@ -205,3 +205,10 @@ label {
 .utenPadding{
     padding: 0px;
 }
+
+.model-backdrop{
+    z-index: 0;
+}
+.modal-header{
+    background-color: red;
+}

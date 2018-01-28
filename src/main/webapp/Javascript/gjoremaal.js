@@ -27,22 +27,6 @@ function gethhData() {
  * i tekstboksen fellesGjoremaal.
  */
 
-function hei(){
-    var variabel = "<script> alert('Hei en gang!') </script>";
-    alert(variabel);
-    var returned = he.encode(variabel);
-    alert(returned);
-    var engangtil = he.encode(returned);
-    alert(returned);
-    /*BootstrapDialog.alert('TEST!');
-    BootstrapDialog.show({
-        title: 'Serverfeil!',
-        message: 'forespursel gikk ikke igjennom pga. serverfeil.'
-    });*/
-}
-
-
-//hei();
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
     console.log(id);
@@ -55,7 +39,7 @@ function hentMedlemmer() {
     for (var j = 0, leng = medlemmer.length; j < leng; j++) {
         var medlemnavn = medlemmer[j].navn;
         var hhBrukerId = medlemmer[j].brukerId;
-        if (hhBrukerId != minBruker.brukerId) {
+        if (hhBrukerId !== minBruker.brukerId) {
             $("#medlemmer").append('<li class ="valgtMedlem" id="medlem' + hhBrukerId + '"role="presentation" value="' + hhBrukerId + '"><a  role="menuitem" tabindex="-1" href="#">' + medlemnavn + '</a></li>');
 
         }
@@ -233,6 +217,11 @@ $(document).ready(function () {
         };
         if (beskrivelse == "") {
             $("#feil2").fadeIn();
+            return;
+        }
+
+        if (!id){
+            $("#feilmedlem").fadeIn();
             return;
         }
         /**

@@ -6,8 +6,6 @@
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var husholdningId = localStorage.getItem("husholdningId");
-console.log("rett under getItem");
-console.log(husholdningId);
 var navn;
 var epost;
 var husholdninger;
@@ -22,8 +20,6 @@ $(document).ready(function () {
     epost = he.encode(bruker.epost);
 
     $(function () {
-        console.log("Skriver ut husholdningId");
-        console.log(husholdningId);
         if(!husholdningId || husholdningId ==0){
             console.log("ALT NAV");
             $("#navbar").load("altnav.html");
@@ -50,8 +46,8 @@ $(document).ready(function () {
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html";
     });
+
     $(document).on("click", "#toggleBtn", function () {
-        console.log($(this).attr('aria-expanded'));
         if(this === false) {
             $("body").css("padding-top", "300px");
         }
@@ -86,9 +82,6 @@ $(document).ready(function () {
     $('body').on('click', '#statistikkknapp', function () {
         window.location = "statistikk.html"
     });
-    $('body').on('click', '#kalenderknapp', function () {
-        window.location = "kalender.html"
-    });
 
     $('body').on('click', 'a#loggut', function () {
         localStorage.clear();
@@ -103,7 +96,6 @@ $(document).ready(function () {
         var epostmedlem = $("#navnMedlem").val();
         if(epostmedlem.length !== 0){
             navnIHuset.push(medlem);
-            console.log(navnIHuset);
             $("#fadenav").show();
             $("#fadenav3").hide();
         } else {
@@ -137,8 +129,6 @@ $(document).ready(function () {
             medlemmer: navnIHuset,
             adminId: bruker.brukerId
         };
-        console.log(husObj);
-        console.log("Prøver å sende husstand");
 
         if (navnHus == "") {
             alert("Skriv inn noe");
@@ -181,7 +171,7 @@ $(document).ready(function () {
 function utgaatteGjoremaal(liste) {
     for (var f = 0, le = liste.length; f < le; f++) {
         $("#listeVarsel").append('<li> <div class="col-md-2 col-sm-2 col-xs-2"></div>' +
-            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Fristen har gått ut for: <br><p class="beskrivelse" style="font-size: 15px;">' + liste[f].beskrivelse + '</div>' +
+            '<div class="col-md-10 col-sm-10 col-xs-10 pd-l0 varslerknapp" role="button">Fristen har gått ut for: <br><p class="beskrivelse" style="font-size: 15px;">' + he.encode(liste[f].beskrivelse) + '</div>' +
             '</li>')
     }
 }

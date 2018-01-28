@@ -155,8 +155,8 @@
 <!--Viktig -->
 <script id="test-oppgjor" type="text/x-custom-template">
     <!--Viktig ^^^ -->
-    <div class="container-fluid panel panel-default" id="oppgj${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseOpgj${oppgjorNr}">
-        <div class="row panel-heading clearfix">
+    <div class="container-fluid panel panel-default">
+        <div class="row panel-heading clearfix" id="oppgj${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseOpgj${oppgjorNr}">
             <h3  class="panel-title pull-left col-sm-6 col-xs-5" style="margin-top: 5px; ">
                 <!--Viktig -->
                 <a> ${navn} </a>
@@ -218,8 +218,8 @@
 <!--Viktig -->
 <script id="historikk-oppgjor" type="text/x-custom-template">
     <!--Viktig ^^^ -->
-    <div class="container-fluid panel panel-default" id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}">
-        <div class="row panel-heading clearfix">
+    <div class="container-fluid panel panel-default" >
+        <div class="row panel-heading clearfix" id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}">
             <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
                 <!--Viktig -->
                 <a> ${navn} </a>
@@ -247,7 +247,7 @@
                                 <th class="col-sm-1"></th>
                             </tr>
                             </thead>
-                            <tbody id="radMinus${oppgjorNr}">
+                            <tbody id="radMinusHisto${oppgjorNr}">
                             <!-- Her skal dynamisk kode inn -->
                             </tbody>
                         </table>
@@ -265,7 +265,7 @@
                                 <th class="col-sm-1"></th>
                             </tr>
                             </thead>
-                            <tbody id="radPlus${oppgjorNr}">
+                            <tbody id="radPlusHisto${oppgjorNr}">
                             <!-- Her skal mer generert kode inn-->
                             </tbody>
                         </table>
