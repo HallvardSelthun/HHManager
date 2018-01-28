@@ -20,6 +20,14 @@ var navnIHuset2 = [];
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
+        console.log(minBruker.favHusholdning);
+        if(!minBruker.favHusholdning && mineHusholdninger.length>0){
+            settNyFav(mineHusholdninger[0].husholdningId);
+            setTimeout(function(){
+                window.location="profil.html"
+
+            },200);
+        }
         hentliste();
         console.log(data);
     });
@@ -27,8 +35,11 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
+
+    $('#errorModal').appendTo('body').modal('show');
+
     if(!(!photo || 0 === photo.length)) {
-        $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
+        $('#photo').html('<img style="width:120px; height:125px; top: 30px" src="' + photo + '">');
     };
 
 
@@ -76,11 +87,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                BootstrapDialog.show({
-                    title: 'Serverfeil!',
-                    message: 'forespursel gikk ikke igjennom pga. serverfeil.'
-                });
-                alert("serverfeil :/")
+                $('#errorModal').modal('show');
             }
         })
     });
@@ -121,7 +128,7 @@ $(document).ready(function () {
                     alert("Passordet er endret");
                 },
                 error: function () {
-                    alert("Noe gikk galt :(")
+                    $('#errorModal').modal('show');
                 }
             })
         } else {
@@ -160,7 +167,7 @@ $(document).ready(function () {
                 localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
-                alert("Noe gikk galt :(")
+                $('#errorModal').modal('show');
             }
         });
         $("#button").on('click', function () {
@@ -180,7 +187,7 @@ $(document).ready(function () {
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
         if (nyepost1 == "" || nyepost2 == "") {
-            alert("PLIS SKRIV IN NOKE...")
+            alert("Inputene må ha verdi")
             return;
         }
         if (nyepost1 == nyepost2) {
@@ -203,7 +210,7 @@ $(document).ready(function () {
                     alert("Eposten er endret");
                 },
                 error: function () {
-                    alert("Noe gikk galt :(")
+                    $('#errorModal').modal('show');
                 }
             });
         } else {
@@ -275,8 +282,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(husObj)
+                $('#errorModal').modal('show');
             }
         });
     });
@@ -291,15 +297,17 @@ $(document).ready(function () {
     $(document).on('click', '.removeButton', function () {
         hhId = ($(this).attr('value'))
     });
+
 /*
 
     var script = document.createElement('script');
     script.src = "Javascript/nav.js";
     script.async = true;
     document.head.appendChild(script);
-
-
 */
+
+
+
 /**
  * Bruker kan sette favoritthusholdning
  */
@@ -424,9 +432,10 @@ function settNyFav(id) {
             minBruker.favHusholdning = nyId;
             localStorage.setItem("husholdningId", nyId)
             localStorage.setItem("bruker", JSON.stringify(minBruker));
+            $('#errorModal').modal('show');
         },
         error: function (data) {
-            alert("noe gikk galt");
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -472,7 +481,7 @@ function slettMedlem(bid, hid) {
             }*/
         },
         error: function () {
-            console.log(":/");
+            $('#errorModal').modal('show');
         }
     });
     alert("wait");
@@ -493,15 +502,13 @@ function leggTilMedlem(epost, husId) {
         success: function (data) {
             var result = JSON.parse(data);
             if(result){
-                alert("bruker registrert");
-                console.log("nice");
+                window.location ="profil.html";
             }else{
                 console.log(": (");
             }
         },
         error: function () {
-            alert("noe gikk galt!");
-        }
+            $('#errorModal').modal('show');        }
     });
     //window.location = "profil.html";
 }
@@ -531,14 +538,10 @@ function setProfilbilde(link) {
         success: function (result) {
             var data = JSON.parse(result);
             if(data){
-                alert("nice nice");
-            }else{
-                alert("yikes");
             }
         },
         error: function () {
-            alert("feil feil feil feil");
-        }
+            $('#errorModal').modal('show');        }
     });
 }
 
@@ -570,7 +573,7 @@ function setAdmin(bId, hId) {
             }
         },
         error: function () {
-            alert("feil feil feil");
+            $('#errorModal').modal('show');
         }
     });
 }

@@ -275,8 +275,7 @@ function checkMotattRad(utleggId, skyldigBrukerId, next) {
             next();
         },
         error: function () {
-            alert("Noe gikk galt :(");
-            return false;
+            $('#errorModal').modal('show');
         }
     });
 }
@@ -318,8 +317,7 @@ function lastInnOppgjor(brukerId, betalt) {
             }
         },
         error: function () {
-            alert("Serveren har det røft atm, prøv igjen senere :/");
-            lastInnBrukere();
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -343,7 +341,7 @@ function checkOppgjorSum(utleggsbetalere, next) {
             next();
         },
         error: function () {
-            alert("Noe gikk galt :(");
+            $('#errorModal').modal('show');
         }
     });
 }
@@ -437,7 +435,7 @@ function lagNyttUtlegg() {
             }
         },
         error: function () {
-            alert("RIPinpeace");
+            $('#errorModal').modal('show');
         }
     })
 }

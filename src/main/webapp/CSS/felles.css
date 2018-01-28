@@ -36,7 +36,7 @@
     border-style: solid;
 }
 #navn{
-    border-stye: solid;
+    border-style: solid;
 }
 
 body{
@@ -63,12 +63,7 @@ img{
 .vl{
     border-right: 1px solid #DDD;
 }
-.rl{
-    border-left: 1px solid;
-}
-/*body{
-    margin-top:80px;
-}*/
+
 
 #navbar{
     z-index: 1;
@@ -204,4 +199,17 @@ label {
 
 .utenPadding{
     padding: 0px;
+}
+
+.model-backdrop{
+    z-index: 0;
+}
+
+#errorModal {
+    text-align: center;
+}
+
+.modal-header-serverfeil{
+   background-color: rgba(226, 3, 32, 0.89);
+
 }

@@ -13,7 +13,8 @@ var brukerId = bruker.brukerId;
 var husholdningId;
 var medlemmer;
 var handleliste;
-
+var setupFerdigHandle=false;
+var setupFerdigHus=false;
 /**
  * Metoden under lar deg skrive innlegg i den husholdningen du er medlem av og publiserer slik at
  * andre medlemmer av husholdningen ser det.
@@ -30,7 +31,6 @@ $(document).ready(function () {
 
     getHandleliste();
     gethhData();
-    setTimeout(setupPage, 1000);
     $("#commentBtn").on("click", function () {
         postInnlegg();
     });
@@ -103,28 +103,31 @@ function setupPage() {
      * varer i en liste, som henter ut varenavnet og om varen er kjøpt eller ikke. Dette sjekkes
      * ved en checkbox.
      */
-    for (var k = 0, lengt = handleliste.varer.length; k < lengt; k++) {
-        var vare = handleliste.varer[k];
-        console.log(vare);
-        var varenavn = he.encode(vare.varenavn);
-        var vareId = vare.vareId;
-        var checked = vare.kjøpt;
-        var string = "";
-        if (checked) {
-            string = "checked";
+    if(handleliste) {
+        for (var k = 0, lengt = handleliste.varer.length; k < lengt; k++) {
+            var vare = handleliste.varer[k];
+            console.log(vare);
+            var varenavn = he.encode(vare.varenavn);
+            var vareId = vare.vareId;
+            var checked = vare.kjopt;
+            var string = "";
+            if (checked) {
+                string = "checked";
+            }
+            $("#handlelisteForside").append('<label class="list-group-item vareCheck" value="' + varenavn + '" value2="' + vareId + '"> ' + varenavn + '<input title="toggle all" type="checkbox" value="' + varenavn + '" value2="' + vareId + '" class="all pull-right" ' + string + ' > </label>');
         }
-        $("#handlelisteForside").append('<label class="list-group-item vareCheck" value="'+varenavn+'" value2="'+vareId+'"> ' + varenavn + '<input title="toggle all" type="checkbox" value="'+varenavn+'" value2="'+vareId+'" class="all pull-right" ' + string + ' > </label>');
+        setTimeout(function () {
+            $("#tekst3").append(he.encode(handleliste.tittel));
+        }, 150);
     }
-    setTimeout(function () {
-        $("#tekst3").append(he.encode(handleliste.tittel));
-    }, 150);
-
 }
 
 
 function getHandleliste(){
     $.getJSON("server/handleliste/forsideListe/"+husholdningId+"/"+brukerId, function(data){
         handleliste=data;
+        setupFerdigHandle= true;
+        sjekkFerdig();
     })
 }
 
@@ -136,7 +139,12 @@ function getHandleliste(){
 function gethhData() {
     $.getJSON("server/hhservice/" + husholdningId + "/husholdningData", function (data) {
         husholdning = data;
+        setupFerdigHus = true;
+        sjekkFerdig();
     });
+}
+function sjekkFerdig(){
+    if(setupFerdigHandle && setupFerdigHus)setupPage();
 }
 
 $(document).on('click', '#sendUtlegg', function () {
@@ -289,8 +297,7 @@ function oppdaterGjoremal() {
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(gjoremal)
+                $('#errorModal').modal('show');
             }
         });
     }
@@ -371,7 +378,7 @@ function sendUtlegg() {
             }
         },
         error: function () {
-            alert("RIPinpeace");
+            $('#errorModal').modal('show');
         }
     })
 }
@@ -400,7 +407,7 @@ function setVarerKjopt() {
             }else console.log("not ok")
         },
         error: function () {
-            alert("Noe gikk galt :(")
+            $('#errorModal').modal('show');
         }
     })
 }

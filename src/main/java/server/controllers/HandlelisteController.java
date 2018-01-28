@@ -46,7 +46,7 @@ public class HandlelisteController {
         try (Connection con = ConnectionPool.getConnection()) {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHandleliste);
-            rs.next();
+            if(!rs.next()) return null;
             handlelisteId = rs.getInt("handlelisteId");
             handleliste.setHusholdningId(handlelisteId);
             handleliste.setTittel(rs.getString("navn"));

@@ -15,8 +15,8 @@ var varseler;
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
  */
 $(document).ready(function () {
+    if(bruker.navn)    navn = he.encode(bruker.navn);
 
-    navn = he.encode(bruker.navn);
     epost = he.encode(bruker.epost);
 
     $(function () {
@@ -153,13 +153,16 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(husObj)
+                $('#errorModal').modal('show');
             }
         });
     });
     setTimeout(function () {
-        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
+        if( !navn){
+            $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span> Din Profil' );
+        }else {
+            $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
+        }
     }, 150);
 });
 

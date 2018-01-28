@@ -115,7 +115,7 @@ public class BrukerController {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     String res = rs.getString("epost");
-                    if (!Objects.equals(res, epost)) {
+                    if (Objects.equals(res, epost)) {
                         return false;
                     }
                 }
