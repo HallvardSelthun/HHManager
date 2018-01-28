@@ -32,7 +32,6 @@ $(document).ready(function () {
         window.location = "index.html";
         console.log("Redirecting")
     }
-    getHusholdningerNav();
 
     /**
      * Når de ulike delene av navbar blir klikket på skal bruker sendes til de ulike html-sidene
@@ -103,16 +102,6 @@ $(document).ready(function () {
         }
     });
 
-  /*  $('body').on('click', "#alertbox", function () {
-        $("#fadenav").hide();
-        console.log("hide");
-    });
-
-    $('body').on('click', "#alertbox", function () {
-        $("#fadenav3").hide();
-        console.log("hide");
-    });*/
-
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp", function () {
         var navnHus = he.encode($("#navnHusstand").val());
@@ -163,6 +152,8 @@ $(document).ready(function () {
             $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
         }
     }, 150);
+
+    getHusholdningerNav();
 });
 
 
@@ -183,11 +174,15 @@ function getHusholdningerNav() {
         $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
-        for (i = 0, l = husholdninger.length; i < l; i++) {
-            var navn = he.encode(husholdninger[i].navn);
-            var id = husholdninger[i].husholdningId;
-            $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
-        }
+        setTimeout(function(){
+            for (i = 0, l = husholdninger.length; i < l; i++) {
+                var navn = he.encode(husholdninger[i].navn);
+                var id = husholdninger[i].husholdningId;
+                $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
+            }
+            }, 300);
+
+
     });
 }
 
