@@ -253,14 +253,7 @@ function innleggToHtml(nyhetsinnlegg) {
 /**
  * Funksjonen kalles når bruker trykker på knappen om å publisere innlegg.
  */
-/*function skrivNyttInnlegg() {
- var x = document.getElementById("skrivNyttInnlegg").style.display;
- if (x === "none") {
- document.getElementById("skrivNyttInnlegg").style.display = "";
- } else {
- document.getElementById("skrivNyttInnlegg").style.display = "none";
- }
- }*/
+
 /**
  * Oppdaterer gjøremål dersom bruker krysser av en avkrysningsboks.
  */
