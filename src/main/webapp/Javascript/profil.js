@@ -33,6 +33,10 @@ $(document).ready(function () {
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     }
 
+    $('.invisibleDiv').on("click", function () {
+        displayDiv();
+    });
+
 
     $('#submitProfilbilde').click(function(){
         if($('#profilbilde').val()==""){
@@ -79,6 +83,10 @@ $(document).ready(function () {
                 }
             },
             error: function () {
+                BootstrapDialog.show({
+                    title: 'Serverfeil!',
+                    message: 'forespursel gikk ikke igjennom pga. serverfeil.'
+                });
                 alert("serverfeil :/")
             }
         })
@@ -381,7 +389,7 @@ function hentliste() {
             '           <button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button" value="'+husholdningId+'">Forlat</button>' +
             '       </div>' +
             '   </div>' +
-            '<div id="' + husholdningId + '" class="panel-collapse collapse invisibleDiv row">' +
+            '<div id="' + husholdningId + '" class="panel-collapse collapse invisibleDiv row" style="display: none">' +
             '   <div class="panel-body container-fluid">' +
             '       <ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
             '       <div id="list1" class="list-group"></div>' +
@@ -424,6 +432,7 @@ function settNyFav(id) {
     };
 
     $.ajax({
+
         url: "server/BrukerService/favHusholdning",
         type: 'PUT',
         data: JSON.stringify(bruker),

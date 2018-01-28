@@ -73,16 +73,6 @@ public class HandlelisteService {
      * @param pubEllerPriv Hvis true, skal listen være offentlig, hvis false, skal den være private
      * @return boolean Nåværende
      */
-    @PUT
-    @Path("/{handlelisteId}/private")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public boolean[] endrePublic(boolean pubEllerPriv) {
-        //Her skal det komme kode
-        //Bruk "NOT" på indeksene vi ønsker å endre i SQL for å spare tid
-        return null;
-    }
-
-
 
     /**
      * Henter handleliste fra database gitt handlelisteId.
@@ -141,5 +131,12 @@ public class HandlelisteService {
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean settKjopt(ArrayList<Vare> varer){
         return HandlelisteController.setKjopt(varer);
+    }
+
+    @PUT
+    @Path("/endreOffentlig")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean endreOffentlig(Handleliste handleliste){
+        return HandlelisteController.endreOffentlig(handleliste);
     }
 }
