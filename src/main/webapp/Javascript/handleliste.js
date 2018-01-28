@@ -367,16 +367,22 @@ function sendUtlegg() {
         success: function (result) {
             var data =JSON.parse(result);
             if (data){ //Returnerer vel true
-                location.reload(true);
-                alert(" :D");
+                $('#utleggSuccess').fadeIn(200);
+                setTimeout(function () {
+                    $('#utleggSuccess').fadeOut(200);
+                }, 3000);
             }else{
-                alert("D:");
+                $('#utleggError').fadeIn(200);
+                setTimeout(function () {
+                    $('#utleggError').fadeOut(200);
+                }, 3000);
             }
+            location.reload(true);
         },
         error: function () {
             $('#errorModal').modal('show');
         }
-    })
+    });
 }
 
 /**

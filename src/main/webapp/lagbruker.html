@@ -34,9 +34,44 @@
                 <input id="password2" type="password" class="form-control" name="password" placeholder="Gjenta passordet">
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="button" id="registrerBtn">Registrer</button>
+            <div class="alert alert-danger" id ="feltTom">
+                <strong>Feil input</strong> Du må fylle ut alle feltene.
+            </div>
+            <div class="alert alert-danger" id ="passordLike">
+                <strong>Feil input</strong> Passordene er ikke like, vennligst skriv inn riktig.
+            </div>
+            <div class="alert alert-danger" id ="passordLengde">
+                <strong>Feil input</strong> Velg et passord med minst 7 bokstaver.
+            </div>
+            <div class="alert alert-danger" id ="epostRegistrert">
+                <strong>Epost allerede Registrert</strong> Epost er allerede registrert.
+            </div>
+            <div class="alert alert-success" id ="registrerSuccess">
+                <strong>Bruker registrert</strong> Bruker registrert! Logg deg på.
+            </div>
         </form>
     </div>
 </div>
 <div id = "modaldiv"></div>
 </body>
+
+<div class="modal fade" id="errorModal" data-backdrop="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header modal-header-serverfeil">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Serverfeil</h4>
+            </div>
+            <div class="modal-body">
+                <p align="center">Forespørsel ble ikke registrert grunnet serverfeil.</p>
+            </div>
+            <div class="modal-footer">
+                <p align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>

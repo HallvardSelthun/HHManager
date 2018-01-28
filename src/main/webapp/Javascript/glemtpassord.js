@@ -25,6 +25,9 @@ $(document).ready(function () {
                     $("#sendt").hide();
                     $("#feil").fadeIn();
                 }
+            },
+            error: function () {
+                $('#errorModal').modal('show');
             }
         });
     });

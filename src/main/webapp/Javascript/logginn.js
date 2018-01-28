@@ -46,7 +46,7 @@ $(document).ready(function () {
                 window.location = "profil.html";
             },
             error: function () {
-                alert("serverfeil kall 2 :/")
+                $('#errorModal').modal('show');
             }
         })
     });
