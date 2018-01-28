@@ -1,5 +1,5 @@
 # HHManager
-Besøk prosjektet vårt
+Scrumprosjekt 2018
 
 ## Oppstart
 Under følger instruksjoner om hvordan du kan skaffe deg en kopi av et kjørende program for testing og utvikling
