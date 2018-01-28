@@ -496,6 +496,7 @@ function displayHistorikk(oppgjorArray) {
     for (var i = 0; i < oppgjorArray.length; i++) {
         $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
         $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
+        console.log("Skal ha lagt inn radminushisto");
         $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
     }
 }

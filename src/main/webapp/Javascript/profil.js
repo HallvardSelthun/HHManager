@@ -18,6 +18,7 @@ var navnIHuset2 = [];
  * Henter husholdningene som brukeren er medlem av
  */
 function getHusholdninger() {
+    console.log("Her kommer husholdId: "+husholdningId);
     console.log("Kjøres denne to ganger?")
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
@@ -369,19 +370,22 @@ function hentliste() {
             adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
 
         }
-        console.log(husholdnavn);
+
 
 
         // Ny design, med knapper
-        $("#husstander").append('<div  class="panel panel-default container-fluid">' +
-            '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#' + husholdningId + '" onclick="displayDiv()">' +
+        console.log("Rett før append:");
+        console.log(husholdningId);
+        console.log(husholdnavn);
+        $("#husstander").append('<div  class="panel panel-default container-fluid" ">' +
+            '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#husstandAccordion' + husholdningId + '" onclick="displayDiv()">' +
             '       <h4 class= "col-md-9 panel-title" style="display: inline">' + husholdnavn + '</h4>' +
             '       <div class="stjerneogforlat pull-right">' +
             '           <span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange; margin: 6px" role="button" class="glyphicon '+string+'"></span>' + " " +
             '           <button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button" value="'+husholdningId+'">Forlat</button>' +
             '       </div>' +
             '   </div>' +
-            '<div id="' + husholdningId + '" class="panel-collapse collapse invisibleDiv row">' +
+            '<div id="husstandAccordion' + husholdningId +'" class="panel-collapse collapse invisibleDiv row">' +
             '   <div class="panel-body container-fluid">' +
             '       <ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
             '       <div id="list1" class="list-group"></div>' +
