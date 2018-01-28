@@ -465,7 +465,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin, profilbilde FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.epost, bruker.navn, bruker.brukerId, admin, profilbilde FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -476,6 +476,7 @@ public class HusholdningController {
                 nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
                 nyMedlem.setAdmin(medlemRS.getInt("admin"));
                 nyMedlem.setProfilbilde(medlemRS.getString("profilbilde"));
+                nyMedlem.setEpost(medlemRS.getString("epost"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {
