@@ -20,6 +20,14 @@ var navnIHuset2 = [];
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
+        console.log(minBruker.favHusholdning);
+        if(!minBruker.favHusholdning && mineHusholdninger.length>0){
+            settNyFav(mineHusholdninger[0].husholdningId);
+            setTimeout(function(){
+                window.location="profil.html"
+
+            },200);
+        }
         hentliste();
         console.log(data);
     });
@@ -27,6 +35,7 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
+
     $('#errorModal').appendTo('body').modal('show');
 
     if(!(!photo || 0 === photo.length)) {
@@ -178,7 +187,7 @@ $(document).ready(function () {
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
         if (nyepost1 == "" || nyepost2 == "") {
-            alert("PLIS SKRIV IN NOKE...")
+            alert("Inputene må ha verdi")
             return;
         }
         if (nyepost1 == nyepost2) {
@@ -288,15 +297,17 @@ $(document).ready(function () {
     $(document).on('click', '.removeButton', function () {
         hhId = ($(this).attr('value'))
     });
+
 /*
 
     var script = document.createElement('script');
     script.src = "Javascript/nav.js";
     script.async = true;
     document.head.appendChild(script);
-
-
 */
+
+
+
 /**
  * Bruker kan sette favoritthusholdning
  */
@@ -491,8 +502,7 @@ function leggTilMedlem(epost, husId) {
         success: function (data) {
             var result = JSON.parse(data);
             if(result){
-                alert("bruker registrert");
-                console.log("nice");
+                window.location ="profil.html";
             }else{
                 console.log(": (");
             }
@@ -528,9 +538,6 @@ function setProfilbilde(link) {
         success: function (result) {
             var data = JSON.parse(result);
             if(data){
-                alert("nice nice");
-            }else{
-                alert("yikes");
             }
         },
         error: function () {

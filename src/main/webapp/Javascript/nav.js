@@ -15,8 +15,8 @@ var varseler;
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
  */
 $(document).ready(function () {
+    if(bruker.navn)    navn = he.encode(bruker.navn);
 
-    navn = he.encode(bruker.navn);
     epost = he.encode(bruker.epost);
 
     $(function () {
