@@ -174,6 +174,7 @@ $(document).on('click', '#utenUtleggForside', function(){
 function postInnlegg() {
     var tekst = $("#comment").val();
     if (tekst == "") {
+        ($('#sendAlert').fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }
     var dato = new Date(Date.now());
