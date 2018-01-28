@@ -197,7 +197,6 @@ function leggTilVare(hlId, navn) {
         varenavn: navn,
         handlelisteId: hlId
     };
-    console.log(vare);
 
     if (nyGjenstandNavn == "") {
         alert("Skriv navnet til gjenstanden!");
@@ -227,7 +226,7 @@ function leggTilVare(hlId, navn) {
                 $('#errorModal').modal('show');
             }
         });
-    },200);
+    },100);
 }
 
 /**
