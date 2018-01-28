@@ -51,7 +51,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert("Serveren har det røft atm, prøv igjen senere :/");
+                $('#errorModal').modal('show');
             }
         })
     })

@@ -136,8 +136,7 @@ $(document).ready(function () {
                         window.location = "gjoremaal.html";
                     },
                     error: function () {
-                        alert("serverfeil :/");
-                        console.log(gjoremal)
+                        $('#errorModal').modal('show');
                     }
                 });
             }
@@ -179,8 +178,7 @@ $(document).ready(function () {
 
                 },
                 error: function () {
-                    alert("serverfeil :/");
-                    console.log(gjoremal)
+                    $('#errorModal').modal('show');
                 }
             });
         }

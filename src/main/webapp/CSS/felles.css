@@ -209,6 +209,12 @@ label {
 .model-backdrop{
     z-index: 0;
 }
-.modal-header{
-    background-color: red;
+
+#errorModal {
+    text-align: center;
+}
+
+.modal-header-serverfeil{
+   background-color: rgba(226, 3, 32, 0.89);
+
 }
