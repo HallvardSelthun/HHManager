@@ -30,7 +30,7 @@ $(document).ready(function () {
     $('#errorModal').appendTo('body').modal('show');
 
     if(!(!photo || 0 === photo.length)) {
-        $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
+        $('#photo').html('<img style="width:120px; height:125px; top: 30px" src="' + photo + '">');
     };
 
 
