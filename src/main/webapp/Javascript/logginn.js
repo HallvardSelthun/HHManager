@@ -28,9 +28,11 @@ $(document).ready(function () {
                 var innBruker = (result);
                 console.log(innBruker);
                 if (innBruker == null) {
-                    alert("Feil epost eller passord!");
+                    $('#epostPassordAlert').fadeIn(200);
+                        return false;
                     return;
                 }else if(innBruker.favHusholdning > 0){
+                    $('#epostPassordAlert').fadeOut(200);
                     localStorage.setItem("husholdningId", innBruker.favHusholdning);
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
