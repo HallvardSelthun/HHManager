@@ -20,6 +20,12 @@
             <form class="form-signin">
                 <a href="#"><img class="logo img-fluid img-thumbnail" src="web-res/storlogo.png" alt="Logo"></a>
                 <h2 class="form-signin-heading">Logg inn</h2>
+                <div class="alert alert-danger" id ="epostPassordAlert">
+                    <strong>Feil input</strong> eposten eller passordet er feil.
+                </div>
+                <div class="alert alert-danger" id ="epostPassordTom">
+                    <strong>Feil input</strong> skriv inn epost og passord.
+                </div>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                     <input id="email" type="text" class="form-control" name="email" placeholder="Email">
@@ -27,12 +33,6 @@
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="password" type="password" class="form-control" name="password" placeholder="Passord" onkeydown="keyCode(event)">
-                </div>
-                <div class="alert alert-danger" id ="epostPassordAlert">
-                    <strong>Feil input</strong> eposten eller passordet er feil.
-                </div>
-                <div class="alert alert-danger" id ="epostPassordTom">
-                    <strong>Feil input</strong> skriv inn epost og passord.
                 </div>
                 <div>
                     <label>
@@ -47,4 +47,24 @@
         </div>
     </div>
 </body>
+
+<div class="modal fade" id="errorModal" data-backdrop="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header modal-header-serverfeil">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Serverfeil</h4>
+            </div>
+            <div class="modal-body">
+                <p align="center">Forespørsel ble ikke registrert grunnet serverfeil.</p>
+            </div>
+            <div class="modal-footer">
+                <p align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>

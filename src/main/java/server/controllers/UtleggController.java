@@ -342,7 +342,7 @@ public class UtleggController {
             return true; //Burde kanskje sjekke litt bedre
         }catch (SQLException e){
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 }

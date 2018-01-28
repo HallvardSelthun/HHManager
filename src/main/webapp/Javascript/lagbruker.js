@@ -20,15 +20,24 @@ $(document).ready(function () {
         var password = $("#password").val();
         var password2= $("#password2").val();
         if (fornavn == "" || email == "" || password == "" || password2 == "") {
-            alert("Du må fylle ut alle feltene");
+            $('#feltTom').fadeIn(200);
+            setTimeout(function () {
+                $('#feltTom').fadeOut(200);
+            }, 3000);
             return;
         }
         if (password!=password2){
-            alert("Passordene er ikke like, vennligst skriv inn riktig!");
+            $('#passordLike').fadeIn(200);
+            setTimeout(function () {
+                $('#passordLike').fadeOut(200);
+            }, 3000);
             return;
         }
         if(password.length<6){
-            alert('Velg et passord med minst 7 bokstaver!');
+            $('#passordLengde').fadeIn(200);
+            setTimeout(function () {
+                $('#passordLengde').fadeOut(200);
+            }, 3000);
             return;
         }
         var bruker = {navn: fornavn, passord: password, epost: email};
@@ -43,11 +52,17 @@ $(document).ready(function () {
                 var data = JSON.parse(result);
                 console.log(data +" :D");
                 if (!result){
-                    alert("Epost er allerede registrert :/");
+                    $('#epostRegistrert').fadeIn(200);
+                    setTimeout(function () {
+                        $('#epostRegistrert').fadeOut(200)
+                    }, 3000);
                     $("#email").css('color', 'red');
                 }else{
-                    alert("Bruker registrert! Logg deg på.");
-                    window.location = "index.html";
+                    $('#registrerSuccess').fadeIn(200);
+                    setTimeout(function () {
+                        $('#registrerSuccess').fadeOut(200)
+                        window.location = "index.html";
+                    }, 3000);
                 }
             },
             error: function () {
