@@ -38,6 +38,8 @@ function hentMedlemmer() {
     for (var j = 0, leng = medlemmer.length; j < leng; j++) {
         var medlemnavn = medlemmer[j].navn;
         var hhBrukerId = medlemmer[j].brukerId;
+        var epost = medlemmer[j].epost;
+        if (!medlemnavn) medlemnavn = epost;
         if (hhBrukerId !== minBruker.brukerId) {
             $("#medlemmer").append('<li class ="valgtMedlem" id="medlem' + hhBrukerId + '"role="presentation" value="' + hhBrukerId + '"><a  role="menuitem" tabindex="-1" href="#">' + medlemnavn + '</a></li>');
 

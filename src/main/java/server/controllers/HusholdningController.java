@@ -376,21 +376,10 @@ public class HusholdningController {
         //String hentFav = "SELECT favorittHusholdning, brukerId FROM bruker WHERE epost = ?";
 
         try (Connection con = ConnectionPool.getConnection()) {
-            /*ps = con.prepareStatement(hentFav);
-            ps.setString(1, epost);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    fav = rs.getInt("favorittHusholdning");
-                    brukerId = rs.getInt("brukerId");
-                    if (fav == 0) {
-                        return null;
-                    }
-                    huset.setHusholdningId(fav);
-                }
-            }*/
+
             String hentHus = "SELECT * FROM husholdning WHERE husholdningId = " + fav;
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = " + fav;
-            String hentAlleMedlemmer = "SELECT navn, bruker.brukerId, profilbilde FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
+            String hentAlleMedlemmer = "SELECT epost, navn, bruker.brukerId, profilbilde FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + fav + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
@@ -419,6 +408,7 @@ public class HusholdningController {
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
                 bruker.setProfilbilde(rs.getString("profilbilde"));
+                bruker.setEpost(rs.getString("epost"));
                 huset.addMedlem(bruker);
             }
             Handleliste handleliste = new Handleliste();
