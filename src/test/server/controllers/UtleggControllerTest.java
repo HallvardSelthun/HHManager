@@ -42,12 +42,6 @@ public class UtleggControllerTest {
     }
 
     @Test
-    public void setMotatt() {
-        //Denne testen kan skrives når jeg er ferdig.
-        assertTrue(UtleggController.setMotatt(1,11));
-    }
-
-    @Test
     public void getMineOppgjorExtraTest() {
         ArrayList<Oppgjor> betalteOppgjor = UtleggController.getMineOppgjor(1,1);
         System.out.println("Skriver ut betalte brukerIder");

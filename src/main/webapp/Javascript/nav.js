@@ -149,7 +149,7 @@ $(document).ready(function () {
         }else {
             $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
         }
-    }, 200);
+    }, 150);
 });
 
 
@@ -170,11 +170,15 @@ function getHusholdningerNav() {
         $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
-        for (i = 0, l = husholdninger.length; i < l; i++) {
-            var navn = he.encode(husholdninger[i].navn);
-            var id = husholdninger[i].husholdningId;
-            $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
-        }
+        setTimeout(function(){ //Timeout for å vente til den andre HTMLen er lagt til
+            for (i = 0, l = husholdninger.length; i < l; i++) {
+                var navn = he.encode(husholdninger[i].navn);
+                var id = husholdninger[i].husholdningId;
+                $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
+            }
+            }, 300);
+
+
     });
 }
 
