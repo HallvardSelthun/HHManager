@@ -22,15 +22,17 @@
 }
 .medlemmerKolonne{
     margin-left: 75px;
-}*/
-
-#nyhetsChart{}
-
-#vareChart{}
-
-#gjøremålsChart{}
-
-.chart {
-    width: 100%;
-    min-height: 450px;
 }
+*/
+.chart div{
+}
+/*
+#vareChart{
+    display: block;
+    margin: 0 auto;
+}
+
+#gjøremålsChart{
+    display: block;
+    margin: 0 auto;
+}*/

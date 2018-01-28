@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="CSS/statistikk.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
     <script src="web-res/jquery-3.3.1.min.js"></script>
     <script src="web-res/bootstrap.min.js"></script>
@@ -14,6 +13,7 @@
     <script src="Javascript/statistikk.js"></script>
     <script src="web-res/he-1.1.1/he.js"></script>
     <script src="web-res/he-1.1.1/he.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/statistikk.css">
 
     <title>Statistikk</title>
 </head>
@@ -28,36 +28,34 @@
         <div class="col-md-8">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="statistikkKolonne" align="center">
-                                <h1>Statistikk</h1>
-                                <h4 id="husholdningsNavn"></h4>
-                                <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                                        Husholdning <span class="caret"></span></button>
-                                    <ul id="hhstatliste" class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 41%; left: auto">
-                                    </ul>
-                                </div>
-                            </div>
+                    <div class="statistikkKolonne" align="center">
+                        <h1>Statistikk</h1>
+                        <h4 id="husholdningsNavn"></h4>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Husholdning<span class="caret"></span></button>
+                            <ul id="hhstatliste" class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 41%; left: auto"></ul>
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px">
-                    <div class="col-md-6 rl">
-                        <div class="container-fluid utenPadding">
-                            <div class="row" id="nyhetsChart"></div>
-                            <div class="row" id="vareChart"></div>
-                        </div>
+                    <div class="col-md-6 chart">
+                        <div id="nyhetsChart"></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 chart">
                         <div id="gjøremålsChart"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 chart">
+                        <div id="vareChart"></div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
             </div>
-        </div></div>
+        </div>
         <div class="col-md-2"></div>
-</div>
+    </div>
 </div>
 <div id="modaldiv"></div>
 </body>
