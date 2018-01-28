@@ -19,5 +19,11 @@ https://gitlab.stud.iie.ntnu.no/kimiaa/HHManager/wikis/ci-og-testing
 * [Maven](https://maven.apache.org/) - Dependency Management 
 
 ## Utviklere
-Kimia Abtahi, Karol Debik, Charlotte Husom Grøder, Nora Othilie Ringdal, 
-Brage Halse Snarud, Hallvard Sælthun, Truls Matias Torgersen og Toni Vucic
+* Kimia Abtahi
+* Karol Debik
+* Charlotte Husom Grøder
+* Nora Othilie Ringdal
+* Brage Halse Snarud
+* Hallvard Sælthun
+* Truls Matias Torgersen
+* Toni Vucic
