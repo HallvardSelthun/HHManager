@@ -1,0 +1,61 @@
+/*
+.glyphicon-plus-sign {
+    font-size: 30px;
+}
+
+.husstander {
+    width: 240px;
+    height: 200px;
+    margin-right: 200px;
+    margin-top: 20px;
+}
+
+!*.panel-title {
+    text-align: left;
+}*!
+
+!*#navnknapp {
+    margin-top: 10px;
+    margin-left: 89px;
+}
+
+#epostknapp {
+    margin-top: 10px;
+    margin-right: 3px;
+}
+*!
+#accordion {
+    margin-right: 10px;
+}
+
+.h1 {
+    margin-bottom: 10px;
+}
+
+.well-sm {
+    margin-left: 89px;
+}
+
+!*#passord {
+    margin-top: 10px;
+    margin-left: 100px;
+}*!
+
+.husinfo {
+    width: 300px;
+}
+
+.info {
+    width: 600px;
+    margin-left: 100px;
+}
+
+.glyphicon-star-empty {
+    font-size: 95%;
+    color: #32CD32;
+}*/
+
+.alert {
+    display: none;
+}
+
