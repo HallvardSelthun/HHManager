@@ -31,6 +31,12 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
                     <button type="button" id="nymedlem" class="btn btn-primary">Legg til nytt medlem</button>
                 </div>
+                <div class="alert alert-success" id ="regNyttMedlemS">
+                    <strong>Bruker registrert!</strong> Brukeren er registrert i husholdningen.
+                </div>
+                <div class="alert alert-error" id ="regNyttMedlemE">
+                    <strong>Error</strong> Brukeren er allerede registrert.
+                </div>
             </div>
         </div>
     </div>
@@ -80,6 +86,12 @@
                 <button type="button" id="lukkvindu" class="btn btn-default" data-dismiss="modal">Lukk</button>
                 <button type="button" id="lagre" class="btn btn-primary">Lagre endringer</button>
             </div>
+            <div class="alert alert-danger" id ="ulikNyEpost">
+                <strong>Feil input</strong> Epostene er ikke like.
+            </div>
+            <div class="alert alert-danger" id ="feilNyEpost">
+                <strong>Feil input</strong> Vennligst skriv inn en epost.
+            </div>
         </div>
     </div>
 </div>
@@ -88,7 +100,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Endre hash</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Endre passord</h4>
             </div>
             <div class="modal-body">
                 <div class="nypassord">
@@ -106,6 +118,15 @@
             <div class="modal-footer">
                 <button type="button" id="lukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
                 <button type="button" id="lagreendringer" class="btn btn-primary">Lagre endringer</button>
+            </div>
+            <div class="alert alert-danger" id ="feilNyttPassord">
+                <strong>Feil input</strong> Vennligst velg et passord med flere enn 7 tegn.
+            </div>
+            <div class="alert alert-danger" id ="uliktPassord">
+                <strong>Feil input</strong> Passordene i begge feltene må vere like.
+            </div>
+            <div class="alert alert-success" id ="successPassord">
+                <strong>Passord endret!</strong> Passordet er endret.
             </div>
         </div>
     </div>
@@ -128,6 +149,9 @@
                 <div class="modal-footer">
                     <button id="button" type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
                     <button id="endre" type="button" class="btn btn-primary">Endre navn</button>
+                </div>
+                <div class="alert alert-danger" id ="feilNyttNavn">
+                    <strong>Feil input</strong> Vennligst skriv inn eit navn.
                 </div>
             </div>
         </div>
@@ -153,7 +177,7 @@
                                         <h4 id="mail"></h4>
                                         <p>Profilbilde:</p>
                                         <form>
-                                        <input type="text" id="profilbilde">
+                                        <input type="text" id="profilbilde" placeholder="bilde-url">
                                         <button type="button" id="submitProfilbilde">Lagre</button>
                                             </form>
                                     </div>
@@ -238,6 +262,12 @@
                 <div class="modal-footer">
                     <button type="button" id="lukk2" class="btn btn-default" data-dismiss="modal">Lukk</button>
                     <button id="lagreHusKnapp2" type="button" class="btn btn-primary">Lagre husstand</button>
+                </div>
+                <div class="alert alert-danger" id ="feilHusInput">
+                    <strong>Feil input</strong> Vennligst gi husholdningen eit navn.
+                </div>
+                <div class="alert alert-danger" id ="nyHusError">
+                    <strong>Error</strong> noe gikk galt.
                 </div>
             </div>
         </div>

@@ -38,8 +38,6 @@ $(document).ready(function () {
                     window.location = "forside.html";
                     return;
                 }
-                localStorage.setItem("bruker", JSON.stringify(innBruker));
-                window.location = "profil.html";
             },
             error: function () {
                 alert("serverfeil kall 2 :/")
