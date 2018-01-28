@@ -39,8 +39,11 @@ $(document).ready(function () {
                     localStorage.setItem("husholdningId", innBruker.favHusholdning);
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
+                    console.log("ok")
                     return;
                 }
+                localStorage.setItem("bruker", JSON.stringify(innBruker));
+                window.location = "profil.html";
             },
             error: function () {
                 alert("serverfeil kall 2 :/")
