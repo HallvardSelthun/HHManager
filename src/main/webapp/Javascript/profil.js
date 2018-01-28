@@ -475,6 +475,7 @@ function leggTilMedlem(epost, husId) {
         success: function (data) {
             var result = JSON.parse(data);
             if(result){
+                $("#medlemepost").val('');
                 $('#regNyttMedlemS').fadeIn(200);
                 setTimeout(function () {
                     $('#regNyttMedlemS').fadeOut(200);
