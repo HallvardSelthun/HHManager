@@ -92,9 +92,7 @@ function setVarerKjopt(listeId) {
         dataType: 'json',
         success: function (result) {
             var data=JSON.parse(result)
-            if(data){
                 window.location =" handlelister.html"
-            }else console.log("not ok")
         },
         error: function () {
             $('#errorModal').modal('show');
@@ -161,7 +159,6 @@ $(document).on('click', '.endreOffentlig', function () {
     if ($(this).is(":checked")){
         boolean = true;
     }
-    console.log(boolean);
     endreOffentlig(handlelisteId, boolean);
 });
 
@@ -180,7 +177,6 @@ function nyVare(that) {
     var listeId = that.attr('value');
     var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
-    console.log(input);
 
     if(input == ""|| !input ||input.trim().length<1){
         ($("#nyVareAlert").fadeIn(200)).delay(2500).fadeOut(400);

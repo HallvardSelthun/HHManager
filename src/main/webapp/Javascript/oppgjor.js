@@ -28,7 +28,6 @@ $(document).ready(function () {
      * Knappen høret til lag utlegg-modalen
      */
     $("#lagUtlegg").on('click', function () {
-        console.log("LAG UTLEGG KLIKKET");
         lagNyttUtlegg();
     });
 
@@ -302,20 +301,15 @@ function lastInnOppgjor(brukerId, betalt) {
                 valgtOppgjorArray = liveOppgjor;
                 filtrerForXSS(liveOppgjor);
                 tellAntallUtleggsbetalere(liveOppgjor);
-                console.log("Live oppgjor");
-                console.log(liveOppgjor);
             }
             else {
                 ferdigeOppgjor = result;
-                console.log("Ferdigeoppgjor");
-                console.log(ferdigeOppgjor);
                 filtrerForXSS(ferdigeOppgjor);
                 valgtOppgjorArray = ferdigeOppgjor;
             }
             if (!result){
                 alert("Noe rart har skjedd i lastInnOppgjor");
             }else{
-                console.log(result);
                 leggInnRadNr(utregnOppgjorSum, valgtOppgjorArray);
             }
         },
@@ -373,13 +367,10 @@ $(function() {
     var alertId = he.encode("#beskrivelseAlert");
     var content = $(inputId).val();
     $(inputId).keyup(function() {
-        console.log("Inne i tekstfelt"+$(inputId).val());
         if ($(inputId).val() == '') {
             $(alertId).fadeIn(200);
-            console.log("FadeIn");
         }
         else {
-            console.log("FadeOut");
             $(alertId).fadeOut(200);
         }
     })
@@ -498,7 +489,6 @@ function displayHistorikk(oppgjorArray) {
     for (var i = 0; i < oppgjorArray.length; i++) {
         $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
         $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
-        console.log("Skal ha lagt inn radminushisto");
         $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
     }
     alleredeLastetInnHistorikk = true;

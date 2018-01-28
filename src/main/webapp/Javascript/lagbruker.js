@@ -50,7 +50,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result);
-                console.log(data +" :D");
                 if (!result){
                     $('#epostRegistrert').fadeIn(200);
                     setTimeout(function () {

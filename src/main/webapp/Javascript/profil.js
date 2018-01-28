@@ -20,12 +20,10 @@ var navnIHuset2 = [];
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
-        console.log(minBruker.favHusholdning);
         if(!minBruker.favHusholdning && mineHusholdninger.length>0){
             settNyFav(mineHusholdninger[0].husholdningId, true);
         }
         hentliste();
-        console.log(data);
     });
 }
 
@@ -72,7 +70,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result);
-                console.log(data);
                 if(data) {
                     window.location = "profil.html";
                 }
@@ -408,7 +405,6 @@ function settNyFav(id, byttSide) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
             localStorage.setItem("husholdningId", nyId)
             localStorage.setItem("bruker", JSON.stringify(minBruker));
