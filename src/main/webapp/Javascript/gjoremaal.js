@@ -27,22 +27,6 @@ function gethhData() {
  * i tekstboksen fellesGjoremaal.
  */
 
-function hei(){
-    var variabel = "<script> alert('Hei en gang!') </script>";
-    alert(variabel);
-    var returned = he.encode(variabel);
-    alert(returned);
-    var engangtil = he.encode(returned);
-    alert(returned);
-    /*BootstrapDialog.alert('TEST!');
-    BootstrapDialog.show({
-        title: 'Serverfeil!',
-        message: 'forespursel gikk ikke igjennom pga. serverfeil.'
-    });*/
-}
-
-
-//hei();
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
     console.log(id);

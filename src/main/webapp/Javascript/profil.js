@@ -27,6 +27,8 @@ function getHusholdninger() {
 
 
 $(document).ready(function () {
+    $('#errorModal').appendTo('body').modal('show');
+
     if(!(!photo || 0 === photo.length)) {
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     };
@@ -76,11 +78,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                BootstrapDialog.show({
-                    title: 'Serverfeil!',
-                    message: 'forespursel gikk ikke igjennom pga. serverfeil.'
-                });
-                alert("serverfeil :/")
+                $('#errorModal').modal('show');
             }
         })
     });
@@ -121,7 +119,7 @@ $(document).ready(function () {
                     alert("Passordet er endret");
                 },
                 error: function () {
-                    alert("Noe gikk galt :(")
+                    $('#errorModal').modal('show');
                 }
             })
         } else {
@@ -160,7 +158,7 @@ $(document).ready(function () {
                 localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
-                alert("Noe gikk galt :(")
+                $('#errorModal').modal('show');
             }
         });
         $("#button").on('click', function () {
@@ -203,7 +201,7 @@ $(document).ready(function () {
                     alert("Eposten er endret");
                 },
                 error: function () {
-                    alert("Noe gikk galt :(")
+                    $('#errorModal').modal('show');
                 }
             });
         } else {
@@ -275,8 +273,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert("serverfeil :/");
-                console.log(husObj)
+                $('#errorModal').modal('show');
             }
         });
     });
@@ -424,9 +421,10 @@ function settNyFav(id) {
             minBruker.favHusholdning = nyId;
             localStorage.setItem("husholdningId", nyId)
             localStorage.setItem("bruker", JSON.stringify(minBruker));
+            $('#errorModal').modal('show');
         },
         error: function (data) {
-            alert("noe gikk galt");
+            $('#errorModal').modal('show');
         }
     })
 }
