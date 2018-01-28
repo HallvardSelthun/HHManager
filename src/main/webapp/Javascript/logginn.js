@@ -29,7 +29,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var innBruker = (result);
-                console.log(innBruker);
                 if (innBruker == null) {
                     $('#epostPassordAlert').fadeIn(200);
                         return false;
@@ -39,7 +38,6 @@ $(document).ready(function () {
                     localStorage.setItem("husholdningId", innBruker.favHusholdning);
                     localStorage.setItem("bruker", JSON.stringify(innBruker));
                     window.location = "forside.html";
-                    console.log("ok")
                     return;
                 }
                 localStorage.setItem("bruker", JSON.stringify(innBruker));

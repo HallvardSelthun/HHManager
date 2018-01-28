@@ -20,19 +20,16 @@ var navnIHuset2 = [];
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
-        console.log(minBruker.favHusholdning);
         if(!minBruker.favHusholdning && mineHusholdninger.length>0){
             settNyFav(mineHusholdninger[0].husholdningId, true);
         }
         hentliste();
-        console.log(data);
     });
 }
 
 
 $(document).ready(function () {
 
-    $('#errorModal').appendTo('body').modal('show');
 
     if(!(!photo || 0 === photo.length)) {
         $('#photo').html('<img style="width:120px; height:125px; top: 30px" src="' + photo + '">');
@@ -72,7 +69,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result);
-                console.log(data);
                 if(data) {
                     window.location = "profil.html";
                 }
@@ -408,11 +404,9 @@ function settNyFav(id, byttSide) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
             localStorage.setItem("husholdningId", nyId)
             localStorage.setItem("bruker", JSON.stringify(minBruker));
-            $('#errorModal').modal('show');
             if (byttSide) {
                 window.location="profil.html";
             }
@@ -455,20 +449,13 @@ function slettMedlem(bid, hid) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            /*for(var m = 0, n = hus.medlemmer.length; m<n; m++) {
-                if (hus.medlemmer[m].brukerId == idSlett) {
-                    hus.medlemmer.splice(m, 1);
-                    mineHusholdninger[t].medlemmer = hus.medlemmer;
-                    localStorage.setItem("husholdninger", mineHusholdninger);
-                    break;
-                }
-            }*/
+            window.location = "profil.html"
+
         },
         error: function () {
             $('#errorModal').modal('show');
         }
     });
-    window.location = "profil.html";
 }
 
 function leggTilMedlem(epost, husId) {
@@ -499,7 +486,7 @@ function leggTilMedlem(epost, husId) {
         error: function () {
             $('#errorModal').modal('show');        }
     });
-    window.location = "profil.html";
+    //window.location = "profil.html";
 }
 
 function resizeImg(img, height, width) {

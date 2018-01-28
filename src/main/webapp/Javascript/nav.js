@@ -20,7 +20,6 @@ $(document).ready(function () {
 
     $(function () {
         if(!husholdningId || husholdningId ==0){
-            console.log("ALT NAV");
             $("#navbar").load("altnav.html");
         } else{
             $("#navbar").load("nav.html");
@@ -30,8 +29,8 @@ $(document).ready(function () {
 
     if (!bruker) {
         window.location = "index.html";
-        console.log("Redirecting")
     }
+    getHusholdningerNav();
 
     /**
      * Når de ulike delene av navbar blir klikket på skal bruker sendes til de ulike html-sidene
@@ -130,7 +129,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
                 if (data) {
                     if (bruker.favHusholdning == 0) {
                         bruker.favHusholdning = 0;
@@ -152,8 +150,6 @@ $(document).ready(function () {
             $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
         }
     }, 150);
-
-    getHusholdningerNav();
 });
 
 

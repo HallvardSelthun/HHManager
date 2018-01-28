@@ -22,7 +22,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div id="lagUtlegg">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close closeUtlegg" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Lag utlegg</h3>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="sum">
                     <h4>Sum</h4>
-                    <input id="sum" type="number" placeholder="Skriv inn summen for varene">
+                    <input id="sum" class="form-control" name="textfield" placeholder="Skriv sum her." type="number">
                     <div class="alert alert-danger" id ="sumAlert">
                         <strong>Feil input</strong> Sum må være fyllt inn, og over 0.
                     </div>
@@ -55,7 +55,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                <button id="lukkUtlegg" type="button" class="btn btn-default closeUtlegg" data-dismiss="modal">Lukk</button>
                 <button id="sendUtlegg" type="button" class="btn btn-primary sendUtlegg">Send utlegg</button>
             </div>
         </div>
@@ -79,6 +79,12 @@
                                 <span class="slider round"></span>
                             </label>
                         <input id="handlelisteNavn" class="form-control" name="handlelisteNavn" placeholder="Handleliste navn" type="text">
+                        <div class="alert alert-danger" id ="leggTilHandlelisteError">
+                            <strong>Input-feil</strong> Gi handlelisten eit navn.
+                        </div>
+                        <div class="alert alert-danger" id ="leggTilHandleliste-1">
+                            <strong>Error</strong> Noe gikk galt.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,34 +92,28 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
                 <button id="leggTilNyHandlelisteKnapp" type="button" class="btn btn-primary">Legg til</button>
             </div>
-            <div class="alert alert-error" id ="leggTilHandlelisteError">
-                <strong>Input-feil</strong> Gi handlelisten eit navn.
-            </div>
-            <div class="alert alert-error" id ="leggTilHandleliste-1">
-                <strong>Error</strong> Noe gikk galt.
-            </div>
         </div>
     </div>
 </div>
 
 <div class="container-fluid">
     <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <div class="container-fluid">
-            <div class="row">
-                <h1>Handlelister</h1>
-                <div class="container-fluid">
-                    <div id="handlelister" class="row panel-group"></div>
-                </div>
-                <div class="container-fluid">
-                    <button id="nyhandel" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#leggTilNyHandlelisteModal">Legg til ny handleliste</button>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="container-fluid">
+                <div class="row">
+                    <h1>Handlelister</h1>
+                    <div class="container-fluid">
+                        <div id="handlelister" class="row panel-group"></div>
+                    </div>
+                    <div class="container-fluid">
+                        <button id="nyhandel" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#leggTilNyHandlelisteModal">Legg til ny handleliste</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-3"></div>
     </div>
-    <div class="col-md-3"></div>
-</div>
 </div>
 <div id = "modaldiv"></div>
 </body>

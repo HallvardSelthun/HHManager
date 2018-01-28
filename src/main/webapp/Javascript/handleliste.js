@@ -92,9 +92,7 @@ function setVarerKjopt(listeId) {
         dataType: 'json',
         success: function (result) {
             var data=JSON.parse(result)
-            if(data){
                 window.location =" handlelister.html"
-            }else console.log("not ok")
         },
         error: function () {
             $('#errorModal').modal('show');
@@ -125,7 +123,7 @@ function leggTilNyHandleliste() {
     if (handlelisteNavn == "") {
         $('#leggTilHandlelisteError').fadeIn(200);
         setTimeout(function () {
-            $('#leggTilHandlelisteError').fadeIn(200);
+            ($('#leggTilHandlelisteError').fadeIn(200)).delay(500).fadeOut(400);
         }, 3000);
         return;
     }
@@ -161,7 +159,6 @@ $(document).on('click', '.endreOffentlig', function () {
     if ($(this).is(":checked")){
         boolean = true;
     }
-    console.log(boolean);
     endreOffentlig(handlelisteId, boolean);
 });
 
@@ -180,7 +177,6 @@ function nyVare(that) {
     var listeId = that.attr('value');
     var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
-    console.log(input);
 
     if(input == ""|| !input ||input.trim().length<1){
         ($("#nyVareAlert").fadeIn(200)).delay(2500).fadeOut(400);
@@ -286,9 +282,11 @@ function checkChecked(formname) {
 
         }
     });
-
-
 }
+
+$(document).on('click', '.closeUtlegg', function () {
+    location.reload(true);
+});
 
 function lagUtleggVarer() {
     var vareNavn = "";
@@ -321,7 +319,7 @@ function sendUtlegg() {
     beskrivelse = beskrivelse.replace(-1, ".");
 
     if(sum == "" ||  sum <=0){
-        $("#sumAlert").fadeIn(200);
+        ($("#sumAlert").fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }else{
         $("#sumAlert").fadeOut(200);
@@ -428,7 +426,7 @@ function setupPage() {
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
                 '                       ' +
-                '                           <div class="input-group container-fluid utenPadding">' +
+                '                           <div class="input-group container-fluid utenPadding" style="z-index: 0">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
                 '                                   <div class="input-group-btn">' +
                 '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +
