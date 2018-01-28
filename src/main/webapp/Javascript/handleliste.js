@@ -428,7 +428,7 @@ function setupPage() {
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
                 '                       ' +
-                '                           <div class="input-group container-fluid utenPadding">' +
+                '                           <div class="input-group container-fluid utenPadding" style="z-index: 0">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
                 '                                   <div class="input-group-btn">' +
                 '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +

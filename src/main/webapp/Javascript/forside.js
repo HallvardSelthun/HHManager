@@ -97,6 +97,12 @@ function setupPage() {
         var beskrivelse = gjoremal[g].beskrivelse;
         $("#gjøremålForside").append('<li class="list-group-item">' + beskrivelse + '<input id="gjoremal'+gjoremal[g].gjoremalId+'" title="toggle all" type="checkbox" class="all pull-right"></li>')
     }
+    if(length > 0) {
+        $("#refreshGForside").show();
+    }else {
+        $("#refreshGForside").hide();
+    }
+
 
     /**
      * Løkka går gjennom handleliste og går igjennom antall varer. Definerer variabler som legger
