@@ -86,9 +86,6 @@ $(document).ready(function () {
     $('body').on('click', '#statistikkknapp', function () {
         window.location = "statistikk.html"
     });
-    $('body').on('click', '#kalenderknapp', function () {
-        window.location = "kalender.html"
-    });
 
     $('body').on('click', 'a#loggut', function () {
         localStorage.clear();
