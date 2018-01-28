@@ -373,7 +373,7 @@ function hentliste() {
 
         // Ny design, med knapper
         $("#husstander").append('<div  class="panel panel-default container-fluid" ">' +
-            '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#husstandAccordion' + husholdningId + '" onclick="displayDiv()">' +
+            '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#husstandAccordion' + husholdningId + '" >' +
             '       <h4 class= "col-md-9 panel-title" style="display: inline">' + husholdnavn + '</h4>' +
             '       <div class="stjerneogforlat pull-right">' +
             '           <span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange; margin: 6px" role="button" class="glyphicon '+string+'"></span>' + " " +
