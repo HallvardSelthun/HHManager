@@ -25,30 +25,10 @@ public class UtleggController {
         return GenereltController.slettRad("utlegg",utleggId);
     }
 
-    /* Mulig denne metoden skal brukes, mulig den ikke trengs. -Toni
-    /**
-     * Tar et ResultSet og legger informasjonen inn i et utlegg-objekt
-     * @param utleggId Unik ID for å identifisere hvert utlegg
-     * @return utlegg Et fullt utleggsobjekt.
-     */
-    /*
-    private static Utlegg lagutleggObjekt(ResultSet tomutlegg, int utleggId, ArrayList<Vare> varer) throws SQLException {
-
-        Utlegg utlegg = new Utlegg(utleggId);
-        utlegg.setUtleggerId(tomutlegg.getInt("husholdningId"));
-        utlegg.setUtleggId(tomutlegg.getInt("skaperId"));
-        utlegg.setBeskrivelse(tomutlegg.getString("navn"));
-        //bruker denne metoden getInt fra GenereltController? Må jeg lage en med getDouble?
-        //utlegg.setSum(tomutlegg.getInt("offentlig")==1); //Gjør om tinyInt til boolean (
-        //utlegg.setFrist(tomutlegg.getDate("frist"));
-        utlegg.setVarer(varer);
-
-        return utlegg;
-    }
-    */
 
     public static boolean setMotatt(int brukerId, int utleggId) {
-        String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
+        System.out.println("setMotatt brukes faktisk");
+        String getQuery = "UPDATE utleggsbetaler INNER JOIN utlegg ON utleggsbetaler.utleggId = utlegg.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId SET betalt = 1 WHERE skyldigBrukerId = "
                 + brukerId + " AND utleggsbetaler.utleggId = " + utleggId;
 
         try (Connection connection = ConnectionPool.getConnection()) {
