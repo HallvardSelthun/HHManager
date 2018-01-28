@@ -123,7 +123,10 @@ function leggTilNyHandleliste() {
     };
 
     if (handlelisteNavn == "") {
-        alert("Skriv navnet til handlelisten!");
+        $('#leggTilHandlelisteError').fadeIn(200);
+        setTimeout(function () {
+            $('#leggTilHandlelisteError').fadeIn(200);;
+        }, 3000);
         return;
     }
     /**
@@ -137,10 +140,13 @@ function leggTilNyHandleliste() {
         dataType: 'json',
         success: function (result) {
             var data = JSON.parse(result);
-            if (data) {
+            if (data>0) {
                 window.location = "handlelister.html";
             } else {
-                alert("feil!");
+                $('#leggTilHandleliste-1').fadeIn(200);
+                setTimeout(function () {
+                    $('#leggTilHandleliste-1').fadeOut(200);
+                }, 3000);
             }
         },
         error: function () {
@@ -192,7 +198,6 @@ function leggTilVare(hlId, navn) {
         handlelisteId: hlId
     };
     console.log(vare);
-
 
     if (nyGjenstandNavn == "") {
         alert("Skriv navnet til gjenstanden!");
