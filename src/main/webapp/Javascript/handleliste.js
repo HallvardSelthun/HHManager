@@ -174,11 +174,12 @@ function nyVare(that) {
     var listeId = that.attr('value');
     var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
+    console.log(input);
 
-    if(input == ""){
-        $("#tomVareAlert").fadeIn(200);
+    if(input == ""|| !input ||input.trim().length<1){
+        $("#nyVareAlert").fadeIn(200);
     }else {
-        $("#tomVareAlert").fadeOut(200);
+        $("#nyVareAlert").fadeOut(200);
         leggTilVare(listeId, input);
     }
 }
@@ -436,6 +437,9 @@ function setupPage() {
                 '                        </div>' +
                 '                       <div class="alert alert-danger" id ="velgVareAlert">'+
                 '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
+                '                      </div> '+
+                '                       <div class="alert alert-danger" id ="nyVareAlert">'+
+                '                           <strong>Feil input</strong> Inputfeltet kan ikke være tomt.'+
                 '                      </div> '+
                 '                   </div>' +
                 '               </div>' +
