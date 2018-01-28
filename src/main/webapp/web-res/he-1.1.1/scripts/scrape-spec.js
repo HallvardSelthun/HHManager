@@ -19,7 +19,6 @@ var writeJSON = function(fileName, data) {
 		'compact': false
 	});
 	fs.write(fileName, contents + '\n', 'w');
-	console.log(fileName + ' created successfully.');
 };
 
 open('https://html.spec.whatwg.org/', function() {
