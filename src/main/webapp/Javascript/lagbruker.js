@@ -60,9 +60,9 @@ $(document).ready(function () {
                 }else{
                     $('#registrerSuccess').fadeIn(200);
                     setTimeout(function () {
-                        $('#registrerSuccess').fadeOut(200);
+                        $('#registrerSuccess').fadeOut(200)
+                        window.location = "index.html";
                     }, 3000);
-                    window.location = "index.html";
                 }
             },
             error: function () {
