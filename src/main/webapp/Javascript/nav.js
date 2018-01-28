@@ -6,8 +6,6 @@
 var navnIHuset = [];
 var bruker = JSON.parse(localStorage.getItem("bruker"));
 var husholdningId = localStorage.getItem("husholdningId");
-console.log("rett under getItem");
-console.log(husholdningId);
 var navn;
 var epost;
 var husholdninger;
@@ -22,8 +20,6 @@ $(document).ready(function () {
     epost = he.encode(bruker.epost);
 
     $(function () {
-        console.log("Skriver ut husholdningId");
-        console.log(husholdningId);
         if(!husholdningId || husholdningId ==0){
             console.log("ALT NAV");
             $("#navbar").load("altnav.html");
@@ -50,8 +46,8 @@ $(document).ready(function () {
         localStorage.setItem("bruker", JSON.stringify(bruker));
         window.location = "forside.html";
     });
+
     $(document).on("click", "#toggleBtn", function () {
-        console.log($(this).attr('aria-expanded'));
         if(this === false) {
             $("body").css("padding-top", "300px");
         }
@@ -103,7 +99,6 @@ $(document).ready(function () {
         var epostmedlem = $("#navnMedlem").val();
         if(epostmedlem.length !== 0){
             navnIHuset.push(medlem);
-            console.log(navnIHuset);
             $("#fadenav").show();
             $("#fadenav3").hide();
         } else {
@@ -137,8 +132,6 @@ $(document).ready(function () {
             medlemmer: navnIHuset,
             adminId: bruker.brukerId
         };
-        console.log(husObj);
-        console.log("Prøver å sende husstand");
 
         if (navnHus == "") {
             alert("Skriv inn noe");

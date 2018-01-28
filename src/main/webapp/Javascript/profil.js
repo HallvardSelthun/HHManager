@@ -18,7 +18,6 @@ var navnIHuset2 = [];
  * Henter husholdningene som brukeren er medlem av
  */
 function getHusholdninger() {
-    console.log("Kjøres denne to ganger?")
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
         hentliste();
@@ -29,13 +28,8 @@ function getHusholdninger() {
 
 $(document).ready(function () {
     if(!(!photo || 0 === photo.length)) {
-        console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
-    }
-
-    $('.invisibleDiv').on("click", function () {
-        displayDiv();
-    });
+    };
 
 
     $('#submitProfilbilde').click(function(){
@@ -66,7 +60,6 @@ $(document).ready(function () {
             favHusholdning: hhId
         };
 
-        console.log(slettbruker);
         $.ajax({
             url: "server/BrukerService/fjernBrukerFraHusholdning",
             type: 'DELETE',
@@ -91,8 +84,6 @@ $(document).ready(function () {
             }
         })
     });
-
-    console.log(minBruker);
 
     $("#navnpåpers").text(minBruker.navn);
     $("#mail").text(minBruker.epost);
@@ -147,7 +138,6 @@ $(document).ready(function () {
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
         var nyttNavn = $("#nyttnavn").val();
-        console.log(nyttNavn);
         var bruker = {
             brukerId: brukerId,
             navn: nyttNavn
@@ -262,8 +252,6 @@ $(document).ready(function () {
             medlemmer: navnIHuset2,
             adminId: bruker.brukerId
         };
-        console.log(husObj);
-        console.log("Prøver å sende husstand");
         if (navnHus === "") {
             alert("Skriv inn noe");
             return;
@@ -276,7 +264,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
                 if (data) {
                     if (bruker.favHusholdning === 0) {
                         bruker.favHusholdning = 0;
@@ -354,11 +341,8 @@ $(document).on('click', '#opneLeggTilModal', function () {
  * Henter liste over husholdninger slik at en skal kunne sette favoritthusholdning på profilside.
  */
 function hentliste() {
-    console.log("lengde på minehusholdninger: "+mineHusholdninger.length)
     for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
-        console.log("Inne i loop")
         husholdningId = mineHusholdninger[k].husholdningId;
-        console.log(husholdningId);
         var husholdnavn = mineHusholdninger[k].navn;
         var medlemId;
         var admin = 0;
@@ -388,7 +372,7 @@ function hentliste() {
             '           <button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button" value="'+husholdningId+'">Forlat</button>' +
             '       </div>' +
             '   </div>' +
-            '<div id="husstandAccordion' + husholdningId +'" class="panel-collapse collapse invisibleDiv row">' +
+            '<div id="husstandAccordion' + husholdningId +'" class="panel-collapse collapse row">' +
             '   <div class="panel-body container-fluid">' +
             '       <ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
             '       <div id="list1" class="list-group"></div>' +
@@ -412,7 +396,6 @@ function hentliste() {
             if (mineHusholdninger[k].medlemmer[p].admin == 1){
                 erAdmin = ' <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Messaging-Crown-icon.png" height="14px" width="16px">';
             }
-            console.log(medlemnavn);
 
             $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + erAdmin + adminSlett+ giAdmin +'</li>');
         }
@@ -440,8 +423,6 @@ function settNyFav(id) {
             console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
             localStorage.setItem("husholdningId", nyId)
-            console.log("Interesting:");
-            console.log(minBruker);
             localStorage.setItem("bruker", JSON.stringify(minBruker));
         },
         error: function (data) {
@@ -460,15 +441,6 @@ function slettmedlem() {
 
 }
 
-function displayDiv() {
-    var x = document.getElementsByClassName("invisibleDiv");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-}
-
 function slettMedlem(bid, hid) {
     var idSlett = bid;
     var husIdSlett = hid;
@@ -483,7 +455,6 @@ function slettMedlem(bid, hid) {
         brukerId: idSlett,
         favHusholdning: husIdSlett
     };
-    console.log(bruker);
     $.ajax({
         url: "server/hhservice/slettMedlem",
         type: 'DELETE',
@@ -491,7 +462,6 @@ function slettMedlem(bid, hid) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            console.log("kkk");
             /*for(var m = 0, n = hus.medlemmer.length; m<n; m++) {
                 if (hus.medlemmer[m].brukerId == idSlett) {
                     hus.medlemmer.splice(m, 1);
@@ -552,7 +522,6 @@ function setProfilbilde(link) {
         brukerId: id,
         profilbilde: link
     };
-    console.log(bruker);
     $.ajax({
         url: "server/BrukerService/setProfilbilde",
         type: 'PUT',
