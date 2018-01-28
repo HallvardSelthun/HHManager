@@ -25,19 +25,6 @@ public class HandlelisteService {
     }
 
     /**
-     * Tar imot IDen til handlelisten fra klienten (i URLen), samt et nytt navn på listen.
-     * @param handlelisteId Unikt identifiserbar handlelisteId som er lagret på serveren
-     * @return String Det nye navnet, hentet fra databasen
-     */
-    @PUT
-    @Path("/{handlelisteId}")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public String endreNavn(@PathParam("handlelisteId") int handlelisteId, String nyttNavn) {
-        //Her skal det komme kode
-        return "det nye navnet, hentet fra databasen for å sjekke om det ble lagret";
-    }
-
-    /**
      * Tar imot IDen til handlelisten som skal slettes fra klienten (i URLen)
      * @param handlelisteId Unikt identifiserbar handlelisteId som er lagret på serveren
      * @return True hvis slettingen lykkes, false hvis ikke.
@@ -57,14 +44,6 @@ public class HandlelisteService {
      *                         avhengig av hva det var før.
      * @return boolean[] Array som er like lang som vare-arrayen og sier hvilken av checkboksene som er checked. True = checked, false = unchecked.
      */
-    @PUT
-    @Path("/{handlelisteId}/checkboxes")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public boolean[] checkEllerUncheck(@PathParam("handlelisteId") int handlelisteId, int[] checkedUnchecked) {
-        //Her skal det komme kode
-        //Bruk "NOT" på indeksene vi ønsker å endre i SQL for å spare tid
-        return null;
-    }
 
     /**
      * Tar imot en int-array der hver element sitt tall er indeksen til elementet som skal checkes/uncheckes i listen over
@@ -73,18 +52,6 @@ public class HandlelisteService {
      * @param pubEllerPriv Hvis true, skal listen være offentlig, hvis false, skal den være private
      * @return boolean Nåværende
      */
-
-    /**
-     * Henter handleliste fra database gitt handlelisteId.
-     * @param handlelisteId
-     * @return handlelisten
-     */
-    @GET
-    @Path("/{handlelisteId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Handleliste getHandleliste(@PathParam("handlelisteId") int handlelisteId) {
-        return HandlelisteController.getHandleliste(handlelisteId);
-    }
 
     /**
      * Henter egen handleliste gitt handlelisteid og brukerid.

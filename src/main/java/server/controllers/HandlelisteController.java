@@ -130,32 +130,6 @@ public class HandlelisteController {
         return handleliste;
     }
 
-    /**
-     * Send inn en handlelisteId for å få et Handleliste-objekt fra databasen.
-     * Kobler seg også opp mot varer-tabellen for å fylle handlelisten med varer.
-     *
-     * @param handlelisteId Unik ID for å identifisere hver handleliste
-     * @return Handleliste Et fullt handlelisteobjekt.
-     */
-    public static Handleliste getHandleliste(int handlelisteId) {
-        final String getQuery = "SELECT * FROM handleliste WHERE handlelisteId = " + handlelisteId + "";
-
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement getStatement = connection.prepareStatement(getQuery)) {
-
-            //Handleliste uten varer
-            ResultSet tomHandleliste = getStatement.executeQuery();
-
-            ArrayList<Vare> varer = getVarer(handlelisteId, connection);
-            tomHandleliste.next();
-
-            return lagHandlelisteObjekt(tomHandleliste, handlelisteId, varer);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * Hjelpemetode. Tar imot et resultset fra vare-tabellen og gjør det om til en array av varer.
