@@ -51,7 +51,6 @@ public class HusholdningsService {
      * Endrer navnet på en husholdning. Sender nytt navn til databasen vha. IDen.
      * @param id Husholdningens ID
      * @param navn Husholdningens nye navn
-     * @return boolean True hvis det lykkes, false hvis det ikke lykkes.
      */
     @PUT
     @Path("/husholdning/{id}")

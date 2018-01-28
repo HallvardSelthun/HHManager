@@ -30,12 +30,12 @@ public class OppgjorTest {
     }
 
     @Test
-    public void getOppgjørId() throws Exception {
+    public void getOppgjorId() throws Exception {
 
     }
 
     @Test
-    public void setOppgjørId() throws Exception {
+    public void setOppgjorId() throws Exception {
 
     }
 
