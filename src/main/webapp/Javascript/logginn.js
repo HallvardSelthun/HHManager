@@ -29,7 +29,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var innBruker = (result);
-                console.log(innBruker);
                 if (innBruker == null) {
                     $('#epostPassordAlert').fadeIn(200);
                         return false;
@@ -41,9 +40,11 @@ $(document).ready(function () {
                     window.location = "forside.html";
                     return;
                 }
+                localStorage.setItem("bruker", JSON.stringify(innBruker));
+                window.location = "profil.html";
             },
             error: function () {
-                alert("serverfeil kall 2 :/")
+                $('#errorModal').modal('show');
             }
         })
     });

@@ -17,7 +17,6 @@ $(document).ready(function(){
         vareGraf();
 
         husholdninger= JSON.parse(localStorage.getItem("husholdninger"));
-        console.log("husholdningId: "+husholdningId);
         for(var i = 0; i<husholdninger.length;i++){
             var hhId = husholdninger[i].husholdningId;
             var hhNavn =husholdninger[i].navn;

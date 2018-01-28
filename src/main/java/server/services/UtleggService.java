@@ -1,4 +1,4 @@
-package server.services;
+ package server.services;
 
 import server.restklasser.*;
 import server.controllers.UtleggController;
@@ -61,18 +61,6 @@ public class UtleggService {
         return UtleggController.setMotattOppgjor(utleggsbetalere);
     }
 
-    /*
-     * Henter alle brukere som er involvert i et unikt utlegg.
-     * @param utleggId er en unik id for å indentifisere utlegg.
-     * @return ArrayList over alle utleggsbetalere for et unikt utlegg via utleggid
-     */
-    /*
-    @GET
-    @Path("/{utleggId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Utleggsbetaler> getUtleggsBetalere(@PathParam("utleggId") int utleggId) {
-        return UtleggController.getUtleggsbetalere(utleggId);
-    }*/
     @POST
     @Path("/nyttutlegg")
     @Consumes(MediaType.APPLICATION_JSON)

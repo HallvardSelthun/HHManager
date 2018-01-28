@@ -56,11 +56,8 @@ public class HusholdningsService {
     @PUT
     @Path("/husholdning/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean endreHusholdningsNavn(@PathParam("id") int id, String navn) {
-        HusholdningController.endreNavn(id, navn);
-        //Sende husholdningsnavn til database
-        //for å endre navn på husholdning. SQL lager ny ID, vi returnerer den
-        return false;
+    public void endreHusholdningsNavn(@PathParam("id") int id, String navn) {
+        HusholdningController   .endreNavn(id, navn);
     }
 
     /**

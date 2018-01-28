@@ -28,7 +28,7 @@ public class Mail {
         if (eposter == null || eposter.size() < 1) return;
         StringBuilder s = new StringBuilder("Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
                 "\n\nDu har blitt lagt til i husholdningen " + hushold +
-                "\nKlikk lenken for å kommme til HHManagers forside: http://localhost:8080/server");
+                "\nKlikk lenken for å kommme til HHManagers forside: http://localhost:8080/HHManager");
         sendTilFlere(eposter, s);
     }
 
@@ -41,7 +41,7 @@ public class Mail {
         if (brukere == null || brukere.size() < 1) return;
         for (Bruker bruker : brukere) {
             String msg = "Velkommen til HousHoldManger, systemet som gir deg en enklere hverdag." +
-                    "\n\nDu har blitt lagt til i husholdningen" + hushold + "\nBrukernavn: " + bruker.getEpost() +
+                    "\n\nDu har blitt lagt til i husholdningen " + hushold + "\nBrukernavn: " + bruker.getEpost() +
                     "\nPassord: " + bruker.getPassord() +
                     "\n\nFølg lenken for å logge inn: http://localhost:8080/HHManager";
             sendTilEn(bruker.getEpost(), msg);
@@ -52,7 +52,7 @@ public class Mail {
         String msg;
         if (brukerId < 1){
             msg = "Hei!" +
-                    "\nDu er ikke registrert i vårt system, vennligst registrer deg på: http://localhost:8080/server/lagbruker.html" + regards;
+                    "\nDu er ikke registrert i vårt system, vennligst registrer deg på: http://localhost:8080/HHManager/lagbruker.html" + regards;
         } else {
             String pw = BrukerController.nyttTilfeldigPass(brukerId);
             msg = "Velkommen til HouseHoldManger, systemet som gir deg en enklere hverdag." +

@@ -29,7 +29,6 @@ function gethhData() {
 
 $(document).on("click", ".valgtMedlem", function () {
     id = $(this).attr('value');
-    console.log(id);
     $("#droppknapp").text($(this).text());
 });
 
@@ -50,6 +49,7 @@ function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = he.encode(fellesgjoremal[i].beskrivelse);
         var frist = fellesgjoremal[i].frist;
+        if (!frist) frist= ' ';
         var gjoremalId = fellesgjoremal[i].gjoremalId;
 
         $("#fellesGjoremaal").append('<li class="list-group-item ">' + '<b>' + fellesnavn + '</b>' +
@@ -65,7 +65,6 @@ function hentFellesGjoremal() {
 function hentFellesGjoremalData() {
     $.getJSON("server/gjoremalservice/" + husholdningId, function (data) {
         fellesgjoremal = data;
-        console.log(fellesgjoremal);
     });
 }
 
@@ -78,7 +77,7 @@ function hentMinegjoremal() {
         var gjoremalId = minegjoremal[i].gjoremalId;
         var beskrivelse = he.encode(minegjoremal[i].beskrivelse);
         var frist = minegjoremal[i].frist;
-        console.log(minegjoremal);
+        if (!frist) frist = '';
 
         $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremalId + '">' + '<b>' + beskrivelse + '</b>' +
             ",  " + frist +
@@ -109,9 +108,7 @@ $(document).ready(function () {
         for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
             var gjoremal = fellesgjoremal[i];
             var gjoremalId = fellesgjoremal[i].gjoremalId;
-            console.log(gjoremalId);
             var fullfort = document.getElementById("checkboxid2" + gjoremalId).checked;
-            console.log(fullfort);
             if (fullfort) {
 
                 $.ajax({
@@ -122,13 +119,10 @@ $(document).ready(function () {
                     dataType: 'json',
                     success: function (result) {
                         var data = JSON.parse(result); // gjør string til json-objekt
-                        console.log("Data: " + data);
                         if (data) {
                             var index = fellesgjoremal.indexOf(gjoremal);
-                            console.log("Index: " + index);
                             fellesgjoremal.splice(index, 1);
                             localStorage.setItem("bruker", JSON.stringify(minBruker));
-                            console.log(minBruker.gjoremal);
                             alert("Det gikk bra!");
                         } else {
                             alert("feil!");
@@ -154,14 +148,11 @@ $(document).ready(function () {
             var gjoremal = minegjoremal[i];
             var gjoremalId = minegjoremal[i].gjoremalId;
             var fullfort = document.getElementById("checkboxid" + gjoremalId).checked;
-            console.log(fullfort);
             if (fullfort) {
                 ffListe.push(i);
             }
-            console.log(ffListe);
         }
         for (var j = ffListe.length - 1; j >= 0; j--) {
-            console.log(j);
             gjoremal = minegjoremal[ffListe[j]];
             $.ajax({
                 url: "server/gjoremalservice/fullfort",
@@ -214,7 +205,7 @@ $(document).ready(function () {
             husholdningId: husholdningId
         };
         if (beskrivelse == "") {
-            $("#feil2").fadeIn();
+            ($("#feil2").fadeIn(200)).delay(2500).fadeOut(2500);
             return;
         }
 
@@ -234,7 +225,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
                 if (data) {
                     window.location = "gjoremaal.html";
                 } else {
@@ -274,7 +264,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log(data);
                 if (data > 0) {
                     var gjoremal2 = {
                         gjoremalId: data,
@@ -284,7 +273,6 @@ $(document).ready(function () {
                         beskrivelse: beskrivelse,
                         frist: frist
                     };
-                    console.log("Gjoremal2" + gjoremal2);
                     minBruker.gjoremal.push(gjoremal2);
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     window.location = "gjoremaal.html";

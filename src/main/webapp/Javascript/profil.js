@@ -20,23 +20,16 @@ var navnIHuset2 = [];
 function getHusholdninger() {
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
-        console.log(minBruker.favHusholdning);
         if(!minBruker.favHusholdning && mineHusholdninger.length>0){
-            settNyFav(mineHusholdninger[0].husholdningId);
-            setTimeout(function(){
-                window.location="profil.html"
-
-            },200);
+            settNyFav(mineHusholdninger[0].husholdningId, true);
         }
         hentliste();
-        console.log(data);
     });
 }
 
 
 $(document).ready(function () {
 
-    $('#errorModal').appendTo('body').modal('show');
 
     if(!(!photo || 0 === photo.length)) {
         $('#photo').html('<img style="width:120px; height:125px; top: 30px" src="' + photo + '">');
@@ -52,9 +45,6 @@ $(document).ready(function () {
         minBruker.profilbilde = photo;
         localStorage.setItem("bruker", JSON.stringify(minBruker));
     });
-
-    //onload="resizeImg(this,140, 120)"
-    //gethhData();
 
     getHusholdninger();
 
@@ -79,7 +69,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result);
-                console.log(data);
                 if(data) {
                     window.location = "profil.html";
                 }
@@ -175,9 +164,6 @@ $(document).ready(function () {
         });
     });
 
-    function endre() {
-    }
-
     /**
      * Bruker kan endre epost ved å trykke endre epost. Kriterier som at tekstfeltet ikke kan være tomt, samt at
      * epostene må være like må være oppfylt.
@@ -221,9 +207,6 @@ $(document).ready(function () {
             },3000);
         }
     });
-
-    function lagre() {
-    }
 
     // til lagNyHusstandModalen
     $('body').on('click', '#leggTilMedlemKnapp2', function () {
@@ -287,31 +270,18 @@ $(document).ready(function () {
                         $('#nyHusError').fadeOut(200);
                     }, 3000);
                 }
+                window.location = "profil.html";
             },
             error: function () {
                 $('#errorModal').modal('show');
             }
         });
     });
-   /* setTimeout(function () {
-        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
-    }, 150);*/
 });
-    /*$("#nyHusProfil").on("click", function () {
-        $("#modaldiv").load("lagnyhusstand.html");
-    });*/
 
     $(document).on('click', '.removeButton', function () {
         hhId = ($(this).attr('value'))
     });
-
-/*
-
-    var script = document.createElement('script');
-    script.src = "Javascript/nav.js";
-    script.async = true;
-    document.head.appendChild(script);
-*/
 
 
 
@@ -328,7 +298,7 @@ $(document).on('click', '.glyphicon', function () {
         $(this).removeClass('glyphicon-star-empty');
         $(this).addClass('glyphicon-star');
         var id = $(this).attr('value');
-        settNyFav(id);
+        settNyFav(id, false);
     }
 });
 
@@ -398,6 +368,8 @@ function hentliste() {
         for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
             var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
             var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            var medlemEpost = mineHusholdninger[k].medlemmer[p].epost;
+            if (!medlemnavn) medlemnavn=medlemEpost;
             if(admin == 1){
                 adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
                     'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
@@ -421,7 +393,7 @@ function hentliste() {
  * Setter ny favoritthusholdning; den som skal vises på forsiden.
  * @param id: Bruker id som parameter for å sette ny husholdning
  */
-function settNyFav(id) {
+function settNyFav(id, byttSide) {
     var nyId = parseInt(id);
     var bruker= {
         brukerId: brukerId,
@@ -435,11 +407,13 @@ function settNyFav(id) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            console.log("Det gikk bra :)");
             minBruker.favHusholdning = nyId;
             localStorage.setItem("husholdningId", nyId)
             localStorage.setItem("bruker", JSON.stringify(minBruker));
-            $('#errorModal').modal('show');
+            if (byttSide) {
+                window.location="profil.html";
+            }
+
         },
         error: function (data) {
             $('#errorModal').modal('show');
@@ -478,20 +452,13 @@ function slettMedlem(bid, hid) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function () {
-            /*for(var m = 0, n = hus.medlemmer.length; m<n; m++) {
-                if (hus.medlemmer[m].brukerId == idSlett) {
-                    hus.medlemmer.splice(m, 1);
-                    mineHusholdninger[t].medlemmer = hus.medlemmer;
-                    localStorage.setItem("husholdninger", mineHusholdninger);
-                    break;
-                }
-            }*/
+            window.location = "profil.html"
+
         },
         error: function () {
             $('#errorModal').modal('show');
         }
     });
-    window.location = "profil.html";
 }
 
 function leggTilMedlem(epost, husId) {
@@ -508,6 +475,7 @@ function leggTilMedlem(epost, husId) {
         success: function (data) {
             var result = JSON.parse(data);
             if(result){
+                $("#medlemepost").val('');
                 $('#regNyttMedlemS').fadeIn(200);
                 setTimeout(function () {
                     $('#regNyttMedlemS').fadeOut(200);
@@ -522,7 +490,7 @@ function leggTilMedlem(epost, husId) {
         error: function () {
             $('#errorModal').modal('show');        }
     });
-    window.location = "profil.html";
+    //window.location = "profil.html";
 }
 
 function resizeImg(img, height, width) {

@@ -465,7 +465,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin, profilbilde FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.epost, bruker.navn, bruker.brukerId, admin, profilbilde FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -476,6 +476,7 @@ public class HusholdningController {
                 nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
                 nyMedlem.setAdmin(medlemRS.getInt("admin"));
                 nyMedlem.setProfilbilde(medlemRS.getString("profilbilde"));
+                nyMedlem.setEpost(medlemRS.getString("epost"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {
@@ -586,6 +587,7 @@ public class HusholdningController {
         ArrayList<String> medlemer = new ArrayList<>();
         String epost = bruker.getEpost();
         medlemer.add(epost);
+        String getHHNavn = "SELECT navn FROM husholdning WHERE husholdningId = ?";
         String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = ?";
         String regNyttMedlem = "INSERT INTO hhmedlem (brukerId, husholdningId, admin) VALUES (?, ?, 0)";
         String lagNyBruker = "INSERT INTO bruker (favorittHusholdning, epost, hash, salt) VALUES (?, ?, ?, ?)";
@@ -601,7 +603,12 @@ public class HusholdningController {
                 ps.setInt(1,brukerId);
                 ps.setInt(2,husholdningId);
                 ps.executeUpdate();
-                Mail.sendAllerede(medlemer, Integer.toString(husholdningId));
+                ps = con.prepareStatement(getHHNavn);
+                ps.setInt(1,husholdningId);
+                rs = ps.executeQuery();
+                rs.next();
+                String hhNavn = rs.getString(1);
+                Mail.sendAllerede(medlemer, hhNavn);
                 return true;
             }else{
                 if (bruker.getPassord() == null) {
@@ -633,9 +640,16 @@ public class HusholdningController {
                 ps.setInt(1, brukerId);
                 ps.setInt(2,husholdningId);
                 ps.executeUpdate();
+
+                ps = con.prepareStatement(getHHNavn);
+                ps.setInt(1,husholdningId);
+
+                rs = ps.executeQuery();
+                rs.next();
+                String hhNavn = rs.getString(1);
                 ArrayList<Bruker> brukerArrayList = new ArrayList<>();
                 brukerArrayList.add(bruker);
-                Mail.sendUreg(brukerArrayList, Integer.toString(husholdningId));
+                Mail.sendUreg(brukerArrayList, hhNavn);
                 return true;
             }
         }catch (SQLException e){

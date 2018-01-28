@@ -4,6 +4,7 @@
     <title>Household Manager</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/forside.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
@@ -21,8 +22,8 @@
     <div class="row">
         <div class="col-md-8 vl">
             <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
                     <div class="container-fluid">
                         <div class="row">
                             <!--KOMMENTARFELT-->
@@ -31,6 +32,9 @@
                                     <h2 id="nyhet"></h2>
                                     <div class="skrivNyttInnlegg">
                                         <textarea class="form-control" rows="5" id="comment" placeholder="Skriv et innlegg" onfocus="this.placeholder=''" onblur="this.placeholder='Skriv et innlegg'"></textarea>
+                                        <div class="alert alert-danger" id ="sendAlert">
+                                            <strong>Feil input!</strong> Du må skrive noe først.
+                                        </div>
                                         <p align="right">
                                             <button type="button" class="btn btn-primary" id="commentBtn">Send</button>
                                         </p>
@@ -44,7 +48,7 @@
                                         <div class="container-fluid" id="nyhetsdiv">
                                             <div class="wrapper">
                                                 <ul class="innleggsliste utenPadding" style="list-style: none"></ul>
-                                                <button id="next" class="btn btn-primary">Show More</button>
+                                                <button id="next" class="btn btn-primary">Vis alt</button>
                                             </div>
                                         </div>
                                     </div>
@@ -129,9 +133,9 @@
                                     <div class="panel-body">
                                         <ul class="list-group" id="handlelisteForside">
                                         </ul>
-                                        <button id="utleggForside" type="button" class="btn btn-primary pull-right hiddenButton utleggKnapp" data-toggle="modal"
-                                        data-target="#utleggmodal" >Lag utlegg</button>
                                         <button id="utenUtleggForside" type="button" class="btn btn-primary pull-right hiddenButton utenUtleggKnapp" value ="'+handlelisteId+'" >Kjøpt uten utlegg</button>
+                                        <button id="utleggForside" type="button" class="btn btn-primary pull-right hiddenButton utleggKnapp" data-toggle="modal"
+                                                data-target="#utleggmodal" >Lag utlegg</button>
                                     </div>
 
                                 </div>
@@ -166,7 +170,10 @@
                 </div>
                 <div class="sum">
                     <h4>Sum</h4>
-                    <input id="sum" type="number" placeholder="Skriv inn summen for varene">
+                    <input id="sum" class="form-control" name="textfield" placeholder="Skriv sum her." type="number">
+                </div>
+                <div class="alert alert-danger" id ="sendUtleggAlert">
+                    <strong>Feil input!</strong> Du må krysse av medbetalere og/eller gi en sum.
                 </div>
             </div>
             <div class="modal-footer">

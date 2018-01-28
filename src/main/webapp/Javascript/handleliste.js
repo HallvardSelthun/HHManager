@@ -46,7 +46,7 @@ $(document).on('click', '.utleggKnapp', function(){
     knappid = $(this).attr('id')
     checkChecked("liste" + $(this).attr('id').slice(6));
     if (boxesChecked == false) {
-        $('#velgVareAlert').fadeIn(200);
+        ($('#velgVareAlert').fadeIn(200)).delay(2500).fadeOut(400);
         return false;
     }else{
         $('#velgVareAlert').fadeOut(200);
@@ -92,9 +92,7 @@ function setVarerKjopt(listeId) {
         dataType: 'json',
         success: function (result) {
             var data=JSON.parse(result)
-            if(data){
                 window.location =" handlelister.html"
-            }else console.log("not ok")
         },
         error: function () {
             $('#errorModal').modal('show');
@@ -106,7 +104,7 @@ function setVarerKjopt(listeId) {
  * varer i en tabell, samt spør og sjekker om handleliste skal være offentlig eller ikke.
  */
 function leggTilNyHandleliste() {
-    var handlelisteNavn = he.encode($("#handlelisteNavn").val());
+    var handlelisteNavn = $("#handlelisteNavn").val();
     var varer = [];
     var offentlig = 0;
     var isChecked = $('#offentligKnapp').is(':checked');
@@ -125,7 +123,7 @@ function leggTilNyHandleliste() {
     if (handlelisteNavn == "") {
         $('#leggTilHandlelisteError').fadeIn(200);
         setTimeout(function () {
-            $('#leggTilHandlelisteError').fadeIn(200);;
+            ($('#leggTilHandlelisteError').fadeIn(200)).delay(500).fadeOut(400);
         }, 3000);
         return;
     }
@@ -161,7 +159,6 @@ $(document).on('click', '.endreOffentlig', function () {
     if ($(this).is(":checked")){
         boolean = true;
     }
-    console.log(boolean);
     endreOffentlig(handlelisteId, boolean);
 });
 
@@ -180,10 +177,9 @@ function nyVare(that) {
     var listeId = that.attr('value');
     var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
-    console.log(input);
 
     if(input == ""|| !input ||input.trim().length<1){
-        $("#nyVareAlert").fadeIn(200);
+        ($("#nyVareAlert").fadeIn(200)).delay(2500).fadeOut(400);
     }else {
         $("#nyVareAlert").fadeOut(200);
         leggTilVare(listeId, input);
@@ -197,7 +193,6 @@ function leggTilVare(hlId, navn) {
         varenavn: navn,
         handlelisteId: hlId
     };
-    console.log(vare);
 
     if (nyGjenstandNavn == "") {
         alert("Skriv navnet til gjenstanden!");
@@ -227,7 +222,7 @@ function leggTilVare(hlId, navn) {
                 $('#errorModal').modal('show');
             }
         });
-    },200);
+    },100);
 }
 
 /**
@@ -287,9 +282,11 @@ function checkChecked(formname) {
 
         }
     });
-
-
 }
+
+$(document).on('click', '.closeUtlegg', function () {
+    location.reload(true);
+});
 
 function lagUtleggVarer() {
     var vareNavn = "";
@@ -322,7 +319,7 @@ function sendUtlegg() {
     beskrivelse = beskrivelse.replace(-1, ".");
 
     if(sum == "" ||  sum <=0){
-        $("#sumAlert").fadeIn(200);
+        ($("#sumAlert").fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }else{
         $("#sumAlert").fadeOut(200);
@@ -368,16 +365,22 @@ function sendUtlegg() {
         success: function (result) {
             var data =JSON.parse(result);
             if (data){ //Returnerer vel true
-                location.reload(true);
-                alert(" :D");
+                $('#utleggSuccess').fadeIn(200);
+                setTimeout(function () {
+                    $('#utleggSuccess').fadeOut(200);
+                }, 3000);
             }else{
-                alert("D:");
+                $('#utleggError').fadeIn(200);
+                setTimeout(function () {
+                    $('#utleggError').fadeOut(200);
+                }, 3000);
             }
+            location.reload(true);
         },
         error: function () {
             $('#errorModal').modal('show');
         }
-    })
+    });
 }
 
 /**
@@ -423,7 +426,7 @@ function setupPage() {
                 '               <ul id="liste' + handlelisteId + '" class="list-group row"></ul>' +
                 '               <div id="list1" class="list-group row">' +
                 '                       ' +
-                '                           <div class="input-group container-fluid utenPadding">' +
+                '                           <div class="input-group container-fluid utenPadding" style="z-index: 0">' +
                 '                               <input id="' + handlelisteId + '" class="form-control leggTilNyGjenstand" placeholder="Legg til ny gjenstand i listen" type="text">' +
                 '                                   <div class="input-group-btn">' +
                 '                                       <button class="btn btn-default nyVareKnapp" value="'+handlelisteId+'">' +
@@ -432,7 +435,13 @@ function setupPage() {
                 '                                   </div>' +
                 '                           </div>' +
                 '                      ' +
-                '                       <div class="row">' +
+                '                       <br><div class="alert alert-danger" id ="velgVareAlert">' +
+                '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.' +
+                '                                      </div>' +
+                '                               <div class="alert alert-danger" id ="nyVareAlert">' +
+                '                           <strong>Feil input</strong> Inputfeltet kan ikke være tomt.' +
+                '                                      </div>' +
+                '                                   <div class="row">' +
                 '                           <div class="container-fluid">' +
                 '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
                 '  style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
@@ -440,12 +449,6 @@ function setupPage() {
                 '                             utlegg</button>' +
                 '                           <!-- Rounded switch -->' + offentligSlider +
                 '                        </div>' +
-                '                       <div class="alert alert-danger" id ="velgVareAlert">'+
-                '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
-                '                      </div> '+
-                '                       <div class="alert alert-danger" id ="nyVareAlert">'+
-                '                           <strong>Feil input</strong> Inputfeltet kan ikke være tomt.'+
-                '                      </div> '+
                 '                   </div>' +
                 '               </div>' +
                 '           </div>' +

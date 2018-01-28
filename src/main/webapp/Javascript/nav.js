@@ -15,13 +15,11 @@ var varseler;
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
  */
 $(document).ready(function () {
-    if(bruker.navn)    navn = he.encode(bruker.navn);
-
+    if(bruker.navn) navn = he.encode(bruker.navn);
     epost = he.encode(bruker.epost);
 
     $(function () {
         if(!husholdningId || husholdningId ==0){
-            console.log("ALT NAV");
             $("#navbar").load("altnav.html");
         } else{
             $("#navbar").load("nav.html");
@@ -31,7 +29,6 @@ $(document).ready(function () {
 
     if (!bruker) {
         window.location = "index.html";
-        console.log("Redirecting")
     }
     getHusholdningerNav();
 
@@ -104,16 +101,6 @@ $(document).ready(function () {
         }
     });
 
-  /*  $('body').on('click', "#alertbox", function () {
-        $("#fadenav").hide();
-        console.log("hide");
-    });
-
-    $('body').on('click', "#alertbox", function () {
-        $("#fadenav3").hide();
-        console.log("hide");
-    });*/
-
     //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
     $("body").on("click", "#lagreHusKnapp", function () {
         var navnHus = he.encode($("#navnHusstand").val());
@@ -142,7 +129,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
-                console.log("Data: " + data);
                 if (data) {
                     if (bruker.favHusholdning == 0) {
                         bruker.favHusholdning = 0;
@@ -184,14 +170,15 @@ function getHusholdningerNav() {
         $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
-
-        setTimeout(function () {
+        setTimeout(function(){ //Timeout for å vente til den andre HTMLen er lagt til
             for (i = 0, l = husholdninger.length; i < l; i++) {
                 var navn = he.encode(husholdninger[i].navn);
                 var id = husholdninger[i].husholdningId;
                 $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
             }
-        }, 300);
+            }, 300);
+
+
     });
 }
 
@@ -239,10 +226,7 @@ function henteVarsel() {
         $("#antallVarsler").text(varselListe);
         $("#ant").text(varselListe);
         $("#antVarsler").text(varselListe);
-        setTimeout(function () {
-            utgaatteGjoremaal(varseler);
-        }, 300);
-
+        utgaatteGjoremaal(varseler);
     });
 
 }

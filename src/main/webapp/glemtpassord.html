@@ -28,10 +28,28 @@
         <div class="alert alert-danger" id="feil">
             <strong>Feil!</strong> Noe gikk galt under sending. Sjekk at epost-adressen er riktig, og prøv igjen.
         </div>
-        <button id="sendNyttPassordKnapp" class="btn btn-lg btn-primary btn-block">Send nytt passord</button>
-        <button id="tilbake" class="btn btn-lg btn-primary btn-block"> Tilbake til logg inn</button>
+        <button id="sendNyttPassordKnapp" class="btn btn-primary btn-block">Send nytt passord</button>
+        <button id="tilbake" class="btn btn-primary btn-block"> Tilbake til logg inn</button>
     </div>
 </div>
 <div id="modaldiv"></div>
+<div class="modal fade" id="errorModal" data-backdrop="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header modal-header-serverfeil">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Serverfeil</h4>
+            </div>
+            <div class="modal-body">
+                <p align="center">Forespørsel ble ikke registrert grunnet serverfeil.</p>
+            </div>
+            <div class="modal-footer">
+                <p align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

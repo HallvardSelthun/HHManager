@@ -41,7 +41,7 @@ public class HandlelisteController {
      */
     public static Handleliste getForsideListe(int husholdningId, int brukerId) {
         int handlelisteId;
-        String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + husholdningId + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
+        String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + husholdningId + " AND (offentlig = 1 OR skaperId = " + brukerId + ") AND  gjemt = 0";
         Handleliste handleliste = new Handleliste();
         try (Connection con = ConnectionPool.getConnection()) {
             Statement s = con.createStatement();
@@ -130,32 +130,6 @@ public class HandlelisteController {
         return handleliste;
     }
 
-    /**
-     * Send inn en handlelisteId for å få et Handleliste-objekt fra databasen.
-     * Kobler seg også opp mot varer-tabellen for å fylle handlelisten med varer.
-     *
-     * @param handlelisteId Unik ID for å identifisere hver handleliste
-     * @return Handleliste Et fullt handlelisteobjekt.
-     */
-    public static Handleliste getHandleliste(int handlelisteId) {
-        final String getQuery = "SELECT * FROM handleliste WHERE handlelisteId = " + handlelisteId + "";
-
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement getStatement = connection.prepareStatement(getQuery)) {
-
-            //Handleliste uten varer
-            ResultSet tomHandleliste = getStatement.executeQuery();
-
-            ArrayList<Vare> varer = getVarer(handlelisteId, connection);
-            tomHandleliste.next();
-
-            return lagHandlelisteObjekt(tomHandleliste, handlelisteId, varer);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * Hjelpemetode. Tar imot et resultset fra vare-tabellen og gjør det om til en array av varer.

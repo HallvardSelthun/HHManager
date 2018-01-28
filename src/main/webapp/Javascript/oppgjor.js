@@ -28,7 +28,6 @@ $(document).ready(function () {
      * Knappen høret til lag utlegg-modalen
      */
     $("#lagUtlegg").on('click', function () {
-        console.log("LAG UTLEGG KLIKKET");
         lagNyttUtlegg();
     });
 
@@ -81,7 +80,7 @@ $(document).ready(function () {
                 klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
                 liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
                 if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
-                    $("#collapse"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
+                    $("#collapseOpgj"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
                 }
             });
         }
@@ -172,14 +171,14 @@ function utregnOppgjorSum(oppgjorArray) {
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             sum = sum - oppgjorArray[i].utleggJegSkylder[j].delSum;
         }
-        oppgjorArray[i].skylderSum = Math.round(sum);
+        oppgjorArray[i].skylderSum = Math.round(sum*100)/100;
         totalSum = sum;
         sum = 0;
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             sum = sum + oppgjorArray[i].utleggDenneSkylderMeg[j].delSum;
         }
 
-        oppgjorArray[i].skylderMegSum = Math.round(sum);
+        oppgjorArray[i].skylderMegSum = Math.round(sum*100)/100;
         totalSum = totalSum + sum;
         if (totalSum > 0) {
             oppgjorArray[i].posNeg = "Pos";
@@ -187,7 +186,7 @@ function utregnOppgjorSum(oppgjorArray) {
         else {
             oppgjorArray[i].posNeg = "Neg";
         }
-        oppgjorArray[i].totalSum = Math.round(totalSum);
+        oppgjorArray[i].totalSum = Math.round(totalSum*100)/100;
     }
 
     displayOppgjor(oppgjorArray);
@@ -247,12 +246,12 @@ function leggInnRadNr(callback, oppgjorArray) {
         var j;
         for (j = 0; j < oppgjorArray[i].utleggJegSkylder.length; j++) {
             oppgjorArray[i].utleggJegSkylder[j].radNr = j;
-            oppgjorArray[i].utleggJegSkylder[j].delSum = Math.round(oppgjorArray[i].utleggJegSkylder[j].delSum);
+            oppgjorArray[i].utleggJegSkylder[j].delSum = Math.round(oppgjorArray[i].utleggJegSkylder[j].delSum*100)/100;
         }
 
         for (j = 0; j < oppgjorArray[i].utleggDenneSkylderMeg.length; j++) {
             oppgjorArray[i].utleggDenneSkylderMeg[j].radNr = j;
-            oppgjorArray[i].utleggDenneSkylderMeg[j].delSum = Math.round(oppgjorArray[i].utleggDenneSkylderMeg[j].delSum);
+            oppgjorArray[i].utleggDenneSkylderMeg[j].delSum = Math.round(oppgjorArray[i].utleggDenneSkylderMeg[j].delSum*100)/100;
         }
     }
     callback(oppgjorArray);
@@ -302,20 +301,15 @@ function lastInnOppgjor(brukerId, betalt) {
                 valgtOppgjorArray = liveOppgjor;
                 filtrerForXSS(liveOppgjor);
                 tellAntallUtleggsbetalere(liveOppgjor);
-                console.log("Live oppgjor");
-                console.log(liveOppgjor);
             }
             else {
                 ferdigeOppgjor = result;
-                console.log("Ferdigeoppgjor");
-                console.log(ferdigeOppgjor);
                 filtrerForXSS(ferdigeOppgjor);
                 valgtOppgjorArray = ferdigeOppgjor;
             }
             if (!result){
                 alert("Noe rart har skjedd i lastInnOppgjor");
             }else{
-                console.log(result);
                 leggInnRadNr(utregnOppgjorSum, valgtOppgjorArray);
             }
         },
@@ -340,7 +334,6 @@ function checkOppgjorSum(utleggsbetalere, next) {
         dataType: 'json',
         success: function (result) {
             suksess = result;
-            alert("suksess ny greie: "+suksess);
             next();
         },
         error: function () {
@@ -374,13 +367,10 @@ $(function() {
     var alertId = he.encode("#beskrivelseAlert");
     var content = $(inputId).val();
     $(inputId).keyup(function() {
-        console.log("Inne i tekstfelt"+$(inputId).val());
         if ($(inputId).val() == '') {
             $(alertId).fadeIn(200);
-            console.log("FadeIn");
         }
         else {
-            console.log("FadeOut");
             $(alertId).fadeOut(200);
         }
     })
@@ -499,7 +489,6 @@ function displayHistorikk(oppgjorArray) {
     for (var i = 0; i < oppgjorArray.length; i++) {
         $.tmpl("historikkTemplate", oppgjorArray[i]).appendTo($("#historikkMain"));
         $.tmpl("rad-template-duSkylder-historikk", oppgjorArray[i].utleggJegSkylder).appendTo($("#radMinusHisto"+i+""));
-        console.log("Skal ha lagt inn radminushisto");
         $.tmpl("rad-template-deSkylder-historikk", oppgjorArray[i].utleggDenneSkylderMeg).appendTo($("#radPlusHisto"+i+""));
     }
     alleredeLastetInnHistorikk = true;
@@ -517,6 +506,8 @@ function lastInnBrukere() {
             for(var k =0 , l = husholdninger[j].medlemmer.length; k<l; k++){
                 var navn = husholdninger[j].medlemmer[k].navn;
                 var id = husholdninger[j].medlemmer[k].brukerId;
+                var epost = husholdninger[j].medlemmer[k].epost;
+                if(!navn) navn=epost;
                 if (id != bruker.brukerId){
                     $("#personer").append('<li class="medlemCheck"><div><label role="button" type="checkbox" class="dropdown-menu-item checkbox skalAlignes" >'+
                         '<input id="'+id+'" type="checkbox" role="button" value="'+navn+'" class="medlemCheck">'+

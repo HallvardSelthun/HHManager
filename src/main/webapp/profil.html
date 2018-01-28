@@ -164,41 +164,44 @@
             <div class="col-md-6">
                 <div class="container-fluid utenPadding">
                     <div class="row">
-                        <div class="col-md-12 info">
+                        <div class=" info">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div id="photo">
-                                            <img style="width:120px; height:120px; top: 30px;" src="http://kiwilandingpad.com/wp-content/uploads/2014/05/avatar-placeholder.png">
+                                            <img style="width:120px; height:120px; top: 30px; display: block; margin: auto"
+                                                 src="http://kiwilandingpad.com/wp-content/uploads/2014/05/avatar-placeholder.png">
                                         </div>
                                     </div>
                                         <div class="col-md-8">
-                                        <h1 id="navnpåpers"></h1>
-                                        <h4 id="mail"></h4>
-                                        <p>Profilbilde:</p>
-                                        <form>
-                                        <input type="text" id="profilbilde" placeholder="bilde-url">
-                                        <button type="button" id="submitProfilbilde">Lagre</button>
-                                            </form>
-                                    </div>
+                                            <div class="container-fluid">
+                                                <h1 id="navnpåpers"></h1>
+                                                <h4 id="mail"></h4>
+                                                <p>Profilbilde:</p>
+                                                <form>
+                                                    <input type="text" id="profilbilde" placeholder="bilde-url">
+                                                    <button type="button" id="submitProfilbilde" class="btn btn-default">Lagre</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                 </div>
                                 <div class="container-fluid">
                                     <div class="row">
                                         <br>
-                                        <div class="col-md-4" style="padding: 5px">
-                                            <button id="navnknapp" type="button" class="btn btn-primary btn-block"
+                                        <div class="col-md-4" style="padding: 5px; table-layout: fixed">
+                                            <button id="navnknapp" type="button" class="btn btn-primary btn-block" style="white-space: normal"
                                                     data-toggle="modal" data-target="#navnmodal">Endre
                                                 navn
                                             </button>
                                         </div>
                                         <div class="col-md-4" style="padding: 5px">
-                                            <button id="passord" type="button" class="btn btn-primary btn-block"
+                                            <button id="passord" type="button" class="btn btn-primary btn-block" style="white-space: normal"
                                                     data-toggle="modal" data-target="#passordmodal">Endre
                                                 passord
                                             </button>
                                         </div>
                                         <div class="col-md-4" style="padding: 5px">
-                                            <button id="epostknapp" type="button" class="btn btn-primary btn-block"
+                                            <button id="epostknapp" type="button" class="btn btn-primary btn-block" style="white-space: normal"
                                                     data-toggle="modal" data-target="#epostmodal">Endre
                                                 epost
                                             </button>

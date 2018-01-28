@@ -13,20 +13,21 @@ var brukerId = bruker.brukerId;
 var husholdningId;
 var medlemmer;
 var handleliste;
-var setupFerdigHandle=false;
-var setupFerdigHus=false;
+var setupFerdigHandle = false;
+var setupFerdigHus = false;
 /**
  * Metoden under lar deg skrive innlegg i den husholdningen du er medlem av og publiserer slik at
  * andre medlemmer av husholdningen ser det.
  */
 $(document).ready(function () {
-    $('body').on('contextmenu', 'img', function(e){ return false; });
+    $('body').on('contextmenu', 'img', function (e) {
+        return false;
+    });
     if (!husholdningId) {
         husholdningId = bruker.favHusholdning;
-        console.log("husholdningId satt til favHusholdning")
     }
     else {
-        console.log("husholdningId ikke satt til favHusholdning")
+
     }
 
     getHandleliste();
@@ -35,13 +36,13 @@ $(document).ready(function () {
         postInnlegg();
     });
     /*$(".skrivNyttInnlegg").on("click", function () {
-        skrivNyttInnlegg();
-    });*/
+     skrivNyttInnlegg();
+     });*/
     $('body').on("click", "#sendtilhandelknapp", function () {
         window.location = "handlelister.html"
     });
     $('body').on("click", "#sendtilgjoreknapp", function () {
-       window.location = "gjoremaal.html"
+        window.location = "gjoremaal.html"
     });
     $("body").on("click", "#refreshGForside", function () {
         oppdaterGjoremal();
@@ -55,7 +56,6 @@ $(document).ready(function () {
  * samt nyhetsinnlegget og henter medlemmet som skrev det.
  */
 function setupPage() {
-    console.log(husholdning);
     var husNavn = he.encode(husholdning.navn);
     var nyhetsinnlegg = husholdning.nyhetsinnlegg;
     medlemmer = husholdning.medlemmer;
@@ -73,7 +73,6 @@ function setupPage() {
      */
     brukernavn = bruker.navn;
     gjoremal = bruker.gjoremal;
-    console.log(bruker);
 
     /**
      * Setter nyheten i tekstfeltet
@@ -95,18 +94,23 @@ function setupPage() {
 
     for (var g = 0, length = gjoremal.length; g < length; g++) {
         var beskrivelse = gjoremal[g].beskrivelse;
-        $("#gjøremålForside").append('<li class="list-group-item">' + beskrivelse + '<input id="gjoremal'+gjoremal[g].gjoremalId+'" title="toggle all" type="checkbox" class="all pull-right"></li>')
+        $("#gjøremålForside").append('<li class="list-group-item">' + beskrivelse + '<input id="gjoremal' + gjoremal[g].gjoremalId + '" title="toggle all" type="checkbox" class="all pull-right"></li>')
     }
+    if (length > 0) {
+        $("#refreshGForside").show();
+    } else {
+        $("#refreshGForside").hide();
+    }
+
 
     /**
      * Løkka går gjennom handleliste og går igjennom antall varer. Definerer variabler som legger
      * varer i en liste, som henter ut varenavnet og om varen er kjøpt eller ikke. Dette sjekkes
      * ved en checkbox.
      */
-    if(handleliste) {
+    if (handleliste) {
         for (var k = 0, lengt = handleliste.varer.length; k < lengt; k++) {
             var vare = handleliste.varer[k];
-            console.log(vare);
             var varenavn = he.encode(vare.varenavn);
             var vareId = vare.vareId;
             var checked = vare.kjopt;
@@ -123,10 +127,10 @@ function setupPage() {
 }
 
 
-function getHandleliste(){
-    $.getJSON("server/handleliste/forsideListe/"+husholdningId+"/"+brukerId, function(data){
-        handleliste=data;
-        setupFerdigHandle= true;
+function getHandleliste() {
+    $.getJSON("server/handleliste/forsideListe/" + husholdningId + "/" + brukerId, function (data) {
+        handleliste = data;
+        setupFerdigHandle = true;
         sjekkFerdig();
     })
 }
@@ -143,8 +147,8 @@ function gethhData() {
         sjekkFerdig();
     });
 }
-function sjekkFerdig(){
-    if(setupFerdigHandle && setupFerdigHus)setupPage();
+function sjekkFerdig() {
+    if (setupFerdigHandle && setupFerdigHus)setupPage();
 }
 
 $(document).on('click', '#sendUtlegg', function () {
@@ -152,7 +156,7 @@ $(document).on('click', '#sendUtlegg', function () {
 });
 
 $(document).on('click', '#utleggForside', function () {
-    for(var j = 0; j < medlemmer.length; j++) {
+    for (var j = 0; j < medlemmer.length; j++) {
         medlemNavn = medlemmer[j].navn;
         medlemId = medlemmer[j].brukerId;
         if (medlemId != bruker.brukerId) {
@@ -160,7 +164,7 @@ $(document).on('click', '#utleggForside', function () {
         }
     }
 });
-$(document).on('click', '#utenUtleggForside', function(){
+$(document).on('click', '#utenUtleggForside', function () {
     setVarerKjopt();
 });
 
@@ -174,6 +178,7 @@ $(document).on('click', '#utenUtleggForside', function(){
 function postInnlegg() {
     var tekst = $("#comment").val();
     if (tekst == "") {
+        ($('#sendAlert').fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }
     var dato = new Date(Date.now());
@@ -186,7 +191,6 @@ function postInnlegg() {
         dataType: 'json',
         success: function (data) {
             var result = JSON.parse(data);
-            console.log(result + " :D");
             if (!result) {
                 alert("noe gikk galt :/");
             } else {
@@ -209,55 +213,47 @@ function innleggToHtml(nyhetsinnlegg) {
     var bilde = "web-res/avatar.png";
     var tekst = he.encode(nyhetsinnlegg.tekst); //XSS prevention
 
-    var nyDate = new Date(nyhetsinnlegg.dato).toISOString().slice(0,10);
+    var nyDate = new Date(nyhetsinnlegg.dato).toISOString().slice(0, 10);
 
     for (var j = 0, length = medlemmer.length; j < length; j++) {
         if (medlemmer[j].brukerId == fofatterId) {
             forfatter = medlemmer[j].navn;
-            if (medlemmer[j].profilbilde!=null){
+            if (medlemmer[j].profilbilde != null) {
                 bilde = medlemmer[j].profilbilde;
             }
         }
     }
-    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="'+bilde+'" class="media-object" style="width:60px"><br></div><div' +
+    $(".innleggsliste").prepend('<li class ="innlegg"><div class="media-left"><img src="' + bilde + '" class="media-object" style="width:60px"><br></div><div' +
         ' class="media-body"><h4 class="media-heading">' + forfatter + '<small><i> ' + nyDate + '</i></small></h4><p>' + tekst + '</p></div></li>');
 
     setTimeout(function () {
 
 
-    var list = $(".innleggsliste li");
-    var numToShow = 7;
-    var button = $("#next");
-    var numInList = list.length;
-    list.hide();
-    if (numInList > numToShow) {
-        button.show();
-    }
-    list.slice(0, numToShow).show();
-
-    button.click(function () {
-        console.log("lll");
-        var showing = list.filter(':visible').length;
-        list.slice(showing - 1, showing + numToShow).fadeIn();
-        var nowShowing = list.filter(':visible').length;
-        if (nowShowing >= numInList) {
-            button.hide();
+        var list = $(".innleggsliste li");
+        var numToShow = 7;
+        var button = $("#next");
+        var numInList = list.length;
+        list.hide();
+        if (numInList > numToShow) {
+            button.show();
         }
-    });
-    },0);
+        list.slice(0, numToShow).show();
+
+        button.click(function () {
+            var showing = list.filter(':visible').length;
+            list.slice(showing - 1, showing + numToShow).fadeIn();
+            var nowShowing = list.filter(':visible').length;
+            if (nowShowing >= numInList) {
+                button.hide();
+            }
+        });
+    }, 0);
 }
 
 /**
  * Funksjonen kalles når bruker trykker på knappen om å publisere innlegg.
  */
-/*function skrivNyttInnlegg() {
-    var x = document.getElementById("skrivNyttInnlegg").style.display;
-    if (x === "none") {
-        document.getElementById("skrivNyttInnlegg").style.display = "";
-    } else {
-        document.getElementById("skrivNyttInnlegg").style.display = "none";
-    }
-}*/
+
 /**
  * Oppdaterer gjøremål dersom bruker krysser av en avkrysningsboks.
  */
@@ -269,16 +265,12 @@ function oppdaterGjoremal() {
         var gjoremal = minegjoremal[i];
         var gjoremalId = minegjoremal[i].gjoremalId;
         var fullfort = document.getElementById("gjoremal" + gjoremalId).checked;
-        console.log(fullfort);
         if (fullfort) {
             ffListe.push(i);
         }
-        console.log(ffListe);
     }
     for (var j = ffListe.length - 1; j >= 0; j--) {
-        console.log(j);
         gjoremal = minegjoremal[ffListe[j]];
-        console.log(gjoremal);
         $.ajax({
             url: "server/gjoremalservice/fullfort",
             type: 'PUT',
@@ -288,8 +280,6 @@ function oppdaterGjoremal() {
             success: function (result) {
                 var data = JSON.parse(result); // gjør string til json-objekt
                 if (data) {
-                    console.log("Gjøremål som slettes:");
-                    console.log(gjoremal)
                     alert("Det gikk bra!");
 
                 } else {
@@ -312,13 +302,12 @@ function oppdaterGjoremal() {
 }
 
 $(document).on('click', '.vareCheck', function () {
-    if($('#handlelisteForside input:checked').length > 0){
+    if ($('#handlelisteForside input:checked').length > 0) {
         $('#handlelisteForside input:checked').each(function () {
-            console.log($(this).attr('value'));
             $("#valgteVarer").append('<label for="' + $(this).attr('value') + '" class="list-group-item" name="vare"> ' + $(this).attr('value') + '</label>');
         });
         $('.hiddenButton').show();
-    }else{
+    } else {
         $('.hiddenButton').hide();
     }
 });
@@ -333,17 +322,17 @@ function sendUtlegg() {
     });
     beskrivelse = beskrivelse.replace(-1, ".");
 
-    if(sum == "" || beskrivelse == ""){
-        alert("pls gi en sum og beskrivelse :)");
+    if (sum == "" || beskrivelse == "") {
+        ($("#sendUtleggAlert").fadeIn(200)).delay(2500).fadeOut(400);
         return;
     }
     var pluss = 0;
-    if ($("#vereMedPaaUtlegg").is(":checked")){
+    if ($("#vereMedPaaUtlegg").is(":checked")) {
         pluss = 1;
     }
     var utleggerId = bruker.brukerId;
     var utleggsbetalere = [];
-    var delSum = sum/($('#medbetalere input:checked').length+1);
+    var delSum = sum / ($('#medbetalere input:checked').length + 1);
     $('#medbetalere input:checked').each(function () {
         utleggsbetaler = {
             skyldigBrukerId: $(this).attr('id'),
@@ -369,11 +358,11 @@ function sendUtlegg() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
-            var data =JSON.parse(result);
-            if (data){ //Returnerer vel true
+            var data = JSON.parse(result);
+            if (data) { //Returnerer vel true
                 location.reload(true);
                 alert(" :D");
-            }else{
+            } else {
                 alert("D:");
             }
         },
@@ -383,10 +372,10 @@ function sendUtlegg() {
     })
 }
 function setVarerKjopt() {
-    var liste=[];
+    var liste = [];
     $('#handlelisteForside input:checked').each(function () {
         var id = $(this).attr('value2');
-        var vare ={
+        var vare = {
             handlelisteId: handleliste.handlelisteId,
             kjoperId: bruker.brukerId,
             datoKjopt: new Date(Date.now()),
@@ -401,10 +390,8 @@ function setVarerKjopt() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (result) {
-            var data=JSON.parse(result);
-            if(data){
-                window.location =" forside.html";
-            }else console.log("not ok")
+            var data = JSON.parse(result);
+            window.location = " forside.html";
         },
         error: function () {
             $('#errorModal').modal('show');

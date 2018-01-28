@@ -84,7 +84,7 @@ h1 {
 .lagUtlegg{
     margin-left:50px;
 }
-/* SKAL SKJULE SLETTHANDLELISTKNAPP             MÅ FIKSES           */
+
 #slettHandlelisteKnapp .collapse{
     display: none;
 }
