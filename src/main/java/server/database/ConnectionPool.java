@@ -7,14 +7,21 @@ import java.sql.SQLException;
 
 public final class ConnectionPool {
 
+    //Variabler for setup av systemet
+    //Endre det som er mellom gåseøyenene
+    final static String SQLDriver = "com.mysql.cj.jdbc.Driver";
+    final static String databaseURL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/g_tdat2003_t6?useSSL=false";
+    final static String username = "g_tdat2003_t6";
+    final static String password = "uz4rZOca";
+
     private static final BasicDataSource dataSource = new BasicDataSource();
 
     //Attributter for tilkobling til databsen
     static {
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver"); //Set the specific driver "class name"
-        dataSource.setUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/g_tdat2003_t6?useSSL=false");
-        dataSource.setUsername("g_tdat2003_t6");
-        dataSource.setPassword("uz4rZOca");
+        dataSource.setDriverClassName(SQLDriver); //Set the specific driver "class name"
+        dataSource.setUrl(databaseURL);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
     }
 
     private ConnectionPool() {
