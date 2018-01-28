@@ -46,7 +46,7 @@ $(document).on('click', '.utleggKnapp', function(){
     knappid = $(this).attr('id')
     checkChecked("liste" + $(this).attr('id').slice(6));
     if (boxesChecked == false) {
-        $('#velgVareAlert').fadeIn(200);
+        ($('#velgVareAlert').fadeIn(200)).delay(2500).fadeOut(400);
         return false;
     }else{
         $('#velgVareAlert').fadeOut(200);
@@ -125,7 +125,7 @@ function leggTilNyHandleliste() {
     if (handlelisteNavn == "") {
         $('#leggTilHandlelisteError').fadeIn(200);
         setTimeout(function () {
-            $('#leggTilHandlelisteError').fadeIn(200);;
+            $('#leggTilHandlelisteError').fadeIn(200);
         }, 3000);
         return;
     }
@@ -183,7 +183,7 @@ function nyVare(that) {
     console.log(input);
 
     if(input == ""|| !input ||input.trim().length<1){
-        $("#nyVareAlert").fadeIn(200);
+        ($("#nyVareAlert").fadeIn(200)).delay(2500).fadeOut(400);
     }else {
         $("#nyVareAlert").fadeOut(200);
         leggTilVare(listeId, input);
@@ -437,7 +437,13 @@ function setupPage() {
                 '                                   </div>' +
                 '                           </div>' +
                 '                      ' +
-                '                       <div class="row">' +
+                '                       <br><div class="alert alert-danger" id ="velgVareAlert">' +
+                '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.' +
+                '                                      </div>' +
+                '                               <div class="alert alert-danger" id ="nyVareAlert">' +
+                '                           <strong>Feil input</strong> Inputfeltet kan ikke være tomt.' +
+                '                                      </div>' +
+                '                                   <div class="row">' +
                 '                           <div class="container-fluid">' +
                 '                                   <button id="utlegg'+handlelisteId+'" type="button" class="btn btn-primary pull-left utleggKnapp" data-toggle="modal"' +
                 '  style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
@@ -445,12 +451,6 @@ function setupPage() {
                 '                             utlegg</button>' +
                 '                           <!-- Rounded switch -->' + offentligSlider +
                 '                        </div>' +
-                '                       <div class="alert alert-danger" id ="velgVareAlert">'+
-                '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
-                '                      </div> '+
-                '                       <div class="alert alert-danger" id ="nyVareAlert">'+
-                '                           <strong>Feil input</strong> Inputfeltet kan ikke være tomt.'+
-                '                      </div> '+
                 '                   </div>' +
                 '               </div>' +
                 '           </div>' +
