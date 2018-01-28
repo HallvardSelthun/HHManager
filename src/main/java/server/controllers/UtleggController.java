@@ -27,7 +27,6 @@ public class UtleggController {
 
 
     public static boolean setMotatt(int brukerId, int utleggId) {
-        System.out.println("setMotatt brukes faktisk");
         String getQuery = "UPDATE utleggsbetaler INNER JOIN utlegg ON utleggsbetaler.utleggId = utlegg.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId SET betalt = 1 WHERE skyldigBrukerId = "
                 + brukerId + " AND utleggsbetaler.utleggId = " + utleggId;
 
