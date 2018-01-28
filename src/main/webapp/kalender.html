@@ -17,8 +17,20 @@
 <div id = header>
     <div id="navbar"></div>
 </div>
-<div id="kalenderid">
-    <iframe src="https://calendar.google.com/calendar/embed?src=ouq122v6rrf17bqf3l9mhtcjlc%40group.calendar.google.com&ctz=Europe%2FOslo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div id="kalenderid" class="responsive-iframe-container big-container">
+                <iframe src="https://calendar.google.com/calendar/embed?src=ouq122v6rrf17bqf3l9mhtcjlc%40group.calendar.google.com&ctz=Europe%2FOslo"></iframe>
+            </div>
+            <div class="responsive-iframe-container small-container">
+                <iframe
+                        src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=800&amp;wkst=1&amp;bgcolor=%23db694f&amp;src=ouq122v6rrf17bqf3l9mhtcjlc%40group.calendar.google.com&ctz=Europe%2FOslo"></iframe>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
 </div>
 </body>
 </html>

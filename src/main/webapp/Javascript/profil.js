@@ -18,7 +18,6 @@ var navnIHuset2 = [];
  * Henter husholdningene som brukeren er medlem av
  */
 function getHusholdninger() {
-    console.log("Her kommer husholdId: "+husholdningId);
     console.log("Kjøres denne to ganger?")
     $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
         mineHusholdninger = data;
@@ -33,6 +32,10 @@ $(document).ready(function () {
         console.log("'" + photo + "'");
         $('#photo').html('<img style="width:120px; height:120px; top: 30px" src="' + photo + '">');
     }
+
+    $('.invisibleDiv').on("click", function () {
+        displayDiv();
+    });
 
 
     $('#submitProfilbilde').click(function(){
@@ -80,6 +83,10 @@ $(document).ready(function () {
                 }
             },
             error: function () {
+                BootstrapDialog.show({
+                    title: 'Serverfeil!',
+                    message: 'forespursel gikk ikke igjennom pga. serverfeil.'
+                });
                 alert("serverfeil :/")
             }
         })
@@ -372,11 +379,7 @@ function hentliste() {
         }
 
 
-
         // Ny design, med knapper
-        console.log("Rett før append:");
-        console.log(husholdningId);
-        console.log(husholdnavn);
         $("#husstander").append('<div  class="panel panel-default container-fluid" ">' +
             '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#husstandAccordion' + husholdningId + '" onclick="displayDiv()">' +
             '       <h4 class= "col-md-9 panel-title" style="display: inline">' + husholdnavn + '</h4>' +

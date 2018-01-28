@@ -149,19 +149,30 @@ function leggTilNyHandleliste() {
     })
 }
 
+$(document).on('click', '.endreOffentlig', function () {
+    var boolean = false;
+    var handlelisteId = $(this).attr('value');
+    if ($(this).is(":checked")){
+        boolean = true;
+    }
+    console.log(boolean);
+    endreOffentlig(handlelisteId, boolean);
+});
+
 /**
  * Knapp som kjører nyVare()
  */
 $(document).on('click', '.nyVareKnapp', function () {
-    nyVare();
+    var that = $(this);
+    nyVare(that);
 });
 /**
  * Gjør at man kan legge til varer i handlelisten som er opprettet. Varen får et navn og legges
  * til i riktig handleliste med en handlelisteId.
  */
-function nyVare() {
-    var listeId = $(this).attr('value');
-    var input = ($(this).parent().siblings(".leggTilNyGjenstand").eq(0).val());
+function nyVare(that) {
+    var listeId = that.attr('value');
+    var input = that.parent().siblings(".leggTilNyGjenstand").eq(0).val();
     var temp = "#"+listeId;
 
     if(input == ""){
@@ -190,7 +201,6 @@ function leggTilVare(hlId, navn) {
     /**
      * Sender et ajax-kall til handleliste i server der varen lagres.
      */
-    console.log("Før ajax")
     setTimeout(function(){
         $.ajax({
             url: "server/handleliste/nyVare",
@@ -199,14 +209,10 @@ function leggTilVare(hlId, navn) {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (result) {
-                console.log("TESTER DETTE");
-                console.log(result);
                 var data = JSON.parse(result);
-                console.log("window.location = \"handlelister.html\" er kommentert ut");
-                //window.location = "handlelister.html";
 
                 if (data) {
-
+                    window.location = "handlelister.html";
                 } else {
                     alert("feil!");
                 }
@@ -245,31 +251,6 @@ function slettHandleliste(sletteId) {
 }
 
 
-/**
- * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
- * skal ikke kunne gjøre dine handlelister private.
- */
-function endrePublic(){
-    //var offentlifKnapp = $(".switch input").prop("checked");
-
-    $.ajax({
-        url: "server/handleliste/" + handlelisteId + "/private",
-        type: 'PUT',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (result) {
-            var data = JSON.parse(result);
-            if (data) {
-                window.location = "handlelister.html";
-            } else {
-                alert("feil!");
-            }
-        },
-        error: function () {
-            alert("serverfeil :/")
-        }
-    })
-}
 
 /**
  * Henter data om handleliste med husholdningsid og brukerid
@@ -398,7 +379,6 @@ function sendUtlegg() {
  */
 function setupPage() {
     var tittel, handlelisteId, husholdningId, skaperId, varer, offentlig, frist, vareId, vareHandlelisteId, varenavn, kjopt, kjøperId, datokjøpt;
-
     for (var i = 0; i < alleHandlelister.length; i++) {
         if (alleHandlelister[i].gjemt == 0) {
             tittel = he.encode(alleHandlelister[i].tittel);
@@ -408,6 +388,20 @@ function setupPage() {
             varer = alleHandlelister[i].varer;
             offentlig = alleHandlelister[i].offentlig;
             //frist = alleHandlelister[i].frist;
+            var offentligSlider = "";
+            var leftOrRight = "left";
+            var checking = "";
+            if (offentlig) {
+                leftOrRight = "right";
+                checking = "checked";
+            }
+            if (skaperId == brukerId){
+            offentligSlider = '<h5 id="offtekst" class="pull-right">Offentlig</h5>' +
+                '                               <label class="switch pull-right" style="alignment: '+leftOrRight+'">' +
+                '                                   <input class="endreOffentlig" value="'+handlelisteId+'" id="switch' + handlelisteId + '" type="checkbox" '+checking+'>' +
+                '                                   <span class="slider round"></span>' +
+                '                               </label>';
+            }
 
             $("#handlelister").append('<div class="container-fluid panel panel-default">' +
                 '   <div class="row panel-heading clearfix" data-toggle="collapse" data-parent="#handlelister" data-target="#' + handlelisteId + '">' +
@@ -438,12 +432,7 @@ function setupPage() {
                 '  style="margin-right: 5px; margin-top: 10px">Lag utlegg</button>' +
                 '                                   <button id="utenUtlegg" type="button" class="btn btn-primary pull-left utenUtleggKnapp" style="margin-top: 10px" value ="'+handlelisteId+'" >Kjøpt uten' +
                 '                             utlegg</button>' +
-                '                           <!-- Rounded switch -->' +
-                '                               <h5 id="offtekst" class="pull-right">Offentlig</h5>' +
-                '                               <label class="switch pull-right" style="alignment: right">' +
-                '                                   <input id="switch' + handlelisteId + '" type="checkbox">' +
-                '                                   <span class="slider round"></span>' +
-                '                               </label>' +
+                '                           <!-- Rounded switch -->' + offentligSlider +
                 '                        </div>' +
                 '                       <div class="alert alert-danger" id ="velgVareAlert">'+
                 '                           <strong>Feil input</strong> Du må legge til varer som skal sjekkes av.'+
@@ -465,9 +454,7 @@ function setupPage() {
                     ' all" type="checkbox" class="all pull-right"></label>');
             }
         }
-        if (offentlig) {
-            $("#switch" + handlelisteId).prop("checked", true);
-        }
+
     }
 
     if(boxesChecked != null){
@@ -484,4 +471,38 @@ function displayDiv() {
     } else {
         x.style.display = "none";
     }
+}
+
+
+/**
+ * Funksjonen kalles når bruker vil endre sin egen handleliste fra public til privat. Andre medlemmer
+ * skal ikke kunne gjøre dine handlelister private.
+ */
+
+
+function endreOffentlig(handleId, status) {
+    var husholdId = husholdningId;
+    var handleliste = {
+        handlelisteId: handleId,
+        husholdningId: husholdId,
+        offentlig: status
+    };
+    $.ajax({
+        url: "server/handleliste/endreOffentlig",
+        type: 'PUT',
+        data: JSON.stringify(handleliste),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if (data) {
+                alert("good job!");
+            } else {
+                alert("feil!");
+            }
+        },
+        error: function () {
+            alert("serverfeil :/")
+        }
+    });
 }

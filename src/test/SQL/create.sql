@@ -11,6 +11,7 @@ CREATE TABLE `bruker` (
   `navn` varchar(255) DEFAULT NULL,
   `epost` varchar(255) DEFAULT NULL,
   `salt` VARCHAR(100) DEFAULT NULL,
+  'profilbilde' TEXT DEFAULT NULL,
   PRIMARY KEY (`brukerId`),
   CONSTRAINT `bruker_ibfk_1` FOREIGN KEY (`favorittHusholdning`) REFERENCES `husholdning` (`husholdningId`)
 );
