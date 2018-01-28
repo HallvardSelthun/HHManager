@@ -16,8 +16,6 @@ public class UtleggControllerTest {
         ArrayList<Utleggsbetaler> utleggJegSkylder = new ArrayList<>();
         //Sjekk om jeg (brukerId2) skylder bruker1 no
         for (int i = 0; i < oppgjor.size(); i++) {
-            System.out.println("oppgjor.size() "+oppgjor.size());
-            System.out.println("oppgjor.get(i).getBrukerId() "+oppgjor.get(i).getBrukerId());
             if (oppgjor.get(i).getBrukerId() == 1) {
                 utleggJegSkylder = oppgjor.get(i).getUtleggJegSkylder();
             }
@@ -37,8 +35,6 @@ public class UtleggControllerTest {
             assertEquals("Truls", oppgjor2.get(1).getNavn());
             assertEquals("Truls", oppgjor2.get(1).getUtleggDenneSkylderMeg().get(0).getNavn());
         }
-        System.out.println();
-        //System.out.println("Bruker 1 skylder"+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getDelSum()+" kroner for "+oppgjor2.get(0).getUtleggDenneSkylderMeg().get(0).getBeskrivelse());
     }
 
     @Test
