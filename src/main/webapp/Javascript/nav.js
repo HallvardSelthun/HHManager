@@ -15,8 +15,7 @@ var varseler;
  * Laster inn nav-bar og modalene, der modalen sender deg til lagnyhusstand.
  */
 $(document).ready(function () {
-    if(bruker.navn)    navn = he.encode(bruker.navn);
-
+    if(bruker.navn) navn = he.encode(bruker.navn);
     epost = he.encode(bruker.epost);
 
     $(function () {
@@ -184,14 +183,11 @@ function getHusholdningerNav() {
         $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
-
-        setTimeout(function () {
-            for (i = 0, l = husholdninger.length; i < l; i++) {
-                var navn = he.encode(husholdninger[i].navn);
-                var id = husholdninger[i].husholdningId;
-                $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
-            }
-        }, 300);
+        for (i = 0, l = husholdninger.length; i < l; i++) {
+            var navn = he.encode(husholdninger[i].navn);
+            var id = husholdninger[i].husholdningId;
+            $("#husholdninger3").prepend('<li id="' + id + '" class ="hhknapp"><a href="#">' + navn + '</a></li>');
+        }
     });
 }
 
@@ -239,10 +235,7 @@ function henteVarsel() {
         $("#antallVarsler").text(varselListe);
         $("#ant").text(varselListe);
         $("#antVarsler").text(varselListe);
-        setTimeout(function () {
-            utgaatteGjoremaal(varseler);
-        }, 300);
-
+        utgaatteGjoremaal(varseler);
     });
 
 }
