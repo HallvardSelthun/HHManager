@@ -300,6 +300,8 @@ function lastInnOppgjor(brukerId, betalt) {
                 valgtOppgjorArray = liveOppgjor;
                 filtrerForXSS(liveOppgjor);
                 tellAntallUtleggsbetalere(liveOppgjor);
+                console.log("Live oppgjor");
+                console.log(liveOppgjor);
             }
             else {
                 ferdigeOppgjor = result;

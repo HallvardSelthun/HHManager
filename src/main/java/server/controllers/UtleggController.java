@@ -210,21 +210,20 @@ public class UtleggController {
 
 
             while (resultset.next()) {
-                if (resultset.getInt("utleggerId")!=0) { //Sjekk om resultset er tomt
-                    tomtOppgjor = false;
-                    //Hvis vi legger til et noe jeg skylder til et eksisterende utlegg
-                    if ((resultset.getInt("utleggerId") == forrigeUtleggerId) || forsteIterasjon) {
-                        forsteIterasjon = false;
-
-                    }
-                    else {
-                        //Hvis vi er ferdige med å legge til hva jeg skylder den første personen, gå videre til neste person
-                        altJegSkylder.add(nyttOppgjor); //Men først, legg den gamle inn i altJegSkylder
-                        forrigeUtleggerId = resultset.getInt("utleggerId");
-                    }
+                tomtOppgjor = false;
+                if (forsteIterasjon) {
                     nyttOppgjor = lagOppgjorObjekt(resultset, false);
-                    nyttOppgjor.getUtleggJegSkylder().add(lagUtleggsbetalerObjekt(resultset)); //Legg inn hva jeg skylder i oppgjøret
                 }
+                //Hvis vi legger til et noe jeg skylder til et eksisterende utlegg
+                if ((resultset.getInt("utleggerId") == forrigeUtleggerId) || forsteIterasjon) {
+                    forsteIterasjon = false;
+                }
+                else {
+                    //Hvis vi er ferdige med å legge til hva jeg skylder den første personen, gå videre til neste person
+                    altJegSkylder.add(nyttOppgjor); //Men først, legg den gamle inn i altJegSkylder
+                }
+                forrigeUtleggerId = resultset.getInt("utleggerId");
+                nyttOppgjor.getUtleggJegSkylder().add(lagUtleggsbetalerObjekt(resultset)); //Legg inn hva jeg skylder i oppgjøret
             }
             if (!tomtOppgjor) {
                 altJegSkylder.add(nyttOppgjor);
