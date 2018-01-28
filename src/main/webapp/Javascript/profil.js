@@ -270,6 +270,7 @@ $(document).ready(function () {
                         $('#nyHusError').fadeOut(200);
                     }, 3000);
                 }
+                window.location = "profil.html";
             },
             error: function () {
                 $('#errorModal').modal('show');
