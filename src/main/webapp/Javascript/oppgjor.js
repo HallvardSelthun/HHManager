@@ -81,7 +81,7 @@ $(document).ready(function () {
                 klikketKnapp.parent().parent().parent().fadeOut(500); //Fjern raden
                 liveOppgjor[oppgjorNr].antallUtleggsbetalere--;
                 if (liveOppgjor[oppgjorNr].antallUtleggsbetalere <= 0) {
-                    $("#collapse"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
+                    $("#collapseOpgj"+oppgjorNr+"").parent().fadeOut(500); //Fjern hele oppgjøret
                 }
             });
         }
@@ -340,7 +340,6 @@ function checkOppgjorSum(utleggsbetalere, next) {
         dataType: 'json',
         success: function (result) {
             suksess = result;
-            alert("suksess ny greie: "+suksess);
             next();
         },
         error: function () {
