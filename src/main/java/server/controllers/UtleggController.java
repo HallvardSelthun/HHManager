@@ -216,11 +216,14 @@ public class UtleggController {
                 }
                 //Hvis vi legger til et noe jeg skylder til et eksisterende utlegg
                 if ((resultset.getInt("utleggerId") == forrigeUtleggerId) || forsteIterasjon) {
+                    //System.out.println("Inne i if-setningen med utleggerId "+(resultset.getInt("utleggerId")+" og forrigeUtleggerId: "+forrigeUtleggerId+ "og forsteIterasjon "+forsteIterasjon));
                     forsteIterasjon = false;
                 }
                 else {
                     //Hvis vi er ferdige med å legge til hva jeg skylder den første personen, gå videre til neste person
+                    //System.out.println("Inne i else-setningen med utleggerId "+(resultset.getInt("utleggerId")+" og forrigeUtleggerId: "+forrigeUtleggerId+ "og forsteIterasjon "+forsteIterasjon));
                     altJegSkylder.add(nyttOppgjor); //Men først, legg den gamle inn i altJegSkylder
+                    nyttOppgjor = lagOppgjorObjekt(resultset, false);
                 }
                 forrigeUtleggerId = resultset.getInt("utleggerId");
                 nyttOppgjor.getUtleggJegSkylder().add(lagUtleggsbetalerObjekt(resultset)); //Legg inn hva jeg skylder i oppgjøret
@@ -228,7 +231,15 @@ public class UtleggController {
             if (!tomtOppgjor) {
                 altJegSkylder.add(nyttOppgjor);
             }
+            //Debug
+            /*
+            for (int x = 0; x < altJegSkylder.size(); x++) {
+                System.out.println(altJegSkylder.get(x).getNavn());
+            }
+            */
             return altJegSkylder;
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();
