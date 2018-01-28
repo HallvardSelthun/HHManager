@@ -155,11 +155,11 @@
 <!--Viktig -->
 <script id="test-oppgjor" type="text/x-custom-template">
     <!--Viktig ^^^ -->
-    <div class="container-fluid panel panel-default">
+    <div class="container-fluid panel panel-default" id="oppgj${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseOpgj${oppgjorNr}">
         <div class="row panel-heading clearfix">
             <h3  class="panel-title pull-left col-sm-6 col-xs-5" style="margin-top: 5px; ">
                 <!--Viktig -->
-                <a id="${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapse${oppgjorNr}"> ${navn} </a>
+                <a> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
             <div class="titteldiv col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
@@ -170,7 +170,7 @@
                 </div>
             </div>
         </div>
-        <div id="collapse${oppgjorNr}" class="collapse">
+        <div id="collapseOpgj${oppgjorNr}" class="collapse">
             <div class="panel-body">
                 <div class="balanse">
                     <!-- Hadde vært nice å få til litt dynamisk HTML her -->
@@ -218,11 +218,11 @@
 <!--Viktig -->
 <script id="historikk-oppgjor" type="text/x-custom-template">
     <!--Viktig ^^^ -->
-    <div class="container-fluid panel panel-default">
+    <div class="container-fluid panel panel-default" id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}">
         <div class="row panel-heading clearfix">
             <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
                 <!--Viktig -->
-                <a id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}"> ${navn} </a>
+                <a> ${navn} </a>
                 <!--Viktig ^^^ -->
             </h3>
             <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
