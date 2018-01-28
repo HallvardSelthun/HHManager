@@ -49,6 +49,7 @@ function hentFellesGjoremal() {
     for (var i = 0, len = fellesgjoremal.length; i < len; i++) {
         var fellesnavn = he.encode(fellesgjoremal[i].beskrivelse);
         var frist = fellesgjoremal[i].frist;
+        if (!frist) frist= ' ';
         var gjoremalId = fellesgjoremal[i].gjoremalId;
 
         $("#fellesGjoremaal").append('<li class="list-group-item ">' + '<b>' + fellesnavn + '</b>' +
@@ -76,6 +77,7 @@ function hentMinegjoremal() {
         var gjoremalId = minegjoremal[i].gjoremalId;
         var beskrivelse = he.encode(minegjoremal[i].beskrivelse);
         var frist = minegjoremal[i].frist;
+        if (!frist) frist = '';
 
         $("#mineGjoremaal").append('<li class="list-group-item minegjoremalliste" value="' + gjoremalId + '">' + '<b>' + beskrivelse + '</b>' +
             ",  " + frist +
