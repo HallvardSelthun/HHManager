@@ -282,9 +282,11 @@ function checkChecked(formname) {
 
         }
     });
-
-
 }
+
+$(document).on('click', '.closeUtlegg', function () {
+    location.reload(true);
+});
 
 function lagUtleggVarer() {
     var vareNavn = "";

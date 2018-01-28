@@ -149,7 +149,7 @@ $(document).ready(function () {
         }else {
             $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
         }
-    }, 150);
+    }, 200);
 });
 
 
