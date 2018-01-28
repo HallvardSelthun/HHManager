@@ -174,7 +174,7 @@ function getHusholdningerNav() {
         $("#fadenav").hide();
         husholdninger = data;
         localStorage.setItem("husholdninger", JSON.stringify(husholdninger));
-        setTimeout(function(){
+        setTimeout(function(){ //Timeout for å vente til den andre HTMLen er lagt til
             for (i = 0, l = husholdninger.length; i < l; i++) {
                 var navn = he.encode(husholdninger[i].navn);
                 var id = husholdninger[i].husholdningId;

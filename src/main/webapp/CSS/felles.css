@@ -138,6 +138,7 @@ label {
 .navbar-default .dropdown-menu.notify-drop .allRead {
     margin-right: 7px;
 }
+
 .navbar-default .dropdown-menu.notify-drop .rIcon {
     float: right;
     color: #999;
@@ -212,4 +213,12 @@ label {
 .modal-header-serverfeil{
    background-color: rgba(226, 3, 32, 0.89);
 
+}
+
+.nav.navbar-nav li a {
+    color: #333;
+}
+
+.nav.navbar-nav li a:hover {
+    color: #888;
 }
