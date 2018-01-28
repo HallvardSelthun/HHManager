@@ -1,3 +1,6 @@
+/**
+ * Testklasse
+ */
 function test() {
     $.ajax({
         url:"../server/brukere",
@@ -9,8 +12,7 @@ function test() {
             console.log(result);
         },
         error: function (result) {
-            console.log("feil ved ajaxkall");
-            console.log(result);
+            $('#errorModal').modal('show');
         }
     })
 }

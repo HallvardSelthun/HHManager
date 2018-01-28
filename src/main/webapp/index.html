@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="web-res/jquery-3.3.1.min.js"></script>
     <script src="Javascript/logginn.js"></script>
+    <script src="web-res/he-1.1.1/he.js"></script>
     <!--
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/logginn.css">
-
     <title>Logg inn</title>
 </head>
 
@@ -29,12 +28,17 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="password" type="password" class="form-control" name="password" placeholder="Passord" onkeydown="keyCode(event)">
                 </div>
-                <label>
-                    <label><a href="glemtpassord.html">Glemt passord?</a></label>
-                </label>
+                <div class="alert alert-danger" id ="epostPassordAlert">
+                    <strong>Feil input</strong> eposten eller passordet er feil.
+                </div>
+                <div>
+                    <label>
+                        <label><a href="glemtpassord.html">Glemt passord?</a></label>
+                    </label>
+                </div>
                 <div class="col">
                     <button class="btn btn-lg btn-primary btn-block" type="button" id="loggInnBtn">Logg inn</button>
-                    <button class = "btn btn-lg btn-primary btn-block" type="button" id="regBruker">Ikke medlem? Registrer deg</button>
+                    <button class = "btn btn-lg btn-primary btn-block" type="button" id="regBruker">Registrer deg</button>
                 </div>
             </form>
         </div>

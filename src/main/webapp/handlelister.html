@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Handlelister</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="CSS/forside.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="web-res/jquery-3.3.1.min.js"></script>
+    <script src="web-res/he-1.1.1/he.js"></script>
+    <script src="web-res/bootstrap.min.js"></script>
     <script src="Javascript/nav.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/handlelister.css">
     <script src="Javascript/handleliste.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
-
 </head>
 <body>
 <div id="navbar"></div>
@@ -21,32 +21,36 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <div id="lagUtlegg">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Lag utlegg</h3>
+                </div>
             </div>
             <div class="modal-body">
-                <div class="utlegg">
-                    <h4 id="overskrift1">Valgte elementer</h4>
-                    <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
+                <div class="modal-header">
+                    <h4>Valgte elementer</h4>
+                    <ul id="valgteVarer" class="list-group"></ul>
                 </div>
                 <div class="medlemmer">
-                    <h4 id="overskrift2">Legg til medbetalere</h4>
-                    <a href="#" class="list-group-item ">List 1 <input title="toggle all" type="checkbox"
-                                                                       class="all pull-right"></a>
-                    <a href="#" class="list-group-item">Second item <input type="checkbox"
-                                                                           class="pull-right"></a>
-                    <a href="#" class="list-group-item">Third item <input type="checkbox" class="pull-right"></a>
+                    <h4>Legg til medbetalere</h4>
+                    <ul id="medbetalere" class="list-group"></ul>
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Være med på utlegg selv
                 </div>
+                <div class="sum">
+                    <h4>Sum</h4>
+                    <input id="sum" type="number" placeholder="Skriv inn summen for varene">
+                    <div class="alert alert-danger" id ="sumAlert">
+                        <strong>Feil input</strong> Sum må være fyllt inn, og over 0.
+                    </div>
+                    <div class="alert alert-danger" id ="medlemAlert">
+                        <strong>Feil input</strong> Du må legge til medbetalere av handleturen din.
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                <button type="button" class="btn btn-primary">Send utlegg</button>
+                <button id="sendUtlegg" type="button" class="btn btn-primary sendUtlegg">Send utlegg</button>
             </div>
         </div>
     </div>
@@ -68,27 +72,7 @@
                                 <input id="offentligKnapp" type="checkbox" name="offKnapp">
                                 <span class="slider round"></span>
                             </label>
-
-                        <!-- Tatt bort sammen med fristen
-                        <h5>Navn</h5>
-
-                        -->
-
                         <input id="handlelisteNavn" class="form-control" name="handlelisteNavn" placeholder="Handleliste navn" type="text">
-
-                        <!-- Tatt bort foreløpig
-
-                        <br>
-                        <h5>Frist</h5>
-                        <div class="input-group date" id="handlelisteFristDato">
-                            <input class="form-control" type="text" placeholder="ÅÅÅÅ-MM-DD">
-                            <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                        </div>
-
-                        -->
-
                     </div>
                 </div>
             </div>
@@ -101,7 +85,6 @@
 </div>
 
 <div class="container-fluid">
-    <!-- Accordion with checkboxes-->
     <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
@@ -109,7 +92,7 @@
             <div class="row">
                 <h1>Handlelister</h1>
                 <div class="container-fluid">
-                    <div id="handlelister" class="panel-group row"></div>
+                    <div id="handlelister" class="row panel-group"></div>
                 </div>
                 <div class="container-fluid">
                     <button id="nyhandel" type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#leggTilNyHandlelisteModal">Legg til ny handleliste</button>

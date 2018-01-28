@@ -2,6 +2,7 @@ package server.services;
 
 import server.controllers.HusholdningController;
 
+import server.restklasser.Bruker;
 import server.restklasser.Husholdning;
 import server.restklasser.Nyhetsinnlegg;
 
@@ -33,6 +34,11 @@ public class HusholdningsService {
         return HusholdningController.ny(husholdning);
 
     }
+
+    /**
+     * Henter info om alle husholdninger
+     * @return
+     */
 
     @GET
     @Path("/husholdning")
@@ -82,16 +88,47 @@ public class HusholdningsService {
         return HusholdningController.slett(id);
     }
 
+    /**
+     * Henter husholdningsdata fra database gitt husholdningsid som parameter
+     * @param husholdningId
+     * @return favoritthsholdning gitt id
+     */
     @GET
     @Path("/{husholdningId}/husholdningData")
     @Produces(MediaType.APPLICATION_JSON)
     public Husholdning getHhData(@PathParam("husholdningId") int husholdningId){return HusholdningController.getFavHusholdningData(husholdningId);
     }
 
+    /**
+     * Sender nyhetspost til database
+     * @param nyhetsinnlegg
+     * @return et nyhetsinnlegg
+     */
     @POST
     @Path("/nyhetspost")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean postNyhet(Nyhetsinnlegg nyhetsinnlegg){
         return HusholdningController.postNyhetsinnlegg(nyhetsinnlegg);
+    }
+
+    @DELETE
+    @Path("/slettMedlem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean slettMedlem(Bruker bruker){
+        return HusholdningController.slettMedlem(bruker);
+    }
+
+    @POST
+    @Path("/regNyttMedlem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean regNyttMedlem(Bruker bruker){
+        return HusholdningController.regNyttMedlem(bruker);
+    }
+
+    @PUT
+    @Path("/setAdmin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setAdmin(Bruker bruker){
+        return HusholdningController.setMedlemAdmin(bruker);
     }
 }

@@ -30,13 +30,18 @@ public class UtleggService {
      * @return ArrayList med Oppgjør. Inneholder to arrays av Utleggsbetaler for utlegg brukeren skylder og andre skylder brukeren
      */
     @GET
-    @Path("/oppgjor/{brukerId}")
+    @Path("/oppgjor/{brukerId}/{betalt}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId) {
-        return UtleggController.getMineOppgjor(brukerId);
+    public ArrayList<Oppgjor> getOppgjor(@PathParam("brukerId") int brukerId, @PathParam("betalt") int betalt) {
+        return UtleggController.getMineOppgjor(brukerId, betalt);
     }
 
-
+    /**
+     * Endrer i database at et beløp er registrert
+     * @param brukerId hvem som skriver innlegget
+     * @param utleggId hvem som har lagt ut for beløpet
+     * @return kaller på setMotatt i UtleggController
+     */
     @PUT
     @Path("/{brukerId}/{utleggId}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -44,8 +49,19 @@ public class UtleggService {
         return UtleggController.setMotatt(brukerId, utleggId);
     }
 
-
     /**
+     * Endrer i database hvem som er utleggsbetaler
+     * @param utleggsbetalere
+     * @return kaller på metoden setMotattOppgjor i(utleggsbetalere) i UtleggsController
+     */
+    @PUT
+    @Path("/utleggsbetaler")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setMotattOppgjor(ArrayList<Utleggsbetaler> utleggsbetalere) {
+        return UtleggController.setMotattOppgjor(utleggsbetalere);
+    }
+
+    /*
      * Henter alle brukere som er involvert i et unikt utlegg.
      * @param utleggId er en unik id for å indentifisere utlegg.
      * @return ArrayList over alle utleggsbetalere for et unikt utlegg via utleggid
@@ -57,4 +73,10 @@ public class UtleggService {
     public ArrayList<Utleggsbetaler> getUtleggsBetalere(@PathParam("utleggId") int utleggId) {
         return UtleggController.getUtleggsbetalere(utleggId);
     }*/
+    @POST
+    @Path("/nyttutlegg")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean nyttutlegg(Utlegg utlegg){
+        return UtleggController.lagNyttUtlegg(utlegg);
+    }
 }

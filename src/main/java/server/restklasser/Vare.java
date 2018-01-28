@@ -3,21 +3,22 @@ package server.restklasser;
 import java.sql.Date;
 
 public class Vare {
+    //Definerer variabler
     private int vareId;
     private int handlelisteId;
     private String varenavn;
-    private boolean kjøpt;
-    private int kjøperId;
-    private Date datoKjøpt;
+    private boolean kjopt;
+    private int kjoperId;
+    private Date datoKjopt;
 
-    public Date getDatoKjøpt() {
-        return datoKjøpt;
+    //Ulike get og set-metoder
+    public Date getDatoKjopt() {
+        return datoKjopt;
     }
 
-    public void setDatoKjøpt(Date datoKjøpt) {
-        this.datoKjøpt = datoKjøpt;
+    public void setDatoKjopt(Date datoKjopt) {
+        this.datoKjopt = datoKjopt;
     }
-
     public int getHandlelisteId() {
         return handlelisteId;
     }
@@ -26,12 +27,12 @@ public class Vare {
         this.handlelisteId = handlelisteId;
     }
 
-    public int getKjøperId() {
-        return kjøperId;
+    public int getKjoperId() {
+        return kjoperId;
     }
 
-    public void setKjøperId(int kjøperId) {
-        this.kjøperId = kjøperId;
+    public void setKjoperId(int kjoperId) {
+        this.kjoperId = kjoperId;
     }
 
     public int getVareId() {
@@ -50,12 +51,12 @@ public class Vare {
         this.varenavn = varenavn;
     }
 
-    public boolean isKjøpt() {
-        return kjøpt;
+    public boolean isKjopt() {
+        return kjopt;
     }
 
-    public void setKjøpt(boolean kjøpt) {
-        this.kjøpt = kjøpt;
+    public void setKjopt(boolean kjopt) {
+        this.kjopt = kjopt;
     }
 
 

@@ -1,21 +1,17 @@
 package server.controllers;
 
-import com.mysql.cj.jdbc.util.ResultSetUtil;
-import com.sun.org.apache.regexp.internal.RE;
 import server.Mail;
 //import com.mysql.cj.jdbc.util.ResultSetUtil;
 import server.database.ConnectionPool;
-import server.util.RandomGenerator;
 import server.restklasser.*;
+import server.util.Encryption;
+import server.util.RandomGenerator;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.sql.*;
 
 public class HusholdningController {
@@ -26,24 +22,7 @@ public class HusholdningController {
     public static String getNavn(int id) {
         return GenereltController.getString("navn", TABELLNAVN, id);
     }
-    /**
-     * IKKE FERDIG.
-     *
-     * @param rName Den tilfeldige stringen som skal søkes etter
-     * @return id til string
-     */
-    private static int getId(String rName) {
-        String sqlsetning = "select husholdningId from husholdning where navn=" + rName;
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlsetning)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getInt("husholdningId");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
+
     public static ArrayList<Husholdning> getAlleHusholdninger () {
         String selectAll = "select * from husholdning";
         String selectHandlelister = "SELECT * FROM husholdning " +
@@ -101,24 +80,24 @@ public class HusholdningController {
             // legger til alle gjøremål
             resultSet = prepGjoremal.executeQuery();
             i = 0;
-            ArrayList<Gjøremål> gjøremåls;
+            ArrayList<Gjoremal> gjoremals;
             while (resultSet.next()) { // itererer gjennom resultsettet
-                gjøremåls = new ArrayList<>();
+                gjoremals = new ArrayList<>();
                 Husholdning husholdning = husArray.get(i);
-                Gjøremål gjoremal;
+                Gjoremal gjoremal;
                 if (resultSet.getString(3) == null) continue;
                 if (husholdning.getHusholdningId() == resultSet.getInt(1)) {
-                    gjoremal = new Gjøremål();
+                    gjoremal = new Gjoremal();
                     gjoremal.setHusholdningId(resultSet.getInt(1));
-                    gjoremal.setGjøremålId(resultSet.getInt(3));
+                    gjoremal.setGjoremalId(resultSet.getInt(3));
                     gjoremal.setHhBrukerId(resultSet.getInt(5));
-                    gjoremal.setFullført(resultSet.getBoolean(6));
+                    gjoremal.setFullfort(resultSet.getBoolean(6));
                     gjoremal.setBeskrivelse(resultSet.getString(7));
                     gjoremal.setFrist(resultSet.getDate(8));
-                    gjøremåls.add(gjoremal);
+                    gjoremals.add(gjoremal);
                     continue;
                 }
-                husholdning.setGjøremål(gjøremåls);
+                husholdning.setGjoremal(gjoremals);
                 if (husholdning.getHusholdningId() < resultSet.getInt(1)){
                     for (; i < husArray.size(); i++) {
                         husholdning = husArray.get(i);
@@ -213,26 +192,14 @@ public class HusholdningController {
      * @return IDen til den nye husholdningen
      */
     public static int ny(Husholdning husholdning) {
-        // !sjekker først om medlemmene allerede finnes i databasen.
-        // !legger til alle brukerene som ikke finnes
-        // !henter ut alle brukerIDene som trengs
-        // !Legger til husholdning og henter ut husId
-        // !legger alle brukerne i husholdningen.
-        // _De som allerede finnes får en mail om at de er lagt til å husholdning x
-        // _de som ikke finnes får en mail med en
-        // _"registrer deg"-knapp. Den tar personen med seg til lag bruker-siden med eposten ferdig utfylt. Når denne personen
-        // >registrerer denne brukeren, utfylles resten av informasjonen om denne brukeren i databasen, og er dermed allerede lagt
-        // >til i husstanden.
         String navnHus = husholdning.getNavn();
         ArrayList<String> nyeMedlemmerEpost = new ArrayList<>();
-        for (Bruker bruker :
-                husholdning.getMedlemmer()) {
+        for (Bruker bruker : husholdning.getMedlemmer()) {
             nyeMedlemmerEpost.add(bruker.getEpost());
         }
         String adminId = husholdning.getAdminId();
-
         StringBuilder selectAllerBrukereSB = new StringBuilder("SELECT epost from bruker WHERE epost in (");
-        StringBuilder insertNyeBrukereSB = new StringBuilder("insert into bruker (epost) values ");
+        StringBuilder insertNyeBrukereSB = new StringBuilder("insert into bruker (epost, hash, salt) values ");
         StringBuilder selectIdBrukereSB = new StringBuilder("select brukerId from bruker where epost in (");
         String insertHus = "insert into " + TABELLNAVN + " (navn) values (?)";
         StringBuilder insertBrukereIHusSB = new StringBuilder("insert into hhmedlem (brukerId, husholdningId) values ");
@@ -240,7 +207,12 @@ public class HusholdningController {
         int husId;
         ArrayList<Integer> idBrukereAL = new ArrayList<>();
 
+        ArrayList<Bruker> ikkeBrukerObjArrayList = null;
+
         try (Connection connection = ConnectionPool.getConnection()) {
+            ArrayList<String> ikkeBrukerAl = new ArrayList<>();
+            ArrayList<String> alleredeBrukereAL = new ArrayList<>();
+
 
             if (nyeMedlemmerEpost.size() > 0) {
                 // finner brukere som allerede finnes og de som ikke finnes
@@ -254,24 +226,38 @@ public class HusholdningController {
                     prepSelectAllerBrukere.setString(i + 1, nyeMedlemmerEpost.get(i));
                 }
                 ResultSet allerBrukereRS = prepSelectAllerBrukere.executeQuery(); // kjører selectsetningen
-                ArrayList<String> alleredeBrukereAL = new ArrayList<>();
                 while (allerBrukereRS.next()) {
                     alleredeBrukereAL.add(allerBrukereRS.getString(1));
                 }
-                ArrayList<String> ikkeBruker = new ArrayList<>(nyeMedlemmerEpost);
-                ikkeBruker.removeAll(alleredeBrukereAL);
+                ikkeBrukerAl = new ArrayList<>(nyeMedlemmerEpost);
+                ikkeBrukerAl.removeAll(alleredeBrukereAL);
                 prepSelectAllerBrukere.close();
 
-                // setter inn alle brukere som ikke finnes
-                if (ikkeBruker.size() > 0) {
-                    for (int i = 0; i < ikkeBruker.size(); i++) {
-                        insertNyeBrukereSB.append("(?), ");
+                // setter inn alle brukere som ikke finnes og gir dem generert passord
+                if (ikkeBrukerAl.size() > 0) {
+                    ikkeBrukerObjArrayList = new ArrayList<>();
+                    for (int i = 0; i < ikkeBrukerAl.size(); i++) {
+                        Bruker bruker = new Bruker();
+                        bruker.setEpost(ikkeBrukerAl.get(i));
+                        String passord = RandomGenerator.stringulns(8);
+                        String[] encrypted = Encryption.instance.passEncoding(passord);
+                        bruker.setPassord(passord);
+                        bruker.setHash(encrypted[0]);
+                        bruker.setSalt(encrypted[1]);
+                        ikkeBrukerObjArrayList.add(bruker);
+                    }
+                    for (int i = 0; i < ikkeBrukerObjArrayList.size(); i++) {
+                        insertNyeBrukereSB.append("(?, ?, ?), ");
                     }
                     slettSisteTegn(insertNyeBrukereSB, 2);
 
                     PreparedStatement prepInsertNyeBrukere = connection.prepareStatement(insertNyeBrukereSB.toString());
-                    for (int i = 0; i < ikkeBruker.size(); i++) {
-                        prepInsertNyeBrukere.setString(i + 1, ikkeBruker.get(i));
+                    int k = 0;
+                    for (Bruker bruker : ikkeBrukerObjArrayList) {
+                        prepInsertNyeBrukere.setString(k + 1, bruker.getEpost());
+                        prepInsertNyeBrukere.setString(k + 2, bruker.getHash());
+                        prepInsertNyeBrukere.setString(k + 3, bruker.getSalt());
+                        k += 3;
                     }
                     prepInsertNyeBrukere.executeUpdate();
                     prepInsertNyeBrukere.close();
@@ -324,9 +310,12 @@ public class HusholdningController {
             PreparedStatement prepAdmin = connection.prepareStatement(adminSqlsetning);
             prepAdmin.setString(1, adminId);
             prepAdmin.setString(2, Integer.toString(husId));
+            prepAdmin.executeUpdate();
+            prepAdmin.close();
 
-            //Mail.sendny(ikkeBruker);
-            //Mail.sendGamle(alleredeBrukereAL);
+            // sender mail om utført arbeid
+            Mail.sendUreg(ikkeBrukerObjArrayList,navnHus);
+            Mail.sendAllerede(alleredeBrukereAL, navnHus);
             return husId;
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,9 +390,8 @@ public class HusholdningController {
             }*/
             String hentHus = "SELECT * FROM husholdning WHERE husholdningId = " + fav;
             String hentNyhetsinnlegg = "SELECT * FROM nyhetsinnlegg WHERE husholdningId = " + fav;
-            String hentAlleMedlemmer = "SELECT navn, bruker.brukerId FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
+            String hentAlleMedlemmer = "SELECT navn, bruker.brukerId, profilbilde FROM hhmedlem LEFT JOIN bruker ON bruker.brukerId = hhmedlem.brukerId WHERE husholdningId = " + fav;
             String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + fav + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
-
             s = con.createStatement();
             ResultSet rs = s.executeQuery(hentHus);
             while (rs.next()) {
@@ -430,35 +418,37 @@ public class HusholdningController {
                 Bruker bruker = new Bruker();
                 bruker.setNavn(rs.getString("navn"));
                 bruker.setBrukerId(rs.getInt("brukerId"));
+                bruker.setProfilbilde(rs.getString("profilbilde"));
                 huset.addMedlem(bruker);
             }
             Handleliste handleliste = new Handleliste();
             s = con.createStatement();
             rs = s.executeQuery(hentHandleliste);
-            rs.next();
+            if(rs.next()) {
+                handleliste.setTittel(rs.getString("navn"));
+                handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
+                handleliste.setHusholdningId(fav);
+                handleliste.setOffentlig(true);
+                huset.addHandleliste(handleliste);
+                handlelisteId = rs.getInt("handlelisteId");
 
-            handleliste.setTittel(rs.getString("navn"));
-            handleliste.setHandlelisteId(rs.getInt("handlelisteId"));
-            handleliste.setHusholdningId(fav);
-            handleliste.setOffentlig(true);
-            huset.addHandleliste(handleliste);
-            handlelisteId = rs.getInt("handlelisteId");
+                String hentVarer = "SELECT vareId, vareNavn, kjopt FROM vare WHERE handlelisteId = " + handlelisteId;
 
-            String hentVarer = "SELECT vareNavn, kjøpt FROM vare WHERE handlelisteId = " + handlelisteId;
-
-            s = con.createStatement();
-            rs = s.executeQuery(hentVarer);
-            while (rs.next()) {
-                Vare vare = new Vare();
-                vare.setHandlelisteId(handlelisteId);
-                vare.setVarenavn(rs.getString("vareNavn"));
-                int i = rs.getInt("kjøpt");
-                if (i == 1) {
-                    vare.setKjøpt(true);
-                } else {
-                    vare.setKjøpt(false);
+                s = con.createStatement();
+                rs = s.executeQuery(hentVarer);
+                while (rs.next()) {
+                    Vare vare = new Vare();
+                    vare.setVareId(rs.getInt("vareId"));
+                    vare.setHandlelisteId(handlelisteId);
+                    vare.setVarenavn(rs.getString("vareNavn"));
+                    int i = rs.getInt("kjopt");
+                    if (i == 1) {
+                        vare.setKjopt(true);
+                    } else {
+                        vare.setKjopt(false);
+                    }
+                    handleliste.addVarer(vare);
                 }
-                handleliste.addVarer(vare);
             }
 
         }catch (Exception e){
@@ -475,7 +465,7 @@ public class HusholdningController {
      */
 
     private static ArrayList<Bruker> getMedlemmer(int husholdningsId, Connection connection) {
-        final String getQuery = "SELECT bruker.navn FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
+        final String getQuery = "SELECT bruker.navn, bruker.brukerId, admin, profilbilde FROM bruker LEFT JOIN hhmedlem h ON bruker.brukerId = h.brukerId WHERE h.husholdningId =" + husholdningsId;
         ArrayList<Bruker> medlemmer = new ArrayList<>();
 
         try(PreparedStatement getMedlemStatement = connection.prepareStatement(getQuery)){
@@ -483,6 +473,9 @@ public class HusholdningController {
             while (medlemRS.next()) {
                 Bruker nyMedlem = new Bruker();
                 nyMedlem.setNavn(medlemRS.getString("navn"));
+                nyMedlem.setBrukerId(medlemRS.getInt("brukerId"));
+                nyMedlem.setAdmin(medlemRS.getInt("admin"));
+                nyMedlem.setProfilbilde(medlemRS.getString("profilbilde"));
                 medlemmer.add(nyMedlem);
             }
         } catch (SQLException e) {
@@ -564,4 +557,108 @@ public class HusholdningController {
         }
         return false;
     }
+
+    public static boolean slettMedlem (Bruker bruker){
+        int husId = bruker.getFavHusholdning();
+        int brukerid = bruker.getBrukerId();
+        String delete = "DELETE FROM hhmedlem WHERE brukerId = ? AND husholdningId = ?";
+        String favHusDel = "UPDATE bruker SET favorittHusholdning = null WHERE brukerId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(delete);
+            ps.setInt(1,brukerid);
+            ps.setInt(2,husId);
+            ps.executeUpdate();
+            ps = con.prepareStatement(favHusDel);
+            ps.setInt(1,brukerid);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean regNyttMedlem(Bruker bruker){
+        // dette er ikke nødvendigvis favoritthusholdningen til brukeren, bare den husholdningen som brukeren skal legges ti i.
+        // dette blir favoritthusholdningen hvis brukeren er ny.
+        int husholdningId = bruker.getFavHusholdning();
+        int brukerId;
+        ArrayList<String> medlemer = new ArrayList<>();
+        String epost = bruker.getEpost();
+        medlemer.add(epost);
+        String getBrukerId = "SELECT brukerId FROM bruker WHERE epost = ?";
+        String regNyttMedlem = "INSERT INTO hhmedlem (brukerId, husholdningId, admin) VALUES (?, ?, 0)";
+        String lagNyBruker = "INSERT INTO bruker (favorittHusholdning, epost, hash, salt) VALUES (?, ?, ?, ?)";
+        String getNyBrukerId = "SELECT LAST_INSERT_ID()";
+
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(getBrukerId);
+            ps.setString(1,epost);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                brukerId = rs.getInt("brukerId");
+                ps = con.prepareStatement(regNyttMedlem);
+                ps.setInt(1,brukerId);
+                ps.setInt(2,husholdningId);
+                ps.executeUpdate();
+                Mail.sendAllerede(medlemer, Integer.toString(husholdningId));
+                return true;
+            }else{
+                if (bruker.getPassord() == null) {
+                    String passord = RandomGenerator.stringulns(8);
+                    String[] encrypted = Encryption.instance.passEncoding(passord);
+                    bruker.setHash(encrypted[0]);
+                    bruker.setSalt(encrypted[1]);
+                    bruker.setPassord(passord);
+                }
+                // gjør det samme to ganger for å unngå nullpointerexception
+                else if (bruker.getPassord().equals("")){
+                    String passord = RandomGenerator.stringulns(8);
+                    String[] encrypted = Encryption.instance.passEncoding(passord);
+                    bruker.setHash(encrypted[0]);
+                    bruker.setSalt(encrypted[1]);
+                    bruker.setPassord(passord);
+                }
+                ps = con.prepareStatement(lagNyBruker);
+                ps.setInt(1,husholdningId);
+                ps.setString(2, epost);
+                ps.setString(3, bruker.getHash());
+                ps.setString(4, bruker.getSalt());
+                ps.executeUpdate();
+                ps = con.prepareStatement(getNyBrukerId);
+                rs = ps.executeQuery();
+                rs.next();
+                brukerId = rs.getInt(1);
+                ps = con.prepareStatement(regNyttMedlem);
+                ps.setInt(1, brukerId);
+                ps.setInt(2,husholdningId);
+                ps.executeUpdate();
+                ArrayList<Bruker> brukerArrayList = new ArrayList<>();
+                brukerArrayList.add(bruker);
+                Mail.sendUreg(brukerArrayList, Integer.toString(husholdningId));
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean setMedlemAdmin(Bruker bruker){
+        int brukerId = bruker.getBrukerId();
+        int husId = bruker.getFavHusholdning();
+        String setAdmin = "UPDATE hhmedlem SET admin = 1 WHERE brukerId = ? AND husholdningId = ?";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(setAdmin);
+            ps.setInt(1,brukerId);
+            ps.setInt(2,husId);
+            ps.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
+
+

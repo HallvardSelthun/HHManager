@@ -3,18 +3,21 @@ package server.restklasser;
 import java.util.ArrayList;
 
 public class Utlegg {
+    //Definerer variabler
     private int utleggerId;
     private int utleggId;
     private double sum;
     private String beskrivelse;
+    public ArrayList<Utleggsbetaler> utleggsbetalere;
     private ArrayList<Vare> varer;
 
+    //Tom konstruktør
     public Utlegg() {}
 
+    //Ulike get og set-metoder
     public Utlegg(int utleggId) {
         this.utleggId = utleggId;
     }
-
 
     public int getUtleggerId() {
         return utleggerId;
@@ -48,6 +51,14 @@ public class Utlegg {
         this.beskrivelse = beskrivelse;
     }
 
+    public ArrayList<Utleggsbetaler> getUtleggsbetalere(){
+        return utleggsbetalere;
+    }
+
+    public void addUtleggsbetaler(Utleggsbetaler utleggsbetaler){
+        utleggsbetalere.add(utleggsbetaler);
+    }
+
     public ArrayList<Vare> getVarer() {
         return varer;
     }
@@ -55,5 +66,6 @@ public class Utlegg {
     public void setVarer(ArrayList<Vare> varer) {
         this.varer = varer;
     }
+
 
 }

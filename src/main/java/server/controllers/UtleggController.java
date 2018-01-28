@@ -3,6 +3,7 @@ package server.controllers;
 import server.database.ConnectionPool;
 import server.restklasser.*;
 
+import javax.ws.rs.POST;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class UtleggController {
 
         Utlegg utlegg = new Utlegg(utleggId);
         utlegg.setUtleggerId(tomutlegg.getInt("husholdningId"));
-        utlegg.setutleggId(tomutlegg.getInt("skaperId"));
+        utlegg.setUtleggId(tomutlegg.getInt("skaperId"));
         utlegg.setBeskrivelse(tomutlegg.getString("navn"));
         //bruker denne metoden getInt fra GenereltController? Må jeg lage en med getDouble?
         //utlegg.setSum(tomutlegg.getInt("offentlig")==1); //Gjør om tinyInt til boolean (
@@ -48,16 +49,37 @@ public class UtleggController {
 
     public static boolean setMotatt(int brukerId, int utleggId) {
         String getQuery = "UPDATE utleggsbetaler JOIN bruker JOIN utlegg SET betalt = 1 WHERE skyldigBrukerId = "
-                + brukerId + " AND utleggsbetaler.utleggId =  " + utleggId;
+                + brukerId + " AND utleggsbetaler.utleggId = " + utleggId;
 
         try (Connection connection = ConnectionPool.getConnection()) {
             PreparedStatement updateStatment = connection.prepareStatement(getQuery);
-            updateStatment.executeUpdate();
-            return true;
+            int success = updateStatment.executeUpdate();
+            if (success == 1) {
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static boolean setMotattOppgjor(ArrayList<Utleggsbetaler> utleggsbetalere) {
+        boolean resultat = false;
+        boolean altGikkGreit = true;
+
+        System.out.println(utleggsbetalere.get(0).getSkyldigBrukerId());
+
+        for (Utleggsbetaler element : utleggsbetalere) {
+            resultat = setMotatt(element.getSkyldigBrukerId(),element.getUtleggId());
+            if (resultat == false) {
+                altGikkGreit = false;
+            }
+        }
+
+        return altGikkGreit;
     }
 
 
@@ -126,6 +148,7 @@ public class UtleggController {
      */
     private static Utleggsbetaler lagUtleggsbetalerObjekt(ResultSet resultset) throws SQLException{
         Utleggsbetaler utleggsbetaler = new Utleggsbetaler ();
+        utleggsbetaler.setUtleggId(resultset.getInt("utleggId"));
         utleggsbetaler.setSkyldigBrukerId(resultset.getInt("skyldigBrukerId"));
         utleggsbetaler.setBetalt(resultset.getInt("betalt")==1);
         utleggsbetaler.setDelSum(resultset.getDouble("delSum"));
@@ -168,10 +191,10 @@ public class UtleggController {
      * @param connection Sendes videre fra moder-metoden getMineOppgjør()
      * @return ArrayList med Utleggsbetaler.
      */
-    private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection) {
+    private static ArrayList<Oppgjor> getAlleOppgjorJegSkylder(int minBrukerId, Connection connection, int betalt) {
 
         //Gir alle utleggere som jeg skylder penger, samt beløpet jeg skylder mm.
-        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" ORDER BY utleggerId"; //test med 2
+        String query = "SELECT * FROM utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId INNER JOIN bruker ON utlegg.utleggerId = bruker.brukerId WHERE skyldigBrukerId = "+minBrukerId+" AND betalt = "+betalt+" ORDER BY utleggerId"; //test med 2
 
         try (PreparedStatement statement = connection.prepareStatement(query)){
             ResultSet resultset = statement.executeQuery();
@@ -187,21 +210,20 @@ public class UtleggController {
 
 
             while (resultset.next()) {
-                if (resultset.getInt("utleggerId")!=0) { //Sjekk om resultset er tomt
-                    tomtOppgjor = false;
-                    //Hvis vi legger til et noe jeg skylder til et eksisterende utlegg
-                    if ((resultset.getInt("utleggerId") == forrigeUtleggerId) || forsteIterasjon) {
-                        forsteIterasjon = false;
-
-                    }
-                    else {
-                        //Hvis vi er ferdige med å legge til hva jeg skylder den første personen, gå videre til neste person
-                        altJegSkylder.add(nyttOppgjor); //Men først, legg den gamle inn i altJegSkylder
-                        forrigeUtleggerId = resultset.getInt("utleggerId");
-                    }
+                tomtOppgjor = false;
+                if (forsteIterasjon) {
                     nyttOppgjor = lagOppgjorObjekt(resultset, false);
-                    nyttOppgjor.getUtleggJegSkylder().add(lagUtleggsbetalerObjekt(resultset)); //Legg inn hva jeg skylder i oppgjøret
                 }
+                //Hvis vi legger til et noe jeg skylder til et eksisterende utlegg
+                if ((resultset.getInt("utleggerId") == forrigeUtleggerId) || forsteIterasjon) {
+                    forsteIterasjon = false;
+                }
+                else {
+                    //Hvis vi er ferdige med å legge til hva jeg skylder den første personen, gå videre til neste person
+                    altJegSkylder.add(nyttOppgjor); //Men først, legg den gamle inn i altJegSkylder
+                }
+                forrigeUtleggerId = resultset.getInt("utleggerId");
+                nyttOppgjor.getUtleggJegSkylder().add(lagUtleggsbetalerObjekt(resultset)); //Legg inn hva jeg skylder i oppgjøret
             }
             if (!tomtOppgjor) {
                 altJegSkylder.add(nyttOppgjor);
@@ -226,8 +248,8 @@ public class UtleggController {
      * @param connection Sendes videre fra moder-metoden getMineOppgjør()
      * @return ArrayList med Utleggsbetaler.
      */
-    private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection) throws SQLException{
-        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE utleggerId = "+minBrukerId+"";
+    private static ArrayList<Oppgjor> appendAlleOppgjorFolkSkylderMeg(ArrayList<Oppgjor> eksisterendeOppgjor, int minBrukerId, Connection connection, int betalt) throws SQLException{
+        String query = "SELECT * FROM (utlegg INNER JOIN utleggsbetaler ON utlegg.utleggId = utleggsbetaler.utleggId) INNER JOIN bruker ON utleggsbetaler.skyldigBrukerId = bruker.brukerId WHERE utleggerId = "+minBrukerId+" AND betalt = "+betalt+"";
 
         Utleggsbetaler skylderMeg = new Utleggsbetaler();
 
@@ -268,19 +290,48 @@ public class UtleggController {
      * @param minBrukerId ID til brukeren som vi henter oppgjørene til
      * @return Array med alle pågående oppgjør
      */
-    public static ArrayList<Oppgjor> getMineOppgjor(int minBrukerId) {
+    public static ArrayList<Oppgjor> getMineOppgjor(int minBrukerId, int betalt) {
 
             ArrayList<Oppgjor> mineOppgjor = new ArrayList<Oppgjor>();
             try (Connection connection = ConnectionPool.getConnection()) {
 
-                mineOppgjor = getAlleOppgjorJegSkylder(minBrukerId, connection);
-                ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection);
-
+                mineOppgjor = getAlleOppgjorJegSkylder(minBrukerId, connection, betalt);
+                ArrayList<Oppgjor> mineOppgjorNy = appendAlleOppgjorFolkSkylderMeg(mineOppgjor,minBrukerId,connection, betalt);
                 return mineOppgjorNy;
 
             } catch (SQLException e) {
                 e.printStackTrace();
                 return null;
             }
+    }
+
+
+    public static boolean lagNyttUtlegg(Utlegg utlegg){
+        String query = "INSERT INTO utlegg (utleggerId, sum, beskrivelse) VALUES (?,?,?)";
+        String getId = "SELECT LAST_INSERT_ID()";
+        int utleggId;
+        String addUtleggsbetaler = "INSERT INTO utleggsbetaler (utleggId, skyldigBrukerId, delSum) VALUES (?,?,?)";
+        try(Connection con = ConnectionPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, utlegg.getUtleggerId());
+            ps.setDouble(2, utlegg.getSum());
+            ps.setString(3, utlegg.getBeskrivelse());
+            ps.execute();
+            ps = con.prepareStatement(getId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            utleggId = rs.getInt(1);
+            for (int i = 0; i < utlegg.utleggsbetalere.size(); i++) {
+                ps = con.prepareStatement(addUtleggsbetaler);
+                ps.setInt(1,utleggId);
+                ps.setInt(2,utlegg.utleggsbetalere.get(i).getSkyldigBrukerId());
+                ps.setDouble(3, utlegg.utleggsbetalere.get(i).getDelSum());
+                ps.execute();
+            }
+            return true; //Burde kanskje sjekke litt bedre
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

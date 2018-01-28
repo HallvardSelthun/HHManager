@@ -7,85 +7,155 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/gjoremaal.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="web-res/jquery-3.3.1.min.js"></script>
+    <script src="web-res/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
+    <script src="web-res/he-1.1.1/he.js"></script>
     <script src="Javascript/nav.js"></script>
     <script src="Javascript/gjoremaal.js"></script>
 </head>
 
 <body>
-<div id="navbar">
-</div>
-<div class="row grid-divider">
-    <div class="col-md-6">
-        <div class="nytt-gjøremål">
-            <h2>Nytt gjøremål</h2>
-            <br>
-            <textarea rows="4" cols="40" placeholder="Hva må gjøres?"></textarea>
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Person
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 1</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 2</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Pers 3</a></li>
-                </ul>
+<div id="navbar"></div>
+<div id="mineGjoremal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-pushpin"></span> Legg til gjøremål</h4>
             </div>
-            <br>
-            <input type="date" id="dato">
-            <input type="time" id="tid">
-
-             <!--<div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+            <div class="modal-body">
+                <div class="gjoremal">
+                    <p>Hva må gjøres:</p>
+                    <input id="mineGjoremalInput" type="text" class="form-control" name="textfield">
                 </div>
-            </div>
-            <!--<div class="input-group date" data-provide="datepicker">
-                <input type="text" class="form-control">
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
+                <div class="tidsfrist">
+                    <p>Frist:</p>
+                    <input id="minDato" type="date" class="form-control" name="textfield">
+                    <br>
+                    <p>Hold pilen over dato-feltet og trykk pil ned for å få opp kalender.</p>
                 </div>
-            </div> -->
-            <br>
-            <button id="leggtil" class="btn warning">Legg til</button>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="eksisterende-gjøremål">
-            <h2>Mine gjøremål</h2>
-            <div class="mine-checkbox">
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 1</label>
+                <div class="alert alert-danger" id="feil">
+                    <strong>Feil!</strong> Vennligst skriv inn beskrivelse på gjøremål.
                 </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
+                <div class="alert alert-danger" id="datafeil">
+                    <strong>Serverfeil!</strong> Vennligst prøv på nytt, eller restart serveren.
                 </div>
-                <div class="checkbox disabled">
-                    <label><input type="checkbox" value="" disabled>Option 3</label>
-                </div>
-            </div>
-            <h2>Felles gjøremål</h2>
-            <div class="mine-checkbox">
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 1</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
-                </div>
-                <div class="checkbox disabled">
-                    <label><input type="checkbox" value="" disabled>Option 3</label>
+                <div class="modal-footer">
+                    <button type="button" id="minLukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button id="lagreMineGjoremal" type="button" class="btn btn-primary">Lagre</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-<div id = "modaldiv"></div>
-
+<div id="fellesGjoremal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-pushpin"></span> Legg til gjoremal</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gjoremal">
+                    <p>Hva må gjøres:</p>
+                    <input id="gjoremalInput" type="text" class="form-control" name="textfield">
+                </div>
+                <div class="person">
+                    <p>Hvem skal gjøre det?:</p>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="droppknapp" data-toggle="dropdown">
+                            Person
+                            <span class="caret"></span></button>
+                        <ul id="medlemmer" class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                            <li id="felles" class ="valgtMedlem" value="0" role="presentation"><a role="menuitem" tabindex="-1" href="#">Felles</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tidsfrist">
+                    <p>Frist:</p>
+                    <input id="dato" type="date" class="form-control" name="textfield">
+                </div>
+                <br>
+                <div class="alert alert-danger" id="feil2">
+                    <strong>Feil!</strong> Vennligst skriv inn beskrivelse på gjøremål.
+                </div>
+                <div class="alert alert-danger" id="datafeilfelles">
+                    <strong>Feil!</strong> Vennligst prøv igjen, eller restart serveren.
+                </div>
+                <div class="alert alert-danger" id="feilmedlem">
+                    <strong>Feil!</strong> Vennligst velg hvem som skal utføre gjøremålet.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="lukk" class="btn btn-default" data-dismiss="modal">Lukk</button>
+                    <button id="lagreGjoremal" type="button" class="btn btn-primary">Lagre</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="container-fluid eksisterende-gjoremal">
+            <div class="row">
+                <h1>Gjøremål</h1>
+                <br>
+                <div class="container-fluid container-list">
+                <div class="row" id="mineGjoremalListe" role="tablist">
+                    <div class="panel panel-default collapse in">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 id="tekst2" data-toggle="collapse" data-target="#collapseTwo" role="button"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <span class="glyphicon glyphicon-pushpin"></span> Mine gjøremål
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="panel-body">
+                                <ul class="list-group" id="mineGjoremaal"></ul>
+                                <button id="nyMineGjoremal" type="button" class="btn btn-primary"
+                                        data-toggle="modal" data-target="#mineGjoremal">Nytt gjøremål
+                                </button>
+                                <button id="refresh" type="button" class="btn btn-primary pull-right"
+                                        data-toggle="modal" data-target="#oppdatermine">Oppdater liste</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="container-fluid container-list">
+                <div class="row" id="fellesGjoremalListe" role="tablist">
+                    <div class="panel panel-default collapse in">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 id="tekst3" data-toggle="collapse" data-target="#collapseThree" role="button"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <span class="glyphicon glyphicon-pushpin"></span> Felles gjøremål
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="panel-body">
+                                <ul class="list-group" id="fellesGjoremaal"></ul>
+                                <br>
+                                <button id="nyFellesGjoremal" type="button" class="btn btn-primary"
+                                        data-toggle="modal" data-target="#fellesGjoremal">Nytt gjøremål
+                                </button>
+                                <button id="refresh2" type="button" class="btn btn-primary pull-right"
+                                data-toggle="modal" data-target="#oppdaterfelles">Oppdater liste</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div></div>
+</div>
+<div id="modaldiv"></div>
 </body>
 </html>

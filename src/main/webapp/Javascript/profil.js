@@ -2,255 +2,103 @@
  * Created by BrageHalse on 10.01.2018.
  */
 
-
-var minBruker = JSON.parse(localStorage.getItem("bruker"));
-var bruker;
+/**
+ * Definerer variabler
+ */
+var minBruker = bruker; //Definert i nav.js
 var brukerId = minBruker.brukerId;
-var epost = minBruker.epost;
-var husholdningId;
-var husholdninger;
+var mineHusholdninger;
 var medlemmer;
+var hhId;
+var leggtilMedlemIHusId;
+var photo = minBruker.profilbilde;
+var navnIHuset2 = [];
 
-/*function gethhData() {
-    $.getJSON("server/hhservice/" + brukerId + "/husholdningData", function (data) {
-        husholdning = data;
-    });
-}*/
-
+/**
+ * Henter husholdningene som brukeren er medlem av
+ */
 function getHusholdninger() {
-    $.getJSON("server/hhservice/husholdning/" + minBruker.favHusholdning, function (data) {
-        husholdninger = data;
+    $.getJSON("server/hhservice/husholdning/" + brukerId, function (data) {
+        mineHusholdninger = data;
+        console.log(minBruker.favHusholdning);
+        if(!minBruker.favHusholdning && mineHusholdninger.length>0){
+            settNyFav(mineHusholdninger[0].husholdningId);
+            setTimeout(function(){
+                window.location="profil.html"
+
+            },200);
+        }
+        hentliste();
+        console.log(data);
     });
 }
+
+
 $(document).ready(function () {
+
+    $('#errorModal').appendTo('body').modal('show');
+
+    if(!(!photo || 0 === photo.length)) {
+        $('#photo').html('<img style="width:120px; height:125px; top: 30px" src="' + photo + '">');
+    };
+
+
+    $('#submitProfilbilde').click(function(){
+        if($('#profilbilde').val()==""){
+            return;
+        }
+        photo = $('#profilbilde').val();
+        $('#photo').html('<img style="width: 120px; height:125px; top: 30px;" src="' + photo + '">')
+        minBruker.profilbilde = photo;
+        localStorage.setItem("bruker", JSON.stringify(minBruker));
+    });
+
+    //onload="resizeImg(this,140, 120)"
     //gethhData();
+
     getHusholdninger();
-    setTimeout(function () {
-        hentliste();
-    }, 1000);
 
-    var MD5 = function (string) {
-        function RotateLeft(lValue, iShiftBits) {
-            return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
-        }
+    /**
+     * Gjør det mulig å fjerne seg selv fra en husholdning.
+     */
+    $("#modal-btn-no").on('click', function () {
+        $("#bekreftmodal").modal('hide');
+    });
 
-        function AddUnsigned(lX, lY) {
-            var lX4, lY4, lX8, lY8, lResult;
-            lX8 = (lX & 0x80000000);
-            lY8 = (lY & 0x80000000);
-            lX4 = (lX & 0x40000000);
-            lY4 = (lY & 0x40000000);
-            lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
-            if (lX4 & lY4) {
-                return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
-            }
-            if (lX4 | lY4) {
-                if (lResult & 0x40000000) {
-                    return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
+    $("#modal-btn-si").on('click', function () {
+        var slettbruker={
+            brukerId: brukerId,
+            favHusholdning: hhId
+        };
+
+        $.ajax({
+            url: "server/BrukerService/fjernBrukerFraHusholdning",
+            type: 'DELETE',
+            data: JSON.stringify(slettbruker),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
+                var data = JSON.parse(result);
+                console.log(data);
+                if(data) {
+                    window.location = "profil.html";
                 } else {
-                    return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
+                    alert("feil");
                 }
-            } else {
-                return (lResult ^ lX8 ^ lY8);
+            },
+            error: function () {
+                $('#errorModal').modal('show');
             }
-        }
-
-        function F(x, y, z) {
-            return (x & y) | ((~x) & z);
-        }
-
-        function G(x, y, z) {
-            return (x & z) | (y & (~z));
-        }
-
-        function H(x, y, z) {
-            return (x ^ y ^ z);
-        }
-
-        function I(x, y, z) {
-            return (y ^ (x | (~z)));
-        }
-
-        function FF(a, b, c, d, x, s, ac) {
-            a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
-            return AddUnsigned(RotateLeft(a, s), b);
-        };
-
-        function GG(a, b, c, d, x, s, ac) {
-            a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
-            return AddUnsigned(RotateLeft(a, s), b);
-        };
-
-        function HH(a, b, c, d, x, s, ac) {
-            a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
-            return AddUnsigned(RotateLeft(a, s), b);
-        };
-
-        function II(a, b, c, d, x, s, ac) {
-            a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
-            return AddUnsigned(RotateLeft(a, s), b);
-        };
-
-        function ConvertToWordArray(string) {
-            var lWordCount;
-            var lMessageLength = string.length;
-            var lNumberOfWords_temp1 = lMessageLength + 8;
-            var lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
-            var lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
-            var lWordArray = Array(lNumberOfWords - 1);
-            var lBytePosition = 0;
-            var lByteCount = 0;
-            while (lByteCount < lMessageLength) {
-                lWordCount = (lByteCount - (lByteCount % 4)) / 4;
-                lBytePosition = (lByteCount % 4) * 8;
-                lWordArray[lWordCount] = (lWordArray[lWordCount] | (string.charCodeAt(lByteCount) << lBytePosition));
-                lByteCount++;
-            }
-            lWordCount = (lByteCount - (lByteCount % 4)) / 4;
-            lBytePosition = (lByteCount % 4) * 8;
-            lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80 << lBytePosition);
-            lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
-            lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
-            return lWordArray;
-        };
-
-        function WordToHex(lValue) {
-            var WordToHexValue = "", WordToHexValue_temp = "", lByte, lCount;
-            for (lCount = 0; lCount <= 3; lCount++) {
-                lByte = (lValue >>> (lCount * 8)) & 255;
-                WordToHexValue_temp = "0" + lByte.toString(16);
-                WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
-            }
-            return WordToHexValue;
-        };
-
-        function Utf8Encode(string) {
-            string = string.replace(/\r\n/g, "\n");
-            var utftext = "";
-
-            for (var n = 0; n < string.length; n++) {
-
-                var c = string.charCodeAt(n);
-
-                if (c < 128) {
-                    utftext += String.fromCharCode(c);
-                }
-                else if ((c > 127) && (c < 2048)) {
-                    utftext += String.fromCharCode((c >> 6) | 192);
-                    utftext += String.fromCharCode((c & 63) | 128);
-                }
-                else {
-                    utftext += String.fromCharCode((c >> 12) | 224);
-                    utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-                    utftext += String.fromCharCode((c & 63) | 128);
-                }
-
-            }
-
-            return utftext;
-        };
-
-        var x = Array();
-        var k, AA, BB, CC, DD, a, b, c, d;
-        var S11 = 7, S12 = 12, S13 = 17, S14 = 22;
-        var S21 = 5, S22 = 9, S23 = 14, S24 = 20;
-        var S31 = 4, S32 = 11, S33 = 16, S34 = 23;
-        var S41 = 6, S42 = 10, S43 = 15, S44 = 21;
-
-        string = Utf8Encode(string);
-
-        x = ConvertToWordArray(string);
-
-        a = 0x67452301;
-        b = 0xEFCDAB89;
-        c = 0x98BADCFE;
-        d = 0x10325476;
-
-        for (k = 0; k < x.length; k += 16) {
-            AA = a;
-            BB = b;
-            CC = c;
-            DD = d;
-            a = FF(a, b, c, d, x[k + 0], S11, 0xD76AA478);
-            d = FF(d, a, b, c, x[k + 1], S12, 0xE8C7B756);
-            c = FF(c, d, a, b, x[k + 2], S13, 0x242070DB);
-            b = FF(b, c, d, a, x[k + 3], S14, 0xC1BDCEEE);
-            a = FF(a, b, c, d, x[k + 4], S11, 0xF57C0FAF);
-            d = FF(d, a, b, c, x[k + 5], S12, 0x4787C62A);
-            c = FF(c, d, a, b, x[k + 6], S13, 0xA8304613);
-            b = FF(b, c, d, a, x[k + 7], S14, 0xFD469501);
-            a = FF(a, b, c, d, x[k + 8], S11, 0x698098D8);
-            d = FF(d, a, b, c, x[k + 9], S12, 0x8B44F7AF);
-            c = FF(c, d, a, b, x[k + 10], S13, 0xFFFF5BB1);
-            b = FF(b, c, d, a, x[k + 11], S14, 0x895CD7BE);
-            a = FF(a, b, c, d, x[k + 12], S11, 0x6B901122);
-            d = FF(d, a, b, c, x[k + 13], S12, 0xFD987193);
-            c = FF(c, d, a, b, x[k + 14], S13, 0xA679438E);
-            b = FF(b, c, d, a, x[k + 15], S14, 0x49B40821);
-            a = GG(a, b, c, d, x[k + 1], S21, 0xF61E2562);
-            d = GG(d, a, b, c, x[k + 6], S22, 0xC040B340);
-            c = GG(c, d, a, b, x[k + 11], S23, 0x265E5A51);
-            b = GG(b, c, d, a, x[k + 0], S24, 0xE9B6C7AA);
-            a = GG(a, b, c, d, x[k + 5], S21, 0xD62F105D);
-            d = GG(d, a, b, c, x[k + 10], S22, 0x2441453);
-            c = GG(c, d, a, b, x[k + 15], S23, 0xD8A1E681);
-            b = GG(b, c, d, a, x[k + 4], S24, 0xE7D3FBC8);
-            a = GG(a, b, c, d, x[k + 9], S21, 0x21E1CDE6);
-            d = GG(d, a, b, c, x[k + 14], S22, 0xC33707D6);
-            c = GG(c, d, a, b, x[k + 3], S23, 0xF4D50D87);
-            b = GG(b, c, d, a, x[k + 8], S24, 0x455A14ED);
-            a = GG(a, b, c, d, x[k + 13], S21, 0xA9E3E905);
-            d = GG(d, a, b, c, x[k + 2], S22, 0xFCEFA3F8);
-            c = GG(c, d, a, b, x[k + 7], S23, 0x676F02D9);
-            b = GG(b, c, d, a, x[k + 12], S24, 0x8D2A4C8A);
-            a = HH(a, b, c, d, x[k + 5], S31, 0xFFFA3942);
-            d = HH(d, a, b, c, x[k + 8], S32, 0x8771F681);
-            c = HH(c, d, a, b, x[k + 11], S33, 0x6D9D6122);
-            b = HH(b, c, d, a, x[k + 14], S34, 0xFDE5380C);
-            a = HH(a, b, c, d, x[k + 1], S31, 0xA4BEEA44);
-            d = HH(d, a, b, c, x[k + 4], S32, 0x4BDECFA9);
-            c = HH(c, d, a, b, x[k + 7], S33, 0xF6BB4B60);
-            b = HH(b, c, d, a, x[k + 10], S34, 0xBEBFBC70);
-            a = HH(a, b, c, d, x[k + 13], S31, 0x289B7EC6);
-            d = HH(d, a, b, c, x[k + 0], S32, 0xEAA127FA);
-            c = HH(c, d, a, b, x[k + 3], S33, 0xD4EF3085);
-            b = HH(b, c, d, a, x[k + 6], S34, 0x4881D05);
-            a = HH(a, b, c, d, x[k + 9], S31, 0xD9D4D039);
-            d = HH(d, a, b, c, x[k + 12], S32, 0xE6DB99E5);
-            c = HH(c, d, a, b, x[k + 15], S33, 0x1FA27CF8);
-            b = HH(b, c, d, a, x[k + 2], S34, 0xC4AC5665);
-            a = II(a, b, c, d, x[k + 0], S41, 0xF4292244);
-            d = II(d, a, b, c, x[k + 7], S42, 0x432AFF97);
-            c = II(c, d, a, b, x[k + 14], S43, 0xAB9423A7);
-            b = II(b, c, d, a, x[k + 5], S44, 0xFC93A039);
-            a = II(a, b, c, d, x[k + 12], S41, 0x655B59C3);
-            d = II(d, a, b, c, x[k + 3], S42, 0x8F0CCC92);
-            c = II(c, d, a, b, x[k + 10], S43, 0xFFEFF47D);
-            b = II(b, c, d, a, x[k + 1], S44, 0x85845DD1);
-            a = II(a, b, c, d, x[k + 8], S41, 0x6FA87E4F);
-            d = II(d, a, b, c, x[k + 15], S42, 0xFE2CE6E0);
-            c = II(c, d, a, b, x[k + 6], S43, 0xA3014314);
-            b = II(b, c, d, a, x[k + 13], S44, 0x4E0811A1);
-            a = II(a, b, c, d, x[k + 4], S41, 0xF7537E82);
-            d = II(d, a, b, c, x[k + 11], S42, 0xBD3AF235);
-            c = II(c, d, a, b, x[k + 2], S43, 0x2AD7D2BB);
-            b = II(b, c, d, a, x[k + 9], S44, 0xEB86D391);
-            a = AddUnsigned(a, AA);
-            b = AddUnsigned(b, BB);
-            c = AddUnsigned(c, CC);
-            d = AddUnsigned(d, DD);
-        }
-
-        var temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
-
-        return temp.toLowerCase();
-    }
-    console.log(minBruker);
+        })
+    });
 
     $("#navnpåpers").text(minBruker.navn);
     $("#mail").text(minBruker.epost);
 
-
+    /**
+     * Bruker kan bytte passord. Passordene sjekkes om de er like, og det består av mer enn 7 tegn. Dersom kriteriene
+     * er oppfylt kan bruker bytte passord.
+     */
     $("#lagreendringer").on('click', function () {
         var brukerId = minBruker.brukerId;
         var endrepassord1 = $("#nyttpassord").val();
@@ -259,8 +107,11 @@ $(document).ready(function () {
             alert("PLIS SKRIV IN NOKE...")
             return;
         }
+        else if(endrepassord1.length<7){
+            alert("Vennligst velg et passord med flere enn 7 tegn");
+            return;
+        }
         else if (endrepassord1 == endrepassord2) {
-            endrepassord1 = MD5(endrepassord1);
             var bruker = {
                 brukerId: brukerId,
                 passord: endrepassord1
@@ -272,14 +123,12 @@ $(document).ready(function () {
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (result) {
-                    var data = JSON.parse(result);
-                    minBruker.passord = endrepassord1;
                     window.location = "profil.html";
                     localStorage.setItem("bruker", JSON.stringify(minBruker));
                     alert("Passordet er endret");
                 },
                 error: function () {
-                    alert("Noe gikk galt :(")
+                    $('#errorModal').modal('show');
                 }
             })
         } else {
@@ -290,13 +139,12 @@ $(document).ready(function () {
         });
     });
 
-    function lagreEndringer() {
-    }
-
+    /**
+     * Bruker kan endre navn. Tekstfeltet for å fylle inn nytt navn kan ikke være tomt.
+     */
     $("#endre").on('click', function () {
         var brukerId = minBruker.brukerId;
         var nyttNavn = $("#nyttnavn").val();
-        console.log(nyttNavn);
         var bruker = {
             brukerId: brukerId,
             navn: nyttNavn
@@ -319,7 +167,7 @@ $(document).ready(function () {
                 localStorage.setItem("bruker", JSON.stringify(minBruker));
             },
             error: function () {
-                alert("Noe gikk galt :(")
+                $('#errorModal').modal('show');
             }
         });
         $("#button").on('click', function () {
@@ -330,12 +178,16 @@ $(document).ready(function () {
     function endre() {
     }
 
+    /**
+     * Bruker kan endre epost ved å trykke endre epost. Kriterier som at tekstfeltet ikke kan være tomt, samt at
+     * epostene må være like må være oppfylt.
+     */
     $("#lagre").on('click', function () {
         var brukerId = minBruker.brukerId;
         var nyepost1 = $("#nyepost").val();
         var nyepost2 = $("#nyepost2").val();
         if (nyepost1 == "" || nyepost2 == "") {
-            alert("PLIS SKRIV IN NOKE...")
+            alert("Inputene må ha verdi")
             return;
         }
         if (nyepost1 == nyepost2) {
@@ -358,7 +210,7 @@ $(document).ready(function () {
                     alert("Eposten er endret");
                 },
                 error: function () {
-                    alert("Noe gikk galt :(")
+                    $('#errorModal').modal('show');
                 }
             });
         } else {
@@ -372,52 +224,358 @@ $(document).ready(function () {
     function lagre() {
     }
 
-    $("#nyHusProfil").on("click", function () {
-        $("#modaldiv").load("lagnyhusstand.html");
-    })
+    // til lagNyHusstandModalen
+    $('body').on('click', '#leggTilMedlemKnapp2', function () {
+        var medlem = {
+            epost: $("#nynavnMedlem2").val()
+        };
+        var epostmed = $("#nynavnMedlem2").val();
+        if(epostmed.length !== 0) {
+            $("#nynavnMedlem2").val('');
+            navnIHuset2.push(medlem);
+            $("#fade").show();
+            $("#fadedanger").hide();
+        } else {
+            $("#fadedanger").show();
+            $("#fade").hide();
+        }
+    });
+
+    /**
+     * Bruker kan lage ny husstand
+     */
+
+    //brukes for å opprette en ny husstand samt registrere den med navn på medlem og navn på husstand i databasen.
+    $("body").on("click", "#lagreHusKnapp2", function () {
+        var navnHus = $("#nynavnHusstand").val();
+
+        navnIHuset2.push(
+            {
+                epost: bruker.epost
+            });
+
+        var husObj = {
+            navn: navnHus,
+            medlemmer: navnIHuset2,
+            adminId: bruker.brukerId
+        };
+        if (navnHus === "") {
+            alert("Skriv inn noe");
+            return;
+        }
+        $.ajax({
+            url: "server/hhservice/husholdning",
+            type: 'POST',
+            data: JSON.stringify(husObj),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
+                var data = JSON.parse(result); // gjør string til json-objekt
+                if (data) {
+                    if (bruker.favHusholdning === 0) {
+                        bruker.favHusholdning = 0;
+                        localStorage.setItem("bruker", JSON.stringify(bruker));
+                        navnIHuset2 = 0;
+                    }
+                } else {
+                    alert("feil!");
+                }
+            },
+            error: function () {
+                $('#errorModal').modal('show');
+            }
+        });
+    });
+   /* setTimeout(function () {
+        $("a#profilNavn").html('<span class="glyphicon glyphicon-user"></span>' + navn);
+    }, 150);*/
 });
+    /*$("#nyHusProfil").on("click", function () {
+        $("#modaldiv").load("lagnyhusstand.html");
+    });*/
+
+    $(document).on('click', '.removeButton', function () {
+        hhId = ($(this).attr('value'))
+    });
+
+/*
+
+    var script = document.createElement('script');
+    script.src = "Javascript/nav.js";
+    script.async = true;
+    document.head.appendChild(script);
+*/
+
+
+
+/**
+ * Bruker kan sette favoritthusholdning
+ */
+$(document).on('click', '.glyphicon', function () {
+    //event.stopPropagation();
+    if ($(this).hasClass('glyphicon-star-empty')){
+        $(".glyphicon-star").each(function () {
+            $(this).removeClass('glyphicon-star');
+            $(this).addClass('glyphicon-star-empty')
+        });
+        $(this).removeClass('glyphicon-star-empty');
+        $(this).addClass('glyphicon-star');
+        var id = $(this).attr('value');
+        settNyFav(id);
+    }
+});
+
+$(document).on('click', '#nymedlem', function () {
+    var epost = he.encode($("#medlemepost").val());
+
+});
+
+$(document).on('click', '.removeMedlem', function () {
+    var husId = $(this).attr('value');
+    var brukerSId = $(this).attr('value2');
+    slettMedlem(brukerSId, husId);
+});
+
+$(document).on('click', '#nymedlem', function () {
+   var epost = he.encode($("#medlemepost").val());
+   leggTilMedlem(epost, leggtilMedlemIHusId);
+});
+
+$(document).on('click', '#opneLeggTilModal', function () {
+    leggtilMedlemIHusId = $(this).attr('value');
+});
+
+/**
+ * Henter liste over husholdninger slik at en skal kunne sette favoritthusholdning på profilside.
+ */
 function hentliste() {
-    console.log(husholdninger);
-    for (var k = 0, lengt = husholdninger.length; k < lengt; k++) {
-        husholdningId = husholdninger[k].husholdningId;
-        var husholdnavn = husholdninger[k].navn;
-        console.log(husholdnavn);
+    for (var k = 0, lengt = mineHusholdninger.length; k < lengt; k++) {
+        husholdningId = mineHusholdninger[k].husholdningId;
+        var husholdnavn = mineHusholdninger[k].navn;
+        var medlemId;
+        var admin = 0;
+        var adminLeggTil = "";
+        var adminSlett = "";
+        var string ="glyphicon-star-empty";
+        if (mineHusholdninger[k].husholdningId == minBruker.favHusholdning){
+            string = "glyphicon-star";
+        }
+        for(var z = 0, x = mineHusholdninger[k].medlemmer.length; z<x; z++){
+            if (mineHusholdninger[k].medlemmer[z].brukerId == minBruker.brukerId){
+                admin = mineHusholdninger[k].medlemmer[z].admin;
+            }
+        }
+        if (admin == 1){
+            adminLeggTil = '<button id="opneLeggTilModal" data-target="#leggtilmedlem" data-toggle="modal" class="btn btn-primary pull-right" value="'+husholdningId+'"><span class="glyphicon glyphicon-plus"></span> Legg til medlem</button>';
 
-        $("#husstander").append('<div class="panel panel-default"><div class="panel-heading clearfix" data-toggle="collapse" data-parent="#husstander"' +
-            ' data-target="#' + husholdningId + '" onclick="displayDiv()"><h4 id="tittel" class= "panel-title col-md-9"><a></a>' + husholdnavn + '</h4>' +
-            '<div class = "collapse"><button id="meldut"' +
-            ' class="btn btn-danger pull-right removeButton col-md-3" type="button">Forlat</button></div>' +
-            '</div><div id="' + husholdningId + '"' +
-            ' class="panel-collapse collapse invisibleDiv"><div class="panel-body"><ul class="list-group"></ul>' +
-            '<div id="list1" class="list-group">' + '</div></div></div></div>');
-
-        /* $("#accordion").append('<li class="panel panel-default">' +
-         '<div class="panel-heading clearfix"><h4 class="panel-title pull-left" style="padding-top: 7.5px;">' +
-         ' <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">'+husholdnavn+'</a> </h4> <div>' +
-         '<button id="slett '+ husholdnavn+'" type="button" class="btn btn-danger pull-right">Slett husstand</button></div></div> ' +
-         '<div id="collapse1" class="panel-collapse collapse in"> <div class="panel-body">' +
-         '<ul class="list-group" id='+husholdnavn+'>');*/
+        }
 
 
-        for (var p = 0, lengt2 = husholdninger[k].medlemmer.length; p < lengt2; p++) {
-            var medlemnavn = husholdninger[k].medlemmer[p].navn;
-            console.log(medlemnavn);
+        // Ny design, med knapper
+        $("#husstander").append('<div  class="panel panel-default container-fluid" ">' +
+            '   <div class="panel-heading clearfix row" data-toggle="collapse" data-parent="#husstander" data-target="#husstandAccordion' + husholdningId + '" >' +
+            '       <h4 class= "col-md-9 panel-title" style="display: inline">' + husholdnavn + '</h4>' +
+            '       <div class="stjerneogforlat pull-right">' +
+            '           <span id="star'+husholdningId+'" value="'+husholdningId+'" style="font-size: 1.7em; color: orange; margin: 6px" role="button" class="glyphicon '+string+'"></span>' + " " +
+            '           <button data-target="#bekreftmodal" data-toggle="modal"  class="btn  btn-danger pull-right removeButton" type="button" value="'+husholdningId+'">Forlat</button>' +
+            '       </div>' +
+            '   </div>' +
+            '<div id="husstandAccordion' + husholdningId +'" class="panel-collapse collapse row">' +
+            '   <div class="panel-body container-fluid">' +
+            '       <ul class="list-group" id="hhliste'+husholdningId+'"></ul>' +adminLeggTil +
+            '       <div id="list1" class="list-group"></div>' +
+            '   </div>' +
+            '</div>');
 
-            $("#husstander ul").append('<li class="list-group-item "> ' + medlemnavn + '</li>');
 
-            /*
-             $("#accordion").append('<li class="list-group-item ">'+medlemnavn+'</li>');
-             */
-            // $("#accordion").append('</ul></div></div></li>');
+        for (var p = 0, lengt2 = mineHusholdninger[k].medlemmer.length; p < lengt2; p++) {
+            var medlemnavn = mineHusholdninger[k].medlemmer[p].navn;
+            var medlemId = mineHusholdninger[k].medlemmer[p].brukerId;
+            if(admin == 1){
+                adminSlett = '<button style="padding: 2px 6px" class="btn  btn-danger pull-right removeMedlem"' +
+                    'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Slett</button>';
+            }
+            var giAdmin = "";
+            var erAdmin = "";
+            if (mineHusholdninger[k].medlemmer[p].admin == 0 && admin ==1){
+                giAdmin = '<button style="padding: 2px 6px; margin-right: 3px;" class="btn  btn-primary pull-right giAdmin"' +
+                    'type="button" value="'+husholdningId+'" value2="'+medlemId+'">Admin</button>'
+            }
+            if (mineHusholdninger[k].medlemmer[p].admin == 1){
+                erAdmin = ' <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Messaging-Crown-icon.png" height="14px" width="16px">';
+            }
+
+            $("#hhliste"+husholdningId).append('<li value="'+medlemId+'" class="list-group-item medlemnavnC"> ' + medlemnavn + erAdmin + adminSlett+ giAdmin +'</li>');
         }
     }
 }
 
-function displayDiv() {
-    var x = document.getElementsByClassName("invisibleDiv");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
+/**
+ * Setter ny favoritthusholdning; den som skal vises på forsiden.
+ * @param id: Bruker id som parameter for å sette ny husholdning
+ */
+function settNyFav(id) {
+    var nyId = parseInt(id);
+    var bruker= {
+        brukerId: brukerId,
+        favHusholdning: nyId
+    };
+
+    $.ajax({
+        url: "server/BrukerService/favHusholdning",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            console.log("Det gikk bra :)");
+            minBruker.favHusholdning = nyId;
+            localStorage.setItem("husholdningId", nyId)
+            localStorage.setItem("bruker", JSON.stringify(minBruker));
+            $('#errorModal').modal('show');
+        },
+        error: function (data) {
+            $('#errorModal').modal('show');
+        }
+    })
 }
+
+/**
+ * Kan slette medlem fra en husholdning, men denne rettigheten er det bare admin som kan.
+ */
+function slettmedlem() {
+    event.stopPropagation();
+    $("#bekreftmodal").modal();
+
+
+}
+
+function slettMedlem(bid, hid) {
+    var idSlett = bid;
+    var husIdSlett = hid;
+    var hus;
+    var t = 0;
+    for(t, lengthh = mineHusholdninger.length; t<lengthh; t++){
+        if(mineHusholdninger[t].husholdningId == husIdSlett){
+            hus = mineHusholdninger[t]
+        }
+    }
+    bruker = {
+        brukerId: idSlett,
+        favHusholdning: husIdSlett
+    };
+    $.ajax({
+        url: "server/hhservice/slettMedlem",
+        type: 'DELETE',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            /*for(var m = 0, n = hus.medlemmer.length; m<n; m++) {
+                if (hus.medlemmer[m].brukerId == idSlett) {
+                    hus.medlemmer.splice(m, 1);
+                    mineHusholdninger[t].medlemmer = hus.medlemmer;
+                    localStorage.setItem("husholdninger", mineHusholdninger);
+                    break;
+                }
+            }*/
+        },
+        error: function () {
+            $('#errorModal').modal('show');
+        }
+    });
+    alert("wait");
+    window.location = "profil.html";
+}
+
+function leggTilMedlem(epost, husId) {
+    bruker = {
+        favHusholdning: husId,
+        epost: epost
+    };
+    $.ajax({
+        url: "server/hhservice/regNyttMedlem",
+        type: 'POST',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (data) {
+            var result = JSON.parse(data);
+            if(result){
+                window.location ="profil.html";
+            }else{
+                console.log(": (");
+            }
+        },
+        error: function () {
+            $('#errorModal').modal('show');        }
+    });
+    //window.location = "profil.html";
+}
+
+function resizeImg(img, height, width) {
+    img.height = height;
+    img.width = width;
+}
+
+$(document).on('click', '#submitProfilbilde', function () {
+    var link = he.encode($('#profilbilde').val());
+    setProfilbilde(link);
+});
+
+function setProfilbilde(link) {
+    var id = minBruker.brukerId;
+    var bruker = {
+        brukerId: id,
+        profilbilde: link
+    };
+    $.ajax({
+        url: "server/BrukerService/setProfilbilde",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if(data){
+            }
+        },
+        error: function () {
+            $('#errorModal').modal('show');        }
+    });
+}
+
+$(document).on('click', '.giAdmin', function () {
+    bId = $(this).attr('value2');
+    hId = $(this).attr('value');
+    setAdmin(bId, hId);
+    $(this).hide();
+});
+
+function setAdmin(bId, hId) {
+
+    var bruker = {
+        brukerId: bId,
+        favHusholdning: hId
+    };
+    $.ajax({
+        url: "server/hhservice/setAdmin",
+        type: 'PUT',
+        data: JSON.stringify(bruker),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            var data = JSON.parse(result);
+            if(data){
+                alert("nice nice");
+            }else{
+                alert("yikes");
+            }
+        },
+        error: function () {
+            $('#errorModal').modal('show');
+        }
+    });
+}
+
+

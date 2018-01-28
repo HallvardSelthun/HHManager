@@ -7,13 +7,12 @@ import java.sql.SQLException;
 
 public final class ConnectionPool {
 
-    //Magisk black box som gjør alt for oss
     private static final BasicDataSource dataSource = new BasicDataSource();
 
     //Attributter for tilkobling til databsen
     static {
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver"); //Set the specific driver "class name"
-        dataSource.setUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/g_tdat2003_t6");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver"); //Set the specific driver "class name"
+        dataSource.setUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/g_tdat2003_t6?useSSL=false");
         dataSource.setUsername("g_tdat2003_t6");
         dataSource.setPassword("uz4rZOca");
     }
@@ -36,5 +35,16 @@ public final class ConnectionPool {
     public static BasicDataSource getDataSource() {
         return dataSource;
     }
+
+    /**
+     * For testing. Kobler connectionPoolen til h2-databasen
+     */
+    public static void h2() {
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:test");
+        dataSource.setUsername("");
+        dataSource.setPassword("");
+    }
+
 
 }

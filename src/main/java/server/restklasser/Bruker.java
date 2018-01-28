@@ -3,17 +3,45 @@ package server.restklasser;
 import java.util.ArrayList;
 
 public class Bruker {
+    /**
+     * Definerer variabler
+     */
+    private int brukerId;
+    private String navn;
+    private String passord;
+    private String epost;
+    private int favHusholdning;
+    private int admin;
+    private String profilbilde;
+    private String hash;
+    private String salt;
 
-    int brukerId;
-    String navn;
-    String passord;
-    String nyttpassord;
-    String epost;
-    int favHusholdning;
-    HHMedlem[] HHMedlemmer;
-    ArrayList<Gjøremål> gjøremål = new ArrayList<>();
-    double balanse;
+    public int getAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
+    public String getProfilbilde() {
+        return profilbilde;
+    }
+
+    public void setProfilbilde(String profilbilde) {
+        this.profilbilde = profilbilde;
+    }
+
+    private HHMedlem[] HHMedlemmer;
+    private ArrayList<Gjoremal> gjoremal = new ArrayList<>();
+    private double balanse;
+
+    /**
+     * Metoder for å hente medlem, navn, gjøremål, id og passord, epost, balanse og favoritthusholdning
+     * samt for å endre hver av de.
+     *
+     * @return
+     */
     public HHMedlem[] getHHMedlemmer() {
         return HHMedlemmer;
     }
@@ -22,16 +50,20 @@ public class Bruker {
         this.HHMedlemmer = HHMedlemmer;
     }
 
-    public String getNavn(){return navn;}
-
-    public void setNavn(String nyttNavn){this.navn = nyttNavn;}
-
-    public ArrayList<Gjøremål> getGjøremål() {
-        return gjøremål;
+    public String getNavn() {
+        return navn;
     }
 
-    public void addGjøremål(Gjøremål gjøremål){
-        this.gjøremål.add(gjøremål);
+    public void setNavn(String nyttNavn) {
+        this.navn = nyttNavn;
+    }
+
+    public ArrayList<Gjoremal> getGjoremal() {
+        return gjoremal;
+    }
+
+    public void addGjoremal(Gjoremal gjoremal) {
+        this.gjoremal.add(gjoremal);
     }
 
     public int getBrukerId() {
@@ -45,8 +77,6 @@ public class Bruker {
     public String getPassord() {
         return passord;
     }
-
-    public String getNyttPassord(){return nyttpassord;}
 
     public void setPassord(String passord) {
         this.passord = passord;
@@ -76,9 +106,19 @@ public class Bruker {
         this.favHusholdning = favHusholdning;
     }
 
-    public boolean regBrukerIDB(){
-        //KODE KODE KODE KODE KODE
-        return false;
+    public String getHash() {
+        return hash;
     }
 
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 }

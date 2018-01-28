@@ -1,6 +1,20 @@
-.balanse{
-    width: 550px;
-    height: auto;
+.alert {
+    display: none;
+}
+
+.tittel {
+    text-align: center;
+    margin:-2px;
+}
+
+.skalAlignes {
+    text-align: left;
+    margin-left:30px;
+}
+
+/*.balanse{
+    /* width: 550px; */
+    /*height: auto;
     margin-right: 20px;
     margin-left: 10px;
     margin-top: 20px;
@@ -10,13 +24,12 @@
     text-align: right;
 }
 
-#betalt {
-    margin-right: 10px;
-}
 .panel-group {
-    width: 600px;
-    margin: auto ;
+    /* width: 600px;
     margin-bottom: 100px;
+    */
+   /* margin-right: 5px;
+    margin-left: 5px;
 }
 
 #forespør {
@@ -27,11 +40,18 @@
     text-align: right;
 }
 
+*/
 #historikk {
-    color: blue;
-    margin-top: 50px;
-
+    color: blue;}
+    /*margin-top: 50px;
+    margin-left: 10px;
 }
+#historikkMain{
+    margin: 10px;
+}
+
+
+
 
 .dropdown-menu-item {
     text-align: center;
@@ -41,38 +61,53 @@
     text-align: right ;
     margin-right: 5px;
 }
-
-#skylder {
+*/
+.totalSumPos {
     color: #32CD32;
-    margin-right: 50px;
+    /*margin-right: 45px;*/
 }
 
-#skyldertittel {
-    margin-right: 40px  ;
+.totalSumNeg {
+    color: #CD3232;
+    /*margin-right: 45px;*/
+}
+/*
+.skyldertittel {
+    margin-right: 30px  ;
 }
 
-.checkbox2 {
-    text-align: left;
-    margin-left: 10px;
+.checkbox-wrap {
+    text-align: center;
+    /*margin-left: 10px;*//*
 }
 
-#betalt {
+.skylderTekst {
+    /*margin-right:10px;*//*
+}
+
+
+
+.placeholderSpan {
+    margin-right:10px;
+}
+
+.betalt {
     text-align: right;
+    padding-right: 10px;
 }
 
-.krev-penger{
+.krev-penger{*/
     /*width: 550px;
     height: 900px;
     margin-right: 200px;*/
-    margin-left: 100px;
+    /*margin-left: 100px;
     margin-top: 52px;
 }
-
-
-.firkant{
-    border-radius: 25px;
-    border: 2px solid #FFA500;
-    padding: 20px;
-    width: 250px;
-    height: 270px;
+.medlemCheck{
+    align-content: left;
+    text-align: left;
 }
+
+*/
+
+

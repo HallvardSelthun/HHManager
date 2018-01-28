@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Household Manager</title>
+    <title>Oppgjør</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="CSS/oppgjor.css">
     <link rel="stylesheet" type="text/css" href="CSS/felles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="web-res/jquery-3.3.1.min.js"></script>
+    <script src="web-res/bootstrap.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"> </script>
     <link rel="shortcut icon" href="web-res/favicon.ico" type="image/x-icon"/>
     <script src="Javascript/nav.js"></script>
+    <script src="Javascript/oppgjor.js"></script>
+    <script src="web-res/he-1.1.1/he.js"></script>
 
 </head>
 <body>
-<div id="navbar"></div>
+<div id=header>
+    <div id="navbar"></div>
+</div>
+
+<!-- Modals under -->
+
+<!-- Modal for å lage oppgjør -->
 <div id="oppgjørmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -22,15 +31,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><span class="glyphicon glyphicon-credit-card"></span> Forespør penger</h4>
             </div>
+
             <div class="modal-body">
                 <div class="suminput">
                     <p>Sum:</p>
                     <input id="sum" type="number" class="form-control" name="textfield" placeholder="Skriv sum her.">
+                    <div class="alert alert-danger" id="sumAlert">
+                        <strong>Feil sum</strong> Sum må være større enn 0.
+                    </div>
+                    <input id="vereMedPaaUtlegg" type="checkbox"> Være med på utlegg selv?
                 </div>
                 <br>
-                <div class="beskrivelse-input">
+                <div class="beskrivelse-input" id="oppgjorBeskrivelse">
                     <p>Beskrivelse:</p>
-                    <input id="beskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
+                    <input id="utleggBeskrivelse" name="textfield" class="form-control" placeholder="Skriv beskrivelse her.">
+                </div>
+                <div class="alert alert-danger" id="beskrivelseAlert">
+                    <strong>Manglende beskrivelse.</strong> Skriv inn hva utlegget er for
                 </div>
                 <br>
                 <div class="btn-group">
@@ -38,147 +55,280 @@
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Medlemmer<span
                             class="caret"></span></button>
                     <ul id="personer" class="dropdown-menu">
-                        <li>
-                            <label class="dropdown-menu-item checkbox">
-                                <input type="checkbox">
-                                Apple
-                            </label>
-                        </li>
-                        <li>
-                            <label class="dropdown-menu-item checkbox">
-                                <input type="checkbox"/>
-                                Banana
-                            </label>
-                        </li>
-                        <li>
-                            <label class="dropdown-menu-item checkbox">
-                                <input class="styled" type="checkbox">
-                                Orange
-                            </label>
-                        </li>
                     </ul>
+                    <br>
+                    <br>
+                    <p id="betalere"></p>
+                </div>
+                <div class="alert alert-danger" id="sumbeskrivelseAlert">
+                    <strong>Feil input</strong> Sum og beskrivelse må være riktige.
+                </div>
+                <div class="alert alert-danger" id="checkboxAlert">
+                    <strong>Ingen betalere valgt.</strong> Du må velge et medlem som skal betale.
                 </div>
                 <br>
                 <br>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
-                    <button id="endre" type="button" class="btn btn-primary">Forespør penger</button>
+                    <button id="lagUtlegg" type="button" class="btn btn-primary">Forespør penger</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="panel-group" id="accordion">
-    <div class="labels">
-        <label id="skyldertittel">Balanse </label>
-        <label id="betalt">Betalt</label>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-            <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
-                <a id="handlelisteTittel" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                    Nora Othilie Ringdal</a>
-            </h3>
-            <div id="" class="titteldiv">
-                <label id="skylder">+300 kr</label>
-                <input type="checkbox">
+
+<!-- Historikk-modal -->
+<div id="visHistorikk" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Historikk</h4>
+            </div>
+            <div class="container-fluid">
+                <div class="row panel-group" id="panelGruppe2">
+                    <div class="labels container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-6"></div>
+                            <div class="col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                                <label class="col-sm-6 col-xs-5"></label>
+                                <label class="skyldertittel col-sm-3 col-xs-4 utenPadding">Balanse</label>
+                                <label class="betalt col-sm-3 col-xs-3"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="historikkMain">
+                        <!-- Her legges det inn dynamisk HTML -->
+                    </div>
+                </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+            </div>
             </div>
         </div>
-        <div id="collapse1" class="collapse">
+    </div>
+</div>
+
+<!-- Hovedstruktur for siden -->
+<div id = "container" class="container-fluid">
+    <div class = "row">
+        <div id="left" class="col-sm-2 col-md-3"></div>
+        <div id="center" class="col-sm-8 col-md-6">
+            <div class="container-fluid">
+                <div class="row">
+                    <h1 class="tittel">Mine oppgjør</h1>
+                    <div class="alert alert-success alert-dismissable" id="utleggSuccess">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> Oppgjør lagt inn.
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row panel-group" id="panelGruppe">
+                            <div class="labels container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-5"></div>
+                                    <div class="col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
+                                        <label class="col-sm-6 col-xs-5"></label>
+                                        <label class="skyldertittel col-sm-3 col-xs-4 utenPadding">Balanse</label>
+                                        <label class="betalt col-sm-3 col-xs-3">Motatt</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Her legges det inn dynamisk HTML -->
+                        </div>
+
+                    </div>
+                    <div class="container-fluid">
+                        <b><a id="historikk" href="#" target="_blank" data-toggle="modal" data-target="#visHistorikk">Vis historikk</a></b>
+                        <button id="forespør" type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#oppgjørmodal">Forespør penger</button>
+                    </div>
+                </div>
+            </div>
+    <div id="right" class="col-sm-2 col-md-3"></div>
+    </div>
+</div>
+
+<!-- MALER -->
+
+<!-- HTML-mal for nytt oppgjør -->
+
+<!--Viktig -->
+<script id="test-oppgjor" type="text/x-custom-template">
+    <!--Viktig ^^^ -->
+    <div class="container-fluid panel panel-default">
+        <div class="row panel-heading clearfix" id="oppgj${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseOpgj${oppgjorNr}">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-5" style="margin-top: 5px; ">
+                <!--Viktig -->
+                <a> ${navn} </a>
+                <!--Viktig ^^^ -->
+            </h3>
+            <div class="titteldiv col-sm-6 col-xs-7 pull-right utenPadding" style="text-align: right">
+                <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
+                <div class="col-sm-3 col-xs-3"> {{if (totalSum > 0)}}<input type="checkbox" class="hovedCheckbox pull-right" style="margin-top: 0px" id="hovCheckNr${oppgjorNr}">{{else}}<span
+                        class="placeholderSpan"></span>{{/if}}
+                </div>
+            </div>
+        </div>
+        <div id="collapseOpgj${oppgjorNr}" class="collapse">
             <div class="panel-body">
                 <div class="balanse">
-                    <h4>Du skylder Nora:</h4>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Sum</th>
-                            <th>Beskrivelse</th>
-                            <th>Betalt</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>10,50</td>
-                            <td>Toalettpapir</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox1"
-                                                                              class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>15,30</td>
-                            <td>Håndsåpe</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox2"
-                                                                              class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6,44</td>
-                            <td>Juice</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox3"
-                                                                              class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <p>Totalt: <strong>NOK 32,24</strong></p>
-                    <br>
+                    <!-- Hadde vært nice å få til litt dynamisk HTML her -->
+                    <div class="duSkylder">
+                        <h4>Du skylder ${navn}:</h4>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1">Betalt</th>
+                            </tr>
+                            </thead>
+                            <tbody id="radMinus${oppgjorNr}">
+                            <!-- Her skal dynamisk kode inn -->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderSum}</strong></p>
+                        <br>
+                    </div>
+                    <div class="skylderDeg">
+                        <h4>${navn} skylder deg:</h4>
 
-                    <h4>Nora skylder deg:</h4>
-
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Sum</th>
-                            <th>Beskrivelse</th>
-                            <th>Motatt</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>43,20</td>
-                            <td>Badematte</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox4"
-                                                                              class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>21,30</td>
-                            <td>Melk</td>
-                            <td>
-                                <div class="checkbox2 checkbox-success"><input type="checkbox" id="checkbox5"
-                                                                              class="styled">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <p>Totalt: <strong>NOK 64,50</strong></p>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1">Motatt</th>
+                            </tr>
+                            </thead>
+                            <tbody id="radPlus${oppgjorNr}">
+                            <!-- Her skal mer generert kode inn-->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderMegSum}</strong></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    <br>
-    <b><a id="historikk" href="#" target="_blank">Vis historikk</a></b>
-    <button id="forespør" type="button" class="btn btn-primary pull-right" data-toggle="modal"
-            data-target="#oppgjørmodal">
-        Forespør
-        penger
-    </button>
-</div>
+</script>
+
+<!-- HTML-mal for historikk-oppgjør -->
+<!--Viktig -->
+<script id="historikk-oppgjor" type="text/x-custom-template">
+    <!--Viktig ^^^ -->
+    <div class="container-fluid panel panel-default" >
+        <div class="row panel-heading clearfix" id="histo${navn}" data-toggle="collapse" data-parent="#accordion" href="#collapseHisto${oppgjorNr}">
+            <h3  class="panel-title pull-left col-sm-6 col-xs-6" style="margin-top: 5px; ">
+                <!--Viktig -->
+                <a> ${navn} </a>
+                <!--Viktig ^^^ -->
+            </h3>
+            <div class="titteldiv col-sm-6 col-xs-6 pull-right utenPadding" style="text-align: right">
+                <label class="skylderTekst col-sm-6 col-xs-6 utenPadding" style="text-align: left">{{if (totalSum > 0)}}Skylder deg: {{else}}Du skylder: {{/if}}  </label>
+                <label class="totalSum${posNeg} col-sm-3 col-xs-3 utenPadding" style="text-align: right">${totalSum} kr</label>
+                <div class="col-sm-3 col-xs-3"> <span
+                        class="placeholderSpan"></span>
+                </div>
+            </div>
+        </div>
+        <div id="collapseHisto${oppgjorNr}" class="collapse">
+            <div class="panel-body">
+                <div class="balanse">
+                    <!-- Hadde vært nice å få til litt dynamisk HTML her -->
+                    <div class="duSkylder">
+                        <h4>Du skylder ${navn}:</h4>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="radMinusHisto${oppgjorNr}">
+                            <!-- Her skal dynamisk kode inn -->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderSum}</strong></p>
+                        <br>
+                    </div>
+                    <div class="skylderDeg">
+                        <h4>${navn} skylder deg:</h4>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-3">Sum</th>
+                                <th class="col-sm-8">Beskrivelse</th>
+                                <th class="col-sm-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="radPlusHisto${oppgjorNr}">
+                            <!-- Her skal mer generert kode inn-->
+                            </tbody>
+                        </table>
+                        <p>Totalt: <strong>NOK ${skylderMegSum}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+<script id="rad-template-duSkylder" type="text/x-custom-template">
+    <tr>
+        <td>${delSum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox-wrap" >
+                <span></span>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script id="rad-template-deSkylder" type="text/x-custom-template">
+    <tr>
+        <td>${delSum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox-wrap" >
+                <input type="checkbox" id="checkbox${radNr}" class="checkboxes" data-utleggId="${utleggId}" data-skyldigBrukerId="${skyldigBrukerId}">
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script id="rad-template-duSkylder-historikk" type="text/x-custom-template">
+    <tr>
+        <td>${delSum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox-wrap" >
+                <span></span>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script id="rad-template-deSkylder-historikk" type="text/x-custom-template">
+    <tr>
+        <td>${delSum}</td>
+        <td>${beskrivelse}</td>
+        <td>
+            <div class="checkbox-wrap" >
+                <span></span>
+            </div>
+        </td>
+    </tr>
+</script>
 <div id="modaldiv"></div>
+
+
+<div id="footer"></div>
 </body>
 </html>
