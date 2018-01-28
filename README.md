@@ -11,8 +11,6 @@ https://gitlab.stud.iie.ntnu.no/kimiaa/HHManager/wikis/installasjon
 
 ## Kjøre tester
 Alle testene blir kjørt hver gang maven bygger og kjører produktet.
-
-### Kodestil 
 Hva testene tester og hvorfor er beskrevet i dokumentet som det er linket til under.
 https://gitlab.stud.iie.ntnu.no/kimiaa/HHManager/wikis/ci-og-testing
 
