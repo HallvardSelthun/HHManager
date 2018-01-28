@@ -104,7 +104,7 @@ function setVarerKjopt(listeId) {
  * varer i en tabell, samt spør og sjekker om handleliste skal være offentlig eller ikke.
  */
 function leggTilNyHandleliste() {
-    var handlelisteNavn = he.encode($("#handlelisteNavn").val());
+    var handlelisteNavn = $("#handlelisteNavn").val();
     var varer = [];
     var offentlig = 0;
     var isChecked = $('#offentligKnapp').is(':checked');
