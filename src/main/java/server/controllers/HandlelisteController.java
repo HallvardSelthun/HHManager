@@ -41,7 +41,7 @@ public class HandlelisteController {
      */
     public static Handleliste getForsideListe(int husholdningId, int brukerId) {
         int handlelisteId;
-        String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + husholdningId + " AND (offentlig = 1 OR skaperId = " + brukerId + ")";
+        String hentHandleliste = "SELECT navn, handlelisteId FROM handleliste WHERE husholdningId = " + husholdningId + " AND (offentlig = 1 OR skaperId = " + brukerId + ") AND  gjemt = 0";
         Handleliste handleliste = new Handleliste();
         try (Connection con = ConnectionPool.getConnection()) {
             Statement s = con.createStatement();
